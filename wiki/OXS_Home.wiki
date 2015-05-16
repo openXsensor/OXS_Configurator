@@ -2,19 +2,19 @@
 
 https://openxsensor.googlecode.com/svn/wiki/images/OXS_Logo.png
 
-=[OXS_News News] - [OXS_Downloads Downloads] - [OXS_Documentation Documentation]=
+=This project is now transferred: [https://github.com/openXsensor/openXsensor openXsensor new home]=
 
-==Introduction==
+===Introduction===
 
-!OpenXsensor is the evolution of [https://code.google.com/p/openxvario/ OpenXvario] and extends it to multi-sensing applications.
+OpenXsensor is the evolution of [https://code.google.com/p/openxvario/ OpenXvario] and extends it to multi-sensing applications.
 
 Discussion about this project: http://openrcforums.com/forum/viewforum.php?f=86
 
-Based on an [http://arduino.cc/ Arduino] platform, it connects to different sensors and transmits the measurements via !FrSky telemetry capabilities.
+Based on an [http://arduino.cc/ Arduino] platform, it connects to different sensors and transmits the measurements via FrSky telemetry capabilities.
 
 It is both compatible with the *D series* receivers (HUB protocol) and the new *X series* rx (Smart Port protocol).
 
-==Functionalities provided at your choice :==
+===Functionalities provided at your choice :===
 
   * Altimeter / Variometer _(like !FrSky Variometer high precision sensor)_
     * Can use a second barometric sensor and switch with TX while flying
