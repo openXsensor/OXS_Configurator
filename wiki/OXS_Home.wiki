@@ -2,7 +2,7 @@
 
 https://openxsensor.googlecode.com/svn/wiki/images/OXS_Logo.png
 
-=This project is now transferred: [https://github.com/openXsensor/openXsensor openXsensor new home]=
+=This project has moved to GitHub: [https://github.com/openXsensor/openXsensor openXsensor new home]=
 
 ===Introduction===
 
