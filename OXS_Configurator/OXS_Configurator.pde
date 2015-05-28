@@ -19,7 +19,7 @@
 *****************************************************************************
 **                        Author: David LABURTHE                           **
 **                      Contact: dlaburthe@free.fr                         **
-**                           Date: 04.01.2015                              **
+**                           Date: 27.05.2015                              **
 *****************************************************************************/
 
 import controlP5.* ;
@@ -27,7 +27,7 @@ import controlP5.* ;
 boolean tempActive = false ;           // Define temperature sensor availability
 
 String oxsVersion = "v2.x" ;
-String oxsCversion = "v2.1" ;
+String oxsCversion = "v2.2" ;
 
 String day = (day() < 10) ? "0" + day() : "" + day() ;
 String month = (month() < 10) ? "0" + month() : "" + month() ;
@@ -2677,9 +2677,9 @@ void keyPressed() {
 
   }
 }
-
-// =================================================================================================
 */
+// =================================================================================================
+
 float round(float number, float decimal) {      // Rounding function
   return (float)(round((number*pow(10, decimal))))/pow(10, decimal) ;
 }

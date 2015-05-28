@@ -413,11 +413,18 @@ void validateVersion() {
       //println("OXS and the Configurator are compatible,") ;
       //println("OXS version = " + version[0] + " and OXSC version = " + oxsCversion) ;
 
+    } else if ( version[0].charAt(1) > oxsCversion.charAt(1) ) {
+      versionValid = 1 ;
+      messageList.append( "" ) ;
+      messageList.append( "        **  The Configurator " + oxsCversion + " can't set OXS " + version[0] + " new features,  **" ) ;
+      messageList.append( "        **    if you need them, you can edit the config file by hand    **" ) ;
+      messageList.append( "" ) ;
+
     } else {
       versionValid = 0 ;
       messageList.append( "            ** The Configurator " + oxsCversion + " isn't compatible with OXS " + version[0] + " **" ) ;
       messageList.append( "" ) ;
-      messageList.append( "         You may go to \"https://code.google.com/p/openxsensor/\" and" ) ;
+      messageList.append( "         You may go to \"https://github.com/openXsensor\" and" ) ;
       messageList.append( "       download the latest version of both OXS and OXS Configurator." ) ;
       //println("OXS version " + version[0]) ;
     }
