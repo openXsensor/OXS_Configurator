@@ -1,0 +1,39 @@
+package oxsc;
+
+import processing.core.PApplet;
+import controlP5.ControlP5;
+import controlP5.DropdownList;
+
+public class AirSpeed extends Sensor {
+
+	// private int parameters;
+
+	public void addOXSdata() {
+		new OXSdata("AIR_SPEED", "Air Speed", this.getName());
+		if (MainP.vario != null) { // TODO better
+			new OXSdata("PRANDTL_DTE", "Prandtl dTE", "varAspeed");
+			new OXSdata("PRANDTL_COMPENSATION", "Prandtl Compensation",
+					"varAspeed");
+
+			cp5.get(DropdownList.class, "vSpeed1").addItem(" V1 + A.Speed", 2);
+			cp5.get(DropdownList.class, "vSpeed2").addItem(" V1 + A.Speed", 2);
+		}
+	}
+
+	public void removeSensor() {
+		// if ( vario == null ) { // TODO better
+		cp5.get(DropdownList.class, "vSpeed1").removeItem(" V1 + A.Speed");
+		cp5.get(DropdownList.class, "vSpeed2").removeItem(" V1 + A.Speed");
+		// }
+
+		MainP.tabData.resetSentDataFields(this.getName());
+		MainP.tabData.resetSentDataFields("varAspeed");
+		OXSdata.removeFromList(this);
+		OXSdata.removeFromList("varAspeed");
+		updateUIoXSdataList();
+	}
+
+	public AirSpeed(PApplet p, ControlP5 cp5, String name) {
+		super(p, cp5, name);
+	}
+}
