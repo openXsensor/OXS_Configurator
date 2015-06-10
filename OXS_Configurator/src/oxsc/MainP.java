@@ -57,7 +57,7 @@ public class MainP extends PApplet {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	boolean tempActive = false; // Define temperature sensor availability
+	public boolean tempActive = false; // Define temperature sensor availability
 
 	static final String oxsVersion = "v2.x";
 	static final String oxsCversion = "v2.1";
@@ -343,104 +343,7 @@ public class MainP extends PApplet {
 		switch( ctid ) {
 
 		case 0 :                                        // TAB GENERAL Settings
-			// separation lines
-			stroke(darkBackGray) ;
-			noSmooth() ;
-			line(10, 200, 440, 200) ;
-			line(10, 236, 440, 236) ;
-			noStroke() ;
-			smooth() ;
-
-			if ( cp5.get(DropdownList.class, "voltRefChoice").getValue() == 2 ) {
-				cp5.getController("arduinoVccNb").lock() ;
-				cp5.getController("arduinoVccNb").setColorBackground(grayedColor) ;
-				cp5.getController("arduinoVccNb").setColorValueLabel(grayedColor) ;
-				cp5.getController("arduinoVccNb").setColorCaptionLabel(grayedColor) ;
-			} else {
-				cp5.getController("arduinoVccNb").unlock() ;
-				cp5.getController("arduinoVccNb").setColorBackground(MainP.darkBackGray) ;
-				cp5.getController("arduinoVccNb").setColorValueLabel(white) ;
-				cp5.getController("arduinoVccNb").setColorCaptionLabel(color(0)) ;
-			}
-
-			if ( cp5.getController("saveEprom").getValue() == 0 ) {
-				cp5.getController("resetButtonPinLabel").setColorValueLabel(grayedColor) ;
-				cp5.getGroup("resetButtonPin").hide() ;
-				fill(grayedColor) ;
-				rect(355, 255, 30, 20) ;
-			} else {
-				cp5.getController("resetButtonPinLabel").setColorValueLabel(color(0)) ;
-				cp5.getGroup("resetButtonPin").show() ;
-				fill(lightOrange) ;               // rectangle border filled
-				rect(10, 255, 152, 20) ;
-				noFill() ;
-			}
-			stroke(darkBackGray) ;                        // rectangle border
-			noFill() ;
-			rect(10, 255, 152, 20) ;
-			noStroke() ;
-
-			if ( !tempActive ) {
-				cp5.getController("temperature").setColorCaptionLabel(grayedColor) ;
-				cp5.getController("temperature").setColorBackground(grayedColor) ;
-			}
-
-			// SENSORS part
-			fill(255, 128, 0) ;
-			rect(width / 2 - 35, 295, 69, 18) ;
-			rect(0, 310, width, 3) ;
-			noFill() ;
-
-			if ( cp5.getController("vario").getValue() == 1 ) {                 // Vario 2 enabled if vario 1
-				cp5.getController("vario2").unlock() ;
-				cp5.getController("vario2").setColorCaptionLabel(0) ;
-				cp5.getController("vario2").setColorBackground(darkBackGray) ;
-			} else {
-				cp5.getController("vario2").lock() ;
-				cp5.getController("vario2").setColorCaptionLabel(grayedColor) ;
-				cp5.getController("vario2").setColorBackground(grayedColor) ;
-			}
-
-			// Sensors table
-			if ( cp5.getController("vario").getValue() == 1 ) {
-				fill(lightOrange) ;
-				rect(45, 331, 120, 25) ;
-				noFill() ;
-			}
-			if ( cp5.getController("vario2").getValue() == 1 ) {
-				fill(lightOrange) ;
-				rect(165, 331, 120, 25) ;
-				noFill() ;
-			}
-			if ( cp5.getController("airSpeed").getValue() == 1 ) {
-				fill(lightOrange) ;
-				rect(285, 331, 120, 25) ;
-				noFill() ;
-			}
-			if ( cp5.getController("voltage").getValue() == 1 ) {
-				fill(lightOrange) ;
-				rect(45, 356, 120, 25) ;
-				noFill() ;
-			}
-			if ( cp5.getController("current").getValue() == 1 ) {
-				fill(lightOrange) ;
-				rect(165, 356, 120, 25) ;
-				noFill() ;
-			}
-			if ( cp5.getController("rpm").getValue() == 1 ) {
-				fill(lightOrange) ;
-				rect(285, 356, 120, 25) ;
-				noFill() ;
-			}
-
-			stroke(darkBackGray) ;
-			rect(45, 331, 120, 25) ;
-			rect(165, 331, 120, 25) ;
-			rect(285, 331, 120, 25) ;
-			rect(45, 356, 120, 25) ;
-			rect(165, 356, 120, 25) ;
-			rect(285, 356, 120, 25) ;
-			noStroke() ;
+			tabGenSet.draw(this);
 
 			break ;
 
@@ -1059,7 +962,7 @@ public class MainP extends PApplet {
 		}
 
 	}
-	
+
 	public void controlEvent(ControlEvent theEvent) {
 		// DropdownList is of type ControlGroup.
 		// A controlEvent will be triggered from inside the ControlGroup class.
