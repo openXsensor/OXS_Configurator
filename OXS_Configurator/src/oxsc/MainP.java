@@ -1107,7 +1107,7 @@ public class MainP extends PApplet {
 		selectFolder("Select OXS source folder:", "folderSelected") ;
 	}
 
-	void vario(boolean theFlag) {
+	public void vario(boolean theFlag) {
 		if (theFlag==true && vario == null) {
 			vario = new Vario(this, cp5, "vario") ;
 			cp5.getTab("vario").show() ;

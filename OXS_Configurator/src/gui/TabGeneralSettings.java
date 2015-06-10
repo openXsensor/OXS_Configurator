@@ -12,7 +12,6 @@ import controlP5.Toggle;
 
 public class TabGeneralSettings {
 	
-	@SuppressWarnings("unused")
 	private final ControlP5 cp5 ;
 	@SuppressWarnings("unused")
 	private final PApplet p ; // TODO check if needed
@@ -353,7 +352,16 @@ public class TabGeneralSettings {
 		mainP.noStroke() ;
 		mainP.smooth() ;
 	
-		// Sensor ID graying TODO first
+		// Sensor ID graying
+		if ( protocolDdl.getValue() != 1 ) {
+			cp5.getController("sensorIDlabel").setColorValueLabel(MainP.grayedColor) ;
+			sensorIDDdl.hide() ;
+			mainP.fill(MainP.grayedColor) ;
+			mainP.rect(355, 170, 50, 20) ;
+		} else {
+			cp5.getController("sensorIDlabel").setColorValueLabel(0) ;
+			sensorIDDdl.show() ;
+		}
 		
 		// Voltage graying
 		if ( voltRefChoiceDdl.getValue() == 2 ) {
