@@ -2,13 +2,14 @@ package gui;
 
 import oxsc.MainP;
 import oxsc.OXSdata;
+import oxsc.Protocol;
 import controlP5.ControlP5;
 import controlP5.Controller;
 import controlP5.DropdownList;
 
 public class TabData {
 
-	private final ControlP5 cp5;
+	private static ControlP5 cp5;
 
 	private static final int tabDataFieldNbr = 10;
 	
@@ -136,7 +137,7 @@ public class TabData {
 
 	public TabData(ControlP5 cp5) {
 
-		this.cp5 = cp5;
+		TabData.cp5 = cp5;
 
 		cp5.getTab("data").setHeight(20).setColorForeground(MainP.tabGray)
 				.setColorBackground(0xFF285A28) // color(40, 90, 40)
@@ -298,7 +299,7 @@ public class TabData {
 		return hubDataList;
 	}
 
-	public void populateSentDataFields() {
+	public static void populateSentDataFields() {
 		for (int i = 1; i <= tabDataFieldNbr; i++) {
 			cp5.get(DropdownList.class, "sentDataField" + i).clear();
 			for (int j = 0; j < OXSdata.getList().size(); j++)
@@ -327,17 +328,17 @@ public class TabData {
 		}
 	}
 
-	public void populateSPortDataFields() {
+	public static void populateSPortDataFields() {
 		for (int i = 1; i <= tabDataFieldNbr; i++) {
 			cp5.get(DropdownList.class, "sPortDataField" + i).clear();
-			for (int j = 0; j < MainP.protocol.getDataList().length; j++)
+			for (int j = 0; j < Protocol.getDataList().length; j++)
 				cp5.get(DropdownList.class, "sPortDataField" + i).addItem(
-						MainP.protocol.getDataList()[j][1], j); // TODO j+1 => j
+						Protocol.getDataList()[j][1], j); // TODO j+1 => j
 		}
 	}
 
 	public String getDdlFieldDisplay(int id) {
 		return oXSdataFieldDisplayList[id];
-	} // voir getOXSdataFieldDisplayList() -> necessaire ?
+	}  // voir getOXSdataFieldDisplayList() -> necessaire ?
 
 }

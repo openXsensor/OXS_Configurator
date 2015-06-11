@@ -338,9 +338,9 @@ public class MainP extends PApplet {
 
 		// ------------ Tabs specific display ------------
 
-		int ctid = cp5.getWindow(this).getCurrentTab().getId() ;
+		int currentTabId = cp5.getWindow(this).getCurrentTab().getId() ;
 
-		switch( ctid ) {
+		switch( currentTabId ) {
 
 		case 0 :                                        // TAB GENERAL Settings
 			tabGenSet.draw(this);
@@ -570,7 +570,7 @@ public class MainP extends PApplet {
 				cp5.getController("cells").setValue(0) ;
 				tabData.resetSentDataFields("voltCells") ;
 				OXSdata.removeFromList("voltCells") ;
-				tabData.populateSentDataFields() ;
+				TabData.populateSentDataFields() ;
 				cp5.getController("cells").lock() ;
 				cp5.getController("cells").setColorBackground(grayedColor) ;
 				cp5.getController("cells").setColorCaptionLabel(grayedColor) ;
@@ -1047,16 +1047,16 @@ public class MainP extends PApplet {
 		if ( theEvent.isFrom(cp5.getGroup("protocolChoice")) ) {          
 			switch( (int)theEvent.getGroup().getValue() ) {
 			case 1 :
-				protocol = new Protocol("FrSky") ;
-				protocol.updateUItargetDataList() ;
+				protocol = Protocol.createProtocol("FrSky") ;
+				//Protocol.updateUItargetDataList() ;
 				/*for ( int i = 1; i <= dataSentFieldNbr; i++ ) {
 		          cp5.getGroup("hubDataField" + i).show() ;
 		          cp5.getGroup("sPortDataField" + i).hide() ;
 		        }*/
 				break ;
 			case 2 :
-				protocol = new Protocol("multiplex") ;
-				protocol.updateUItargetDataList() ;
+				protocol = Protocol.createProtocol("multiplex") ;
+				//Protocol.updateUItargetDataList() ;
 				break ;
 			}
 		}
@@ -1177,11 +1177,11 @@ public class MainP extends PApplet {
 	void cells(boolean theFlag) {
 		if ( theFlag == true && aVolt[1] != null ) {
 			new OXSdata("CELLS", "Cells monitoring", "voltCells") ;
-			tabData.populateSentDataFields() ;
+			TabData.populateSentDataFields() ;
 		} else {
 			tabData.resetSentDataFields("voltCells") ;
 			OXSdata.removeFromList("voltCells") ;  // TODO remove "Cells Monotoring" from ddl display
-			tabData.populateSentDataFields() ;
+			TabData.populateSentDataFields() ;
 		}
 	}
 

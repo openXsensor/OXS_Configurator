@@ -1,13 +1,13 @@
 package oxsc;
 
+import gui.TabData;
 import processing.core.PApplet;
 
 public class Protocol {
 	
-	private String name ;
-	private String targetDataList[][] ;
+	private static String targetDataList[][] ;
 
-	private String frSkyDataList[][] = new String[][] {
+	private static String frSkyDataList[][] = new String[][] {
 			{ "----------", "----------" },
 			{ "DEFAULTFIELD", "DEFAULT" },          // 1
 			{ "Alt", "Altitude" },                  // 2  ALT_FIRST_ID
@@ -26,7 +26,7 @@ public class Protocol {
 			{ "ASpd", "Air Speed (S.Port only)" }   // 15 AIR_SPEED_FIRST_ID
 	};
 
-	private String multiplexDataList[][] = new String[][] {
+	private static String multiplexDataList[][] = new String[][] {
 			{ "----------", "----------" },
 			{ "2", "2" },
 			{ "3", "3" },
@@ -44,30 +44,49 @@ public class Protocol {
 			{ "15", "15" }
 	};
 
-	public Protocol( String name ) {
-				
-		this.name = name ;
-		if ( this.name == "FrSky" ) {
-			targetDataList = frSkyDataList.clone() ;
-		} else if  (this.name == "multiplex" ) {
-			targetDataList = multiplexDataList.clone() ;
+	public static Protocol createProtocol(String name) {
+		Protocol tempProt = new Protocol(name);
+		
+		updateUItargetDataList();
+		
+		return tempProt;
+	}
+	private String name ;
+	
+	private Protocol(String name) {
+
+		this.name = name;
+
+		if (this.name == "FrSky") {
+			targetDataList = frSkyDataList.clone();
+		} else if (this.name == "multiplex") {
+			targetDataList = multiplexDataList.clone();
 		}
 
-		//updateUItargetDataList() ;  // TODO why not working ?
-		PApplet.println("Creation d'un protocole " + this.getName() ) ;
-		PApplet.println() ;
+		
+		PApplet.println();
+		PApplet.println("Création d'un protocole " + this.getName() + ":");
+		//updateUItargetDataList() ; // TODO why not working ?
 	}
 	  
-	public String getName() { return name ; }
-	//public int getTargetDataListLength() { return targetDataList.length ; }
-	public String[][] getDataList() { return targetDataList ; }
-	public void updateUItargetDataList() { // TODO
-		for (int i = 0 ; i < targetDataList.length ; i++ ) {
-			PApplet.print( targetDataList[i][0] + " - ") ;
-		}
-		PApplet.println() ;
+	public String getName() {
+		return name;
+	}
 
-		MainP.tabData.populateSPortDataFields() ;
+	// public int getTargetDataListLength() { return targetDataList.length ; }
+	
+	public static String[][] getDataList() {
+		return targetDataList;
+	}
+
+	public static void updateUItargetDataList() { // TODO
+		for (int i = 0; i < targetDataList.length; i++) {
+			PApplet.print(targetDataList[i][0] + " - ");
+		}
+
+		PApplet.println();
+
+		TabData.populateSPortDataFields();
 	}
 
 }

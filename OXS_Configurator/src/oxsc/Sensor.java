@@ -1,5 +1,6 @@
 package oxsc;
 
+import gui.TabData;
 import processing.core.PApplet;
 import controlP5.ControlP5;
 
@@ -25,7 +26,7 @@ public abstract class Sensor implements OXSdataController {
 	}
 
 	public void updateUIoXSdataList() {
-		MainP.tabData.populateSentDataFields() ;
+		TabData.populateSentDataFields() ;
 	}
 
 	public abstract void addOXSdata() ;
