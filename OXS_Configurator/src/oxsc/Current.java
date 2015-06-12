@@ -9,8 +9,8 @@ public class Current extends Sensor {
 	//private int parameters;
 
 	public void addOXSdata() {
-		new OXSdata("CURRENTMA", "Current (mA)", this.getName());
-		new OXSdata("MILLIAH", "Consumption (mAh)", this.getName());
+		new OXSdata("CURRENTMA", "Current (mA)", this.getName(), null);
+		new OXSdata("MILLIAH", "Consumption (mAh)", this.getName(), null);
 	}
 
 	public void removeSensor() {

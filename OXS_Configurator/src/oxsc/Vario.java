@@ -12,6 +12,7 @@ public class Vario extends Sensor {
 	
 	// private int parameters ;
 	
+	@SuppressWarnings("unused")
 	private ArrayList<OXSdata> dataList = new ArrayList<OXSdata>(); // or string array ?
 
 	public Vario(PApplet p, ControlP5 cp5, String name) {
@@ -22,14 +23,14 @@ public class Vario extends Sensor {
 		String varioName = this.getName();
 
 		if (varioName == "vario") {
-			new OXSdata("ALTIMETER", "Altitude", varioName);
-			new OXSdata("VERTICAL_SPEED", "Vertical Speed", varioName);
-			new OXSdata("ALT_OVER_10_SEC", "Alt. over 10 seconds", varioName);
-			new OXSdata("SENSITIVITY", "Vario sensitivity", varioName);
+			new OXSdata("ALTIMETER", "Altitude", varioName, null);
+			new OXSdata("VERTICAL_SPEED", "Vertical Speed", varioName, null);
+			new OXSdata("ALT_OVER_10_SEC", "Alt. over 10 seconds", varioName, null);
+			new OXSdata("SENSITIVITY", "Vario sensitivity", varioName, null);
 			
 			if (MainP.protocol.getName() == "multiplex") {
-				new OXSdata("REL_ALTIMETER", "Relative Altitude", varioName);
-				new OXSdata("ALTIMETER_MAX", "Max Relative Altitude", varioName);
+				new OXSdata("REL_ALTIMETER", "Relative Altitude", varioName, null);
+				new OXSdata("ALTIMETER_MAX", "Max Relative Altitude", varioName, null);
 			}
 			
 			cp5.get(DropdownList.class, "vSpeed1").addItem("       Vario 1", 0);
@@ -37,9 +38,9 @@ public class Vario extends Sensor {
 			cp5.get(DropdownList.class, "vSpeed1").setValue(0);
 
 			if (MainP.airSpeed != null) { // TODO better
-				new OXSdata("PRANDTL_DTE", "Prandtl dTE", "varAspeed");
+				new OXSdata("PRANDTL_DTE", "Prandtl dTE", "varAspeed", null);
 				new OXSdata("PRANDTL_COMPENSATION", "Prandtl Compensation",
-						"varAspeed");
+						"varAspeed", null);
 
 				cp5.get(DropdownList.class, "vSpeed1").addItem(" V1 + A.Speed",
 						2);
@@ -48,11 +49,11 @@ public class Vario extends Sensor {
 			}
 		} else {
 			new OXSdata("ALTIMETER_" + varioName.substring(5), "Altitude "
-					+ varioName.substring(5), varioName);
+					+ varioName.substring(5), varioName, null);
 			new OXSdata("VERTICAL_SPEED_" + varioName.substring(5),
-					"Vertical Speed " + varioName.substring(5), varioName);
+					"Vertical Speed " + varioName.substring(5), varioName, null);
 			new OXSdata("ALT_OVER_10_SEC_" + varioName.substring(5),
-					"Alt. over 10 seconds " + varioName.substring(5), varioName);
+					"Alt. over 10 seconds " + varioName.substring(5), varioName, null);
 
 			cp5.get(DropdownList.class, "vSpeed1").addItem("       Vario 2", 1);
 			cp5.get(DropdownList.class, "vSpeed2").addItem("       Vario 2", 1);

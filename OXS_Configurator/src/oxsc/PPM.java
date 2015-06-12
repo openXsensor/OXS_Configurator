@@ -9,7 +9,7 @@ public class PPM extends Sensor {
 	// private int parameters ;
 
 	public void addOXSdata() {
-		new OXSdata("PPM", "PPM value", this.getName());
+		new OXSdata("PPM", "PPM value", this.getName(), null);
 	}
 
 	public void removeSensor() {

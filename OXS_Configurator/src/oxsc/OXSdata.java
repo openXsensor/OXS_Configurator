@@ -9,15 +9,18 @@ public class OXSdata {
 	private String name;
 	private String displayName;
 	private String sensorType;
+	private String defaultValue;
 	
 	private static ArrayList<OXSdata> OXSdataList = new ArrayList<OXSdata>();
 
-	public OXSdata(String name, String displayName, String sensorType) {
+	public OXSdata(String name, String displayName, String sensorType, String defaultValue) {
 		this.name = name;
 		this.displayName = displayName;
 		this.sensorType = sensorType;
+		this.defaultValue = defaultValue;
+		
 		PApplet.println("Creation d'un objet OXSdata: " + this.name + " - "
-				+ this.displayName);
+				+ this.displayName + this.defaultValue );
 		OXSdataList.add(this);
 	}
 

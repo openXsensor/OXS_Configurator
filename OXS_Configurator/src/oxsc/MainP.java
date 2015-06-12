@@ -301,7 +301,7 @@ public class MainP extends PApplet {
 
 		createMessageBox() ;          //  Message box creation
 		tabGenSet.getProtocolDdl().setValue(1);
-		new OXSdata("----------", "----------", "noSensor") ;
+		new OXSdata("----------", "----------", "noSensor", null) ;
 
 	}
 
@@ -1005,18 +1005,22 @@ public class MainP extends PApplet {
 		}
 
 		// Voltages sensor activation/desactivation
-		for ( int i = 1 ; i <= TabVoltage.getVoltnbr() ; i++ ) {
-			if ( theEvent.isFrom( cp5.getController("volt" + i) ) && aVolt[i] == null ) {
-				switch( (int)theEvent.getController().getValue() ) {
-				case 1 :
-					aVolt[i] = new Volt(this, cp5, "volt" + i) ;
-					tabVoltage.populateNbrCells() ;
-					break ;
-				case 0 :
-					aVolt[i].removeSensor() ;
-					aVolt[i] = null ;
-					tabVoltage.populateNbrCells() ;
-					break ;
+		for (int i = 1; i <= TabVoltage.getVoltnbr(); i++) {
+			if (theEvent.isFrom(cp5.getController("volt" + i))) {
+				switch ((int) theEvent.getController().getValue()) {
+				case 1:
+					if (aVolt[i] == null) {
+						aVolt[i] = new Volt(this, cp5, "volt" + i);
+						tabVoltage.populateNbrCells();
+					}
+					break;
+				case 0:
+					if (aVolt[i] != null) {
+						aVolt[i].removeSensor();
+						aVolt[i] = null;
+						tabVoltage.populateNbrCells();
+					}
+					break;
 				}
 			}
 		}
@@ -1062,27 +1066,34 @@ public class MainP extends PApplet {
 			}
 		}
 
-		// Selecting DEFAULT automatically in Telemetry data fields  TODO second
-		for ( int i = 1; i <= TabData.getDataSentFieldNbr(); i++ ) {
-			if ( theEvent.isFrom(cp5.getGroup("sentDataField" + i )) ) {
-				switch( (int)theEvent.getGroup().getValue() ) {
-				case 1 :     // "ALTIMETER"
-				case 2 :     // "VERTICAL_SPEED"
-				case 4 :     // "ALTIMETER_2"
-				case 5 :     // "VERTICAL_SPEED_2"
-				case 8 :     // "AIR_SPEED"
-				case 12 :    // "CURRENTMA"
-				case 14 :    // "CELLS"
-				case 21 :    // "RPM"
-					//cp5.getGroup("hubDataField" + i).setValue(1) ;
-					cp5.getGroup("sPortDataField" + i).setValue(1) ;
-					break ;          
+		// Selecting DEFAULT automatically in Telemetry data fields TODO first: runtime error
+		/*for (int i = 1; i <= TabData.getDataSentFieldNbr(); i++) {
+
+			tabData.getOXSdataFieldDisplayList()[i] = cp5
+					.get(DropdownList.class, "sentDataField" + i)
+					.getItem(
+							(int) (cp5.getGroup("sentDataField" + i).getValue()))
+					.getName();
+
+			if (theEvent.isFrom(cp5.getGroup("sentDataField" + i))) {
+				switch ((int) theEvent.getGroup().getValue()) {
+				case 1: // "ALTIMETER"
+				case 2: // "VERTICAL_SPEED"
+				case 4: // "ALTIMETER_2"
+				case 5: // "VERTICAL_SPEED_2"
+				case 8: // "AIR_SPEED"
+				case 12: // "CURRENTMA"
+				case 14: // "CELLS"
+				case 21: // "RPM"
+					// cp5.getGroup("hubDataField" + i).setValue(1) ;
+					cp5.getGroup("sPortDataField" + i).setValue(1);
+					break;
 				}
 
-				tabData.getOXSdataFieldDisplayList()[i] = cp5.get(DropdownList.class, "sentDataField" + i ).getItem( (int) ( cp5.getGroup("sentDataField" + i ).getValue() ) ).getName() ;
-				//println("oxsdataList : " + tab7.getOXSdataFieldDisplayList()[i] ) ;
+				// println("oxsdataList : " +
+				// tab7.getOXSdataFieldDisplayList()[i] ) ;
 			}
-		}
+		}*/
 		/*
 		  if (theEvent.isGroup()) {
 		    // check if the Event was triggered from a ControlGroup
@@ -1177,7 +1188,7 @@ public class MainP extends PApplet {
 
 	void cells(boolean theFlag) {
 		if ( theFlag == true && aVolt[1] != null ) {
-			new OXSdata("CELLS", "Cells monitoring", "voltCells") ;
+			new OXSdata("CELLS", "Cells monitoring", "voltCells", null) ;
 			TabData.populateSentDataFields() ;
 		} else {
 			TabData.resetSentDataFields("voltCells") ;

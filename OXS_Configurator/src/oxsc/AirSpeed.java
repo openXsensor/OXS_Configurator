@@ -10,11 +10,11 @@ public class AirSpeed extends Sensor {
 	// private int parameters;
 
 	public void addOXSdata() {
-		new OXSdata("AIR_SPEED", "Air Speed", this.getName());
+		new OXSdata("AIR_SPEED", "Air Speed", this.getName(), null);
 		if (MainP.vario != null) { // TODO better
-			new OXSdata("PRANDTL_DTE", "Prandtl dTE", "varAspeed");
+			new OXSdata("PRANDTL_DTE", "Prandtl dTE", "varAspeed", null);
 			new OXSdata("PRANDTL_COMPENSATION", "Prandtl Compensation",
-					"varAspeed");
+					"varAspeed", null);
 
 			cp5.get(DropdownList.class, "vSpeed1").addItem(" V1 + A.Speed", 2);
 			cp5.get(DropdownList.class, "vSpeed2").addItem(" V1 + A.Speed", 2);

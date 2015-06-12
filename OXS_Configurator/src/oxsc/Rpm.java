@@ -9,7 +9,7 @@ public class Rpm extends Sensor {
 	  //private int parameters ;
 
 	  public void addOXSdata() {
-	    new OXSdata("RPM", "RPM", this.getName()) ;
+	    new OXSdata("RPM", "RPM", this.getName(), null) ;
 	  }
 
 	  public void removeSensor() {

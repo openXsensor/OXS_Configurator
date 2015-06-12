@@ -11,7 +11,7 @@ public class Volt extends Sensor {
 	public void addOXSdata() {
 		String name = this.getName();
 		new OXSdata(name.toUpperCase(), name.toUpperCase().charAt(0)
-				+ name.substring(1, 4) + " " + name.substring(4), name);
+				+ name.substring(1, 4) + " " + name.substring(4), name, null);
 	}
 
 	public void removeSensor() {
