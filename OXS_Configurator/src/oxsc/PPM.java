@@ -1,5 +1,6 @@
 package oxsc;
 
+import gui.TabData;
 import processing.core.PApplet;
 import controlP5.ControlP5;
 
@@ -12,9 +13,10 @@ public class PPM extends Sensor {
 	}
 
 	public void removeSensor() {
-		MainP.tabData.resetSentDataFields(this.getName());
+		TabData.resetSentDataFields(this.getName());
 		OXSdata.removeFromList(this);
 		updateUIoXSdataList();
+		Sensor.getSensorList().remove(this);
 	}
 
 	public PPM(PApplet p, ControlP5 cp5, String name) {

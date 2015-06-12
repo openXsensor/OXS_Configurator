@@ -5,6 +5,8 @@ import processing.core.PApplet;
 
 public class Protocol {
 	
+	private String name ;
+	
 	private static String targetDataList[][] ;
 
 	private static String frSkyDataList[][] = new String[][] {
@@ -49,10 +51,11 @@ public class Protocol {
 		
 		updateUItargetDataList();
 		
+		// TODO OXSdata.updateList(); 
+		
 		return tempProt;
 	}
-	private String name ;
-	
+
 	private Protocol(String name) {
 
 		this.name = name;

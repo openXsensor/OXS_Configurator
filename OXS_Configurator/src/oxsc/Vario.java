@@ -1,5 +1,9 @@
 package oxsc;
 
+import gui.TabData;
+
+import java.util.ArrayList;
+
 import processing.core.PApplet;
 import controlP5.ControlP5;
 import controlP5.DropdownList;
@@ -7,6 +11,8 @@ import controlP5.DropdownList;
 public class Vario extends Sensor {
 	
 	// private int parameters ;
+	
+	private ArrayList<OXSdata> dataList = new ArrayList<OXSdata>(); // or string array ?
 
 	public Vario(PApplet p, ControlP5 cp5, String name) {
 		super(p, cp5, name);
@@ -20,7 +26,12 @@ public class Vario extends Sensor {
 			new OXSdata("VERTICAL_SPEED", "Vertical Speed", varioName);
 			new OXSdata("ALT_OVER_10_SEC", "Alt. over 10 seconds", varioName);
 			new OXSdata("SENSITIVITY", "Vario sensitivity", varioName);
-
+			
+			if (MainP.protocol.getName() == "multiplex") {
+				new OXSdata("REL_ALTIMETER", "Relative Altitude", varioName);
+				new OXSdata("ALTIMETER_MAX", "Max Relative Altitude", varioName);
+			}
+			
 			cp5.get(DropdownList.class, "vSpeed1").addItem("       Vario 1", 0);
 			cp5.get(DropdownList.class, "vSpeed2").addItem("       Vario 1", 0);
 			cp5.get(DropdownList.class, "vSpeed1").setValue(0);
@@ -60,7 +71,7 @@ public class Vario extends Sensor {
 			cp5.get(DropdownList.class, "vSpeed1").removeItem(" V1 + A.Speed");
 			cp5.get(DropdownList.class, "vSpeed2").removeItem(" V1 + A.Speed");
 			// }
-			MainP.tabData.resetSentDataFields("varAspeed");
+			TabData.resetSentDataFields("varAspeed");
 			OXSdata.removeFromList("varAspeed");
 			PApplet.println("remove varAspeed");
 		} else {
@@ -68,10 +79,11 @@ public class Vario extends Sensor {
 			cp5.get(DropdownList.class, "vSpeed2").removeItem("       Vario 2");
 		}
 
-		MainP.tabData.resetSentDataFields(this.getName());
+		TabData.resetSentDataFields(this.getName());
 		OXSdata.removeFromList(this);
 		PApplet.println("remove " + this.getName());
 		updateUIoXSdataList();
+		Sensor.getSensorList().remove(this);
 
 	}
 

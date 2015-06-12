@@ -17,7 +17,7 @@ public class TabData {
 	private DropdownList oXSdataField; // TODO later
 	@SuppressWarnings("unused")
 	private DropdownList targetDataField; // TODO
-	private String[] oXSdataFieldDisplayList = new String[tabDataFieldNbr + 1];
+	private static String[] oXSdataFieldDisplayList = new String[tabDataFieldNbr + 1];
 	@SuppressWarnings("unused")
 	private String[] dataDestFieldDisplayList = new String[tabDataFieldNbr + 1]; // TODO
 	
@@ -308,7 +308,7 @@ public class TabData {
 		}
 	}
 
-	public void resetSentDataFields(String sensorType) {
+	public static void resetSentDataFields(String sensorType) {
 		for (int i = 1; i <= tabDataFieldNbr; i++) {
 			String ddlFieldDisplay = getDdlFieldDisplay(i);
 			for (int j = 0; j < OXSdata.getList().size(); j++) {
@@ -337,7 +337,7 @@ public class TabData {
 		}
 	}
 
-	public String getDdlFieldDisplay(int id) {
+	public static String getDdlFieldDisplay(int id) {
 		return oXSdataFieldDisplayList[id];
 	}  // voir getOXSdataFieldDisplayList() -> necessaire ?
 

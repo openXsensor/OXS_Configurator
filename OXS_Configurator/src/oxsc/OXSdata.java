@@ -9,6 +9,7 @@ public class OXSdata {
 	private String name;
 	private String displayName;
 	private String sensorType;
+	
 	private static ArrayList<OXSdata> OXSdataList = new ArrayList<OXSdata>();
 
 	public OXSdata(String name, String displayName, String sensorType) {
@@ -41,7 +42,7 @@ public class OXSdata {
 	}
 
 	public static boolean isInList(String displayNameTest) {
-		PApplet.println("(isInList) displayName � tester: " + displayNameTest);
+		PApplet.println("(isInList) displayName to test: " + displayNameTest);
 		for (int i = OXSdataList.size() - 1; i >= 0; i--) {
 			if (OXSdataList.get(i).displayName == displayNameTest)
 				return true;
@@ -64,6 +65,10 @@ public class OXSdata {
 			if (OXSdataList.get(i).sensorType == sensorType)
 				OXSdataList.remove(OXSdataList.get(i));
 		}
+	}
+	
+	public static void updateList(){
+		// TODO
 	}
 
 }

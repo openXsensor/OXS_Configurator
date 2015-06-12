@@ -300,6 +300,7 @@ public class MainP extends PApplet {
 		cp5.getTooltip().getLabel().toUpperCase(false) ;
 
 		createMessageBox() ;          //  Message box creation
+		tabGenSet.getProtocolDdl().setValue(1);
 		new OXSdata("----------", "----------", "noSensor") ;
 
 	}
@@ -568,7 +569,7 @@ public class MainP extends PApplet {
 				noStroke() ;
 				cp5.getController("cells").setBroadcast(false) ;    // deactivate continuous controller event  TODO later better
 				cp5.getController("cells").setValue(0) ;
-				tabData.resetSentDataFields("voltCells") ;
+				TabData.resetSentDataFields("voltCells") ;
 				OXSdata.removeFromList("voltCells") ;
 				TabData.populateSentDataFields() ;
 				cp5.getController("cells").lock() ;
@@ -1179,7 +1180,7 @@ public class MainP extends PApplet {
 			new OXSdata("CELLS", "Cells monitoring", "voltCells") ;
 			TabData.populateSentDataFields() ;
 		} else {
-			tabData.resetSentDataFields("voltCells") ;
+			TabData.resetSentDataFields("voltCells") ;
 			OXSdata.removeFromList("voltCells") ;  // TODO remove "Cells Monotoring" from ddl display
 			TabData.populateSentDataFields() ;
 		}
@@ -1873,10 +1874,10 @@ public class MainP extends PApplet {
 
 		for ( int i = 1 ; i <= TabData.getDataSentFieldNbr() ; i++ ) {
 			float sentDataFieldNb = cp5.getGroup("sentDataField" + i).getValue() ;
-			String sentDataFieldName = tabData.getDdlFieldDisplay(i) ; // TODO ori: tab7.getDdlFieldDisplay("sentDataField" + i)
+			String sentDataFieldName = TabData.getDdlFieldDisplay(i) ; // TODO ori: tab7.getDdlFieldDisplay("sentDataField" + i)
 
 			float sPortDataFieldNb = cp5.getGroup("sPortDataField" + i).getValue() ;
-			String sPortDataFieldName = tabData.getDdlFieldDisplay(i) ; // TODO ori: tab7.getDdlFieldDisplay("sPortDataField" + i)
+			String sPortDataFieldName = TabData.getDdlFieldDisplay(i) ; // TODO ori: tab7.getDdlFieldDisplay("sPortDataField" + i)
 			println("(for) nom dest. = " + sPortDataFieldName) ;
 
 			if ( sentDataFieldNb > 0 ) {   // if OXS measurement field is not empty
