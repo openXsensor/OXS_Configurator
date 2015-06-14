@@ -19,7 +19,7 @@ public class TabGeneralSettings {
 	private Tab general;
 	private Textfield oxsDir;
 	private DropdownList serialPinDdl;
-	private DropdownList protocolDdl;	
+	private static DropdownList protocolDdl;	
 	private DropdownList sensorIDDdl;
 	private DropdownList voltRefChoiceDdl;
 	private Numberbox arduinoVccNbox;
@@ -291,7 +291,7 @@ public class TabGeneralSettings {
 		return serialPinDdl;
 	}
 
-	public DropdownList getProtocolDdl() {
+	public static DropdownList getProtocolDdl() {
 		return protocolDdl;
 	}
 
@@ -365,15 +365,15 @@ public class TabGeneralSettings {
 		
 		// Voltage graying
 		if ( voltRefChoiceDdl.getValue() == 2 ) {
-			arduinoVccNbox.lock() ;
-			arduinoVccNbox.setColorBackground(MainP.grayedColor) ;
-			arduinoVccNbox.setColorValueLabel(MainP.grayedColor) ;
-			arduinoVccNbox.setColorCaptionLabel(MainP.grayedColor) ;
+			arduinoVccNbox.lock() 
+						  .setColorBackground(MainP.grayedColor) 
+						  .setColorValueLabel(MainP.grayedColor) 
+						  .setColorCaptionLabel(MainP.grayedColor) ;
 		} else {
-			arduinoVccNbox.unlock() ;
-			arduinoVccNbox.setColorBackground(MainP.darkBackGray) ;
-			arduinoVccNbox.setColorValueLabel(MainP.white) ;
-			arduinoVccNbox.setColorCaptionLabel(mainP.color(0)) ;
+			arduinoVccNbox.unlock()
+						  .setColorBackground(MainP.darkBackGray)
+						  .setColorValueLabel(MainP.white)
+						  .setColorCaptionLabel(mainP.color(0)) ;
 		}
 	
 		if ( saveEpromTgl.getValue() == 0 ) {
@@ -394,8 +394,8 @@ public class TabGeneralSettings {
 		mainP.noStroke() ;
 	
 		if ( !mainP.tempActive ) {
-			temperatureTgl.setColorCaptionLabel(MainP.grayedColor) ;
-			temperatureTgl.setColorBackground(MainP.grayedColor) ;
+			temperatureTgl.setColorCaptionLabel(MainP.grayedColor)
+						  .setColorBackground(MainP.grayedColor) ;
 		}
 	
 		// SENSORS part
@@ -405,13 +405,13 @@ public class TabGeneralSettings {
 		mainP.noFill() ;
 	
 		if ( varioTgl.getValue() == 1 ) {                 // Vario 2 enabled if vario 1
-			vario2Tgl.unlock() ;
-			vario2Tgl.setColorCaptionLabel(0) ;
-			vario2Tgl.setColorBackground(MainP.darkBackGray) ;
+			vario2Tgl.unlock()
+			         .setColorCaptionLabel(0)
+			         .setColorBackground(MainP.darkBackGray) ;
 		} else {
-			vario2Tgl.lock() ;
-			vario2Tgl.setColorCaptionLabel(MainP.grayedColor) ;
-			vario2Tgl.setColorBackground(MainP.grayedColor) ;
+			vario2Tgl.lock()
+					 .setColorCaptionLabel(MainP.grayedColor)
+					 .setColorBackground(MainP.grayedColor) ;
 		}
 	
 		// Sensors table

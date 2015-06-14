@@ -9,17 +9,17 @@ import controlP5.DropdownList;
 
 public class TabData {
 
-	private static ControlP5 cp5;
+	//private static ControlP5 cp5;
 
 	private static final int tabDataFieldNbr = 10;
-	
+	private static DropdownList[] sentDataField = new DropdownList[tabDataFieldNbr + 1];
+	private static String[] oXSdataFieldDisplay = new String[tabDataFieldNbr + 1];  // TODO remove ?
+
 	@SuppressWarnings("unused")
 	private DropdownList oXSdataField; // TODO later
+	private static DropdownList[] targetDataField = new DropdownList[tabDataFieldNbr + 1];
 	@SuppressWarnings("unused")
-	private DropdownList targetDataField; // TODO
-	private static String[] oXSdataFieldDisplayList = new String[tabDataFieldNbr + 1];
-	@SuppressWarnings("unused")
-	private String[] dataDestFieldDisplayList = new String[tabDataFieldNbr + 1]; // TODO
+	private String[] dataDestFieldDisplayList = new String[tabDataFieldNbr + 1]; // TODO ?
 	
 	// ------------------------- HUB protocol data list array --------------------------
 	private static String hubDataList[][] = new String[][] {
@@ -135,9 +135,39 @@ public class TabData {
 		// End of list of all telemetry fields supported by SPORT  (defined by Frsky)
 	 */
 
-	public TabData(ControlP5 cp5) {
+	// Data sent list array
 
-		TabData.cp5 = cp5;
+	private static String sentDataList[][] = new String[][] {
+			{ "----------", "----------" },                        // 0
+			{ "ALTIMETER", "Altitude" },                           // 1
+			{ "VERTICAL_SPEED", "Vertical Speed" },                // 2
+			{ "ALT_OVER_10_SEC", "Alt. over 10 seconds" },         // 3
+			{ "ALTIMETER_2", "Altitude 2" },                       // 4
+			{ "VERTICAL_SPEED_2", "Vertical Speed 2" },            // 5
+			{ "ALT_OVER_10_SEC_2", "Alt. over 10 seconds 2" },     // 6
+			{ "SENSITIVITY", "Vario sensitivity" },                // 7
+			{ "AIR_SPEED" , "Air Speed" },                         // 8
+			{ "PRANDTL_DTE", "Prandtl dTE" },                      // 9  if vario + airSpeed
+			{ "PRANDTL_COMPENSATION" , "Prandtl Compensation" },   // 10 if vario + airSpeed
+			{ "PPM_VSPEED", "PPM V.Speed" },                       // 11 if PPM and (vario + vario 2 or vario + airSpeed)
+			//{ "VARIOTEMP", "Vario Temperature" },
+			{ "CURRENTMA", "Current (mA)" },                       // 12
+			{ "MILLIAH", "Consumption (mAh)" },                    // 13
+			{ "CELLS", "Cells monitoring" },                       // 14  TODO cells monitoring
+			{ "VOLT1", "Volt 1" },                                 // 15
+			{ "VOLT2", "Volt 2" },                                 // 16
+			{ "VOLT3", "Volt 3" },                                 // 17
+			{ "VOLT4", "Volt 4" },                                 // 18
+			{ "VOLT5", "Volt 5" },                                 // 19
+			{ "VOLT6", "Volt 6" },                                 // 20
+			{ "RPM" , "RPM" },                                     // 21
+			{ "PPM" , "PPM" }                                      // 22 if PPM
+			//{ "TEMP1", "Temperature 1" }                         //
+	} ;
+	
+	public TabData(ControlP5 cp5) {
+		
+		//TabData.cp5 = cp5;
 
 		cp5.getTab("data").setHeight(20).setColorForeground(MainP.tabGray)
 				.setColorBackground(0xFF285A28) // color(40, 90, 40)
@@ -168,19 +198,17 @@ public class TabData {
 
 		for (int i = 1; i <= tabDataFieldNbr; i++) {
 			// Transmitted DATA field
-			cp5.addDropdownList("sentDataField" + i)
-					.setColorForeground(MainP.orangeAct)
-					.setColorBackground(MainP.darkBackGray)
-					.setColorActive(MainP.blueAct)
-					.setPosition(10, 146 - 25 + i * 25)
-					.setSize(135, 336 - 25 * i).setItemHeight(20)
-					.setBarHeight(20).setTab("data");
-			cp5.getGroup("sentDataField" + i).getCaptionLabel().getStyle().marginTop = 2;
-			cp5.getGroup("sentDataField" + i).getCaptionLabel()
-					.set("----------");
-			cp5.get(DropdownList.class, "sentDataField" + i).toUpperCase(false);
-			cp5.getProperties().remove(cp5.getGroup("sentDataField" + i),
-					"ListBoxItems");
+			sentDataField[i] = cp5.addDropdownList("sentDataField" + i)
+					           .setColorForeground(MainP.orangeAct)
+					           .setColorBackground(MainP.darkBackGray)
+					           .setColorActive(MainP.blueAct)
+					           .setPosition(10, 146 - 25 + i * 25)
+					           .setSize(135, 336 - 25 * i).setItemHeight(20)
+					           .setBarHeight(20).setTab("data");
+			sentDataField[i].getCaptionLabel().getStyle().marginTop = 2;
+			sentDataField[i].getCaptionLabel().set("----------");
+			sentDataField[i].toUpperCase(false);
+			cp5.getProperties().remove(sentDataField[i], "ListBoxItems");
 
 			// HUB DATA field
 			cp5.addDropdownList("hubDataField" + i)
@@ -201,28 +229,25 @@ public class TabData {
 			cp5.getProperties().remove(cp5.getGroup("hubDataField" + i),
 					"ListBoxItems");
 
-			// SMART PORT DATA field
-			cp5.addDropdownList("sPortDataField" + i)
-					.setColorForeground(MainP.orangeAct)
-					.setColorBackground(MainP.darkBackGray)
-					.setColorActive(MainP.blueAct)
-					.setPosition(150, 146 - 25 + i * 25)
-					.setSize(135, 336 - 25 * i).setItemHeight(20)
-					.setBarHeight(20).setTab("data");
+			// Telemetry target DATA fields  old ->SMART PORT DATA field
+			targetDataField[i] = cp5.addDropdownList("targetDataField" + i)
+					                .setColorForeground(MainP.orangeAct)
+					                .setColorBackground(MainP.darkBackGray)
+					                .setColorActive(MainP.blueAct)
+					                .setPosition(150, 146 - 25 + i * 25)
+					                .setSize(135, 336 - 25 * i).setItemHeight(20)
+					                .setBarHeight(20).setTab("data");
 			/*
 			 * for (int j = 0; j < sPortDataList.length; j++ ) {
-			 * cp5.get(DropdownList.class, "sPortDataField" + i).addItem("" +
+			 * targetDataField[i].addItem("" +
 			 * sPortDataList[j][1], j) ; }
 			 */
-			cp5.get(DropdownList.class, "sPortDataField" + i).addItem(
-					"----------", 0);
-			cp5.get(DropdownList.class, "sPortDataField" + i).setValue(0);
-			cp5.getGroup("sPortDataField" + i).getCaptionLabel().getStyle().marginTop = 2;
-			cp5.get(DropdownList.class, "sPortDataField" + i)
-					.toUpperCase(false);
-			// cp5.getGroup("sPortDataField" + i).hide() ;
-			cp5.getProperties().remove(cp5.getGroup("sPortDataField" + i),
-					"ListBoxItems");
+			targetDataField[i].addItem("----------", 0);
+			targetDataField[i].setValue(0);
+			targetDataField[i].getCaptionLabel().getStyle().marginTop = 2;
+			targetDataField[i].toUpperCase(false);
+			// targetDataField[i].hide() ;
+			cp5.getProperties().remove(targetDataField[i], "ListBoxItems");
 
 			// Data sent multiplier
 			cp5.addNumberbox("dataMultiplier" + i)
@@ -277,18 +302,34 @@ public class TabData {
 		
 		// dropdownlist overlap
 		for ( int i = tabDataFieldNbr; i >= 1; i-- ) {
-			cp5.getGroup("sentDataField" + i).bringToFront() ;
+			sentDataField[i].bringToFront() ;
 			//cp5.getGroup("hubDataField" + i).bringToFront() ;
-			cp5.getGroup("sPortDataField" + i).bringToFront() ;
+			targetDataField[i].bringToFront() ;
 		}
+	}
+
+	public static String[][] getSentDataList() {
+		return sentDataList;
+	}
+
+	public static DropdownList getSentDataField(int i) {
+		return sentDataField[i];
+	}
+	
+	public static DropdownList getTargetDataField(int i) {
+		return targetDataField[i];
 	}
 
 	public static int getDataSentFieldNbr() {
 		return tabDataFieldNbr;
 	}
 
-	public String[] getOXSdataFieldDisplayList() {
-		return oXSdataFieldDisplayList;
+	public static String getOXSdataFieldDisplay(int i) {
+		return oXSdataFieldDisplay[i];
+	}
+	
+	public static String[] getOXSdataFieldDisplayList() { // TODO set... + 
+		return oXSdataFieldDisplay;
 	}
 
 	public static String[][] getsPortDataList() {
@@ -301,26 +342,24 @@ public class TabData {
 
 	public static void populateSentDataFields() {
 		for (int i = 1; i <= tabDataFieldNbr; i++) {
-			cp5.get(DropdownList.class, "sentDataField" + i).clear();
+			sentDataField[i].clear();
 			for (int j = 0; j < OXSdata.getList().size(); j++)
-				cp5.get(DropdownList.class, "sentDataField" + i).addItem(
-						OXSdata.getList().get(j).getDisplayName(), j);
+				sentDataField[i]
+						.addItem(OXSdata.getItem(j).getDisplayName(), j);
 		}
 	}
 
-	public static void resetSentDataFields(String sensorType) {
+	public static void resetSentDataFields(String sensorType) { // TODO first
 		for (int i = 1; i <= tabDataFieldNbr; i++) {
-			String ddlFieldDisplay = getDdlFieldDisplay(i);
+			String ddlFieldDisplay = TabData
+					.getSentDataField(i).getCaptionLabel().getText();// oXSdataFieldDisplay[i];
 			for (int j = 0; j < OXSdata.getList().size(); j++) {
 				// println( "reset fnc dataSentField: " + i +
 				// "  OXSdataList j = " + j + "  OXSdataListSize: " +
 				// OXSdata.getList().size() ) ;
-				if (ddlFieldDisplay == OXSdata.getList().get(j)
-						.getDisplayName()
-						&& sensorType == OXSdata.getList().get(j)
-								.getSensorType()) {
-					cp5.get(DropdownList.class, "sentDataField" + i)
-							.setValue(0);
+				if (ddlFieldDisplay == OXSdata.getItem(j).getDisplayName()
+						&& sensorType == OXSdata.getItem(j).getSensorType()) {
+					sentDataField[i].setValue(0);
 					// print("reset") ;
 					break;
 				}
@@ -328,17 +367,16 @@ public class TabData {
 		}
 	}
 
-	public static void populateSPortDataFields() {
+	public static void populateTargetDataFields() {
 		for (int i = 1; i <= tabDataFieldNbr; i++) {
-			cp5.get(DropdownList.class, "sPortDataField" + i).clear();
+			targetDataField[i].clear();
 			for (int j = 0; j < Protocol.getDataList().length; j++)
-				cp5.get(DropdownList.class, "sPortDataField" + i).addItem(
-						Protocol.getDataList()[j][1], j); // TODO j+1 => j
+				targetDataField[i].addItem(Protocol.getDataList()[j][1], j); 
 		}
 	}
 
 	public static String getDdlFieldDisplay(int id) {
-		return oXSdataFieldDisplayList[id];
+		return oXSdataFieldDisplay[id];
 	}  // voir getOXSdataFieldDisplayList() -> necessaire ?
 
 }

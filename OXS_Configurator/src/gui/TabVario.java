@@ -335,10 +335,10 @@ public class TabVario {
 	    cp5.get(DropdownList.class, "vSpeed1").clear() ;
 	    cp5.get(DropdownList.class, "vSpeed2").clear() ;
 	    for ( int i = 1; i <= dataSentFieldNbr; i++ ) {
-	      cp5.get(DropdownList.class, "sentDataField" + i).clear() ;
-	      cp5.get(DropdownList.class, "sentDataField" + i).addItem("----------", 0) ;
+	      TabData.getSentDataField(i).clear() ;
+	      TabData.getSentDataField(i).addItem("----------", 0) ;
 	      for ( int j = 0 ; j < OXSdata.getList().size() ; j++ )
-	        cp5.get(DropdownList.class, "sentDataField" + i).addItem(OXSdata.getList().get(j).getDisplayName(), j+1) ;
+	        TabData.getSentDataField(i).addItem(OXSdata.getList().get(j).getDisplayName(), j+1) ;
 	    }
 	  }*/
 

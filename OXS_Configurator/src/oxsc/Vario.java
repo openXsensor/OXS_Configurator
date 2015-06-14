@@ -11,7 +11,8 @@ import controlP5.DropdownList;
 public class Vario extends Sensor {
 	
 	// private int parameters ;
-	
+	@SuppressWarnings("unused")
+	private static Sensor vario; // TODO
 	@SuppressWarnings("unused")
 	private ArrayList<OXSdata> dataList = new ArrayList<OXSdata>(); // or string array ?
 

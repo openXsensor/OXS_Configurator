@@ -105,7 +105,7 @@ public class MainP extends PApplet {
 	TabVoltage tabVoltage;
 	TabCurrent tabCurrent;
 //	TabTemperature tab5;
-	static TabData tabData;
+	public static TabData tabData;
 
 	public static String[] analogPins = new String[8]; // Analog pins array
 
@@ -174,6 +174,7 @@ public class MainP extends PApplet {
 		icon.shape(oxsI, 0, 0, 64, 64) ;
 		icon.endDraw() ;
 		frame.setIconImage(icon.image) ;
+		frame.setTitle("S Configurator");
 
 		fontLabel = createFont("arial.ttf", 12, false) ;
 		fontItalic = createFont("ariali.ttf", 12, false) ;
@@ -245,10 +246,6 @@ public class MainP extends PApplet {
 		// ------------------------------ Tab 7 : DATA to send ------------------------------
 		tabData = new TabData(cp5) ;
 
-		//tab0.getProtList().setValue(1);  // Set the protocol ddl value after telemetry fields creation
-
-
-
 		// ------------------------------ File dialog ------------------------------
 
 		// Load preset button
@@ -299,8 +296,8 @@ public class MainP extends PApplet {
 		cp5.getTooltip().setDelay(1000) ;
 		cp5.getTooltip().getLabel().toUpperCase(false) ;
 
-		createMessageBox() ;          //  Message box creation
-		tabGenSet.getProtocolDdl().setValue(1);
+		createMessageBox() ;                     	     //  Message box creation
+		TabGeneralSettings.getProtocolDdl().setValue(1); // Set the protocol ddl value after telemetry fields creation
 		new OXSdata("----------", "----------", "noSensor", null) ;
 
 	}
@@ -636,7 +633,7 @@ public class MainP extends PApplet {
 			rect(298, 414, 124, 34) ;
 
 			for ( int i = 1 ; i <= TabData.getDataSentFieldNbr() ; i++ ) {            // Load and Save preset buttons hide
-				if ( cp5.getGroup("sentDataField" + i ).isOpen() || cp5.getGroup("sPortDataField" + i ).isOpen() ) {
+				if ( TabData.getSentDataField(i).isOpen() || TabData.getTargetDataField(i).isOpen() ) {
 					cp5.getController("loadButton").hide() ;
 					cp5.getController("saveButton").hide() ;
 					break ;
@@ -671,7 +668,7 @@ public class MainP extends PApplet {
 		          cp5.getController("dataOffset" + i).setColorValueLabel(white) ;
 		        }
 		      } else if ( cp5.getGroup("protocolChoice").value() == 2 ) {
-		        if ( cp5.getGroup("sPortDataField" + i).value() == 1 ) {
+		        if ( TabData.targetDataField[i].value() == 1 ) {
 		          cp5.getController("dataMultiplier" + i).lock() ;
 		          cp5.getController("dataMultiplier" + i).setColorBackground(grayedColor) ;
 		          cp5.getController("dataMultiplier" + i).setColorValueLabel(grayedColor) ;
@@ -847,9 +844,9 @@ public class MainP extends PApplet {
 
 		// ----------------- Dropdownlist: mouse pressed elsewhere closes list -----------------
 
-		if ( !cp5.isMouseOver ( tabGenSet.getProtocolDdl() ) ) {
+		if ( !cp5.isMouseOver ( TabGeneralSettings.getProtocolDdl() ) ) {
 			if (mousePressed == true) {
-				tabGenSet.getProtocolDdl().close() ;
+				TabGeneralSettings.getProtocolDdl().close() ;
 			}
 		}
 
@@ -928,9 +925,9 @@ public class MainP extends PApplet {
 		  }
 		 */
 		for ( int i = 1; i <= TabData.getDataSentFieldNbr(); i++ ) {
-			if ( !cp5.isMouseOver ( cp5.getGroup( "sentDataField" + i ) ) ) {
+			if ( !cp5.isMouseOver ( TabData.getSentDataField(i) ) ) {
 				if (mousePressed == true) {
-					cp5.getGroup( "sentDataField" + i ).close() ;
+					TabData.getSentDataField(i).close() ;
 				}
 			}
 		}
@@ -946,9 +943,9 @@ public class MainP extends PApplet {
 		 */
 
 		for ( int i = 1; i <= TabData.getDataSentFieldNbr(); i++ ) {
-			if ( !cp5.isMouseOver ( cp5.getGroup( "sPortDataField" + i ) ) ) {
+			if ( !cp5.isMouseOver ( TabData.getTargetDataField(i) ) ) {
 				if (mousePressed == true) {
-					cp5.getGroup( "sPortDataField" + i ).close() ;
+					TabData.getTargetDataField(i).close() ;
 				}
 			}
 		}
@@ -1049,14 +1046,14 @@ public class MainP extends PApplet {
 		}
 
 		// Showing right Telemetry data list in fields
-		if ( theEvent.isFrom(cp5.getGroup("protocolChoice")) ) {          
+		if ( theEvent.isFrom(TabGeneralSettings.getProtocolDdl()) ) {
 			switch( (int)theEvent.getGroup().getValue() ) {
 			case 1 :
 				protocol = Protocol.createProtocol("FrSky") ;
 				//Protocol.updateUItargetDataList() ;
 				/*for ( int i = 1; i <= dataSentFieldNbr; i++ ) {
 		          cp5.getGroup("hubDataField" + i).show() ;
-		          cp5.getGroup("sPortDataField" + i).hide() ;
+		          TabData.getTargetDataField(i).hide() ;
 		        }*/
 				break ;
 			case 2 :
@@ -1066,34 +1063,39 @@ public class MainP extends PApplet {
 			}
 		}
 
-		// Selecting DEFAULT automatically in Telemetry data fields TODO first: runtime error
-		/*for (int i = 1; i <= TabData.getDataSentFieldNbr(); i++) {
+		// Selecting DEFAULT automatically in Telemetry data fields TODO
+		for (int i = 1; i <= TabData.getDataSentFieldNbr(); i++) { // group
+																	// controllers
+																	// ?
 
-			tabData.getOXSdataFieldDisplayList()[i] = cp5
-					.get(DropdownList.class, "sentDataField" + i)
-					.getItem(
-							(int) (cp5.getGroup("sentDataField" + i).getValue()))
-					.getName();
+			if (theEvent.isFrom(TabData.getSentDataField(i))) {
 
-			if (theEvent.isFrom(cp5.getGroup("sentDataField" + i))) {
-				switch ((int) theEvent.getGroup().getValue()) {
-				case 1: // "ALTIMETER"
-				case 2: // "VERTICAL_SPEED"
-				case 4: // "ALTIMETER_2"
-				case 5: // "VERTICAL_SPEED_2"
-				case 8: // "AIR_SPEED"
-				case 12: // "CURRENTMA"
-				case 14: // "CELLS"
-				case 21: // "RPM"
+				TabData.getOXSdataFieldDisplayList()[i] = TabData
+						.getSentDataField(i).getCaptionLabel().getText();
+
+				switch (TabData.getSentDataField(i).getCaptionLabel().getText()) { // (int)
+																					// theEvent.getGroup().getValue()
+				case "Altitude":
+				case "Vertical Speed":
+				case "Altitude 2":
+				case "Vertical Speed 2":
+				case "Air Speed":
+				case "Prandtl dTE":
+				case "PPM V.Speed":
+				case "Current (mA)":
+				case "Consumption (mAh)":
+				case "Cells monitoring":
+				case "RPM":
 					// cp5.getGroup("hubDataField" + i).setValue(1) ;
-					cp5.getGroup("sPortDataField" + i).setValue(1);
+					TabData.getTargetDataField(i).setValue(1);
 					break;
 				}
 
-				// println("oxsdataList : " +
-				// tab7.getOXSdataFieldDisplayList()[i] ) ;
+				println("oxsdataList : "
+						+ TabData.getSentDataField(i).getCaptionLabel()
+								.getText());
 			}
-		}*/
+		}
 		/*
 		  if (theEvent.isGroup()) {
 		    // check if the Event was triggered from a ControlGroup
@@ -1553,37 +1555,6 @@ public class MainP extends PApplet {
 		rng.getCaptionLabel().toUpperCase(false) ;
 	}
 
-	// Data sent list array
-
-	public static String sentDataList[][] = new String[][] {
-			{ "----------", "----------" },                        // 0
-			{ "ALTIMETER", "Altitude" },                           // 1
-			{ "VERTICAL_SPEED", "Vertical Speed" },                // 2
-			{ "ALT_OVER_10_SEC", "Alt. over 10 seconds" },         // 3
-			{ "ALTIMETER_2", "Altitude 2" },                       // 4
-			{ "VERTICAL_SPEED_2", "Vertical Speed 2" },            // 5
-			{ "ALT_OVER_10_SEC_2", "Alt. over 10 seconds 2" },     // 6
-			{ "SENSITIVITY", "Vario sensitivity" },                // 7
-			{ "AIR_SPEED" , "Air Speed" },                         // 8
-			{ "PRANDTL_DTE", "Prandtl dTE" },                      // 9  if vario + airSpeed
-			{ "PRANDTL_COMPENSATION" , "Prandtl Compensation" },   // 10 if vario + airSpeed
-			{ "PPM_VSPEED", "PPM V.Speed" },                       // 11 if PPM and (vario + vario 2 or vario + airSpeed)
-			//{ "VARIOTEMP", "Vario Temperature" },
-			{ "CURRENTMA", "Current (mA)" },                       // 12
-			{ "MILLIAH", "Consumption (mAh)" },                    // 13
-			{ "CELLS", "Cells monitoring" },                       // 14  TODO cells monitoring
-			{ "VOLT1", "Volt 1" },                                 // 15
-			{ "VOLT2", "Volt 2" },                                 // 16
-			{ "VOLT3", "Volt 3" },                                 // 17
-			{ "VOLT4", "Volt 4" },                                 // 18
-			{ "VOLT5", "Volt 5" },                                 // 19
-			{ "VOLT6", "Volt 6" },                                 // 20
-			{ "RPM" , "RPM" },                                     // 21
-			{ "PPM" , "PPM" }                                      // 22 if PPM
-			//{ "TEMP1", "Temperature 1" }                         //
-	} ;
-		
-
 	public void createMessageBox() {
 
 		// create a group to store the messageBox elements
@@ -1817,14 +1788,14 @@ public class MainP extends PApplet {
 
 		String oxsMeasureValidationList[][] = new String[TabData.getDataSentFieldNbr() + 1][5] ;
 		for ( int i = 1 ; i < oxsMeasureValidationList.length ; i++ ) {
-			oxsMeasureValidationList[i][0] = "" + sentDataList[ (int) cp5.getGroup("sentDataField" + i ).getValue() ][0] ; // Data sent - ( OXS measurement )
-			oxsMeasureValidationList[i][1] = "" + cp5.getGroup("sentDataField" + i ).getCaptionLabel().getText() ;          // OXS measurement - ( Data sent )
+			oxsMeasureValidationList[i][0] = "" + TabData.getSentDataList()[ (int) TabData.getSentDataField(i).getValue() ][0] ; // Data sent - ( OXS measurement )
+			oxsMeasureValidationList[i][1] = "" + TabData.getSentDataField(i).getCaptionLabel().getText() ;          // OXS measurement - ( Data sent )
 			oxsMeasureValidationList[i][2] = "" + cp5.getGroup("hubDataField" + i ).getCaptionLabel().getText() ;           // HUB data field
-			oxsMeasureValidationList[i][3] = "" + cp5.getGroup("sPortDataField" + i ).getCaptionLabel().getText() ;         // SPORT data field
+			oxsMeasureValidationList[i][3] = "" + TabData.getTargetDataField(i).getCaptionLabel().getText() ;         // target data field
 			oxsMeasureValidationList[i][4] = "0" ;                                                                          // is measurement active
 		}
 		for ( int i = 1 ; i <= TabData.getDataSentFieldNbr() ; i++ ) {
-			switch ( (int) cp5.getGroup("sentDataField" + i ).getValue() ) {
+			switch ( (int) TabData.getSentDataField(i).getValue() ) {
 			case 1 :                 // "ALTIMETER"
 			case 2 :                 // "VERTICAL_SPEED"
 			case 3 :                 // "ALT_OVER_10_SEC"
@@ -1880,14 +1851,14 @@ public class MainP extends PApplet {
 			}
 		}
 
-		int oxsMeasureCountHUB[][] = new int[sentDataList.length + 1][TabData.getHubDataList().length] ;
-		int oxsMeasureCountSPORT[][] = new int[sentDataList.length + 1][TabData.getsPortDataList().length] ;               // array { sentData, sPortData }
+		int oxsMeasureCountHUB[][] = new int[TabData.getSentDataList().length + 1][TabData.getHubDataList().length] ;
+		int oxsMeasureCountSPORT[][] = new int[TabData.getSentDataList().length + 1][TabData.getsPortDataList().length] ;               // array { sentData, sPortData }
 
 		for ( int i = 1 ; i <= TabData.getDataSentFieldNbr() ; i++ ) {
-			float sentDataFieldNb = cp5.getGroup("sentDataField" + i).getValue() ;
+			float sentDataFieldNb = TabData.getSentDataField(i).getValue() ;
 			String sentDataFieldName = TabData.getDdlFieldDisplay(i) ; // TODO ori: tab7.getDdlFieldDisplay("sentDataField" + i)
 
-			float sPortDataFieldNb = cp5.getGroup("sPortDataField" + i).getValue() ;
+			float sPortDataFieldNb = TabData.getTargetDataField(i).getValue() ;
 			String sPortDataFieldName = TabData.getDdlFieldDisplay(i) ; // TODO ori: tab7.getDdlFieldDisplay("sPortDataField" + i)
 			println("(for) nom dest. = " + sPortDataFieldName) ;
 
@@ -1960,7 +1931,7 @@ public class MainP extends PApplet {
 					}
 
 					oxsMeasureCountSPORT[(int) sentDataFieldNb][(int) sPortDataFieldNb] ++ ;
-					oxsMeasureCountSPORT[sentDataList.length][(int) sPortDataFieldNb] ++ ;
+					oxsMeasureCountSPORT[TabData.getSentDataList().length][(int) sPortDataFieldNb] ++ ;
 				}
 				/*}*/ /*else if ( oxsMeasureValidationList[i][0].equals("CELLS") ) {
 			          sentDataValid = false ;
@@ -1982,7 +1953,7 @@ public class MainP extends PApplet {
 
 		// ***  Duplicate tests  ***
 		if ( cp5.getGroup("protocolChoice").getValue() == 1 ) {          //  HUB protocol => maybe not up to date since OXSC v2.0
-			for ( int k = 1 ; k <= sentDataList.length ; k++ ) {
+			for ( int k = 1 ; k <= TabData.getSentDataList().length ; k++ ) {
 				/*
 			      if ( k == sentDataList.length ) {
 			        print( "TOTAL: " ) ;
@@ -1992,31 +1963,31 @@ public class MainP extends PApplet {
 				 */
 				for ( int l = 1 ; l < TabData.getHubDataList().length ; l++ ) {
 					//print( oxsMeasureCountHUB[k][l] + " " ) ;
-					if ( oxsMeasureCountHUB[k][l] > 1 && k < sentDataList.length ) {
+					if ( oxsMeasureCountHUB[k][l] > 1 && k < TabData.getSentDataList().length ) {
 						sentDataValid = false ;
-						messageList.append( "- " + sentDataList[k][1] + " can't be sent " + oxsMeasureCountHUB[k][l] + "X to the same " +  TabData.getHubDataList()[l][1] + " field !" ) ;
+						messageList.append( "- " + TabData.getSentDataList()[k][1] + " can't be sent " + oxsMeasureCountHUB[k][l] + "X to the same " +  TabData.getHubDataList()[l][1] + " field !" ) ;
 					}
-					if ( k == sentDataList.length && l > 1 && oxsMeasureCountHUB[sentDataList.length][l] > 1 ) {
+					if ( k == TabData.getSentDataList().length && l > 1 && oxsMeasureCountHUB[TabData.getSentDataList().length][l] > 1 ) {
 						sentDataValid = false ;
 						messageList.append( "- Different measurements can't be sent to the same " +  TabData.getHubDataList()[l][1] + " field !" ) ;
 					}
 				}
 				//println("");
 			}
-			if ( oxsMeasureCountHUB[2][1] == 1 && oxsMeasureCountHUB[sentDataList.length][2] >= 1 ) {  // Test VERTICAL_SPEED  default/VSpd
+			if ( oxsMeasureCountHUB[2][1] == 1 && oxsMeasureCountHUB[TabData.getSentDataList().length][2] >= 1 ) {  // Test VERTICAL_SPEED  default/VSpd
 				sentDataValid = false ;
 				messageList.append( "- Vertical Speed not available as it's already used by VERTICAL_SPEED !" ) ;
 			}
-			if ( oxsMeasureCountHUB[5][1] == 1 && oxsMeasureCountHUB[sentDataList.length][3] >= 1 ) {  // Test CURRENTMA  default/Curr
+			if ( oxsMeasureCountHUB[5][1] == 1 && oxsMeasureCountHUB[TabData.getSentDataList().length][3] >= 1 ) {  // Test CURRENTMA  default/Curr
 				sentDataValid = false ;
 				messageList.append( "- Current not available as it's already used by CURRENTMA !" ) ;
 			}
-			if ( oxsMeasureCountHUB[14][1] == 1 && oxsMeasureCountHUB[sentDataList.length][7] >= 1 ) {  // Test RPM default/RPM
+			if ( oxsMeasureCountHUB[14][1] == 1 && oxsMeasureCountHUB[TabData.getSentDataList().length][7] >= 1 ) {  // Test RPM default/RPM
 				sentDataValid = false ;
 				messageList.append( "- RPM not available as it's already used by RPM !" ) ;
 			}
 		} else if ( cp5.getGroup("protocolChoice").getValue() == 2 ) {         //  SPORT protocol
-			for ( int k = 1 ; k <= sentDataList.length ; k++ ) {
+			for ( int k = 1 ; k <= TabData.getSentDataList().length ; k++ ) {
 				/*
 			      if ( k == sentDataList.length ) {
 			        print( "TOTAL: " ) ;
@@ -2026,34 +1997,34 @@ public class MainP extends PApplet {
 				 */
 				for ( int l = 1 ; l < TabData.getsPortDataList().length ; l++ ) {
 					//print( oxsMeasureCountSPORT[k][l] + " " ) ;
-					if ( oxsMeasureCountSPORT[k][l] > 1 && k < sentDataList.length ) {
+					if ( oxsMeasureCountSPORT[k][l] > 1 && k < TabData.getSentDataList().length ) {
 						sentDataValid = false ;
-						messageList.append( "- " + sentDataList[k][1] + " can't be sent " + oxsMeasureCountSPORT[k][l] + "X to the same " +  TabData.getsPortDataList()[l][1] + " field !" ) ;
+						messageList.append( "- " + TabData.getSentDataList()[k][1] + " can't be sent " + oxsMeasureCountSPORT[k][l] + "X to the same " +  TabData.getsPortDataList()[l][1] + " field !" ) ;
 					}
-					if ( k == sentDataList.length && l > 1 && oxsMeasureCountSPORT[sentDataList.length][l] > 1 ) {
+					if ( k == TabData.getSentDataList().length && l > 1 && oxsMeasureCountSPORT[TabData.getSentDataList().length][l] > 1 ) {
 						sentDataValid = false ;
 						messageList.append( "- Different measurements can't be sent to the same " +  TabData.getsPortDataList()[l][1] + " field !" ) ;
 					}
 				}
 				//println("");
 			}
-			if ( (oxsMeasureCountSPORT[1][1] == 1 || oxsMeasureCountSPORT[4][1] == 1) && oxsMeasureCountSPORT[sentDataList.length][2] >= 1 ) {  // Test ALTITUDEs  default/Alt
+			if ( (oxsMeasureCountSPORT[1][1] == 1 || oxsMeasureCountSPORT[4][1] == 1) && oxsMeasureCountSPORT[TabData.getSentDataList().length][2] >= 1 ) {  // Test ALTITUDEs  default/Alt
 				sentDataValid = false ;
 				messageList.append( "- Altitude Telemetry data field is not available as it's already used by" ) ;
 				messageList.append( "  Altitude 1 or 2 measurement !" ) ;
 			}
 			if ( (oxsMeasureCountSPORT[2][1] == 1 || oxsMeasureCountSPORT[5][1] == 1 || oxsMeasureCountSPORT[9][1] == 1
-					|| oxsMeasureCountSPORT[11][1] == 1) && oxsMeasureCountSPORT[sentDataList.length][3] >= 1 ) {  // Test VERTICAL_SPEEDs  default/VSpd
+					|| oxsMeasureCountSPORT[11][1] == 1) && oxsMeasureCountSPORT[TabData.getSentDataList().length][3] >= 1 ) {  // Test VERTICAL_SPEEDs  default/VSpd
 				sentDataValid = false ;
 				messageList.append( "- Vertical Speed Telemetry data field is not available as it's already" ) ;
 				messageList.append( "  used by Vertical Speed measurement !" ) ;
 			}
-			if ( oxsMeasureCountSPORT[12][1] == 1 && oxsMeasureCountSPORT[sentDataList.length][4] >= 1 ) {  // Test CURRENTMA  default/Curr
+			if ( oxsMeasureCountSPORT[12][1] == 1 && oxsMeasureCountSPORT[TabData.getSentDataList().length][4] >= 1 ) {  // Test CURRENTMA  default/Curr
 				sentDataValid = false ;
 				messageList.append( "- Current Telemetry data field is not available as it's already used by" ) ;
 				messageList.append( "  Current (mA) measurement !" ) ;
 			}
-			if ( oxsMeasureCountSPORT[21][1] == 1 && oxsMeasureCountSPORT[sentDataList.length][8] >= 1 ) {  // Test RPM default/RPM
+			if ( oxsMeasureCountSPORT[21][1] == 1 && oxsMeasureCountSPORT[TabData.getSentDataList().length][8] >= 1 ) {  // Test RPM default/RPM
 				sentDataValid = false ;
 				messageList.append( "- RPM Telemetry data field is not available as it's already used by" ) ;
 				messageList.append( "  RPM measurement !" ) ;
@@ -2360,11 +2331,11 @@ public class MainP extends PApplet {
 		output.println("") ;
 		output.println("#define SETUP_DATA_TO_SEND    \\") ;
 		for ( int i = 1; i <= TabData.getDataSentFieldNbr(); i++ ) {
-			if ( cp5.getGroup("sentDataField" + i ).getValue() != 0 ) {
+			if ( TabData.getSentDataField(i).getValue() != 0 ) {
 				if ( !dataFirst ) {
 					output.println(" , \\") ;
 				}
-				if ( cp5.get(DropdownList.class, "sentDataField" + i ).getCaptionLabel().getText().equals("Cells monitoring") ) {
+				if ( TabData.getSentDataField(i).getCaptionLabel().getText().equals("Cells monitoring") ) {
 					if ( cp5.getController("cells").getValue() == 1 ) {
 						for ( int j = 1 ; j <= (int) cp5.getGroup("ddlNbrCells").getValue() ; j += 2 ) {
 							output.print("                        " + "DEFAULTFIELD , CELLS_" + j + "_" + ( j + 1 ) + " , 1 , 1 , 0" ) ;
@@ -2376,14 +2347,14 @@ public class MainP extends PApplet {
 					}
 				} else if ( cp5.getGroup("protocolChoice").getValue() == 1 ) {
 					output.print("                        " + TabData.getHubDataList()[(int)cp5.getGroup("hubDataField" + i ).getValue()][0] + " , "
-							+ sentDataList[(int)cp5.getGroup("sentDataField" + i ).getValue()][0] + " , "
+							+ TabData.getSentDataList()[(int)TabData.getSentDataField(i).getValue()][0] + " , "
 							+ cp5.getController("dataMultiplier" + i).getValueLabel().getText() + " , "
 							+ cp5.getController("dataDivider" + i).getValueLabel().getText() + " , "
 							+ cp5.getController("dataOffset" + i).getValueLabel().getText() ) ;
 					dataFirst = false ;
 				} else {
-					output.print("                        " + TabData.getsPortDataList()[(int)cp5.getGroup("sPortDataField" + i ).getValue()][0] + " , "
-							+ sentDataList[(int)cp5.getGroup("sentDataField" + i ).getValue()][0] + " , "
+					output.print("                        " + TabData.getsPortDataList()[(int)TabData.getTargetDataField(i).getValue()][0] + " , "
+							+ TabData.getSentDataList()[(int)TabData.getSentDataField(i).getValue()][0] + " , "
 							+ cp5.getController("dataMultiplier" + i).getValueLabel().getText() + " , "
 							+ cp5.getController("dataDivider" + i).getValueLabel().getText() + " , "
 							+ cp5.getController("dataOffset" + i).getValueLabel().getText() ) ;

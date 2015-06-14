@@ -89,7 +89,7 @@ public class Protocol {
 
 		PApplet.println();
 
-		TabData.populateSPortDataFields();
+		TabData.populateTargetDataFields();
 	}
 
 }

@@ -20,7 +20,7 @@ public class OXSdata {
 		this.defaultValue = defaultValue;
 		
 		PApplet.println("Creation d'un objet OXSdata: " + this.name + " - "
-				+ this.displayName + this.defaultValue );
+				+ this.displayName + " - " + this.defaultValue );
 		OXSdataList.add(this);
 	}
 
@@ -38,6 +38,10 @@ public class OXSdata {
 
 	public static ArrayList<OXSdata> getList() {
 		return OXSdataList;
+	}
+	
+	public static OXSdata getItem(int i) {
+		return OXSdataList.get(i);
 	}
 
 	public static void addToList(OXSdata newData) {
