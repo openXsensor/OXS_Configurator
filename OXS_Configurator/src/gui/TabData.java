@@ -350,24 +350,25 @@ public class TabData {
 		}
 	}
 
-	public static void resetSentDataFields(String sensorType) { // TODO first not working
+	public static void resetSentDataFields(String sensorType) { // TODO first check if working
 		for (int i = 1; i <= tabDataFieldNbr; i++) {
 			String ddlFieldDisplay = TabData.getSentDataField(i)
 					.getCaptionLabel().getText();// oXSdataFieldDisplay[i];
 			for (int j = 0; j < OXSdata.getList().size(); j++) {
-				// println( "reset fnc dataSentField: " + i +
-				// "  OXSdataList j = " + j + "  OXSdataListSize: " +
-				// OXSdata.getList().size() ) ;
 				/*
 				 * if (ddlFieldDisplay == OXSdata.getItem(j).getDisplayName() &&
 				 * sensorType == OXSdata.getItem(j).getSensorType()) {
 				 * sentDataField[i].setValue(0); // print("reset") ; break; }
 				 */
-				PApplet.println("OXSdata id " + j ) ;
-				if (!OXSdata.getItem(j).getDisplayName().contains(ddlFieldDisplay) && j == OXSdata.getList().size() - 1) {
-					sentDataField[i].setValue(0);
-					PApplet.println("reset OXSdata " + OXSdata.getItem(j).getDisplayName() + " id " + j + ": " + ddlFieldDisplay) ;
+				PApplet.println("OXSdata id " + j);
+				if (OXSdata.getItem(j).getDisplayName()
+						.contains(ddlFieldDisplay)) {
 					break;
+				} else if (j == OXSdata.getList().size() - 1) {
+					sentDataField[i].setValue(0);
+					PApplet.println("reset OXSdata "
+							+ OXSdata.getItem(j).getDisplayName() + " id " + j
+							+ ": " + ddlFieldDisplay);
 				}
 			}
 		}
