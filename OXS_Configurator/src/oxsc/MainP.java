@@ -174,7 +174,7 @@ public class MainP extends PApplet {
 		icon.shape(oxsI, 0, 0, 64, 64) ;
 		icon.endDraw() ;
 		frame.setIconImage(icon.image) ;
-		frame.setTitle("S Configurator");
+		frame.setTitle("oXs Configurator");
 
 		fontLabel = createFont("arial.ttf", 12, false) ;
 		fontItalic = createFont("ariali.ttf", 12, false) ;

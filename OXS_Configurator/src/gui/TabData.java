@@ -3,6 +3,7 @@ package gui;
 import oxsc.MainP;
 import oxsc.OXSdata;
 import oxsc.Protocol;
+import processing.core.PApplet;
 import controlP5.ControlP5;
 import controlP5.Controller;
 import controlP5.DropdownList;
@@ -349,18 +350,22 @@ public class TabData {
 		}
 	}
 
-	public static void resetSentDataFields(String sensorType) { // TODO first
+	public static void resetSentDataFields(String sensorType) { // TODO first not working
 		for (int i = 1; i <= tabDataFieldNbr; i++) {
-			String ddlFieldDisplay = TabData
-					.getSentDataField(i).getCaptionLabel().getText();// oXSdataFieldDisplay[i];
+			String ddlFieldDisplay = TabData.getSentDataField(i)
+					.getCaptionLabel().getText();// oXSdataFieldDisplay[i];
 			for (int j = 0; j < OXSdata.getList().size(); j++) {
 				// println( "reset fnc dataSentField: " + i +
 				// "  OXSdataList j = " + j + "  OXSdataListSize: " +
 				// OXSdata.getList().size() ) ;
-				if (ddlFieldDisplay == OXSdata.getItem(j).getDisplayName()
-						&& sensorType == OXSdata.getItem(j).getSensorType()) {
+				/*
+				 * if (ddlFieldDisplay == OXSdata.getItem(j).getDisplayName() &&
+				 * sensorType == OXSdata.getItem(j).getSensorType()) {
+				 * sentDataField[i].setValue(0); // print("reset") ; break; }
+				 */
+				if (OXSdata.getItem(j).getDisplayName().contains(ddlFieldDisplay)) {
 					sentDataField[i].setValue(0);
-					// print("reset") ;
+					PApplet.println("reset") ;
 					break;
 				}
 			}

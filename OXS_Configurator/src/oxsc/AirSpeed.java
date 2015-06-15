@@ -27,10 +27,10 @@ public class AirSpeed extends Sensor {
 		cp5.get(DropdownList.class, "vSpeed2").removeItem(" V1 + A.Speed");
 		// }
 
-		TabData.resetSentDataFields(this.getName());
-		TabData.resetSentDataFields("varAspeed");
 		OXSdata.removeFromList(this);
 		OXSdata.removeFromList("varAspeed");
+		TabData.resetSentDataFields(this.getName());
+		TabData.resetSentDataFields("varAspeed");
 		updateUIoXSdataList();
 		Sensor.getSensorList().remove(this);
 	}
