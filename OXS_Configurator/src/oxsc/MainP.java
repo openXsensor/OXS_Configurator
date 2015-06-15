@@ -1091,9 +1091,9 @@ public class MainP extends PApplet {
 					break;
 				}
 
-				println("oxsdataList : "
+				/*println("oxsdataList : "
 						+ TabData.getSentDataField(i).getCaptionLabel()
-								.getText());
+								.getText());*/
 			}
 		}
 		/*

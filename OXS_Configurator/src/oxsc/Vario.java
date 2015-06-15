@@ -75,16 +75,17 @@ public class Vario extends Sensor {
 			// }
 			OXSdata.removeFromList("varAspeed");
 			PApplet.println("remove varAspeed");
-			TabData.resetSentDataFields("varAspeed");
+			//TabData.resetSentDataFields("varAspeed");
 		} else {
 			cp5.get(DropdownList.class, "vSpeed1").removeItem("       Vario 2");
 			cp5.get(DropdownList.class, "vSpeed2").removeItem("       Vario 2");
 		}
 
 		OXSdata.removeFromList(this);
+		PApplet.println(OXSdata.getList());
 		PApplet.println("remove " + this.getName());
 		TabData.resetSentDataFields(this.getName());
-		updateUIoXSdataList();
+		//updateUIoXSdataList();
 		Sensor.getSensorList().remove(this);
 
 	}

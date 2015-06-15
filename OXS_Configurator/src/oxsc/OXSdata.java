@@ -1,5 +1,7 @@
 package oxsc;
 
+import gui.TabData;
+
 import java.util.ArrayList;
 
 import processing.core.PApplet;
@@ -58,20 +60,21 @@ public class OXSdata {
 	}
 
 	public static void removeFromList(Sensor sensor) { // TODO needed ?
-														// ??
 		for (int i = OXSdataList.size() - 1; i >= 0; i--) {
 			// println( sensor.getName() + " for n°: " + i ) ;
 			if (OXSdataList.get(i).sensorType == sensor.getName())
 				OXSdataList.remove(OXSdataList.get(i));
 		}
+		TabData.populateSentDataFields();
 	}
 
 	public static void removeFromList(String sensorType) {
 		for (int i = OXSdataList.size() - 1; i >= 0; i--) {
 			// println( sensorType + " for n°: " + i ) ;
-			if (OXSdataList.get(i).sensorType == sensorType)
+			if (OXSdataList.get(i).sensorType.contains(sensorType))
 				OXSdataList.remove(OXSdataList.get(i));
 		}
+		TabData.populateSentDataFields();
 	}
 	
 	public static void updateList(){

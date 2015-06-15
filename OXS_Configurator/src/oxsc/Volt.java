@@ -15,9 +15,9 @@ public class Volt extends Sensor {
 	}
 
 	public void removeSensor() {
-		TabData.resetSentDataFields(this.getName());
 		OXSdata.removeFromList(this);
-		updateUIoXSdataList();
+		TabData.resetSentDataFields(this.getName());
+		//updateUIoXSdataList();
 		Sensor.getSensorList().remove(this);
 	}
 

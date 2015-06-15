@@ -363,9 +363,10 @@ public class TabData {
 				 * sensorType == OXSdata.getItem(j).getSensorType()) {
 				 * sentDataField[i].setValue(0); // print("reset") ; break; }
 				 */
-				if (OXSdata.getItem(j).getDisplayName().contains(ddlFieldDisplay)) {
+				PApplet.println("OXSdata id " + j ) ;
+				if (!OXSdata.getItem(j).getDisplayName().contains(ddlFieldDisplay) && j == OXSdata.getList().size() - 1) {
 					sentDataField[i].setValue(0);
-					PApplet.println("reset") ;
+					PApplet.println("reset OXSdata " + OXSdata.getItem(j).getDisplayName() + " id " + j + ": " + ddlFieldDisplay) ;
 					break;
 				}
 			}
