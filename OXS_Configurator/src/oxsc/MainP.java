@@ -88,7 +88,7 @@ public class MainP extends PApplet {
 
 	public PFont fontLabel; // = createFont("arial.ttf", 12, false) ;
 	PFont fontItalic; // = createFont("arial italic", 12, false) ;
-	PFont fontCells; // = createFont("arial bold", 12, false) ;
+	public PFont fontCells; // = createFont("arial bold", 12, false) ;
 	PFont font16; // = createFont("arial", 16, false) ;
 	PFont font20; // = createFont("arial", 20, false) ;
 
@@ -530,90 +530,7 @@ public class MainP extends PApplet {
 
 		case 3 :                                                 // TAB Voltage / Other
 
-			// separation lines
-			stroke(MainP.darkBackGray) ;
-			line(10, 272, 440, 272) ;
-			noStroke() ;
-
-			for ( int i = 1; i <= TabVoltage.getVoltnbr(); i++ ) {                   // Voltage tab grayed items
-				if ( cp5.getController("volt" + i).getValue() == 0 ) {
-					cp5.getGroup("ddlVolt" + i).hide() ;
-					fill(grayedColor) ;
-					rect(113 + 55 * (i-1), 171, 45, 20) ;
-					cp5.getController("dividerVolt" + i).lock() ;
-					cp5.getController("dividerVolt" + i).setColorBackground(color(165)) ;
-					cp5.getController("dividerVolt" + i).setColorForeground(color(195)) ;
-					cp5.getController("dividerVolt" + i).setColorValueLabel(color(165)) ;
-					cp5.getController("offsetVolt" + i).lock() ;
-					cp5.getController("offsetVolt" + i).setColorBackground(color(175)) ;
-					cp5.getController("offsetVolt" + i).setColorForeground(color(195)) ;
-					cp5.getController("offsetVolt" + i).setColorValueLabel(color(175)) ;
-				} else {
-					cp5.getGroup("ddlVolt" + i).show() ;
-					cp5.getController("dividerVolt" + i).unlock() ;
-					cp5.getController("dividerVolt" + i).setColorBackground(MainP.darkBackGray) ;
-					cp5.getController("dividerVolt" + i).setColorValueLabel(white) ;
-					cp5.getController("offsetVolt" + i).unlock() ;
-					cp5.getController("offsetVolt" + i).setColorBackground(MainP.darkBackGray) ;
-					cp5.getController("offsetVolt" + i).setColorValueLabel(white) ;
-				}
-			}
-
-			if ( cp5.getController("volt1").getValue() == 0 ) {      // Battery cells monitoring grayed
-				stroke(grayedColor) ;                    // toggle border gray
-				noFill() ;
-				rect(10, 293, 155, 20) ;
-				noStroke() ;
-				cp5.getController("cells").setBroadcast(false) ;    // deactivate continuous controller event  TODO later better
-				cp5.getController("cells").setValue(0) ;
-				TabData.resetSentDataFields("voltCells") ;
-				OXSdata.removeFromList("voltCells") ;
-				TabData.populateSentDataFields() ;
-				cp5.getController("cells").lock() ;
-				cp5.getController("cells").setColorBackground(grayedColor) ;
-				cp5.getController("cells").setColorCaptionLabel(grayedColor) ;
-			} else {
-				stroke(MainP.darkBackGray) ;                             // toggle border
-				noFill() ;
-				rect(10, 293, 155, 20) ;
-				noStroke() ;
-				cp5.getController("cells").setBroadcast(true) ;
-				cp5.getController("cells").unlock() ;
-				cp5.getController("cells").setColorBackground(MainP.darkBackGray) ;
-				cp5.getController("cells").setColorCaptionLabel(color(0)) ;
-			}
-
-			if ( cp5.getController("cells").getValue() == 0 ) {                   // Cells number grayed
-				cp5.getController("NbrCells").setColorValueLabel(grayedColor) ;
-				cp5.getGroup("ddlNbrCells").hide() ;
-				fill(grayedColor) ;
-				rect(288, 293, 25, 20) ;
-			} else {
-				stroke(MainP.darkBackGray) ;                              // toggle border filled
-				fill(lightBlue) ;
-				rect(10, 293, 155, 20) ;
-				noStroke() ;
-				cp5.getController("NbrCells").setColorValueLabel(color(0)) ;
-				cp5.getGroup("ddlNbrCells").show() ;
-			}
-
-			// Voltage tab ->  Cells indicator
-			if ( cp5.getController("cells").getValue() == 1 && TabVoltage.getDdlNbrCells().getValue() > 0 ) {
-				int nCells = (int) TabVoltage.getDdlNbrCells().getValue() ;
-				noSmooth() ;
-				stroke(blueAct) ;
-				strokeWeight(3) ;
-				strokeCap(PROJECT) ;
-				fill(blueAct) ;
-				textFont(fontCells) ;
-				text("BATTERY CELLS", 13, 122) ;
-				line ( 115, 122, 115, 137 ) ;
-				line ( 115, 122, 100 + 55 * nCells, 122 ) ;
-				line ( 100 + 55 * nCells, 122, 100 + 55 * nCells, 137 ) ;
-				strokeWeight(1) ;
-				noStroke() ;
-				smooth() ;
-			}
+			tabVoltage.draw(this);
 			break ;
 
 		case 4 :                                                            // TAB Current sensor
@@ -1193,7 +1110,7 @@ public class MainP extends PApplet {
 			new OXSdata("CELLS", "Cells monitoring", "voltCells", null) ;
 			TabData.populateSentDataFields() ;
 		} else {
-			TabData.resetSentDataFields("voltCells") ;
+			TabData.resetSentDataFields() ;
 			OXSdata.removeFromList("voltCells") ;  // TODO remove "Cells Monotoring" from ddl display
 			TabData.populateSentDataFields() ;
 		}

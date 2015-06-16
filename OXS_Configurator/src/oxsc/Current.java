@@ -15,7 +15,7 @@ public class Current extends Sensor {
 
 	public void removeSensor() {
 		OXSdata.removeFromList(this);
-		TabData.resetSentDataFields(this.getName());
+		TabData.resetSentDataFields();
 		//updateUIoXSdataList();
 		Sensor.getSensorList().remove(this);
 	}

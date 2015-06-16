@@ -84,7 +84,7 @@ public class Vario extends Sensor {
 		OXSdata.removeFromList(this);
 		PApplet.println(OXSdata.getList());
 		PApplet.println("remove " + this.getName());
-		TabData.resetSentDataFields(this.getName());
+		TabData.resetSentDataFields();
 		//updateUIoXSdataList();
 		Sensor.getSensorList().remove(this);
 

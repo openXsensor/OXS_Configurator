@@ -14,7 +14,7 @@ public class TabData {
 
 	private static final int tabDataFieldNbr = 10;
 	private static DropdownList[] sentDataField = new DropdownList[tabDataFieldNbr + 1];
-	private static String[] oXSdataFieldDisplay = new String[tabDataFieldNbr + 1];  // TODO remove ?
+	private static String[] oXSdataFieldDisplay = new String[tabDataFieldNbr + 1];  // TODO remove oXSdataFieldDisplay ?
 
 	@SuppressWarnings("unused")
 	private DropdownList oXSdataField; // TODO later
@@ -350,16 +350,12 @@ public class TabData {
 		}
 	}
 
-	public static void resetSentDataFields(String sensorType) { // TODO first check if working
+	public static void resetSentDataFields() { // TODO every time OXSdataList changes
 		for (int i = 1; i <= tabDataFieldNbr; i++) {
 			String ddlFieldDisplay = TabData.getSentDataField(i)
 					.getCaptionLabel().getText();// oXSdataFieldDisplay[i];
+			PApplet.println("Data field n°" + i);
 			for (int j = 0; j < OXSdata.getList().size(); j++) {
-				/*
-				 * if (ddlFieldDisplay == OXSdata.getItem(j).getDisplayName() &&
-				 * sensorType == OXSdata.getItem(j).getSensorType()) {
-				 * sentDataField[i].setValue(0); // print("reset") ; break; }
-				 */
 				PApplet.println("OXSdata id " + j);
 				if (OXSdata.getItem(j).getDisplayName()
 						.contains(ddlFieldDisplay)) {

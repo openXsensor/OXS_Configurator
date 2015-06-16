@@ -29,7 +29,7 @@ public class AirSpeed extends Sensor {
 
 		OXSdata.removeFromList(this);
 		OXSdata.removeFromList("varAspeed");
-		TabData.resetSentDataFields(this.getName());
+		TabData.resetSentDataFields();
 		//TabData.resetSentDataFields("varAspeed");
 		//updateUIoXSdataList();
 		Sensor.getSensorList().remove(this);
