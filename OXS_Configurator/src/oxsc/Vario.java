@@ -23,13 +23,13 @@ public class Vario extends Sensor {
 	public void addOXSdata() {
 		String varioName = this.getName();
 
-		if (varioName == "vario") {
+		if (varioName.equals("vario")) {
 			new OXSdata("ALTIMETER", "Altitude", varioName, null);
 			new OXSdata("VERTICAL_SPEED", "Vertical Speed", varioName, null);
 			new OXSdata("ALT_OVER_10_SEC", "Alt. over 10 seconds", varioName, null);
 			new OXSdata("SENSITIVITY", "Vario sensitivity", varioName, null);
 			
-			if (MainP.protocol.getName() == "multiplex") {
+			if (MainP.protocol.getName().equals("multiplex")) {
 				new OXSdata("REL_ALTIMETER", "Relative Altitude", varioName, null);
 				new OXSdata("ALTIMETER_MAX", "Max Relative Altitude", varioName, null);
 			}
@@ -65,7 +65,7 @@ public class Vario extends Sensor {
 
 	public void removeSensor() {
 
-		if (this.getName() == "vario") {
+		if (this.getName().equals("vario")) {
 			cp5.get(DropdownList.class, "vSpeed1").removeItem("       Vario 1");
 			cp5.get(DropdownList.class, "vSpeed2").removeItem("       Vario 1");
 

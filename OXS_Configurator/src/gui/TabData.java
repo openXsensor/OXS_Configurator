@@ -154,7 +154,7 @@ public class TabData {
 			//{ "VARIOTEMP", "Vario Temperature" },
 			{ "CURRENTMA", "Current (mA)" },                       // 12
 			{ "MILLIAH", "Consumption (mAh)" },                    // 13
-			{ "CELLS", "Cells monitoring" },                       // 14  TODO cells monitoring
+			{ "CELLS", "Cells monitoring" },                       // 14
 			{ "VOLT1", "Volt 1" },                                 // 15
 			{ "VOLT2", "Volt 2" },                                 // 16
 			{ "VOLT3", "Volt 3" },                                 // 17

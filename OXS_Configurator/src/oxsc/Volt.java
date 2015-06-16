@@ -7,6 +7,10 @@ import controlP5.ControlP5;
 public class Volt extends Sensor {
 
 	// private int parameters ;
+	
+	public Volt(PApplet p, ControlP5 cp5, String name) {
+		super(p, cp5, name);
+	}
 
 	public void addOXSdata() {
 		String name = this.getName();
@@ -21,7 +25,4 @@ public class Volt extends Sensor {
 		Sensor.getSensorList().remove(this);
 	}
 
-	public Volt(PApplet p, ControlP5 cp5, String name) {
-		super(p, cp5, name);
-	}
 }

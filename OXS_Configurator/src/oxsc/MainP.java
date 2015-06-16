@@ -99,7 +99,7 @@ public class MainP extends PApplet {
 
 	// Tabs declaration
 	TabGeneralSettings tabGenSet;
-	TabPPM tabPPM;
+	public TabPPM tabPPM;
 	TabVario tabVario;
 	TabAirSpeed tabAirSpeed;
 	TabVoltage tabVoltage;
@@ -347,123 +347,7 @@ public class MainP extends PApplet {
 
 		case 1 :                                                 // TAB Vario
 
-			stroke(blueAct) ;     // blue border
-			strokeWeight(3) ;
-			noFill() ;
-			rect(4, 106, 442, 162) ;
-			line(4, 142, 446, 142) ;
-			strokeWeight(1) ;
-			noStroke() ;
-
-			tabPPM.drawPPMzone(this) ;
-
-			// separation lines
-			stroke(darkBackGray) ;
-			line(10, 205, 440, 205) ;
-			line(10, 331, 440, 331) ;
-			line(10, 363, 440, 363) ;
-			noStroke() ;
-
-			if ( cp5.getController("ppm").getValue() == 0 ) {
-				cp5.getController("ppmRngSensL").setColorValueLabel(grayedColor) ;
-				cp5.getController("ppmRngSensMinMax").lock() ;
-				cp5.getController("ppmRngSensMinMax").setColorForeground(grayedColor) ;
-				cp5.getController("ppmRngSensMinMax").setColorBackground(grayedColor) ;
-				cp5.getController("ppmRngSensMinMax").setColorValueLabel(grayedColor) ;
-				cp5.getController("ppmRngSensMinMax").setColorCaptionLabel(grayedColor) ;
-
-				cp5.getController("ppmSensRngL").setColorValueLabel(grayedColor) ;
-				cp5.getController("ppmSensMinMax").lock() ;
-				cp5.getController("ppmSensMinMax").setColorForeground(grayedColor) ;
-				cp5.getController("ppmSensMinMax").setColorBackground(grayedColor) ;
-				cp5.getController("ppmSensMinMax").setColorValueLabel(grayedColor) ;
-				cp5.getController("ppmSensMinMax").setColorCaptionLabel(grayedColor) ;
-			} else {
-				cp5.getController("ppmRngSensL").setColorValueLabel(color(0)) ;
-				cp5.getController("ppmRngSensMinMax").unlock() ;
-				cp5.getController("ppmRngSensMinMax").setColorForeground(blueAct) ;
-				cp5.getController("ppmRngSensMinMax").setColorBackground(darkBackGray) ;
-				cp5.getController("ppmRngSensMinMax").setColorValueLabel(white) ;
-				cp5.getController("ppmRngSensMinMax").setColorCaptionLabel(color(0)) ;
-
-				cp5.getController("ppmSensRngL").setColorValueLabel(color(0)) ;
-				cp5.getController("ppmSensMinMax").unlock() ;
-				cp5.getController("ppmSensMinMax").setColorForeground(blueAct) ;
-				cp5.getController("ppmSensMinMax").setColorBackground(darkBackGray) ;
-				cp5.getController("ppmSensMinMax").setColorValueLabel(white) ;
-				cp5.getController("ppmSensMinMax").setColorCaptionLabel(color(0)) ;
-			}
-
-			if ( cp5.getController("ppm").getValue() == 0 || ( cp5.getController("vario2").getValue() == 0 && cp5.getController("airSpeed").getValue() == 0 ) ) {
-				cp5.getController("vStSw2L").setColorValueLabel(grayedColor) ;
-				cp5.getController("vStSwitching").setColorValueLabel(grayedColor) ;
-				cp5.getGroup("vSpeed2").hide() ;
-				fill(grayedColor) ;
-				rect(306, 213, 100, 20) ;
-
-				cp5.getController("ppmVspeedSw").setColorValueLabel(grayedColor) ;
-				cp5.getController("ppmVspeedSwMin").lock() ;
-				cp5.getController("ppmVspeedSwMin").setColorBackground(grayedColor) ;
-				cp5.getController("ppmVspeedSwMin").setColorForeground(grayedColor) ;
-				cp5.getController("ppmVspeedSwMin").setColorValueLabel(grayedColor) ;
-				cp5.getController("ppmVspeedSwMin").setColorCaptionLabel(grayedColor) ;
-				cp5.getController("ppmVspeedSwMax").lock() ;
-				cp5.getController("ppmVspeedSwMax").setColorBackground(grayedColor) ;
-				cp5.getController("ppmVspeedSwMax").setColorForeground(grayedColor) ;
-				cp5.getController("ppmVspeedSwMax").setColorValueLabel(grayedColor) ;
-				cp5.getController("ppmVspeedSwMax").setColorCaptionLabel(grayedColor) ;
-			} else {
-				cp5.getController("vStSw2L").setColorValueLabel(color(0)) ;
-				cp5.getController("vStSwitching").setColorValueLabel(color(0)) ;
-				cp5.getGroup("vSpeed2").show() ;
-
-				cp5.getController("ppmVspeedSw").setColorValueLabel(color(0)) ;
-				cp5.getController("ppmVspeedSwMin").unlock() ;
-				cp5.getController("ppmVspeedSwMin").setColorBackground(darkBackGray) ;
-				cp5.getController("ppmVspeedSwMin").setColorValueLabel(white) ;
-				cp5.getController("ppmVspeedSwMin").setColorCaptionLabel(color(0)) ;
-				cp5.getController("ppmVspeedSwMax").unlock() ;
-				cp5.getController("ppmVspeedSwMax").setColorBackground(darkBackGray) ;
-				cp5.getController("ppmVspeedSwMax").setColorValueLabel(white) ;
-				cp5.getController("ppmVspeedSwMax").setColorCaptionLabel(color(0)) ;
-			}
-
-			if ( cp5.getController("analogClimb").getValue() == 0 ) {                    // Analog climb rate
-				cp5.getController("climbPinL").setColorValueLabel(grayedColor) ;
-				cp5.getGroup("climbPin").hide() ;
-				fill(grayedColor) ;
-				rect(165, 372, 30, 20) ;
-
-				cp5.getController("outClimbRateRngL").setColorValueLabel(grayedColor) ;
-				cp5.getController("outClimbRateMinMax").lock() ;
-				cp5.getController("outClimbRateMinMax").setColorForeground(grayedColor) ;
-				cp5.getController("outClimbRateMinMax").setColorBackground(grayedColor) ;
-				cp5.getController("outClimbRateMinMax").setColorValueLabel(grayedColor) ;
-				cp5.getController("outClimbRateMinMax").setColorCaptionLabel(grayedColor) ;
-			} else {
-				fill(lightBlue) ;                                    // toggle border filled
-				rect(10, 372, 124, 20) ;
-				cp5.getController("climbPinL").setColorValueLabel(color(0)) ;
-				cp5.getGroup("climbPin").show() ;
-
-				cp5.getController("outClimbRateRngL").setColorValueLabel(color(0)) ;
-				cp5.getController("outClimbRateMinMax").unlock() ;
-				cp5.getController("outClimbRateMinMax").setColorForeground(blueAct) ;
-				cp5.getController("outClimbRateMinMax").setColorBackground(MainP.darkBackGray) ;
-				cp5.getController("outClimbRateMinMax").setColorValueLabel(white) ;
-				cp5.getController("outClimbRateMinMax").setColorCaptionLabel(color(0)) ;
-			}
-
-			stroke(MainP.darkBackGray) ;                               // toggle border
-			noFill() ;
-			rect(10, 372, 124, 20) ;
-			noStroke() ;
-
-			if ( cp5.getGroup("climbPin").isOpen() ) {    // climb pin dropdown free
-				cp5.getController("saveButton").hide() ;
-			} else {
-				cp5.getController("saveButton").show() ;
-			}
+			TabVario.draw(this);
 
 			break ;
 
@@ -477,7 +361,7 @@ public class MainP extends PApplet {
 			strokeWeight(1) ;
 			noStroke() ;
 
-			tabPPM.drawPPMzone(this) ;
+			TabPPM.drawPPMzone(this) ;
 
 			// separation lines
 			stroke(MainP.darkBackGray) ;
@@ -530,7 +414,7 @@ public class MainP extends PApplet {
 
 		case 3 :                                                 // TAB Voltage / Other
 
-			tabVoltage.draw(this);
+			TabVoltage.draw(this);
 			break ;
 
 		case 4 :                                                            // TAB Current sensor
@@ -823,9 +707,9 @@ public class MainP extends PApplet {
 			}
 		}
 
-		if ( !cp5.isMouseOver ( cp5.getGroup( "ddlNbrCells") ) ) {
+		if (!cp5.isMouseOver(TabVoltage.getDdlNbrCells())) {
 			if (mousePressed == true) {
-				cp5.getGroup( "ddlNbrCells" ).close() ;
+				TabVoltage.getDdlNbrCells().close();
 			}
 		}
 
@@ -869,11 +753,12 @@ public class MainP extends PApplet {
 
 		// ----------------- TAB DATA sent display -----------------
 
-		if ( vario != null || airSpeed != null || cp5.getController("voltage").getValue() == 1 ||
-				current != null || /*temperature != null ||*/ rpm != null ) {
-			cp5.getTab("data").show() ;
+		if (vario != null || airSpeed != null
+				|| cp5.getController("voltage").getValue() == 1
+				|| current != null /* || temperature != null */|| rpm != null) {
+			cp5.getTab("data").show();
 		} else {
-			cp5.getTab("data").hide() ;
+			cp5.getTab("data").hide();
 		}
 
 	}
@@ -925,26 +810,22 @@ public class MainP extends PApplet {
 				case 1:
 					if (aVolt[i] == null) {
 						aVolt[i] = new Volt(this, cp5, "volt" + i);
-						tabVoltage.populateNbrCells();
+						TabVoltage.populateNbrCells();
 					}
 					break;
 				case 0:
 					if (aVolt[i] != null) {
 						aVolt[i].removeSensor();
 						aVolt[i] = null;
-						tabVoltage.populateNbrCells();
+						TabVoltage.populateNbrCells();
+						if ( i == 1 ) {
+							cp5.getController("cells").setValue(0);
+						}
 					}
 					break;
 				}
 			}
 		}
-
-		/*  TODO Cells monitoring
-		  //  Cells monitoring
-		  if ( theEvent.isFrom( cp5.getController("cells") ) ) {
-
-		  }
-		 */
 
 		//  Current sensor output offset interaction
 		if ( theEvent.isFrom(cp5.getController("currentOutOffsetNb") ) /*|| theEvent.isFrom(cp5.getController("currentOutSensNb"))*/ ) {
@@ -1089,43 +970,36 @@ public class MainP extends PApplet {
 	}
 
 	void voltage(boolean theFlag) {
-		if ( theFlag == true ) {
-			cp5.getTab("voltage").show() ;
+		if (theFlag == true) {
+			cp5.getTab("voltage").show();
 		} else {
-			for ( int i = 1 ; i <= TabVoltage.getVoltnbr() ; i++ ) {
-				cp5.getController("volt" + i).setBroadcast(false) ;
-				cp5.getController("volt" + i).setValue(0) ;
-				if ( aVolt[i] != null ) 
-					aVolt[i].removeSensor() ;
-				aVolt[i] = null ;
-				cp5.getController("volt" + i).setBroadcast(true) ;
+			for (int i = 1; i <= TabVoltage.getVoltnbr(); i++) {
+				cp5.getController("volt" + i).setValue(0);
 			}
-			cp5.getTab("voltage").hide() ;
+			cp5.getTab("voltage").hide();
 		}
-		//println("a toggle event.") ;
 	}
 
-	void cells(boolean theFlag) {
+	void cells(boolean theFlag) {  // TODO clean
 		if ( theFlag == true && aVolt[1] != null ) {
 			new OXSdata("CELLS", "Cells monitoring", "voltCells", null) ;
 			TabData.populateSentDataFields() ;
 		} else {
-			TabData.resetSentDataFields() ;
 			OXSdata.removeFromList("voltCells") ;  // TODO remove "Cells Monotoring" from ddl display
-			TabData.populateSentDataFields() ;
+			TabData.resetSentDataFields() ;
+//			TabData.populateSentDataFields() ;
 		}
 	}
 
 	void current(boolean theFlag) {
-		if (theFlag==true && current == null) {
-			current = new Current(this, cp5, "current") ;
-			cp5.getTab("current").show() ;
-		} else if ( theFlag==false && current != null ){
-			current.removeSensor() ;
-			current = null ;
-			cp5.getTab("current").hide() ;
+		if (theFlag == true && current == null) {
+			current = new Current(this, cp5, "current");
+			cp5.getTab("current").show();
+		} else if (theFlag == false && current != null) {
+			current.removeSensor();
+			current = null;
+			cp5.getTab("current").hide();
 		}
-		//println("a toggle event.") ;
 	}
 
 	void temperature(boolean theFlag) {
@@ -1151,13 +1025,12 @@ public class MainP extends PApplet {
 	}
 
 	void ppm(boolean theFlag) {
-		if ( theFlag == true && ppm == null ) {
-			ppm = new PPM(this, cp5, "ppm") ;
-		} else if ( theFlag==false && ppm != null ) {
-			ppm.removeSensor() ;
-			ppm = null ;
+		if (theFlag == true && ppm == null) {
+			ppm = new PPM(this, cp5, "ppm");
+		} else if (theFlag == false && ppm != null) {
+			ppm.removeSensor();
+			ppm = null;
 		}
-		//println("a toggle event.") ;
 	}
 
 	void about(boolean theFlag) {

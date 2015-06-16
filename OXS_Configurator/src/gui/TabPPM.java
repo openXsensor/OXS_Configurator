@@ -9,17 +9,16 @@ import controlP5.Textlabel;
 
 public class TabPPM {
 	
-	@SuppressWarnings("unused")
-	private final ControlP5 cp5 ;
+	private static ControlP5 cp5 ;
 	@SuppressWarnings("unused")
 	private final PApplet p ; // TODO check if needed
 	
-	static Textlabel ppmPinL;
-	static DropdownList ppmPin;
+	private static Textlabel ppmPinL;
+	private static DropdownList ppmPin;
 
 	public TabPPM(PApplet p, ControlP5 cp5) {
 		
-		this.cp5 = cp5;
+		TabPPM.cp5 = cp5;
 		this.p = p;
 
 		// RC Remote PPM pin and settings
@@ -102,56 +101,56 @@ public class TabPPM {
 		return ppmPin;
 	}
 
-	public void drawPPMzone(MainP mainP) {
+	public static void drawPPMzone(MainP mainP) {
 		// PPM zone
-		mainP.fill(MainP.darkBackGray) ;
-		mainP.rect(mainP.width / 2 - 14, 102, 30, 13) ;
+		mainP.fill(MainP.darkBackGray);
+		mainP.rect(mainP.width / 2 - 14, 102, 30, 13);
+
+		mainP.stroke(MainP.blueAct);
+		mainP.strokeWeight(3);
+		mainP.noFill();
+		// rect(4, 106, 442, 36) ;
+		mainP.strokeWeight(1);
+		mainP.noStroke();
+
+		mainP.fill(MainP.blueAct);
+		mainP.rect(mainP.width / 2 - 15, 101, 30, 13);
+		mainP.fill(255);
+		mainP.textFont(mainP.fontLabel);
+		mainP.text("PPM", 212, 112);
 	
-		mainP.stroke(MainP.blueAct) ;
-		mainP.strokeWeight(3) ;
-		mainP.noFill() ;
-		//rect(4, 106, 442, 36) ;
-		mainP.strokeWeight(1) ;
-		mainP.noStroke() ;
-	
-		mainP.fill(MainP.blueAct) ;
-		mainP.rect(mainP.width / 2 - 15, 101, 30, 13) ;
-		mainP.fill(255) ;
-		mainP.textFont(mainP.fontLabel) ;
-		mainP.text("PPM", 212, 112) ;
-	
-		if ( mainP.cp5.getController("ppm").getValue() == 0 ) {         // RC remote
-			mainP.cp5.getGroup("ppmPin").hide() ;
+		if ( cp5.getController("ppm").getValue() == 0 ) {         // RC remote
+			ppmPin.hide() ;
 			mainP.fill(MainP.grayedColor) ;
 			mainP.rect(118, 115, 30, 20) ;
-			mainP.cp5.getController("ppmPinL").setColorValueLabel(MainP.grayedColor) ;
+			ppmPinL.setColorValueLabel(MainP.grayedColor) ;
 	
-			mainP.cp5.getController("ppmRngL").setColorValueLabel(MainP.grayedColor) ;
-			mainP.cp5.getController("ppmRngMin").lock() ;
-			mainP.cp5.getController("ppmRngMin").setColorBackground(MainP.grayedColor) ;
-			mainP.cp5.getController("ppmRngMin").setColorValueLabel(MainP.grayedColor) ;
-			mainP.cp5.getController("ppmRngMin").setColorCaptionLabel(MainP.grayedColor) ;
+			cp5.getController("ppmRngL").setColorValueLabel(MainP.grayedColor) ;
+			cp5.getController("ppmRngMin").lock() ;
+			cp5.getController("ppmRngMin").setColorBackground(MainP.grayedColor) ;
+			cp5.getController("ppmRngMin").setColorValueLabel(MainP.grayedColor) ;
+			cp5.getController("ppmRngMin").setColorCaptionLabel(MainP.grayedColor) ;
 	
-			mainP.cp5.getController("ppmRngMax").lock() ;
-			mainP.cp5.getController("ppmRngMax").setColorBackground(MainP.grayedColor) ;
-			mainP.cp5.getController("ppmRngMax").setColorValueLabel(MainP.grayedColor) ;
-			mainP.cp5.getController("ppmRngMax").setColorCaptionLabel(MainP.grayedColor) ;
+			cp5.getController("ppmRngMax").lock() ;
+			cp5.getController("ppmRngMax").setColorBackground(MainP.grayedColor) ;
+			cp5.getController("ppmRngMax").setColorValueLabel(MainP.grayedColor) ;
+			cp5.getController("ppmRngMax").setColorCaptionLabel(MainP.grayedColor) ;
 		} else {
 			mainP.fill(MainP.lightBlue) ;                                    // toggle border filled
 			mainP.rect(12, 114, 58, 20) ;
-			mainP.cp5.getGroup("ppmPin").show() ;
-			mainP.cp5.getController("ppmPinL").setColorValueLabel(mainP.color(0)) ;
+			ppmPin.show() ;
+			ppmPinL.setColorValueLabel(0) ;
 	
-			mainP.cp5.getController("ppmRngL").setColorValueLabel(mainP.color(0)) ;
-			mainP.cp5.getController("ppmRngMin").unlock() ;
-			mainP.cp5.getController("ppmRngMin").setColorBackground(MainP.darkBackGray) ;
-			mainP.cp5.getController("ppmRngMin").setColorValueLabel(mainP.color(255)) ;
-			mainP.cp5.getController("ppmRngMin").setColorCaptionLabel(mainP.color(0)) ;
+			cp5.getController("ppmRngL").setColorValueLabel(mainP.color(0)) ;
+			cp5.getController("ppmRngMin").unlock() ;
+			cp5.getController("ppmRngMin").setColorBackground(MainP.darkBackGray) ;
+			cp5.getController("ppmRngMin").setColorValueLabel(mainP.color(255)) ;
+			cp5.getController("ppmRngMin").setColorCaptionLabel(mainP.color(0)) ;
 	
-			mainP.cp5.getController("ppmRngMax").unlock() ;
-			mainP.cp5.getController("ppmRngMax").setColorBackground(MainP.darkBackGray) ;
-			mainP.cp5.getController("ppmRngMax").setColorValueLabel(mainP.color(255)) ;
-			mainP.cp5.getController("ppmRngMax").setColorCaptionLabel(mainP.color(0)) ;
+			cp5.getController("ppmRngMax").unlock() ;
+			cp5.getController("ppmRngMax").setColorBackground(MainP.darkBackGray) ;
+			cp5.getController("ppmRngMax").setColorValueLabel(mainP.color(255)) ;
+			cp5.getController("ppmRngMax").setColorCaptionLabel(mainP.color(0)) ;
 		}
 	
 		mainP.stroke(MainP.darkBackGray) ;                               // toggle border
