@@ -14,7 +14,6 @@ public class TabData {
 
 	private static final int tabDataFieldNbr = 10;
 	private static DropdownList[] sentDataField = new DropdownList[tabDataFieldNbr + 1];
-	private static String[] oXSdataFieldDisplay = new String[tabDataFieldNbr + 1];  // TODO remove oXSdataFieldDisplay ?
 
 	@SuppressWarnings("unused")
 	private DropdownList oXSdataField; // TODO later
@@ -325,14 +324,6 @@ public class TabData {
 		return tabDataFieldNbr;
 	}
 
-	public static String getOXSdataFieldDisplay(int i) {
-		return oXSdataFieldDisplay[i];
-	}
-	
-	public static String[] getOXSdataFieldDisplayList() { // TODO set... + 
-		return oXSdataFieldDisplay;
-	}
-
 	public static String[][] getsPortDataList() {
 		return sPortDataList;
 	}
@@ -377,9 +368,5 @@ public class TabData {
 				targetDataField[i].addItem(Protocol.getDataList()[j][1], j); 
 		}
 	}
-
-	public static String getDdlFieldDisplay(int id) {
-		return oXSdataFieldDisplay[id];
-	}  // voir getOXSdataFieldDisplayList() -> necessaire ?
 
 }

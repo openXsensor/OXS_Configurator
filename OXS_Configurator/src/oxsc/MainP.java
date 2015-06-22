@@ -855,18 +855,13 @@ public class MainP extends PApplet {
 			}
 		}
 
-		// Selecting DEFAULT automatically in Telemetry data fields TODO
-		for (int i = 1; i <= TabData.getDataSentFieldNbr(); i++) { // group
-																	// controllers
-																	// ?
+		// Selecting DEFAULT automatically in Telemetry data fields
+		// TODO group controllers ?
+		for (int i = 1; i <= TabData.getDataSentFieldNbr(); i++) {
 
 			if (theEvent.isFrom(TabData.getSentDataField(i))) {
 
-				TabData.getOXSdataFieldDisplayList()[i] = TabData
-						.getSentDataField(i).getCaptionLabel().getText();
-
-				switch (TabData.getSentDataField(i).getCaptionLabel().getText()) { // (int)
-																					// theEvent.getGroup().getValue()
+				switch (TabData.getSentDataField(i).getCaptionLabel().getText()) {
 				case "Altitude":
 				case "Vertical Speed":
 				case "Altitude 2":
@@ -878,14 +873,14 @@ public class MainP extends PApplet {
 				case "Consumption (mAh)":
 				case "Cells monitoring":
 				case "RPM":
-					// cp5.getGroup("hubDataField" + i).setValue(1) ;
 					TabData.getTargetDataField(i).setValue(1);
 					break;
 				}
 
-				/*println("oxsdataList : "
-						+ TabData.getSentDataField(i).getCaptionLabel()
-								.getText());*/
+				/*
+				 * println("oxsdataList : " +
+				 * TabData.getSentDataField(i).getCaptionLabel() .getText());
+				 */
 			}
 		}
 		/*
@@ -1640,10 +1635,10 @@ public class MainP extends PApplet {
 
 		for ( int i = 1 ; i <= TabData.getDataSentFieldNbr() ; i++ ) {
 			float sentDataFieldNb = TabData.getSentDataField(i).getValue() ;
-			String sentDataFieldName = TabData.getDdlFieldDisplay(i) ; // TODO ori: tab7.getDdlFieldDisplay("sentDataField" + i)
+			String sentDataFieldName = TabData.getSentDataField(i).getCaptionLabel().getText() ; // TODO ori: tab7.getDdlFieldDisplay("sentDataField" + i)
 
 			float sPortDataFieldNb = TabData.getTargetDataField(i).getValue() ;
-			String sPortDataFieldName = TabData.getDdlFieldDisplay(i) ; // TODO ori: tab7.getDdlFieldDisplay("sPortDataField" + i)
+			String sPortDataFieldName = TabData.getSentDataField(i).getCaptionLabel().getText() ; // TODO ori: tab7.getDdlFieldDisplay("sPortDataField" + i)
 			println("(for) nom dest. = " + sPortDataFieldName) ;
 
 			if ( sentDataFieldNb > 0 ) {   // if OXS measurement field is not empty
