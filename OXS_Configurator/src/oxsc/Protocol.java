@@ -47,13 +47,17 @@ public class Protocol {
 	};
 
 	public static Protocol createProtocol(String name) {
-		Protocol tempProt = new Protocol(name);
-		
-		updateUItargetDataList();
-		
-		// TODO OXSdata.updateList(); 
-		
-		return tempProt;
+		if (MainP.protocol == null || !MainP.protocol.getName().equals(name)) {
+			Protocol tempProt = new Protocol(name);
+			
+			updateUItargetDataList();
+			
+			// TODO OXSdata.updateList(); 
+			
+			return tempProt;
+		}
+		return MainP.protocol ;
+
 	}
 
 	private Protocol(String name) {
@@ -62,7 +66,7 @@ public class Protocol {
 
 		if (this.name == "FrSky") {
 			targetDataList = frSkyDataList.clone();
-		} else if (this.name == "multiplex") {
+		} else if (this.name == "Multiplex") {
 			targetDataList = multiplexDataList.clone();
 		}
 

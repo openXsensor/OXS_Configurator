@@ -843,21 +843,15 @@ public class MainP extends PApplet {
 			cp5.getController("currentOutOffsetNb").setBroadcast(true) ;
 		}
 
-		// Showing right Telemetry data list in fields
-		if ( theEvent.isFrom(TabGeneralSettings.getProtocolDdl()) ) {
-			switch( (int)theEvent.getGroup().getValue() ) {
-			case 1 :
-				protocol = Protocol.createProtocol("FrSky") ;
-				//Protocol.updateUItargetDataList() ;
-				/*for ( int i = 1; i <= dataSentFieldNbr; i++ ) {
-		          cp5.getGroup("hubDataField" + i).show() ;
-		          TabData.getTargetDataField(i).hide() ;
-		        }*/
-				break ;
-			case 2 :
-				protocol = Protocol.createProtocol("multiplex") ;
-				//Protocol.updateUItargetDataList() ;
-				break ;
+		// Protocol selection - Showing right Telemetry data list in fields
+		if (theEvent.isFrom(TabGeneralSettings.getProtocolDdl())) {
+			switch ((int) theEvent.getGroup().getValue()) {
+			case 1:
+					protocol = Protocol.createProtocol("FrSky");
+				break;
+			case 2:
+					protocol = Protocol.createProtocol("Multiplex");
+				break;
 			}
 		}
 
