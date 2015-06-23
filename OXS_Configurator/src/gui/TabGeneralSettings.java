@@ -18,7 +18,7 @@ public class TabGeneralSettings {
 
 	private Tab general;
 	private Textfield oxsDir;
-	private DropdownList serialPinDdl;
+	private static DropdownList serialPinDdl;
 	private static DropdownList protocolDdl;	
 	private DropdownList sensorIDDdl;
 	private DropdownList voltRefChoiceDdl;
@@ -287,7 +287,7 @@ public class TabGeneralSettings {
 
 	public Textfield getOxsDir() { return oxsDir; }
 
-	public DropdownList getSerialPinDdl() {
+	public static DropdownList getSerialPinDdl() {
 		return serialPinDdl;
 	}
 
