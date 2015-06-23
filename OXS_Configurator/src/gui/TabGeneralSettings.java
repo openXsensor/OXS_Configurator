@@ -16,22 +16,22 @@ public class TabGeneralSettings {
 	@SuppressWarnings("unused")
 	private final PApplet p ; // TODO check if needed
 
-	private Tab general;
-	private Textfield oxsDir;
+	private static Tab general;
+	private static Textfield oxsDir;
 	private static DropdownList serialPinDdl;
 	private static DropdownList protocolDdl;	
-	private DropdownList sensorIDDdl;
-	private DropdownList voltRefChoiceDdl;
-	private Numberbox arduinoVccNbox;
-	private Toggle saveEpromTgl;
-	private DropdownList resetBtnPinDdl;
-	private Toggle varioTgl;
-	private Toggle vario2Tgl;
-	private Toggle airSpeedTgl;
-	private Toggle voltageTgl;
-	private Toggle currentTgl;
-	private Toggle temperatureTgl;
-	private Toggle rpmTgl;
+	private static DropdownList sensorIDDdl;
+	private static DropdownList voltRefChoiceDdl;
+	private static Numberbox arduinoVccNbox;
+	private static Toggle saveEpromTgl;
+	private static DropdownList resetBtnPinDdl;
+	private static Toggle varioTgl;
+	private static Toggle vario2Tgl;
+	private static Toggle airSpeedTgl;
+	private static Toggle voltageTgl;
+	private static Toggle currentTgl;
+	private static Toggle temperatureTgl;
+	private static Toggle rpmTgl;
 	
 	private static final String[] sensorIDs = new String[] { "0x1B", "0xBA",
 			"0x39", "0x16", "0x95", "0x34" }; // Sensor ID array
@@ -285,7 +285,7 @@ public class TabGeneralSettings {
 		    serialPinDdl.bringToFront() ;
 	}
 
-	public Textfield getOxsDir() { return oxsDir; }
+	public static Textfield getOxsDir() { return oxsDir; }
 
 	public static DropdownList getSerialPinDdl() {
 		return serialPinDdl;
@@ -295,51 +295,51 @@ public class TabGeneralSettings {
 		return protocolDdl;
 	}
 
-	public DropdownList getSensorIDDdl() {
+	public static DropdownList getSensorIDDdl() {
 		return sensorIDDdl;
 	}
 
-	public DropdownList getVoltRefChoiceDdl() {
+	public static DropdownList getVoltRefChoiceDdl() {
 		return voltRefChoiceDdl;
 	}
 
-	public Numberbox getArduinoVccNbox() {
+	public static Numberbox getArduinoVccNbox() {
 		return arduinoVccNbox;
 	}
 
-	public Toggle getSaveEpromTgl() {
+	public static Toggle getSaveEpromTgl() {
 		return saveEpromTgl;
 	}
 
-	public DropdownList getResetBtnPinDdl() {
+	public static DropdownList getResetBtnPinDdl() {
 		return resetBtnPinDdl;
 	}
 
-	public Toggle getVarioTgl() {
+	public static Toggle getVarioTgl() {
 		return varioTgl;
 	}
 
-	public Toggle getVario2Tgl() {
+	public static Toggle getVario2Tgl() {
 		return vario2Tgl;
 	}
 
-	public Toggle getAirSpeedTgl() {
+	public static Toggle getAirSpeedTgl() {
 		return airSpeedTgl;
 	}
 
-	public Toggle getVoltageTgl() {
+	public static Toggle getVoltageTgl() {
 		return voltageTgl;
 	}
 
-	public Toggle getCurrentTgl() {
+	public static Toggle getCurrentTgl() {
 		return currentTgl;
 	}
 
-	public Toggle getTemperatureTgl() {
+	public static Toggle getTemperatureTgl() {
 		return temperatureTgl;
 	}
 
-	public Toggle getRpmTgl() {
+	public static Toggle getRpmTgl() {
 		return rpmTgl;
 	}
 

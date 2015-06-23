@@ -6,6 +6,7 @@ import controlP5.ControlP5;
 import controlP5.Controller;
 import controlP5.DropdownList;
 import controlP5.Textlabel;
+import controlP5.Toggle;
 
 public class TabPPM {
 	
@@ -14,6 +15,7 @@ public class TabPPM {
 	private final PApplet p ; // TODO check if needed
 	
 	private static Textlabel ppmPinL;
+	private static Toggle ppmTgl;
 	private static DropdownList ppmPin;
 
 	public TabPPM(PApplet p, ControlP5 cp5) {
@@ -22,7 +24,7 @@ public class TabPPM {
 		this.p = p;
 
 		// RC Remote PPM pin and settings
-		cp5.addToggle("ppm")
+		ppmTgl = cp5.addToggle("ppm")
 		.setCaptionLabel("PPM")
 		.setPosition(53, 117)
 		.hide()
@@ -97,6 +99,10 @@ public class TabPPM {
 		cp5.getController("ppmRngMax").getCaptionLabel().toUpperCase(false) ;    
 	}
 
+	public static Toggle getPpmTgl() {
+		return ppmTgl;
+	}
+
 	public static DropdownList getPpmPin() {
 		return ppmPin;
 	}
@@ -119,7 +125,7 @@ public class TabPPM {
 		mainP.textFont(mainP.fontLabel);
 		mainP.text("PPM", 212, 112);
 	
-		if ( cp5.getController("ppm").getValue() == 0 ) {         // RC remote
+		if ( ppmTgl.getValue() == 0 ) {         // RC remote
 			ppmPin.hide() ;
 			mainP.fill(MainP.grayedColor) ;
 			mainP.rect(118, 115, 30, 20) ;

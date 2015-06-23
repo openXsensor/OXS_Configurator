@@ -14,8 +14,10 @@ public class TabVoltage {
 	private static ControlP5 cp5;
 	
 	private static final int voltNbr = 6;
-	private static Toggle voltTgl[] = new Toggle[voltNbr + 1];
+	private static Toggle[] voltTgl = new Toggle[voltNbr + 1];
+	private static DropdownList[] ddlVolt = new DropdownList[voltNbr + 1];
 	private static DropdownList ddlNbrCells;
+	private static Toggle cellsTgl;
 
 	// private final PApplet p ; // TODO check if needed
 
@@ -59,12 +61,12 @@ public class TabVoltage {
 		cp5.getProperties().remove(cp5.getController("voltPin"));
 
 		for (int i = 1; i <= voltNbr; i++) {
-			cp5.addDropdownList("ddlVolt" + i)
+			ddlVolt[i] = cp5.addDropdownList("ddlVolt" + i)
 			   .setPosition(113 + 55 * (i - 1), 192)
 			   .setTab("voltage");
 			customizeDdlVpin(cp5.get(DropdownList.class, "ddlVolt" + i));
-			cp5.get(DropdownList.class, "ddlVolt" + i).setValue(-1);
-			cp5.getProperties().remove(cp5.getGroup("ddlVolt" + i), "ListBoxItems");
+			ddlVolt[i].setValue(-1);
+			cp5.getProperties().remove(ddlVolt[i], "ListBoxItems");
 		}
 
 		// Voltage 1-6 divider factor
@@ -114,7 +116,7 @@ public class TabVoltage {
 		}
 
 		// Cells monitoring -> Number of Cells
-		cp5.addToggle("cells").setPosition(148, 296)
+		cellsTgl = cp5.addToggle("cells").setPosition(148, 296)
 		   .setCaptionLabel("Battery cells monitoring")
 		   .setColorForeground(MainP.orangeAct)
 		   .setColorBackground(MainP.darkBackGray)
@@ -122,10 +124,10 @@ public class TabVoltage {
 		   .setColorCaptionLabel(0)
 		   .setSize(15, 15)
 		   .setTab("voltage");
-		cp5.getController("cells").getCaptionLabel()
+		cellsTgl.getCaptionLabel()
 				.align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER)
 				.setPaddingX(10);
-		cp5.getController("cells").getCaptionLabel().toUpperCase(false);
+		cellsTgl.getCaptionLabel().toUpperCase(false);
 
 		cp5.addTextlabel("NbrCells")
 		   .setText("Number of Cells")
@@ -164,8 +166,20 @@ public class TabVoltage {
 		return voltNbr;
 	}
 
+	public static Toggle[] getVoltTgl() {
+		return voltTgl;
+	}
+
+	public static DropdownList[] getDdlVolt() {
+		return ddlVolt;
+	}
+
 	public static DropdownList getDdlNbrCells() {
 		return ddlNbrCells;
+	}
+
+	public static Toggle getCellsTgl() {
+		return cellsTgl;
 	}
 
 	public static void populateNbrCells() {

@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.CharBuffer;
+import java.nio.file.Files;
 
 import processing.core.PApplet;
 import controlP5.ControlP5;
+import controlP5.Textarea;
+import gui.TabCurrent;
 import gui.TabData;
 import gui.TabGeneralSettings;
 import gui.TabPPM;
@@ -15,23 +18,128 @@ import gui.TabVoltage;
 
 public class Validation {
 	
+	@SuppressWarnings("unused")
 	private static ControlP5 cp5 ;
-	private static File versionFile = new File(MainP.oxsDirectory + "/version.oxs");
+	private static File versionFile = new File(Validation.oxsDirectory + "/version.oxs");
 
 	public static CharBuffer version;
+	private static String oxsDirectory = "";
+	private static String outputConfigDir = "";
 
-	public Validation(ControlP5 cp5) {
+	public Validation(ControlP5 cp5) {  // Dummy constructor
 		Validation.cp5 = cp5;
 	}
 
+	public static String getOutputConfigDir() {
+		return outputConfigDir;
+	}
+
+	public static void validationProcess(String theString) { // TODO first crashes
+
+		// Config file writing destination
+		Validation.oxsDirectory = MainP.trim( TabGeneralSettings.getOxsDir().getText() ) ;
+		if ( oxsDirectory.equals("") ) {
+			outputConfigDir = MainP.sketchPath("oXs_config.h") ;
+		} else {
+			outputConfigDir = oxsDirectory + "/oXs_config.h" ;
+		}
+
+		MainP.messageList.clear() ;
+		MainP.messageList.set(0, "") ;
+		MainP.messageList.append("") ;
+
+		MainP.numPinsValid = true ;
+		MainP.analogPinsValid = true ;
+		MainP.vSpeedValid = 2 ;           // 0 -> not valid    1 -> warning   2 -> valid
+		MainP.cellsValid = true ;
+		MainP.sentDataValid = true ;
+		MainP.versionValid = 2 ;          // 0 -> not valid    1 -> warning   2 -> valid
+
+		Validation.validateNumPins() ;
+		Validation.validateAnalogPins() ;
+		Validation.validateVspeed() ;
+		Validation.validateCells() ;
+
+		if ( theString.equals("Config") ) {
+			Validation.validateSentData() ;
+			if ( MainP.numPinsValid && MainP.analogPinsValid && MainP.vSpeedValid != 0 && MainP.cellsValid && MainP.sentDataValid )
+				try {
+					Validation.validateVersion() ;
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					//e.printStackTrace();
+				}
+		}
+
+		if ( !MainP.numPinsValid || !MainP.analogPinsValid || MainP.vSpeedValid == 0 || !MainP.cellsValid || !MainP.sentDataValid || MainP.versionValid == 0 ) {
+
+			MainP.messageBox.setBackgroundColor(MainP.errorColor) ;
+
+			MainP.messageList.set(0, "                                              --- ERROR ---") ;
+			MainP.messageList.append("") ;
+			MainP.messageList.append("                                             ----------------------") ;
+			MainP.messageList.append("") ;
+			if ( theString.equals("preset") ) {
+				MainP.messageList.append("Preset file can't be saved !") ;
+			} else {
+				MainP.messageList.append("Config file can't be written !") ;
+			}
+			//cp5.get(Textarea.class, "messageBoxLabel").setColor(color(255,0,0)) ;
+			MainP.allValid = 0 ;
+
+		} else if ( MainP.vSpeedValid == 1 || MainP.versionValid == 1 ) {
+
+			MainP.messageBox.setBackgroundColor(MainP.warnColor) ;
+
+			MainP.messageList.set(0, "                                           ----  WARNING  ----") ;
+			MainP.messageList.append("") ;
+			MainP.messageList.append("                                             ----------------------") ;
+			MainP.messageList.append("") ;
+			if ( theString.equals("Config") ) {
+				MainP.messageList.append("Configuration file will be written to:") ;
+				MainP.messageList.append(Validation.outputConfigDir) ;
+				MainP.messageList.append("") ;
+				MainP.messageList.append("                       ! If the file already exists, it will be replaced !") ;
+			}
+
+			MainP.allValid = 1 ;
+
+		} else {
+
+			MainP.messageBox.setBackgroundColor(MainP.okColor) ;
+
+			MainP.messageList.set(0, "                                         --- ALL IS GOOD ! ---") ;
+			if ( theString.equals("preset") ) {
+				MainP.messageList.append("Preset file can be saved !") ;
+			}
+			MainP.messageList.append("") ;
+			MainP.messageList.append("                                             ----------------------") ;
+
+			MainP.allValid = 2 ;
+		}
+
+		String[] messageListArray = MainP.messageList.array() ;
+
+		String joinedMessageList = MainP.join(messageListArray, "\n") ;
+
+		cp5.get(Textarea.class, "messageBoxLabel").setText(joinedMessageList) ;
+		//println(messageList) ;
+
+		//messageBox.setBackgroundColor(color(240)) ;
+		cp5.getController("buttonOK").setColorForeground(MainP.blueAct) ;
+		cp5.getController("buttonOK").setColorActive(MainP.orangeAct) ;
+		MainP.messageBox.show() ;
+
+	}
+	
 	public static void validateNumPins() {
 
 		String numPinsValidation[][] = new String[][] {                      // array { pin name, pin value, isActive }
 				{ "Serial output", "" + (int)TabGeneralSettings.getSerialPinDdl().getValue(), "2" },
-				{ "Reset button", "" + (int)cp5.getGroup( "resetButtonPin" ).getValue(), "" + (int) cp5.getController("saveEprom").getValue() + 1  },
-				{ "PPM input", "" + (int)TabPPM.getPpmPin().getValue(), "" + (int) cp5.getController("ppm").getValue() + (int)cp5.getController("vario").getValue() + (int)cp5.getController("airSpeed").getValue() },
-				{ "Analog climb output", "" + (int)TabVario.getClimbPin().getValue(), "" + (int) cp5.getController("analogClimb").getValue() + (int)cp5.getController("vario").getValue() },
-				{ "RPM input", "" + 8, "" + (int) cp5.getController("rpm").getValue() + 1 }
+				{ "Reset button", "" + (int)TabGeneralSettings.getResetBtnPinDdl().getValue(), "" + (int) TabGeneralSettings.getSaveEpromTgl().getValue() + 1  },
+				{ "PPM input", "" + (int)TabPPM.getPpmPin().getValue(), "" + (int) TabPPM.getPpmTgl().getValue() + (int)TabGeneralSettings.getVarioTgl().getValue() + (int)TabGeneralSettings.getAirSpeedTgl().getValue() },
+				{ "Analog climb output", "" + (int)TabVario.getClimbPin().getValue(), "" + (int) TabVario.getAnalogClimbTgl().getValue() + (int)TabGeneralSettings.getVarioTgl().getValue() },
+				{ "RPM input", "" + 8, "" + (int) TabGeneralSettings.getRpmTgl().getValue() + 1 }
 		} ;
 
 		for ( int i = 0; i < numPinsValidation.length; i++ ) {
@@ -59,7 +167,7 @@ public class Validation {
 		int voltActiveCount = 0 ;
 
 		for ( int i = 1 ; i <= TabVoltage.getVoltnbr() ; i++ ) {
-			if ( (int)cp5.getController("voltage").getValue() == 1 && (int)cp5.getController("volt" + i ).getValue() == 1 ) {
+			if ( (int)TabGeneralSettings.getVoltageTgl().getValue() == 1 && (int)TabVoltage.getVoltTgl()[i].getValue() == 1 ) {
 				voltActive[i] = "1" ;
 				voltActiveCount ++ ;
 			} else {
@@ -67,22 +175,22 @@ public class Validation {
 			}
 		}
 
-		if ( (int)cp5.getController("voltage").getValue() == 1 && voltActiveCount == 0 ) {
+		if ( (int)TabGeneralSettings.getVoltageTgl().getValue() == 1 && voltActiveCount == 0 ) {
 			MainP.analogPinsValid = false ;
 			MainP.messageList.append("- Voltage sensor is active but there is no voltage to measure !") ;
 		}
 
 		String analogPinsValidation[][] = new String[][] {              // array { pin name, pin value, isActive }
-				{ "Voltage n°1", "" + (int)cp5.getGroup("ddlVolt1").getValue(), "" + voltActive[1] },
-				{ "Voltage n°2", "" + (int)cp5.getGroup("ddlVolt2").getValue(), "" + voltActive[2] },
-				{ "Voltage n°3", "" + (int)cp5.getGroup("ddlVolt3").getValue(), "" + voltActive[3] },
-				{ "Voltage n°4", "" + (int)cp5.getGroup("ddlVolt4").getValue(), "" + voltActive[4] },
-				{ "Voltage n°5", "" + (int)cp5.getGroup("ddlVolt5").getValue(), "" + voltActive[5] },
-				{ "Voltage n°6", "" + (int)cp5.getGroup("ddlVolt6").getValue(), "" + voltActive[6] },
-				{ "Current Sensor", "" + (int)cp5.getGroup("currentPin").getValue(), "" + (int)cp5.getController("current").getValue() },
+				{ "Voltage n°1", "" + (int)TabVoltage.getDdlVolt()[1].getValue(), "" + voltActive[1] },
+				{ "Voltage n°2", "" + (int)TabVoltage.getDdlVolt()[2].getValue(), "" + voltActive[2] },
+				{ "Voltage n°3", "" + (int)TabVoltage.getDdlVolt()[3].getValue(), "" + voltActive[3] },
+				{ "Voltage n°4", "" + (int)TabVoltage.getDdlVolt()[4].getValue(), "" + voltActive[4] },
+				{ "Voltage n°5", "" + (int)TabVoltage.getDdlVolt()[5].getValue(), "" + voltActive[5] },
+				{ "Voltage n°6", "" + (int)TabVoltage.getDdlVolt()[6].getValue(), "" + voltActive[6] },
+				{ "Current Sensor", "" + (int)TabCurrent.getCurrentPinDdl().getValue(), "" + (int)TabGeneralSettings.getCurrentTgl().getValue() },
 				//{ "Temperature Sensor", "" + (int)cp5.getGroup("tempPin").getValue(), "" + (int)cp5.getController("temperature").getValue() },
-				{ "Vario/Air Speed (A4-A5)", "4", "" + (int) cp5.getController("vario").getValue() + (int)cp5.getController("airSpeed").getValue() },
-				{ "Vario/Air Speed (A4-A5)", "5", "" + (int) cp5.getController("vario").getValue() + (int)cp5.getController("airSpeed").getValue() }
+				{ "Vario/Air Speed (A4-A5)", "4", "" + (int) TabGeneralSettings.getVarioTgl().getValue() + (int)TabGeneralSettings.getAirSpeedTgl().getValue() },
+				{ "Vario/Air Speed (A4-A5)", "5", "" + (int) TabGeneralSettings.getVarioTgl().getValue() + (int)TabGeneralSettings.getAirSpeedTgl().getValue() }
 		} ;
 
 		for ( int i = 0; i < analogPinsValidation.length; i++ ) {
@@ -112,31 +220,31 @@ public class Validation {
 
 	public static void validateVspeed() {
 
-		if ( cp5.getController("vario").getValue() == 1 ) {                                                     // test V.Speed types with sensors
+		if ( TabGeneralSettings.getVarioTgl().getValue() == 1 ) {                                                     // test V.Speed types with sensors
 
 			for (;;) {
-				if ( (int)cp5.getGroup("vSpeed1").getValue() == 1 && cp5.getController("vario2").getValue() == 0 ) {
+				if ( (int)TabVario.getvSpeed1Ddl().getValue() == 1 && TabGeneralSettings.getVario2Tgl().getValue() == 0 ) {
 					MainP.vSpeedValid = 0 ;
 					MainP.messageList.append( "- You can't use Vario 2 V.Speed as Vario 2 is not activated !" ) ;
 					break ;
-				} else if ( (int)cp5.getGroup("vSpeed1").getValue() == 2 && cp5.getController("airSpeed").getValue() == 0 ) {
+				} else if ( (int)TabVario.getvSpeed1Ddl().getValue() == 2 && TabGeneralSettings.getAirSpeedTgl().getValue() == 0 ) {
 					MainP.vSpeedValid = 0 ;
 					MainP.messageList.append( "- You can't use Vario 1 + A.Speed compensated V.Speed as Air Speed" ) ;
 					MainP.messageList.append( "  sensor is not activated !" ) ;
 					break ;
 				}
 
-				if ( cp5.getController("ppm").getValue() == 1 && ( cp5.getController("vario2").getValue() == 1 || cp5.getController("airSpeed").getValue() == 1 ) ) {
-					if ( (int)cp5.getGroup("vSpeed2").getValue() == 1 && cp5.getController("vario2").getValue() == 0 ) {
+				if ( TabPPM.getPpmTgl().getValue() == 1 && ( TabGeneralSettings.getVario2Tgl().getValue() == 1 || TabGeneralSettings.getAirSpeedTgl().getValue() == 1 ) ) {
+					if ( (int)TabVario.getvSpeed2Ddl().getValue() == 1 && TabGeneralSettings.getVario2Tgl().getValue() == 0 ) {
 						MainP.vSpeedValid = 0 ;
 						MainP.messageList.append( "- You can't use Vario 2 V.Speed as Vario 2 is not activated !" ) ;
-					} else if ( (int)cp5.getGroup("vSpeed2").getValue() == 2 &&  cp5.getController("airSpeed").getValue() == 0 ) {
+					} else if ( (int)TabVario.getvSpeed2Ddl().getValue() == 2 &&  TabGeneralSettings.getAirSpeedTgl().getValue() == 0 ) {
 						MainP.vSpeedValid = 0 ;
 						MainP.messageList.append( "- You can't use Vario 1 + A.Speed compensated V.Speed as Air Speed" ) ;
 						MainP.messageList.append( "  sensor is not activated !" ) ;
 					}
 
-					if ( (int)cp5.getGroup("vSpeed1").getValue() == (int)cp5.getGroup("vSpeed2").getValue() ) {
+					if ( (int)TabVario.getvSpeed1Ddl().getValue() == (int)TabVario.getvSpeed2Ddl().getValue() ) {
 						MainP.vSpeedValid = ( MainP.vSpeedValid == 0 ) ? 0 : 1 ;
 						MainP.messageList.append( "- You have set the same V.Speed types for switching in Vario TAB !" ) ;
 					}
@@ -152,16 +260,16 @@ public class Validation {
 
 		int cellsNbr = 0 ;
 
-		if ( cp5.getController("cells").getValue() == 1 ) {
+		if ( TabVoltage.getCellsTgl().getValue() == 1 ) {
 			//println("Cells active") ;
 			for ( int i = 1 ; i <= TabVoltage.getVoltnbr() ; i++ ) {
-				if ( cp5.getController("volt" + i ).getValue() == 1 ) {
+				if ( TabVoltage.getVoltTgl()[i].getValue() == 1 ) {
 					cellsNbr ++ ;
 				} else {
 					break ;
 				}
 			}
-			if ( cp5.getGroup("ddlNbrCells").getValue() > cellsNbr ) {
+			if ( TabVoltage.getDdlNbrCells().getValue() > cellsNbr ) {
 				MainP.cellsValid = false ;
 				MainP.messageList.append( "- You can't monitor more than " + cellsNbr + " cell(s)" ) ;
 			}
@@ -178,7 +286,7 @@ public class Validation {
 		for ( int i = 1 ; i < oxsMeasureValidationList.length ; i++ ) {
 			oxsMeasureValidationList[i][0] = "" + TabData.getSentDataList()[ (int) TabData.getSentDataField(i).getValue() ][0] ; // Data sent - ( OXS measurement )
 			oxsMeasureValidationList[i][1] = "" + TabData.getSentDataField(i).getCaptionLabel().getText() ;          // OXS measurement - ( Data sent )
-			oxsMeasureValidationList[i][2] = "" + cp5.getGroup("hubDataField" + i ).getCaptionLabel().getText() ;           // HUB data field
+			oxsMeasureValidationList[i][2] = "" + TabData.getHubDataField(i).getCaptionLabel().getText() ;           // HUB data field
 			oxsMeasureValidationList[i][3] = "" + TabData.getTargetDataField(i).getCaptionLabel().getText() ;         // target data field
 			oxsMeasureValidationList[i][4] = "0" ;                                                                          // is measurement active
 		}
@@ -188,53 +296,53 @@ public class Validation {
 			case 2 :                 // "VERTICAL_SPEED"
 			case 3 :                 // "ALT_OVER_10_SEC"
 			case 7 :                 // "SENSITIVITY"
-				if ( cp5.getController("vario").getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( TabGeneralSettings.getVarioTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case 4 :                 // "ALTIMETER_2"
 			case 5 :                 // "VERTICAL_SPEED_2"
 			case 6 :                 // "ALT_OVER_10_SEC_2"
-				if ( cp5.getController("vario2").getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( TabGeneralSettings.getVario2Tgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case 8 :                 // "AIR_SPEED"
-				if ( cp5.getController("airSpeed").getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( TabGeneralSettings.getAirSpeedTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case 9 :                 // "PRANDTL_DTE"
 			case 10 :                // "PRANDTL_COMPENSATION"
-				if ( cp5.getController("vario").getValue() == 1 && cp5.getController("airSpeed").getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( TabGeneralSettings.getVarioTgl().getValue() == 1 && TabGeneralSettings.getAirSpeedTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case 11 :                // "PPM_VSPEED"
-				if ( cp5.getController("vario").getValue() == 1 && cp5.getController("ppm").getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( TabGeneralSettings.getVarioTgl().getValue() == 1 && TabPPM.getPpmTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case 12 :                 // "CURRENTMA"
 			case 13 :                 // "MILLIAH"
-				if ( cp5.getController("current").getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( TabGeneralSettings.getCurrentTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case 14 :                 // "CELLS"
-				if ( cp5.getController("voltage").getValue() == 1 && cp5.getController("cells").getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getCellsTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case 15 :                 // "VOLT1"
-				if ( cp5.getController("voltage").getValue() == 1 && cp5.getController("volt1").getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[1].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case 16 :                 // "VOLT2"
-				if ( cp5.getController("voltage").getValue() == 1 && cp5.getController("volt2").getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[2].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case 17 :                // "VOLT3"
-				if ( cp5.getController("voltage").getValue() == 1 && cp5.getController("volt3").getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[3].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case 18 :                // "VOLT4"
-				if ( cp5.getController("voltage").getValue() == 1 && cp5.getController("volt4").getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[4].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case 19 :                // "VOLT5"
-				if ( cp5.getController("voltage").getValue() == 1 && cp5.getController("volt5").getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[5].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case 20 :                // "VOLT6"
-				if ( cp5.getController("voltage").getValue() == 1 && cp5.getController("volt6").getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[6].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case 21 :                // "RPM"
-				if ( cp5.getController("rpm").getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( TabGeneralSettings.getRpmTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case 22 :                // "PPM"
-				if ( cp5.getController("ppm").getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( TabPPM.getPpmTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			}
 		}
@@ -340,7 +448,7 @@ public class Validation {
 		}
 	
 		// ***  Duplicate tests  ***
-		if ( cp5.getGroup("protocolChoice").getValue() == 1 ) {          //  HUB protocol => maybe not up to date since OXSC v2.0
+		if ( TabGeneralSettings.getProtocolDdl().getValue() == 1 ) {          //  HUB protocol => maybe not up to date since OXSC v2.0
 			for ( int k = 1 ; k <= TabData.getSentDataList().length ; k++ ) {
 				/*
 			      if ( k == sentDataList.length ) {
@@ -374,7 +482,7 @@ public class Validation {
 				MainP.sentDataValid = false ;
 				MainP.messageList.append( "- RPM not available as it's already used by RPM !" ) ;
 			}
-		} else if ( cp5.getGroup("protocolChoice").getValue() == 2 ) {         //  SPORT protocol
+		} else if ( TabGeneralSettings.getProtocolDdl().getValue() == 2 ) {         //  SPORT protocol
 			for ( int k = 1 ; k <= TabData.getSentDataList().length ; k++ ) {
 				/*
 			      if ( k == sentDataList.length ) {
@@ -427,11 +535,11 @@ public class Validation {
 	
 	}
 
-	public static void validateVersion() throws IOException { // TODO first crashes
+	public static void validateVersion() throws IOException { // TODO not working
 
 		FileReader verFileReader = new FileReader(versionFile);
 		verFileReader.read(version);
-
+//Files.readAllLines(arg0);
 		if (version == null) {
 			MainP.versionValid = 1;
 			// messageList.append("") ;
@@ -446,7 +554,7 @@ public class Validation {
 			// println("no version file") ;
 		} else if (version.charAt(1) == MainP.oxsCversion.charAt(1)) {
 			MainP.messageList.append("Configuration file will be written to:");
-			MainP.messageList.append(MainP.outputConfigDir);
+			MainP.messageList.append(Validation.outputConfigDir);
 			MainP.messageList.append("");
 			MainP.messageList
 					.append("                       ! If the file already exists, it will be replaced !");

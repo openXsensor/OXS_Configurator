@@ -33,7 +33,6 @@ import gui.TabVario;
 import gui.TabVoltage;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 
 import processing.core.PApplet;
@@ -66,10 +65,8 @@ public class MainP extends PApplet {
 	String day = (day() < 10) ? "0" + day() : "" + day();
 	String month = (month() < 10) ? "0" + month() : "" + month();
 
-	public static String oxsDirectory = "";
 	PrintWriter output;
-	public static String outputConfigDir = "";
-
+	
 	public static final int tabGray = 0xFFC8C8C8; // gray 200
 	public static final int backDdlGray = 0xFFFFFFFF; // gray 190
 	public static final int topBottomGray = 0xFF969696; // gray 150
@@ -95,7 +92,7 @@ public class MainP extends PApplet {
 
 	public ControlP5 cp5;
 
-	Group messageBox; // TODO later
+	public static Group messageBox; // TODO later
 	// Popup message; // TODO later
 
 	// Tabs declaration
@@ -513,10 +510,10 @@ public class MainP extends PApplet {
 
 		// ----------------- Texfield and Numberbox mouse-over -----------------
 
-		if ( cp5.isMouseOver( tabGenSet.getOxsDir() )  ) {
-			tabGenSet.getOxsDir().setColorForeground(blueAct) ;
+		if ( cp5.isMouseOver( TabGeneralSettings.getOxsDir() )  ) {
+			TabGeneralSettings.getOxsDir().setColorForeground(blueAct) ;
 		} else {
-			tabGenSet.getOxsDir().setColorForeground(tabGray) ;
+			TabGeneralSettings.getOxsDir().setColorForeground(tabGray) ;
 		}
 
 		if ( cp5.isMouseOver ( cp5.getController("arduinoVccNb") ) ) {
@@ -1065,7 +1062,7 @@ public class MainP extends PApplet {
 
 	public void saveButton(int theValue) {                                     // Save preset button
 		mbClose() ;
-		validationProcess("preset") ;
+		Validation.validationProcess("preset") ;
 		if ( allValid == 2 ) {
 			messageBox.hide() ;
 		}
@@ -1102,109 +1099,13 @@ public class MainP extends PApplet {
 
 	public void writeConfButton(int theValue) {
 		mbOkCancel() ;
-		validationProcess("Config") ;
+		Validation.validationProcess("Config") ;
 		if ( allValid == 0) {
 			mbClose() ;
 		}
 	}
 
-	public void validationProcess(String theString) {
-
-		// Config file writing destination
-		oxsDirectory = trim( cp5.get(Textfield.class, "oxsDirectory").getText() ) ;
-		if ( oxsDirectory.equals("") ) {
-			outputConfigDir = sketchPath("oXs_config.h") ;
-		} else {
-			outputConfigDir = oxsDirectory + "/oXs_config.h" ;
-		}
-
-		messageList.clear() ;
-		messageList.set(0, "") ;
-		messageList.append("") ;
-
-		numPinsValid = true ;
-		analogPinsValid = true ;
-		vSpeedValid = 2 ;           // 0 -> not valid    1 -> warning   2 -> valid
-		cellsValid = true ;
-		sentDataValid = true ;
-		versionValid = 2 ;          // 0 -> not valid    1 -> warning   2 -> valid
-
-		Validation.validateNumPins() ;
-		Validation.validateAnalogPins() ;
-		Validation.validateVspeed() ;
-		Validation.validateCells() ;
-
-		if ( theString.equals("Config") ) {
-			Validation.validateSentData() ;
-			if ( numPinsValid && analogPinsValid && vSpeedValid != 0 && cellsValid && sentDataValid )
-				try {
-					Validation.validateVersion() ;
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		}
-
-		if ( !numPinsValid || !analogPinsValid || vSpeedValid == 0 || !cellsValid || !sentDataValid || versionValid == 0 ) {
-
-			messageBox.setBackgroundColor(errorColor) ;
-
-			messageList.set(0, "                                              --- ERROR ---") ;
-			messageList.append("") ;
-			messageList.append("                                             ----------------------") ;
-			messageList.append("") ;
-			if ( theString.equals("preset") ) {
-				messageList.append("Preset file can't be saved !") ;
-			} else {
-				messageList.append("Config file can't be written !") ;
-			}
-			//cp5.get(Textarea.class, "messageBoxLabel").setColor(color(255,0,0)) ;
-			allValid = 0 ;
-
-		} else if ( vSpeedValid == 1 || versionValid == 1 ) {
-
-			messageBox.setBackgroundColor(warnColor) ;
-
-			messageList.set(0, "                                           ----  WARNING  ----") ;
-			messageList.append("") ;
-			messageList.append("                                             ----------------------") ;
-			messageList.append("") ;
-			if ( theString.equals("Config") ) {
-				messageList.append("Configuration file will be written to:") ;
-				messageList.append(outputConfigDir) ;
-				messageList.append("") ;
-				messageList.append("                       ! If the file already exists, it will be replaced !") ;
-			}
-
-			allValid = 1 ;
-
-		} else {
-
-			messageBox.setBackgroundColor(okColor) ;
-
-			messageList.set(0, "                                         --- ALL IS GOOD ! ---") ;
-			if ( theString.equals("preset") ) {
-				messageList.append("Preset file can be saved !") ;
-			}
-			messageList.append("") ;
-			messageList.append("                                             ----------------------") ;
-
-			allValid = 2 ;
-		}
-
-		String[] messageListArray = messageList.array() ;
-
-		String joinedMessageList = join(messageListArray, "\n") ;
-
-		cp5.get(Textarea.class, "messageBoxLabel").setText(joinedMessageList) ;
-		//println(messageList) ;
-
-		//messageBox.setBackgroundColor(color(240)) ;
-		cp5.getController("buttonOK").setColorForeground(color(blueAct)) ;
-		cp5.getController("buttonOK").setColorActive(color(orangeAct)) ;
-		messageBox.show() ;
-
-	}
+	
 
 	public void folderSelected(File selection) {
 		if (selection == null) {
@@ -1493,7 +1394,7 @@ public class MainP extends PApplet {
 
 		boolean dataFirst = true ;
 
-		output = createWriter( outputConfigDir ) ;
+		output = createWriter( Validation.getOutputConfigDir() ) ;
 
 		output.println("// Configuration file generated by OpenXsensor Configurator " + oxsCversion + " the: " + day + "-" + month + "-" + year() ) ;
 		output.println("// !! This file is only compatible with version " + oxsVersion + " of OpenXsensor !!") ;

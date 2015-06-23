@@ -20,6 +20,7 @@ public class TabData {
 	private static DropdownList[] targetDataField = new DropdownList[tabDataFieldNbr + 1];
 	@SuppressWarnings("unused")
 	private String[] dataDestFieldDisplayList = new String[tabDataFieldNbr + 1]; // TODO ?
+	private static DropdownList[] hubDataField = new DropdownList[tabDataFieldNbr + 1];
 	
 	// ------------------------- HUB protocol data list array --------------------------
 	private static String hubDataList[][] = new String[][] {
@@ -211,7 +212,7 @@ public class TabData {
 			cp5.getProperties().remove(sentDataField[i], "ListBoxItems");
 
 			// HUB DATA field
-			cp5.addDropdownList("hubDataField" + i)
+			hubDataField[i] = cp5.addDropdownList("hubDataField" + i)
 					.setColorForeground(MainP.orangeAct)
 					.setColorBackground(MainP.darkBackGray)
 					.setColorActive(MainP.blueAct)
@@ -316,6 +317,10 @@ public class TabData {
 		return sentDataField[i];
 	}
 	
+	public static DropdownList getHubDataField(int i) {
+		return hubDataField[i];
+	}
+
 	public static DropdownList getTargetDataField(int i) {
 		return targetDataField[i];
 	}

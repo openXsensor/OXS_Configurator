@@ -5,14 +5,18 @@ import processing.core.PApplet;
 import controlP5.ControlP5;
 import controlP5.Controller;
 import controlP5.DropdownList;
+import controlP5.Toggle;
 
 public class TabVario {
 	
 	private static ControlP5 cp5 ;
 	@SuppressWarnings("unused")
 	private final PApplet p ;  // TODO check if needed
+
+	private static DropdownList vSpeed1Ddl;
+	private static DropdownList vSpeed2Ddl;
 	
-	
+	private static Toggle analogClimbTgl;	
 	private static DropdownList climbPin;
 	
 	public TabVario(PApplet p, ControlP5 cp5) {
@@ -99,7 +103,7 @@ public class TabVario {
 	       ;
 	    cp5.getProperties().remove(cp5.getController("vStSw1L")) ;
 	  
-	    cp5.addDropdownList("vSpeed1")
+	    vSpeed1Ddl = cp5.addDropdownList("vSpeed1")
 	       .setPosition(186, 234)
 	       .setSize(100, 75)
 	       .setColorForeground(MainP.orangeAct)
@@ -109,13 +113,13 @@ public class TabVario {
 	       .setBarHeight(20)
 	       .setTab("vario")
 	       ;
-	    cp5.getGroup("vSpeed1").getCaptionLabel().getStyle().marginTop = 2 ;
+	    vSpeed1Ddl.getCaptionLabel().getStyle().marginTop = 2 ;
 	    //cp5.get(DropdownList.class, "vSpeed1").addItem("       Vario 1", 0) ;
 	    //cp5.get(DropdownList.class, "vSpeed1").addItem("       Vario 2", 1) ;
 	    //cp5.get(DropdownList.class, "vSpeed1").addItem(" V1 + A.Speed", 2) ;
 	    //cp5.get(DropdownList.class, "vSpeed1").setValue(0) ;
-	    cp5.get(DropdownList.class, "vSpeed1").toUpperCase(false) ;
-	    cp5.getProperties().remove(cp5.getGroup("vSpeed1"), "ListBoxItems") ;
+	    vSpeed1Ddl.toUpperCase(false) ;
+	    cp5.getProperties().remove(vSpeed1Ddl, "ListBoxItems") ;
 	  
 	    cp5.addTextlabel("vStSw2L")
 	       .setText("2")
@@ -125,7 +129,7 @@ public class TabVario {
 	       ;
 	    cp5.getProperties().remove(cp5.getController("vStSw2L")) ;
 	  
-	    cp5.addDropdownList("vSpeed2")
+	    vSpeed2Ddl = cp5.addDropdownList("vSpeed2")
 	       .setPosition(306, 234)
 	       .setSize(100, 75)
 	       .setColorForeground(MainP.orangeAct)
@@ -135,13 +139,13 @@ public class TabVario {
 	       .setBarHeight(20)
 	       .setTab("vario")
 	       ;
-	    cp5.getGroup("vSpeed2").getCaptionLabel().getStyle().marginTop = 2 ;
+	    vSpeed2Ddl.getCaptionLabel().getStyle().marginTop = 2 ;
 	    //cp5.get(DropdownList.class, "vSpeed2").addItem("       Vario 1", 0) ;
 	    //cp5.get(DropdownList.class, "vSpeed2").addItem("       Vario 2", 1) ;
 	    //cp5.get(DropdownList.class, "vSpeed2").addItem(" V1 + A.Speed", 2) ;
 	    //cp5.get(DropdownList.class, "vSpeed2").setValue(1) ;
-	    cp5.get(DropdownList.class, "vSpeed2").toUpperCase(false) ;
-	    cp5.getProperties().remove(cp5.getGroup("vSpeed2"), "ListBoxItems") ;
+	    vSpeed2Ddl.toUpperCase(false) ;
+	    cp5.getProperties().remove(vSpeed2Ddl, "ListBoxItems") ;
 	  
 	    // PPM Vertical speed switching values
 	    cp5.addTextlabel("ppmVspeedSw")
@@ -267,7 +271,7 @@ public class TabVario {
 	  
 	  
 	    // Analog climb rate  pin and settings
-	    cp5.addToggle("analogClimb")
+	    analogClimbTgl = cp5.addToggle("analogClimb")
 	       .setCaptionLabel("Analog climb rate")
 	       .setPosition(117, 375)
 	       .setTab("vario")
@@ -326,8 +330,20 @@ public class TabVario {
 	    cp5.getGroup("vSpeed2").bringToFront() ;
 	  }
 
+	public static DropdownList getvSpeed1Ddl() {
+		return vSpeed1Ddl;
+	}
+
+	public static DropdownList getvSpeed2Ddl() {
+		return vSpeed2Ddl;
+	}
+
 	public static DropdownList getClimbPin() {
 		return climbPin;
+	}
+
+	public static Toggle getAnalogClimbTgl() {
+		return analogClimbTgl;
 	}
 
 	public static void draw(MainP mainP) {

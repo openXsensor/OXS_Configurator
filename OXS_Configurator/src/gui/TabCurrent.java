@@ -9,6 +9,8 @@ public class TabCurrent {
 	
 	//private final ControlP5 cp5 ;
 	
+	private static DropdownList currentPinDdl;
+
 	public TabCurrent(ControlP5 cp5) {
 		
 		//this.cp5 = cp5;
@@ -33,7 +35,7 @@ public class TabCurrent {
 	       ;
 	    cp5.getProperties().remove(cp5.getController("currentPinL")) ;
 	  
-	    cp5.addDropdownList("currentPin")
+	    currentPinDdl = cp5.addDropdownList("currentPin")
 	       .setColorForeground(MainP.orangeAct)
 	       .setColorBackground(MainP.darkBackGray)
 	       .setColorActive(MainP.blueAct)
@@ -171,5 +173,9 @@ public class TabCurrent {
 	    // dropdownlist overlap
 	    cp5.getGroup("currentPin").bringToFront() ;
 	  }
+
+	public static DropdownList getCurrentPinDdl() {
+		return currentPinDdl;
+	}
 
 }
