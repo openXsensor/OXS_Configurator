@@ -20,14 +20,32 @@ public class Validation {
 	
 	@SuppressWarnings("unused")
 	private static ControlP5 cp5 ;
-	private static File versionFile = new File(Validation.oxsDirectory + "/version.oxs");
 
 	public static CharBuffer version;
 	private static String oxsDirectory = "";
 	private static String outputConfigDir = "";
+	private static final String oxsVersion = "v2.x";
+	private static final String oxsCversion = "v2.1";
+	static boolean numPinsValid;
+	static boolean analogPinsValid;
+	static int vSpeedValid; // 0 -> not valid 1 -> warning 2 -> valid
+	static boolean cellsValid;
+	static boolean sentDataValid;
+	static int versionValid; // 0 -> not valid 1 -> warning 2 -> valid	
+	static int allValid; // 0 -> not valid 1 -> warning 2 -> valid
+	
+	private static File versionFile = new File(oxsDirectory + "/version.oxs");
 
 	public Validation(ControlP5 cp5) {  // Dummy constructor
 		Validation.cp5 = cp5;
+	}
+
+	public static String getOxsVersion() {
+		return oxsVersion;
+	}
+
+	public static String getOxsCversion() {
+		return oxsCversion;
 	}
 
 	public static String getOutputConfigDir() {
@@ -37,9 +55,9 @@ public class Validation {
 	public static void validationProcess(String theString) { // TODO first crashes
 
 		// Config file writing destination
-		Validation.oxsDirectory = MainP.trim( TabGeneralSettings.getOxsDir().getText() ) ;
+		oxsDirectory = MainP.trim( TabGeneralSettings.getOxsDir().getText() ) ;
 		if ( oxsDirectory.equals("") ) {
-			outputConfigDir = MainP.sketchPath("oXs_config.h") ;
+			outputConfigDir = MainP.sketchPathString;
 		} else {
 			outputConfigDir = oxsDirectory + "/oXs_config.h" ;
 		}
@@ -48,30 +66,30 @@ public class Validation {
 		MainP.messageList.set(0, "") ;
 		MainP.messageList.append("") ;
 
-		MainP.numPinsValid = true ;
-		MainP.analogPinsValid = true ;
-		MainP.vSpeedValid = 2 ;           // 0 -> not valid    1 -> warning   2 -> valid
-		MainP.cellsValid = true ;
-		MainP.sentDataValid = true ;
-		MainP.versionValid = 2 ;          // 0 -> not valid    1 -> warning   2 -> valid
+		numPinsValid = true ;
+		analogPinsValid = true ;
+		vSpeedValid = 2 ;           // 0 -> not valid    1 -> warning   2 -> valid
+		cellsValid = true ;
+		sentDataValid = true ;
+		versionValid = 2 ;          // 0 -> not valid    1 -> warning   2 -> valid
 
-		Validation.validateNumPins() ;
-		Validation.validateAnalogPins() ;
-		Validation.validateVspeed() ;
-		Validation.validateCells() ;
+		validateNumPins() ;
+		validateAnalogPins() ;
+		validateVspeed() ;
+		validateCells() ;
 
 		if ( theString.equals("Config") ) {
-			Validation.validateSentData() ;
-			if ( MainP.numPinsValid && MainP.analogPinsValid && MainP.vSpeedValid != 0 && MainP.cellsValid && MainP.sentDataValid )
+			validateSentData() ;
+			if ( numPinsValid && analogPinsValid && vSpeedValid != 0 && cellsValid && sentDataValid )
 				try {
-					Validation.validateVersion() ;
+					validateVersion() ;
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					//e.printStackTrace();
 				}
 		}
 
-		if ( !MainP.numPinsValid || !MainP.analogPinsValid || MainP.vSpeedValid == 0 || !MainP.cellsValid || !MainP.sentDataValid || MainP.versionValid == 0 ) {
+		if ( !numPinsValid || !analogPinsValid || vSpeedValid == 0 || !cellsValid || !sentDataValid || versionValid == 0 ) {
 
 			MainP.messageBox.setBackgroundColor(MainP.errorColor) ;
 
@@ -85,9 +103,9 @@ public class Validation {
 				MainP.messageList.append("Config file can't be written !") ;
 			}
 			//cp5.get(Textarea.class, "messageBoxLabel").setColor(color(255,0,0)) ;
-			MainP.allValid = 0 ;
+			allValid = 0 ;
 
-		} else if ( MainP.vSpeedValid == 1 || MainP.versionValid == 1 ) {
+		} else if ( vSpeedValid == 1 || versionValid == 1 ) {
 
 			MainP.messageBox.setBackgroundColor(MainP.warnColor) ;
 
@@ -97,12 +115,12 @@ public class Validation {
 			MainP.messageList.append("") ;
 			if ( theString.equals("Config") ) {
 				MainP.messageList.append("Configuration file will be written to:") ;
-				MainP.messageList.append(Validation.outputConfigDir) ;
+				MainP.messageList.append(outputConfigDir) ;
 				MainP.messageList.append("") ;
 				MainP.messageList.append("                       ! If the file already exists, it will be replaced !") ;
 			}
 
-			MainP.allValid = 1 ;
+			allValid = 1 ;
 
 		} else {
 
@@ -115,7 +133,7 @@ public class Validation {
 			MainP.messageList.append("") ;
 			MainP.messageList.append("                                             ----------------------") ;
 
-			MainP.allValid = 2 ;
+			allValid = 2 ;
 		}
 
 		String[] messageListArray = MainP.messageList.array() ;
@@ -147,7 +165,7 @@ public class Validation {
 				if ( Integer.parseInt(numPinsValidation[i][1]) != -1 && Integer.parseInt(numPinsValidation[j][1]) != -1 && Integer.parseInt(numPinsValidation[i][2]) > 1 && Integer.parseInt(numPinsValidation[j][2]) > 1 ) {
 					if ( numPinsValidation[i][1].equals(numPinsValidation[j][1]) ) {
 						//println("Attention !!  " + numPinsValidation[i][0] + " is using the same pin n°" + numPinsValidation[i][1] + " as " + numPinsValidation[j][0] + " !") ;
-						MainP.numPinsValid = false ;
+						numPinsValid = false ;
 						MainP.messageList.append("- " + numPinsValidation[i][0] + " is using the same pin n°" + numPinsValidation[i][1] + " as " + numPinsValidation[j][0] + " !") ;
 					}
 				}
@@ -176,7 +194,7 @@ public class Validation {
 		}
 
 		if ( (int)TabGeneralSettings.getVoltageTgl().getValue() == 1 && voltActiveCount == 0 ) {
-			MainP.analogPinsValid = false ;
+			analogPinsValid = false ;
 			MainP.messageList.append("- Voltage sensor is active but there is no voltage to measure !") ;
 		}
 
@@ -195,7 +213,7 @@ public class Validation {
 
 		for ( int i = 0; i < analogPinsValidation.length; i++ ) {
 			if ( Integer.parseInt(analogPinsValidation[i][1]) == -1 && Integer.parseInt(analogPinsValidation[i][2]) == 1 ) {
-				MainP.analogPinsValid = false ;
+				analogPinsValid = false ;
 				MainP.messageList.append("- " + analogPinsValidation[i][0] + " has no pin assigned !") ;
 			}
 			for ( int j = i+1; j < analogPinsValidation.length; j++ ) {
@@ -203,7 +221,7 @@ public class Validation {
 				if ( Integer.parseInt(analogPinsValidation[i][1]) != -1 && Integer.parseInt(analogPinsValidation[j][1]) != -1 && Integer.parseInt(analogPinsValidation[i][2]) >= 1 && Integer.parseInt(analogPinsValidation[j][2]) >= 1 ) {
 					if ( analogPinsValidation[i][1].equals(analogPinsValidation[j][1]) ) {
 						//println("Attention !!  " + analogPinsValidation[i][0] + " is using the same pin n�A" + analogPinsValidation[i][1] + " as " + analogPinsValidation[j][0] + " !") ;
-						MainP.analogPinsValid = false ;
+						analogPinsValid = false ;
 						MainP.messageList.append("- " + analogPinsValidation[i][0] + " is using the same pin n°A" + analogPinsValidation[i][1] + " as " + analogPinsValidation[j][0] + " !") ;
 					}
 				}
@@ -224,11 +242,11 @@ public class Validation {
 
 			for (;;) {
 				if ( (int)TabVario.getvSpeed1Ddl().getValue() == 1 && TabGeneralSettings.getVario2Tgl().getValue() == 0 ) {
-					MainP.vSpeedValid = 0 ;
+					vSpeedValid = 0 ;
 					MainP.messageList.append( "- You can't use Vario 2 V.Speed as Vario 2 is not activated !" ) ;
 					break ;
 				} else if ( (int)TabVario.getvSpeed1Ddl().getValue() == 2 && TabGeneralSettings.getAirSpeedTgl().getValue() == 0 ) {
-					MainP.vSpeedValid = 0 ;
+					vSpeedValid = 0 ;
 					MainP.messageList.append( "- You can't use Vario 1 + A.Speed compensated V.Speed as Air Speed" ) ;
 					MainP.messageList.append( "  sensor is not activated !" ) ;
 					break ;
@@ -236,16 +254,16 @@ public class Validation {
 
 				if ( TabPPM.getPpmTgl().getValue() == 1 && ( TabGeneralSettings.getVario2Tgl().getValue() == 1 || TabGeneralSettings.getAirSpeedTgl().getValue() == 1 ) ) {
 					if ( (int)TabVario.getvSpeed2Ddl().getValue() == 1 && TabGeneralSettings.getVario2Tgl().getValue() == 0 ) {
-						MainP.vSpeedValid = 0 ;
+						vSpeedValid = 0 ;
 						MainP.messageList.append( "- You can't use Vario 2 V.Speed as Vario 2 is not activated !" ) ;
 					} else if ( (int)TabVario.getvSpeed2Ddl().getValue() == 2 &&  TabGeneralSettings.getAirSpeedTgl().getValue() == 0 ) {
-						MainP.vSpeedValid = 0 ;
+						vSpeedValid = 0 ;
 						MainP.messageList.append( "- You can't use Vario 1 + A.Speed compensated V.Speed as Air Speed" ) ;
 						MainP.messageList.append( "  sensor is not activated !" ) ;
 					}
 
 					if ( (int)TabVario.getvSpeed1Ddl().getValue() == (int)TabVario.getvSpeed2Ddl().getValue() ) {
-						MainP.vSpeedValid = ( MainP.vSpeedValid == 0 ) ? 0 : 1 ;
+						vSpeedValid = ( vSpeedValid == 0 ) ? 0 : 1 ;
 						MainP.messageList.append( "- You have set the same V.Speed types for switching in Vario TAB !" ) ;
 					}
 				}
@@ -270,7 +288,7 @@ public class Validation {
 				}
 			}
 			if ( TabVoltage.getDdlNbrCells().getValue() > cellsNbr ) {
-				MainP.cellsValid = false ;
+				cellsValid = false ;
 				MainP.messageList.append( "- You can't monitor more than " + cellsNbr + " cell(s)" ) ;
 			}
 			//println(cellsNbr ) ;
@@ -382,12 +400,12 @@ public class Validation {
 	
 			        } else*/ 
 				if ( sPortDataFieldNb == 0 ) {         // if telemetry field is empty
-					MainP.sentDataValid = false ;
+					sentDataValid = false ;
 					MainP.messageList.append( "- The " + sentDataFieldName + " measure is not sent !" ) ;
 				} else if ( MainP.protocol.getName() == "FrSky" ) {          // if FrSky protocol
 					/*} else*/ if ( ( sentDataFieldName == "Cells monitoring" || sentDataFieldName == "RPM" )   // OXS measurement must be default
 							&& sPortDataFieldName != "DEFAULT" ) {
-						MainP.sentDataValid = false ;
+						sentDataValid = false ;
 						MainP.messageList.append( "- " + sentDataFieldName + " must be set to DEFAULT !" ) ;
 					} else if ( ( oxsMeasureValidationList[i][0].equals("ALT_OVER_10_SEC") || oxsMeasureValidationList[i][0].equals("ALT_OVER_10_SEC_2")   // OXS measurement can't be default
 							|| oxsMeasureValidationList[i][0].equals("SENSITIVITY") || oxsMeasureValidationList[i][0].equals("PRANDTL_COMPENSATION")
@@ -395,14 +413,14 @@ public class Validation {
 							|| oxsMeasureValidationList[i][0].equals("VOLT3") || oxsMeasureValidationList[i][0].equals("VOLT4")
 							|| oxsMeasureValidationList[i][0].equals("VOLT5") || oxsMeasureValidationList[i][0].equals("VOLT6")
 							|| oxsMeasureValidationList[i][0].equals("PPM") ) && oxsMeasureValidationList[i][3].equals("DEFAULT") ) {
-						MainP.sentDataValid = false ;
+						sentDataValid = false ;
 						MainP.messageList.append( "- " + oxsMeasureValidationList[i][1] + " can't be set to DEFAULT !" ) ;
 					} else if ( ( oxsMeasureValidationList[i][0].equals("ALTIMETER") || oxsMeasureValidationList[i][0].equals("ALTIMETER_2") )   // Only one Altitude DEFAULT
 							&& oxsMeasureValidationList[i][3].equals("DEFAULT") ) {
 						for ( int j = i+1 ; j <= TabData.getDataSentFieldNbr() ; j++ ) {
 							if ( ( oxsMeasureValidationList[j][0].equals("ALTIMETER") || oxsMeasureValidationList[j][0].equals("ALTIMETER_2") )
 									&& oxsMeasureValidationList[j][3].equals("DEFAULT") ) {
-								MainP.sentDataValid = false ;
+								sentDataValid = false ;
 								MainP.messageList.append( "- " + oxsMeasureValidationList[j][1] + " Telemetry data field can't be set to DEFAULT as it's" ) ;
 								MainP.messageList.append( "  already used by " + oxsMeasureValidationList[i][1] + " measurement !" ) ;
 							}
@@ -419,7 +437,7 @@ public class Validation {
 							if ( ( oxsMeasureValidationList[j][0].equals("VERTICAL_SPEED") || oxsMeasureValidationList[j][0].equals("VERTICAL_SPEED_2")
 									|| oxsMeasureValidationList[j][0].equals("PRANDTL_DTE") || oxsMeasureValidationList[j][0].equals("PPM_VSPEED") )
 									&& oxsMeasureValidationList[j][3].equals("DEFAULT") ) {
-								MainP.sentDataValid = false ;
+								sentDataValid = false ;
 								MainP.messageList.append( "- " + oxsMeasureValidationList[j][1] + " Telemetry data field can't be set to DEFAULT as it's" ) ;
 								MainP.messageList.append( "  already used by " + oxsMeasureValidationList[i][1] + " measurement !" ) ;
 							}
@@ -460,26 +478,26 @@ public class Validation {
 				for ( int l = 1 ; l < TabData.getHubDataList().length ; l++ ) {
 					//print( oxsMeasureCountHUB[k][l] + " " ) ;
 					if ( oxsMeasureCountHUB[k][l] > 1 && k < TabData.getSentDataList().length ) {
-						MainP.sentDataValid = false ;
+						sentDataValid = false ;
 						MainP.messageList.append( "- " + TabData.getSentDataList()[k][1] + " can't be sent " + oxsMeasureCountHUB[k][l] + "X to the same " +  TabData.getHubDataList()[l][1] + " field !" ) ;
 					}
 					if ( k == TabData.getSentDataList().length && l > 1 && oxsMeasureCountHUB[TabData.getSentDataList().length][l] > 1 ) {
-						MainP.sentDataValid = false ;
+						sentDataValid = false ;
 						MainP.messageList.append( "- Different measurements can't be sent to the same " +  TabData.getHubDataList()[l][1] + " field !" ) ;
 					}
 				}
 				//println("");
 			}
 			if ( oxsMeasureCountHUB[2][1] == 1 && oxsMeasureCountHUB[TabData.getSentDataList().length][2] >= 1 ) {  // Test VERTICAL_SPEED  default/VSpd
-				MainP.sentDataValid = false ;
+				sentDataValid = false ;
 				MainP.messageList.append( "- Vertical Speed not available as it's already used by VERTICAL_SPEED !" ) ;
 			}
 			if ( oxsMeasureCountHUB[5][1] == 1 && oxsMeasureCountHUB[TabData.getSentDataList().length][3] >= 1 ) {  // Test CURRENTMA  default/Curr
-				MainP.sentDataValid = false ;
+				sentDataValid = false ;
 				MainP.messageList.append( "- Current not available as it's already used by CURRENTMA !" ) ;
 			}
 			if ( oxsMeasureCountHUB[14][1] == 1 && oxsMeasureCountHUB[TabData.getSentDataList().length][7] >= 1 ) {  // Test RPM default/RPM
-				MainP.sentDataValid = false ;
+				sentDataValid = false ;
 				MainP.messageList.append( "- RPM not available as it's already used by RPM !" ) ;
 			}
 		} else if ( TabGeneralSettings.getProtocolDdl().getValue() == 2 ) {         //  SPORT protocol
@@ -494,34 +512,34 @@ public class Validation {
 				for ( int l = 1 ; l < TabData.getsPortDataList().length ; l++ ) {
 					//print( oxsMeasureCountSPORT[k][l] + " " ) ;
 					if ( oxsMeasureCountSPORT[k][l] > 1 && k < TabData.getSentDataList().length ) {
-						MainP.sentDataValid = false ;
+						sentDataValid = false ;
 						MainP.messageList.append( "- " + TabData.getSentDataList()[k][1] + " can't be sent " + oxsMeasureCountSPORT[k][l] + "X to the same " +  TabData.getsPortDataList()[l][1] + " field !" ) ;
 					}
 					if ( k == TabData.getSentDataList().length && l > 1 && oxsMeasureCountSPORT[TabData.getSentDataList().length][l] > 1 ) {
-						MainP.sentDataValid = false ;
+						sentDataValid = false ;
 						MainP.messageList.append( "- Different measurements can't be sent to the same " +  TabData.getsPortDataList()[l][1] + " field !" ) ;
 					}
 				}
 				//println("");
 			}
 			if ( (oxsMeasureCountSPORT[1][1] == 1 || oxsMeasureCountSPORT[4][1] == 1) && oxsMeasureCountSPORT[TabData.getSentDataList().length][2] >= 1 ) {  // Test ALTITUDEs  default/Alt
-				MainP.sentDataValid = false ;
+				sentDataValid = false ;
 				MainP.messageList.append( "- Altitude Telemetry data field is not available as it's already used by" ) ;
 				MainP.messageList.append( "  Altitude 1 or 2 measurement !" ) ;
 			}
 			if ( (oxsMeasureCountSPORT[2][1] == 1 || oxsMeasureCountSPORT[5][1] == 1 || oxsMeasureCountSPORT[9][1] == 1
 					|| oxsMeasureCountSPORT[11][1] == 1) && oxsMeasureCountSPORT[TabData.getSentDataList().length][3] >= 1 ) {  // Test VERTICAL_SPEEDs  default/VSpd
-				MainP.sentDataValid = false ;
+				sentDataValid = false ;
 				MainP.messageList.append( "- Vertical Speed Telemetry data field is not available as it's already" ) ;
 				MainP.messageList.append( "  used by Vertical Speed measurement !" ) ;
 			}
 			if ( oxsMeasureCountSPORT[12][1] == 1 && oxsMeasureCountSPORT[TabData.getSentDataList().length][4] >= 1 ) {  // Test CURRENTMA  default/Curr
-				MainP.sentDataValid = false ;
+				sentDataValid = false ;
 				MainP.messageList.append( "- Current Telemetry data field is not available as it's already used by" ) ;
 				MainP.messageList.append( "  Current (mA) measurement !" ) ;
 			}
 			if ( oxsMeasureCountSPORT[21][1] == 1 && oxsMeasureCountSPORT[TabData.getSentDataList().length][8] >= 1 ) {  // Test RPM default/RPM
-				MainP.sentDataValid = false ;
+				sentDataValid = false ;
 				MainP.messageList.append( "- RPM Telemetry data field is not available as it's already used by" ) ;
 				MainP.messageList.append( "  RPM measurement !" ) ;
 			}
@@ -529,7 +547,7 @@ public class Validation {
 		}
 	
 		if ( oxsMeasureCount == 0 ) {
-			MainP.sentDataValid = false ;
+			sentDataValid = false ;
 			MainP.messageList.append( "- You don't have any OXS measurement set !" ) ;
 		}
 	
@@ -541,7 +559,7 @@ public class Validation {
 		verFileReader.read(version);
 //Files.readAllLines(arg0);
 		if (version == null) {
-			MainP.versionValid = 1;
+			versionValid = 1;
 			// messageList.append("") ;
 			// messageList.append("                                              -------------------")
 			// ;
@@ -552,9 +570,9 @@ public class Validation {
 					.append("                **      Configuration file may not be compatible...    **");
 
 			// println("no version file") ;
-		} else if (version.charAt(1) == MainP.oxsCversion.charAt(1)) {
+		} else if (version.charAt(1) == oxsCversion.charAt(1)) {
 			MainP.messageList.append("Configuration file will be written to:");
-			MainP.messageList.append(Validation.outputConfigDir);
+			MainP.messageList.append(outputConfigDir);
 			MainP.messageList.append("");
 			MainP.messageList
 					.append("                       ! If the file already exists, it will be replaced !");
@@ -563,9 +581,9 @@ public class Validation {
 			// oxsCversion) ;
 
 		} else {
-			MainP.versionValid = 0;
+			versionValid = 0;
 			MainP.messageList.append("            ** The Configurator "
-					+ MainP.oxsCversion + " isn't compatible with OXS "
+					+ oxsCversion + " isn't compatible with OXS "
 					+ version + " **");
 			MainP.messageList.append("");
 			MainP.messageList
