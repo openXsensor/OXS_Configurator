@@ -40,6 +40,7 @@ import processing.core.PFont;
 import processing.core.PGraphics;
 import processing.core.PShape;
 import processing.data.StringList;
+import controlP5.Button;
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.Controller;
@@ -63,7 +64,6 @@ public class MainP extends PApplet {
 	String month = (month() < 10) ? "0" + month() : "" + month();
 
 	PrintWriter output;
-	public String sketchPathString = sketchPath("oXs_config.h") ; // TODO sketchPath
 	
 	public static final int tabGray = 0xFFC8C8C8; // gray 200
 	public static final int backDdlGray = 0xFFFFFFFF; // gray 190
@@ -91,6 +91,8 @@ public class MainP extends PApplet {
 	public ControlP5 cp5;
 
 	public static Group messageBox; // TODO later
+	public static Textarea messageBoxTextarea;
+	public static Button buttonOKBtn;
 	// Popup message; // TODO later
 
 	// Tabs declaration
@@ -296,7 +298,7 @@ public class MainP extends PApplet {
 		// Main screen background
 		fill(tabGray) ;
 		rect(0, 100, width, 300) ;
-		fill(MainP.darkBackGray) ;
+		fill(darkBackGray) ;
 		rect(0, 97, width, 3) ;
 
 		// Compatibility subtitle
@@ -329,7 +331,7 @@ public class MainP extends PApplet {
 		switch( currentTabId ) {
 
 		case 0 :                                        // TAB GENERAL Settings
-			tabGenSet.draw(this);
+			TabGeneralSettings.draw(this);
 
 			break ;
 
@@ -1035,11 +1037,11 @@ public class MainP extends PApplet {
 
 		String joinedMessageList = join(messageListArray, "\n") ;
 
-		cp5.get(Textarea.class, "messageBoxLabel").setText(joinedMessageList) ;
+		messageBoxTextarea.setText(joinedMessageList) ;
 
-		cp5.getController("buttonOK").setColorForeground(orangeAct) ;
-		cp5.getController("buttonOK").setColorBackground(color(100)) ;
-		cp5.getController("buttonOK").setColorActive(blueAct) ;
+		buttonOKBtn.setColorForeground(orangeAct) ;
+		buttonOKBtn.setColorBackground(color(100)) ;
+		buttonOKBtn.setColorActive(blueAct) ;
 		messageBox.setBackgroundColor(blueAct) ;
 		messageBox.show() ;
 	}
@@ -1051,7 +1053,7 @@ public class MainP extends PApplet {
 
 	public void saveButton(int theValue) {                                     // Save preset button
 		mbClose() ;
-		Validation.validationProcess("preset") ;
+		Validation.validationProcess(this, "preset") ;
 		if ( Validation.allValid == 2 ) {
 			messageBox.hide() ;
 		}
@@ -1088,7 +1090,7 @@ public class MainP extends PApplet {
 
 	public void writeConfButton(int theValue) {
 		mbOkCancel() ;
-		Validation.validationProcess("Config") ;
+		Validation.validationProcess(this, "Config") ;
 		if ( Validation.allValid == 0) {
 			mbClose() ;
 		}
@@ -1231,51 +1233,51 @@ public class MainP extends PApplet {
 		rng.getCaptionLabel().toUpperCase(false) ;
 	}
 
-	public void createMessageBox() {
+	public void createMessageBox() { // TODO second move to gui package
 
 		// create a group to store the messageBox elements
 		messageBox = cp5.addGroup("messageBox", width / 2 - mBoxWidth / 2, 76, mBoxWidth)
-				.setBackgroundHeight(mBoxHeight)
-				.setBackgroundColor(color(240))
-				.setTab("global")
-				.hideBar()
-				.hide()
-				;
+				        .setBackgroundHeight(mBoxHeight)
+				        .setBackgroundColor(color(240))
+				        .setTab("global")
+				        .hideBar()
+				        .hide()
+				        ;
 
 		// add a Textaera to the messageBox.
-		cp5.addTextarea("messageBoxLabel")
-		.setPosition(5,5)
-		.setSize(mBoxWidth - 10, mBoxHeight - 48)
-		.setLineHeight(14)
-		.setColor(white)
-		.setColorActive(orangeAct)
-		//.setBorderColor(color(0))
-		.setColorBackground(color(120))
-		.setColorForeground(blueAct)
-		.setScrollBackground(color(80))
-		//.setTab("global")
-		;
-		cp5.get(Textarea.class, "messageBoxLabel").moveTo(messageBox) ;
+		messageBoxTextarea = cp5.addTextarea("messageBoxLabel")
+		                        .setPosition(5,5)
+		                        .setSize(mBoxWidth - 10, mBoxHeight - 48)
+		                        .setLineHeight(14)
+		                        .setColor(white)
+		                        .setColorActive(orangeAct)
+		                        //.setBorderColor(color(0))
+		                        .setColorBackground(color(120))
+		                        .setColorForeground(blueAct)
+		                        .setScrollBackground(color(80))
+		                        //.setTab("global")
+		                        ;
+		messageBoxTextarea.moveTo(messageBox) ;
 
 		// OK button to the messageBox.
-		controlP5.Button b1 = cp5.addButton(this, "btnOK", "buttonOK", 0, width / 2 - 60, 218, 80, 30) ;
-		b1.moveTo(messageBox) ;
-		b1.setColorForeground(color(blueAct)) ;
-		b1.setColorBackground(color(100)) ;
-		b1.setColorActive(color(orangeAct)) ;
-		b1.getCaptionLabel().setFont(font20) ;
-		b1.getCaptionLabel().toUpperCase(false) ;
-		b1.getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER).setPaddingX(10) ;
+		buttonOKBtn = cp5.addButton(this, "btnOK", "buttonOK", 0, width / 2 - 60, 218, 80, 30) ;
+		buttonOKBtn.moveTo(messageBox) ;
+		buttonOKBtn.setColorForeground(color(blueAct)) ;
+		buttonOKBtn.setColorBackground(color(100)) ;
+		buttonOKBtn.setColorActive(color(orangeAct)) ;
+		buttonOKBtn.getCaptionLabel().setFont(font20) ;
+		buttonOKBtn.getCaptionLabel().toUpperCase(false) ;
+		buttonOKBtn.getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER).setPaddingX(10) ;
 
 		// Cancel button to the messageBox.
 		cp5.addButton(this, "btnCancel", "buttonCancel", 0, mBoxWidth / 2 + 5, mBoxHeight - 37, 80, 30)
-		.moveTo(messageBox)
-		.setCaptionLabel("Cancel")
-		.setColorForeground(blueAct)
-		.setColorBackground(color(100))
-		.setColorActive(orangeAct)
-		.hide()
-		;
+		   .moveTo(messageBox)
+		   .setCaptionLabel("Cancel")
+		   .setColorForeground(blueAct)
+		   .setColorBackground(color(100))
+		   .setColorActive(orangeAct)
+		   .hide()
+		   ;
 		cp5.getController("buttonCancel").getCaptionLabel().setFont(font20) ;
 		cp5.getController("buttonCancel").getCaptionLabel().toUpperCase(false) ;
 		cp5.getController("buttonCancel").getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER).setPaddingX(10) ;
@@ -1283,17 +1285,17 @@ public class MainP extends PApplet {
 	}
 
 	public void mbOkCancel() {
-		cp5.getController("buttonOK").setPosition(mBoxWidth / 2 - 80 - 5, mBoxHeight - 37) ;
-		cp5.getController("buttonOK").setSize(80, 30) ;
-		cp5.getController("buttonOK").setCaptionLabel("OK") ;
+		buttonOKBtn.setPosition(mBoxWidth / 2 - 80 - 5, mBoxHeight - 37) ;
+		buttonOKBtn.setSize(80, 30) ;
+		buttonOKBtn.setCaptionLabel("OK") ;
 
 		cp5.getController("buttonCancel").show() ;
 	}
 
 	public void mbClose() {
-		cp5.getController("buttonOK").setPosition(mBoxWidth / 2 - 40 , mBoxHeight - 37) ;
-		cp5.getController("buttonOK").setSize(80, 30) ;
-		cp5.getController("buttonOK").setCaptionLabel("CLOSE") ;
+		buttonOKBtn.setPosition(mBoxWidth / 2 - 40 , mBoxHeight - 37) ;
+		buttonOKBtn.setSize(80, 30) ;
+		buttonOKBtn.setCaptionLabel("CLOSE") ;
 
 		cp5.getController("buttonCancel").hide() ;
 	}

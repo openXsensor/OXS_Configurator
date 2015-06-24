@@ -4,11 +4,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.CharBuffer;
-import java.nio.file.Files;
 
 import processing.core.PApplet;
 import controlP5.ControlP5;
-import controlP5.Textarea;
 import gui.TabCurrent;
 import gui.TabData;
 import gui.TabGeneralSettings;
@@ -20,6 +18,7 @@ public class Validation {
 	
 	@SuppressWarnings("unused")
 	private static ControlP5 cp5 ;
+	private static MainP mainP;
 
 	public static CharBuffer version;
 	private static String oxsDirectory = "";
@@ -52,12 +51,12 @@ public class Validation {
 		return outputConfigDir;
 	}
 
-	public static void validationProcess(String theString) { // TODO first crashes
-
+	public static void validationProcess(MainP mainPori, String theString) {
+        mainP = mainPori;
 		// Config file writing destination
 		oxsDirectory = MainP.trim( TabGeneralSettings.getOxsDir().getText() ) ;
 		if ( oxsDirectory.equals("") ) {
-			outputConfigDir = MainP.sketchPathString;
+			outputConfigDir = mainP.sketchPath("oXs_config.h");
 		} else {
 			outputConfigDir = oxsDirectory + "/oXs_config.h" ;
 		}
@@ -85,7 +84,8 @@ public class Validation {
 					validateVersion() ;
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					//e.printStackTrace();
+					PApplet.println("validateVersion problem...");
+					e.printStackTrace();
 				}
 		}
 
@@ -140,12 +140,12 @@ public class Validation {
 
 		String joinedMessageList = MainP.join(messageListArray, "\n") ;
 
-		cp5.get(Textarea.class, "messageBoxLabel").setText(joinedMessageList) ;
+		MainP.messageBoxTextarea.setText(joinedMessageList) ;
 		//println(messageList) ;
 
 		//messageBox.setBackgroundColor(color(240)) ;
-		cp5.getController("buttonOK").setColorForeground(MainP.blueAct) ;
-		cp5.getController("buttonOK").setColorActive(MainP.orangeAct) ;
+		MainP.buttonOKBtn.setColorForeground(MainP.blueAct) ;
+		MainP.buttonOKBtn.setColorActive(MainP.orangeAct) ;
 		MainP.messageBox.show() ;
 
 	}
@@ -553,7 +553,7 @@ public class Validation {
 	
 	}
 
-	public static void validateVersion() throws IOException { // TODO not working
+	public static void validateVersion() throws IOException { // TODO first not working
 
 		FileReader verFileReader = new FileReader(versionFile);
 		verFileReader.read(version);

@@ -8,10 +8,12 @@ import controlP5.DropdownList;
 import controlP5.Numberbox;
 import controlP5.Tab;
 import controlP5.Textfield;
+import controlP5.Textlabel;
 import controlP5.Toggle;
 
 public class TabGeneralSettings {
 	
+	@SuppressWarnings("unused")
 	private final ControlP5 cp5 ;
 	@SuppressWarnings("unused")
 	private final PApplet p ; // TODO check if needed
@@ -19,11 +21,13 @@ public class TabGeneralSettings {
 	private static Tab general;
 	private static Textfield oxsDir;
 	private static DropdownList serialPinDdl;
-	private static DropdownList protocolDdl;	
+	private static DropdownList protocolDdl;
+	private static Textlabel sensorIDTextlabel;
 	private static DropdownList sensorIDDdl;
 	private static DropdownList voltRefChoiceDdl;
 	private static Numberbox arduinoVccNbox;
 	private static Toggle saveEpromTgl;
+	private static Textlabel resetButtonPinTextLabel;
 	private static DropdownList resetBtnPinDdl;
 	private static Toggle varioTgl;
 	private static Toggle vario2Tgl;
@@ -82,19 +86,19 @@ public class TabGeneralSettings {
 
 		 // Serial output pin
 		    serialPinDdl = cp5.addDropdownList("serialPin")
-		                   .setPosition(160, 161)
-		                   .setSize(25, 300)
-		                   .setColorForeground(MainP.blueAct)
-		                   .setBackgroundColor(MainP.backDdlGray)
-		                   .setItemHeight(20)
-		                   .setBarHeight(20)
-		                   ;
+		                      .setPosition(160, 161)
+		                      .setSize(25, 300)
+		                      .setColorForeground(MainP.blueAct)
+		                      .setBackgroundColor(MainP.backDdlGray)
+		                      .setItemHeight(20)
+		                      .setBarHeight(20)
+		                      ;
 		    serialPinDdl.getCaptionLabel().set(" ") ;
 		    serialPinDdl.getCaptionLabel().getStyle().marginTop = 2 ;
 		    serialPinDdl.addItem("2", 2) ;
 		    serialPinDdl.addItem("4", 4) ;
 		    serialPinDdl.setValue(4) ;
-		    cp5.getProperties().remove(cp5.getGroup("serialPin"), "ListBoxItems") ;
+		    cp5.getProperties().remove(serialPinDdl, "ListBoxItems") ;
 
 		 // Protocol choice
 		    cp5.addTextlabel("protocol")
@@ -108,46 +112,43 @@ public class TabGeneralSettings {
 		    cp5.getTooltip().register("protocol", "Choose protocol") ;
 
 		    protocolDdl = cp5.addDropdownList("protocolChoice")
-		              .setPosition(100, 191)
-		              .setSize(105, 300)
-		              .setColorForeground(MainP.blueAct)
-		              .setBackgroundColor(MainP.backDdlGray)
-		              .setItemHeight(20)
-		              .setBarHeight(20)
-		              //.hide()
-		              ;
+		                     .setPosition(100, 191)
+		                     .setSize(105, 300)
+		                     .setColorForeground(MainP.blueAct)
+		                     .setBackgroundColor(MainP.backDdlGray)
+		                     .setItemHeight(20)
+		                     .setBarHeight(20)
+		                     ;
 		    protocolDdl.getCaptionLabel().set("Choose") ;
 		    protocolDdl.getCaptionLabel().getStyle().marginTop = 2 ;
-		    //protocolDdl.addItem("HUB - D rx", 1) ;
-		    //protocolDdl.addItem("Smart Port - X rx", 2) ;
 		    protocolDdl.addItem("FrSky", 1) ;
 		    protocolDdl.addItem("Multiplex", 2) ;
 		    protocolDdl.toUpperCase(false) ;
-		    cp5.getProperties().remove(cp5.getGroup("protocolChoice"), "ListBoxItems") ;
+		    cp5.getProperties().remove(protocolDdl, "ListBoxItems") ;
 
 		    // Sensor ID choice
-		    cp5.addTextlabel("sensorIDlabel")
-		    .setText("Sensor ID                    ")
-		    .setPosition(290, 172)
-		    .setColorValueLabel(0x000000)
-		    .setTab("default")
-		    ;
-		    cp5.getProperties().remove(cp5.getController("sensorIDlabel")) ;
+		    sensorIDTextlabel = cp5.addTextlabel("sensorIDlabel")
+		                           .setText("Sensor ID                    ")
+		                           .setPosition(290, 172)
+		                           .setColorValueLabel(0x000000)
+		                           .setTab("default")
+		                           ;
+		    cp5.getProperties().remove(sensorIDTextlabel) ;
 		    cp5.getTooltip().register("sensorIDlabel", "Choose S.Port sensor ID - Default: 0x1B -") ;
 		    
 		    sensorIDDdl = cp5.addDropdownList("sensorID")
-		    		.setPosition(355, 191)
-		    		.setSize(50, 300)
-		    		.setColorForeground(MainP.blueAct)
-		    		.setBackgroundColor(MainP.backDdlGray)
-		    		.setItemHeight(20)
-		    		.setBarHeight(20)
-		    		;
+		    		         .setPosition(355, 191)
+		    		         .setSize(50, 300)
+		    		         .setColorForeground(MainP.blueAct)
+		    		         .setBackgroundColor(MainP.backDdlGray)
+		    		         .setItemHeight(20)
+		    		         .setBarHeight(20)
+		    		         ;
 		    sensorIDDdl.getCaptionLabel().align(ControlP5.LEFT, ControlP5.CENTER).setPaddingX(8) ;
 		    sensorIDDdl.addItems(sensorIDs) ;
 		    sensorIDDdl.setValue(0) ;
 		    sensorIDDdl.toUpperCase(false) ;
-		    cp5.getProperties().remove(cp5.getGroup("sensorID"), "ListBoxItems") ;
+		    cp5.getProperties().remove(sensorIDDdl, "ListBoxItems") ;
 		    
 		    // Voltage reference  
 		    cp5.addTextlabel("voltRef")
@@ -160,32 +161,32 @@ public class TabGeneralSettings {
 		    cp5.getTooltip().register("voltRef", "Choose voltage reference") ;
 		  
 		    voltRefChoiceDdl = cp5.addDropdownList("voltRefChoice")
-						       .setPosition(160, 232)
-						       .setSize(95, 100)
-						       .setColorForeground(MainP.blueAct)
-						       .setBackgroundColor(MainP.backDdlGray)
-						       .setItemHeight(20)
-						       .setBarHeight(20)
-						       ;
+						          .setPosition(160, 232)
+						          .setSize(95, 100)
+						          .setColorForeground(MainP.blueAct)
+						          .setBackgroundColor(MainP.backDdlGray)
+						          .setItemHeight(20)
+						          .setBarHeight(20)
+						          ;
 		    voltRefChoiceDdl.getCaptionLabel().set("Choose") ;
 		    voltRefChoiceDdl.getCaptionLabel().getStyle().marginTop = 2 ;
 		    voltRefChoiceDdl.addItem("  Arduino VCC", 1) ;
 		    voltRefChoiceDdl.addItem("Internal (1.1V)", 2) ;
 		    voltRefChoiceDdl.setValue(1) ;
 		    voltRefChoiceDdl.toUpperCase(false) ;
-		    cp5.getProperties().remove(cp5.getGroup("voltRefChoice"), "ListBoxItems") ;
+		    cp5.getProperties().remove(voltRefChoiceDdl, "ListBoxItems") ;
 		    
 		    arduinoVccNbox = cp5.addNumberbox("arduinoVccNb")
-					        .setPosition(265, 211)
-					        .setSize(37, 20)
-					        .setRange(0, (float) 9.99)
-					        .setMultiplier((float) 0.01)                    // set the sensitifity of the numberbox
-					        .setDecimalPrecision(2)
-					        .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
-					        .setValue(5)
-					        .setCaptionLabel("volts")
-					        .setColorCaptionLabel(0)
-					        ;
+					            .setPosition(265, 211)
+					            .setSize(37, 20)
+					            .setRange(0, (float) 9.99)
+					            .setMultiplier((float) 0.01)                    // set the sensitifity of the numberbox
+					            .setDecimalPrecision(2)
+					            .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
+					            .setValue(5)
+					            .setCaptionLabel("volts")
+					            .setColorCaptionLabel(0)
+					            ;
 		    arduinoVccNbox.getCaptionLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
 		    arduinoVccNbox.getCaptionLabel().toUpperCase(false) ;
 		    cp5.getTooltip().register("arduinoVccNb", "Arduino alimentation voltage") ;
@@ -199,12 +200,12 @@ public class TabGeneralSettings {
 		    saveEpromTgl.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(8) ;
 		  
 		    // Reset button pin
-		    cp5.addTextlabel("resetButtonPinLabel")
-		       .setText("Reset button Pin number           ")
-		       .setPosition(210, 260)
-		       .setColorValueLabel(0)
-		       ;
-		    cp5.getProperties().remove(cp5.getController("resetButtonPinLabel")) ;
+		    resetButtonPinTextLabel = cp5.addTextlabel("resetButtonPinLabel")
+		                                 .setText("Reset button Pin number           ")
+		                                 .setPosition(210, 260)
+		                                 .setColorValueLabel(0)
+		                                 ;
+		    cp5.getProperties().remove(resetButtonPinTextLabel) ;
 		    cp5.getTooltip().register("resetButtonPinLabel", "- Default: 10 -") ;
 		  
 		    resetBtnPinDdl = cp5.addDropdownList("resetButtonPin")
@@ -221,7 +222,7 @@ public class TabGeneralSettings {
 		    	resetBtnPinDdl.addItem("" + i, i) ;
 		    }
 		    resetBtnPinDdl.setValue(10) ;
-		    cp5.getProperties().remove(cp5.getGroup("resetButtonPin"), "ListBoxItems") ;
+		    cp5.getProperties().remove(resetBtnPinDdl, "ListBoxItems") ;
 		  
 		    cp5.addTextlabel("sensors")
 		       .setText("SENSORS")
@@ -239,42 +240,42 @@ public class TabGeneralSettings {
 		    customizeToggleSensor(varioTgl) ;
 		    
 		    vario2Tgl = cp5.addToggle("vario2")
-		       .setPosition(265, 336)
-		       .setCaptionLabel("Vario 2        ")
-		       ;
+		                   .setPosition(265, 336)
+		                   .setCaptionLabel("Vario 2        ")
+		                   ;
 		    customizeToggleSensor(vario2Tgl) ;
 		    
 		    airSpeedTgl = cp5.addToggle("airSpeed")
-		       .setPosition(385, 336)
-		       .setCaptionLabel("Air Speed       ")
-		       ;
+		                     .setPosition(385, 336)
+		                     .setCaptionLabel("Air Speed       ")
+		                     ;
 		    customizeToggleSensor(airSpeedTgl) ;
 		  
 		    voltageTgl = cp5.addToggle("voltage")
-		       .setPosition(145, 361)
-		       .setCaptionLabel("Voltage / Other   ")
-		       ;
+		                    .setPosition(145, 361)
+		                    .setCaptionLabel("Voltage / Other   ")
+		                    ;
 		    customizeToggleSensor(voltageTgl) ;
 		  
 		    currentTgl = cp5.addToggle("current")
-		       .setPosition(265, 361)
-		       .setCaptionLabel("Current        ")
-		       ;
+		                    .setPosition(265, 361)
+		                    .setCaptionLabel("Current        ")
+		                    ;
 		    customizeToggleSensor(currentTgl) ;
 		  
 		    temperatureTgl = cp5.addToggle("temperature")
-		       .setPosition(85, 315)
-		       .setCaptionLabel("Temperature  ")
-		       ;
+		                        .setPosition(85, 315)
+		                        .setCaptionLabel("Temperature  ")
+		                        ;
 		    customizeToggleSensor(temperatureTgl) ;
 		   // if (!tempActive) {
 		    temperatureTgl.hide() ;
 		   // }
 
 		    rpmTgl = cp5.addToggle("rpm")
-		       .setPosition(385, 361)
-		       .setCaptionLabel("RPM          ")
-		       ;
+		                .setPosition(385, 361)
+		                .setCaptionLabel("RPM          ")
+		                ;
 		    customizeToggleSensor(rpmTgl) ;
 		    
 		    // dropdownlist overlap
@@ -343,7 +344,7 @@ public class TabGeneralSettings {
 		return rpmTgl;
 	}
 
-	public void draw(MainP mainP) {
+	public static void draw(MainP mainP) {
 		// separation lines
 		mainP.stroke(MainP.darkBackGray) ;
 		mainP.noSmooth() ;
@@ -354,12 +355,12 @@ public class TabGeneralSettings {
 	
 		// Sensor ID graying
 		if ( protocolDdl.getValue() != 1 ) {
-			cp5.getController("sensorIDlabel").setColorValueLabel(MainP.grayedColor) ;
+			sensorIDTextlabel.setColorValueLabel(MainP.grayedColor) ;
 			sensorIDDdl.hide() ;
 			mainP.fill(MainP.grayedColor) ;
 			mainP.rect(355, 170, 50, 20) ;
 		} else {
-			cp5.getController("sensorIDlabel").setColorValueLabel(0) ;
+			sensorIDTextlabel.setColorValueLabel(0) ;
 			sensorIDDdl.show() ;
 		}
 		
@@ -377,12 +378,12 @@ public class TabGeneralSettings {
 		}
 	
 		if ( saveEpromTgl.getValue() == 0 ) {
-			cp5.getController("resetButtonPinLabel").setColorValueLabel(MainP.grayedColor) ;
+			resetButtonPinTextLabel.setColorValueLabel(MainP.grayedColor) ;
 			resetBtnPinDdl.hide() ;
 			mainP.fill(MainP.grayedColor) ;
 			mainP.rect(355, 258, 30, 20) ;
 		} else {
-			cp5.getController("resetButtonPinLabel").setColorValueLabel(mainP.color(0)) ;
+			resetButtonPinTextLabel.setColorValueLabel(mainP.color(0)) ;
 			resetBtnPinDdl.show() ;
 			mainP.fill(MainP.lightOrange) ;               // rectangle border filled
 			mainP.rect(10, 258, 152, 20) ;
