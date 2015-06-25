@@ -5,6 +5,7 @@ import processing.core.PApplet;
 import controlP5.ControlP5;
 import controlP5.Controller;
 import controlP5.DropdownList;
+import controlP5.Numberbox;
 import controlP5.Textlabel;
 import controlP5.Toggle;
 
@@ -13,6 +14,8 @@ public class TabPPM {
 	private static ControlP5 cp5 ;
 	@SuppressWarnings("unused")
 	private final PApplet p ; // TODO check if needed
+	private static Numberbox ppmRngMinNBox;
+	private static Numberbox ppmRngMaxNBox;
 	
 	private static Textlabel ppmPinL;
 	private static Toggle ppmTgl;
@@ -68,35 +71,35 @@ public class TabPPM {
 		cp5.getProperties().remove(cp5.getController("ppmRngL")) ;
 		cp5.getTooltip().register("ppmRngL", "RC control range - Default: 988:2012 -");
 
-		cp5.addNumberbox("ppmRngMin")
-		.setPosition(306, 115)
-		.setSize(40, 20)
-		.setColorActive(MainP.blueAct)
-		.setRange(888, 1088)
-		.setMultiplier((float) 0.5)                     // set the sensitifity of the numberbox
-		.setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
-		.setValue(988)
-		.setCaptionLabel("Min.")
-		.setColorCaptionLabel(0)
-		.hide()
-		;
-		cp5.getController("ppmRngMin").getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
-		cp5.getController("ppmRngMin").getCaptionLabel().toUpperCase(false) ;
+		ppmRngMinNBox = cp5.addNumberbox("ppmRngMin")
+		                   .setPosition(306, 115)
+		                   .setSize(40, 20)
+		                   .setColorActive(MainP.blueAct)
+		                   .setRange(888, 1088)
+		                   .setMultiplier((float) 0.5)                     // set the sensitifity of the numberbox
+		                   .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
+		                   .setValue(988)
+		                   .setCaptionLabel("Min.")
+		                   .setColorCaptionLabel(0)
+		                   .hide()
+		                   ;
+		ppmRngMinNBox.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
+		ppmRngMinNBox.getCaptionLabel().toUpperCase(false) ;
 
-		cp5.addNumberbox("ppmRngMax")
-		.setPosition(366, 115)
-		.setSize(40, 20)
-		.setColorActive(MainP.blueAct)
-		.setRange(1912, 2112)
-		.setMultiplier((float) 0.5)                     // set the sensitifity of the numberbox
-		.setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
-		.setValue(2012)
-		.setCaptionLabel("Max.")
-		.setColorCaptionLabel(0)
-		.hide()
-		;
-		cp5.getController("ppmRngMax").getCaptionLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
-		cp5.getController("ppmRngMax").getCaptionLabel().toUpperCase(false) ;    
+		ppmRngMaxNBox = cp5.addNumberbox("ppmRngMax")
+		                   .setPosition(366, 115)
+		                   .setSize(40, 20)
+		                   .setColorActive(MainP.blueAct)
+		                   .setRange(1912, 2112)
+		                   .setMultiplier((float) 0.5)                     // set the sensitifity of the numberbox
+		                   .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
+		                   .setValue(2012)
+		                   .setCaptionLabel("Max.")
+		                   .setColorCaptionLabel(0)
+		                   .hide()
+		                   ;
+		ppmRngMaxNBox.getCaptionLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
+		ppmRngMaxNBox.getCaptionLabel().toUpperCase(false) ;    
 	}
 
 	public static Toggle getPpmTgl() {
@@ -105,6 +108,14 @@ public class TabPPM {
 
 	public static DropdownList getPpmPin() {
 		return ppmPin;
+	}
+
+	public static Numberbox getPpmRngMinNBox() {
+		return ppmRngMinNBox;
+	}
+
+	public static Numberbox getPpmRngMaxNBox() {
+		return ppmRngMaxNBox;
 	}
 
 	public static void drawPPMzone(MainP mainP) {

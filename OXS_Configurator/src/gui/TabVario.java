@@ -5,6 +5,8 @@ import processing.core.PApplet;
 import controlP5.ControlP5;
 import controlP5.Controller;
 import controlP5.DropdownList;
+import controlP5.Numberbox;
+import controlP5.Range;
 import controlP5.Toggle;
 
 public class TabVario {
@@ -15,6 +17,9 @@ public class TabVario {
 
 	private static DropdownList vSpeed1Ddl;
 	private static DropdownList vSpeed2Ddl;
+	private static Range sensMinMaxRng;
+	private static Numberbox vSpeedMinNBox;
+	private static Numberbox vSpeedMaxNBox;
 	
 	private static Toggle analogClimbTgl;	
 	private static DropdownList climbPin;
@@ -104,15 +109,15 @@ public class TabVario {
 	    cp5.getProperties().remove(cp5.getController("vStSw1L")) ;
 	  
 	    vSpeed1Ddl = cp5.addDropdownList("vSpeed1")
-	       .setPosition(186, 234)
-	       .setSize(100, 75)
-	       .setColorForeground(MainP.orangeAct)
-	       .setColorActive(MainP.blueAct)
-	       .setBackgroundColor(MainP.backDdlGray)
-	       .setItemHeight(20)
-	       .setBarHeight(20)
-	       .setTab("vario")
-	       ;
+	                    .setPosition(186, 234)
+	                    .setSize(100, 75)
+	                    .setColorForeground(MainP.orangeAct)
+	                    .setColorActive(MainP.blueAct)
+	                    .setBackgroundColor(MainP.backDdlGray)
+	                    .setItemHeight(20)
+	                    .setBarHeight(20)
+	                    .setTab("vario")
+	                    ;
 	    vSpeed1Ddl.getCaptionLabel().getStyle().marginTop = 2 ;
 	    //cp5.get(DropdownList.class, "vSpeed1").addItem("       Vario 1", 0) ;
 	    //cp5.get(DropdownList.class, "vSpeed1").addItem("       Vario 2", 1) ;
@@ -130,15 +135,15 @@ public class TabVario {
 	    cp5.getProperties().remove(cp5.getController("vStSw2L")) ;
 	  
 	    vSpeed2Ddl = cp5.addDropdownList("vSpeed2")
-	       .setPosition(306, 234)
-	       .setSize(100, 75)
-	       .setColorForeground(MainP.orangeAct)
-	       .setColorActive(MainP.blueAct)
-	       .setBackgroundColor(MainP.backDdlGray)
-	       .setItemHeight(20)
-	       .setBarHeight(20)
-	       .setTab("vario")
-	       ;
+	                    .setPosition(306, 234)
+	                    .setSize(100, 75)
+	                    .setColorForeground(MainP.orangeAct)
+	                    .setColorActive(MainP.blueAct)
+	                    .setBackgroundColor(MainP.backDdlGray)
+	                    .setItemHeight(20)
+	                    .setBarHeight(20)
+	                    .setTab("vario")
+	                    ;
 	    vSpeed2Ddl.getCaptionLabel().getStyle().marginTop = 2 ;
 	    //cp5.get(DropdownList.class, "vSpeed2").addItem("       Vario 1", 0) ;
 	    //cp5.get(DropdownList.class, "vSpeed2").addItem("       Vario 2", 1) ;
@@ -197,15 +202,15 @@ public class TabVario {
 	    cp5.getProperties().remove(cp5.getController("sensitivityRange")) ;
 	    cp5.getTooltip().register("sensitivityRange", "Sensitivity based on vertical speed - Default: 50:50 -") ;
 	  
-	    cp5.addRange("sensMinMax")
-	       .setPosition(186, 277)
-	       .setCaptionLabel("Max.")
-	       .setSize(220, 20)
-	       .setHandleSize(15)
-	       .setRange(20, 150)
-	       .setRangeValues( (float) 50.9, (float) 50.9)
-	       ;
-	    MainP.customizeRange(cp5.getController("sensMinMax")) ;
+	    sensMinMaxRng = cp5.addRange("sensMinMax")
+	                       .setPosition(186, 277)
+	                       .setCaptionLabel("Max.")
+	                       .setSize(220, 20)
+	                       .setHandleSize(15)
+	                       .setRange(20, 150)
+	                       .setRangeValues( (float) 50.9, (float) 50.9)
+	                       ;
+	    MainP.customizeRange(sensMinMaxRng) ;
 	    cp5.getTooltip().register("sensMinMax", "Sensitivity based on vertical speed - Default: 50:50 -") ;
 	  
 	    // Vario Vertical speed switching sensitivity range
@@ -218,38 +223,38 @@ public class TabVario {
 	     cp5.getProperties().remove(cp5.getController("vSpeedSensitivityRng")) ;
 	     cp5.getTooltip().register("vSpeedSensitivityRng", "Vertical speed threshold sensitivity - Default: 20:100 -") ;
 	  
-	     cp5.addNumberbox("vSpeedMin")
-	        .setPosition(306, 304)
-	        .setSize(40, 20)
-	        .setColorActive(MainP.blueAct)
-	        .setBroadcast(false)
-	        .setMultiplier((float) 0.5)                     // set the sensitifity of the numberbox
-	        .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
-	        .setValue(20)
-	        .setCaptionLabel("Min.")
-	        .setColorCaptionLabel(0)
-	        .setTab("vario")
-	        ;
-	    cp5.getController("vSpeedMin").getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
-	    cp5.getController("vSpeedMin").getCaptionLabel().toUpperCase(false) ;
+	     vSpeedMinNBox = cp5.addNumberbox("vSpeedMin")
+	                        .setPosition(306, 304)
+	                        .setSize(40, 20)
+	                        .setColorActive(MainP.blueAct)
+	                        .setBroadcast(false)
+	                        .setMultiplier((float) 0.5)                     // set the sensitifity of the numberbox
+	                        .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
+	                        .setValue(20)
+	                        .setCaptionLabel("Min.")
+	                        .setColorCaptionLabel(0)
+	                        .setTab("vario")
+	                        ;
+	     vSpeedMinNBox.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
+	     vSpeedMinNBox.getCaptionLabel().toUpperCase(false) ;
 	  
-	    cp5.addNumberbox("vSpeedMax")
-	       .setPosition(366, 304)
-	       .setSize(40, 20)
-	       .setColorActive(MainP.blueAct)
-	       .setBroadcast(false)
-	       .setMultiplier((float) 0.5)                     // set the sensitifity of the numberbox
-	       .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
-	       .setValue(100)
-	       .setCaptionLabel("Max.")
-	       .setColorCaptionLabel(0)
-	       .setTab("vario")
-	       ;
-	    cp5.getController("vSpeedMax").getCaptionLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
-	    cp5.getController("vSpeedMax").getCaptionLabel().toUpperCase(false) ;
+	     vSpeedMaxNBox = cp5.addNumberbox("vSpeedMax")
+	                        .setPosition(366, 304)
+	                        .setSize(40, 20)
+	                        .setColorActive(MainP.blueAct)
+	                        .setBroadcast(false)
+	                        .setMultiplier((float) 0.5)                     // set the sensitifity of the numberbox
+	                        .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
+	                        .setValue(100)
+	                        .setCaptionLabel("Max.")
+	                        .setColorCaptionLabel(0)
+	                        .setTab("vario")
+	                        ;
+	     vSpeedMaxNBox.getCaptionLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
+	     vSpeedMaxNBox.getCaptionLabel().toUpperCase(false) ;
 	  
-	    cp5.getController("vSpeedMin").setBroadcast(true) ;
-	    cp5.getController("vSpeedMax").setBroadcast(true) ;
+		vSpeedMinNBox.setBroadcast(true);
+		vSpeedMaxNBox.setBroadcast(true);
 	  
 	    // Vario hysteresis
 	    cp5.addSlider("varioHysteresis")
@@ -333,9 +338,21 @@ public class TabVario {
 	public static DropdownList getvSpeed1Ddl() {
 		return vSpeed1Ddl;
 	}
-
+	
 	public static DropdownList getvSpeed2Ddl() {
 		return vSpeed2Ddl;
+	}
+	
+	public static Range getSensMinMaxRng() {
+		return sensMinMaxRng;
+	}
+
+	public static Numberbox getvSpeedMinNBox() {
+		return vSpeedMinNBox;
+	}
+
+	public static Numberbox getvSpeedMaxNBox() {
+		return vSpeedMaxNBox;
 	}
 
 	public static DropdownList getClimbPin() {
