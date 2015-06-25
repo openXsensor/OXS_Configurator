@@ -1,9 +1,7 @@
 package oxsc;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.CharBuffer;
+import java.util.Scanner;
 
 import processing.core.PApplet;
 import controlP5.ControlP5;
@@ -20,11 +18,11 @@ public class Validation {
 	private static ControlP5 cp5 ;
 	private static MainP mainP;
 
-	public static CharBuffer version;
+	private static String version;
 	private static String oxsDirectory = "";
 	private static String outputConfigDir = "";
 	private static final String oxsVersion = "v2.x";
-	private static final String oxsCversion = "v2.1";
+	private static final String oxsCversion = "v2.3";
 	static boolean numPinsValid;
 	static boolean analogPinsValid;
 	static int vSpeedValid; // 0 -> not valid 1 -> warning 2 -> valid
@@ -33,7 +31,7 @@ public class Validation {
 	static int versionValid; // 0 -> not valid 1 -> warning 2 -> valid	
 	static int allValid; // 0 -> not valid 1 -> warning 2 -> valid
 	
-	private static File versionFile = new File(oxsDirectory + "/version.oxs");
+
 
 	public Validation(ControlP5 cp5) {  // Dummy constructor
 		Validation.cp5 = cp5;
@@ -77,16 +75,11 @@ public class Validation {
 		validateVspeed() ;
 		validateCells() ;
 
-		if ( theString.equals("Config") ) {
-			validateSentData() ;
-			if ( numPinsValid && analogPinsValid && vSpeedValid != 0 && cellsValid && sentDataValid )
-				try {
-					validateVersion() ;
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					PApplet.println("validateVersion problem...");
-					e.printStackTrace();
-				}
+		if (theString.equals("Config")) {
+			validateSentData();
+			if (numPinsValid && analogPinsValid && vSpeedValid != 0
+					&& cellsValid && sentDataValid)
+				validateVersion();
 		}
 
 		if ( !numPinsValid || !analogPinsValid || vSpeedValid == 0 || !cellsValid || !sentDataValid || versionValid == 0 ) {
@@ -553,46 +546,60 @@ public class Validation {
 	
 	}
 
-	public static void validateVersion() throws IOException { // TODO first not working
+	public static void validateVersion() {
 
-		FileReader verFileReader = new FileReader(versionFile);
-		verFileReader.read(version);
-//Files.readAllLines(arg0);
+		File versionFile = new File(oxsDirectory + "/version.oxs");
+
+		try {
+			Scanner scanner = new Scanner(versionFile);
+
+			while (scanner.hasNextLine()) {
+				version = scanner.nextLine();
+				System.out.println(version);
+			}
+			scanner.close();
+		} catch (Exception e) {
+			PApplet.println("File version.oxs not found...");
+			// e.printStackTrace();
+			version = null;
+		}
+
 		if (version == null) {
 			versionValid = 1;
-			// messageList.append("") ;
-			// messageList.append("                                              -------------------")
-			// ;
+
 			MainP.messageList.append("");
 			MainP.messageList
 					.append("                ** The Configurator can't find OXS version number **");
 			MainP.messageList
 					.append("                **      Configuration file may not be compatible...    **");
 
-			// println("no version file") ;
 		} else if (version.charAt(1) == oxsCversion.charAt(1)) {
 			MainP.messageList.append("Configuration file will be written to:");
 			MainP.messageList.append(outputConfigDir);
 			MainP.messageList.append("");
 			MainP.messageList
 					.append("                       ! If the file already exists, it will be replaced !");
-			// println("OXS and the Configurator are compatible,") ;
-			// println("OXS version = " + version[0] + " and OXSC version = " +
-			// oxsCversion) ;
 
+		} else if (version.charAt(1) > oxsCversion.charAt(1)) {
+			versionValid = 1;
+			MainP.messageList.append("");
+			MainP.messageList.append("        **  The Configurator "
+					+ oxsCversion + " can't set OXS " + version
+					+ " new features,  **");
+			MainP.messageList
+					.append("        **    if you need them, you can edit the config file by hand    **");
+			MainP.messageList.append("");
 		} else {
 			versionValid = 0;
 			MainP.messageList.append("            ** The Configurator "
-					+ oxsCversion + " isn't compatible with OXS "
-					+ version + " **");
+					+ oxsCversion + " isn't compatible with OXS " + version
+					+ " **");
 			MainP.messageList.append("");
 			MainP.messageList
 					.append("         You may go to \"https://code.google.com/p/openxsensor/\" and");
 			MainP.messageList
 					.append("       download the latest version of both OXS and OXS Configurator.");
-			// println("OXS version " + version[0]) ;
 		}
-		verFileReader.close();
 	}
 	
 }
