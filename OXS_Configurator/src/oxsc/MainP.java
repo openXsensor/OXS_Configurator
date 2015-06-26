@@ -1134,11 +1134,11 @@ public class MainP extends PApplet {
 
 	// =================================================================================================
 
-	float round(float number, float decimal) {      // Rounding function
+	public float round(float number, float decimal) {      // Rounding function
 		return (float)(round((number*pow(10, decimal))))/pow(10, decimal) ;
 	}
 
-	float mVoltStep(int NbrVolt) {    // Voltage measurements milliVolt per ADC step calculation
+	public float mVoltStep(int NbrVolt) {    // Voltage measurements milliVolt per ADC step calculation
 
 		float mVoltStep ;
 		float voltageDiv = cp5.getController("dividerVolt" + NbrVolt ).getValue() ;
@@ -1152,7 +1152,7 @@ public class MainP extends PApplet {
 		return mVoltStep ;
 	}
 
-	float mAmpStep() {    // Current sensor milliAmp per ADC step calculation
+	public float mAmpStep() {    // Current sensor milliAmp per ADC step calculation
 
 		float mAmpStep ;
 		float mAmpPmV ;
@@ -1169,7 +1169,7 @@ public class MainP extends PApplet {
 		return mAmpStep ;
 	}
 
-	int offsetCurrent() {    // Current sensor offset calculation in ADC step
+	public int offsetCurrent() {    // Current sensor offset calculation in ADC step
 
 		int offsetCurrent ;
 		//float currentVcc = cp5.getController("currentVccNb").getValue() ;

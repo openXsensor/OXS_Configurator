@@ -7,6 +7,7 @@ import controlP5.Controller;
 import controlP5.DropdownList;
 import controlP5.Numberbox;
 import controlP5.Range;
+import controlP5.Slider;
 import controlP5.Toggle;
 
 public class TabVario {
@@ -15,14 +16,20 @@ public class TabVario {
 	@SuppressWarnings("unused")
 	private final PApplet p ;  // TODO check if needed
 
+	private static Range ppmRngSensMinMaxRng;
+	private static Range ppmSensMinMaxRng;
 	private static DropdownList vSpeed1Ddl;
 	private static DropdownList vSpeed2Ddl;
+	private static Numberbox ppmVspeedSwMinNbox;
+	private static Numberbox ppmVspeedSwMaxNBox;
 	private static Range sensMinMaxRng;
 	private static Numberbox vSpeedMinNBox;
 	private static Numberbox vSpeedMaxNBox;
+	private static Slider varioHysteresisSld;
 	
 	private static Toggle analogClimbTgl;	
 	private static DropdownList climbPin;
+	private static Range outClimbRateMinMaxRng;
 	
 	public TabVario(PApplet p, ControlP5 cp5) {
 
@@ -51,15 +58,15 @@ public class TabVario {
 	       ;
 	    cp5.getProperties().remove(cp5.getController("ppmRngSensL")) ;
 	  
-	    cp5.addRange("ppmRngSensMinMax")
-	       .setPosition(186, 151)
-	       .setSize(220, 20)
-	       .setCaptionLabel("Max.")
-	       .setHandleSize(15)
-	       .setRange(0, 100)
-	       .setRangeValues(10, 40)
-	       ;
-	    MainP.customizeRange(cp5.getController("ppmRngSensMinMax")) ;
+	    ppmRngSensMinMaxRng = cp5.addRange("ppmRngSensMinMax")
+	                             .setPosition(186, 151)
+	                             .setSize(220, 20)
+	                             .setCaptionLabel("Max.")
+	                             .setHandleSize(15)
+	                             .setRange(0, 100)
+	                             .setRangeValues(10, 40)
+	                             ;
+	    MainP.customizeRange(ppmRngSensMinMaxRng) ;
 	    cp5.getTooltip().register("ppmRngSensMinMax", "- Default: 10:40 -") ;
 	  
 	    // PPM sensitivity range
@@ -71,15 +78,15 @@ public class TabVario {
 	       ;
 	    cp5.getProperties().remove(cp5.getController("ppmSensRngL")) ;
 	  
-	    cp5.addRange("ppmSensMinMax")
-	       .setPosition(186, 178)
-	       .setSize(220, 20)
-	       .setCaptionLabel("Max.")
-	       .setHandleSize(15)
-	       .setRange(20, 150)
-	       .setRangeValues(20, (float) 100.5)
-	       ;
-	    MainP.customizeRange(cp5.getController("ppmSensMinMax")) ;
+	    ppmSensMinMaxRng = cp5.addRange("ppmSensMinMax")
+	                          .setPosition(186, 178)
+	                          .setSize(220, 20)
+	                          .setCaptionLabel("Max.")
+	                          .setHandleSize(15)
+	                          .setRange(20, 150)
+	                          .setRangeValues(20, (float) 100.5)
+	                          ;
+	    MainP.customizeRange(ppmSensMinMaxRng) ;
 	    cp5.getTooltip().register("ppmSensMinMax", "RC control sensitivity range - Default: 20:100 -") ;
 	  
 	    // V.Speed type switching
@@ -162,35 +169,35 @@ public class TabVario {
 	     cp5.getProperties().remove(cp5.getController("ppmVspeedSw")) ;
 	     cp5.getTooltip().register("ppmVspeedSw", "- Default: 10:90 -") ;
 	  
-	     cp5.addNumberbox("ppmVspeedSwMin")
-	        .setPosition(306, 240)
-	        .setSize(40, 20)
-	        .setColorActive(MainP.blueAct)
-	        .setRange(0, 100)
-	        .setMultiplier((float) 0.5)                     // set the sensitifity of the numberbox
-	        .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
-	        .setValue(10)
-	        .setCaptionLabel("Min.")
-	        .setColorCaptionLabel(0)
-	        .setTab("vario")
-	        ;
-	    cp5.getController("ppmVspeedSwMin").getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
-	    cp5.getController("ppmVspeedSwMin").getCaptionLabel().toUpperCase(false) ;
+	     ppmVspeedSwMinNbox = cp5.addNumberbox("ppmVspeedSwMin")
+	                             .setPosition(306, 240)
+	                             .setSize(40, 20)
+	                             .setColorActive(MainP.blueAct)
+	                             .setRange(0, 100)
+	                             .setMultiplier((float) 0.5)                     // set the sensitifity of the numberbox
+	                             .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
+	                             .setValue(10)
+	                             .setCaptionLabel("Min.")
+	                             .setColorCaptionLabel(0)
+	                             .setTab("vario")
+	                             ;
+	     ppmVspeedSwMinNbox.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
+	     ppmVspeedSwMinNbox.getCaptionLabel().toUpperCase(false) ;
 	  
-	    cp5.addNumberbox("ppmVspeedSwMax")
-	       .setPosition(366, 240)
-	       .setSize(40, 20)
-	       .setColorActive(MainP.blueAct)
-	       .setRange(0, 100)
-	       .setMultiplier((float) 0.5)                     // set the sensitifity of the numberbox
-	       .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
-	       .setValue(90)
-	       .setCaptionLabel("Max.")
-	       .setColorCaptionLabel(0)
-	       .setTab("vario")
-	       ;
-	    cp5.getController("ppmVspeedSwMax").getCaptionLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
-	    cp5.getController("ppmVspeedSwMax").getCaptionLabel().toUpperCase(false) ;
+	     ppmVspeedSwMaxNBox = cp5.addNumberbox("ppmVspeedSwMax")
+	                             .setPosition(366, 240)
+	                             .setSize(40, 20)
+	                             .setColorActive(MainP.blueAct)
+	                             .setRange(0, 100)
+	                             .setMultiplier((float) 0.5)                     // set the sensitifity of the numberbox
+	                             .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
+	                             .setValue(90)
+	                             .setCaptionLabel("Max.")
+	                             .setColorCaptionLabel(0)
+	                             .setTab("vario")
+	                             ;
+	     ppmVspeedSwMaxNBox.getCaptionLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
+	     ppmVspeedSwMaxNBox.getCaptionLabel().toUpperCase(false) ;
 	  
 	    // Vario sensitivity range
 	    cp5.addTextlabel("sensitivityRange")
@@ -257,31 +264,31 @@ public class TabVario {
 		vSpeedMaxNBox.setBroadcast(true);
 	  
 	    // Vario hysteresis
-	    cp5.addSlider("varioHysteresis")
-	       .setPosition(186, 340)
-	       .setSize(220, 15)
-	       .setCaptionLabel("Hysteresis (cm/s)")
-	       .setColorForeground(MainP.blueAct)
-	       .setColorCaptionLabel(0)
-	       .setColorValueLabel(0)
-	       .setRange(0, 100)
-	       .setValue(5)
-	       .setTab("vario")
-	       ;
+		varioHysteresisSld = cp5.addSlider("varioHysteresis")
+	                            .setPosition(186, 340)
+	                            .setSize(220, 15)
+	                            .setCaptionLabel("Hysteresis (cm/s)")
+	                            .setColorForeground(MainP.blueAct)
+	                            .setColorCaptionLabel(0)
+	                            .setColorValueLabel(0)
+	                            .setRange(0, 100)
+	                            .setValue(5)
+	                            .setTab("vario")
+	                            ;
 	    // reposition the Labels for controller 'slider'
-	    cp5.getController("varioHysteresis").getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(78) ;
-	    cp5.getController("varioHysteresis").getValueLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(10) ;
-	    cp5.getController("varioHysteresis").getCaptionLabel().toUpperCase(false) ;
+		varioHysteresisSld.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(78) ;
+		varioHysteresisSld.getValueLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(10) ;
+		varioHysteresisSld.getCaptionLabel().toUpperCase(false) ;
 	    cp5.getTooltip().register("varioHysteresis", "Minimum measurements difference - Default: 5 -") ;
 	  
 	  
 	    // Analog climb rate  pin and settings
 	    analogClimbTgl = cp5.addToggle("analogClimb")
-	       .setCaptionLabel("Analog climb rate")
-	       .setPosition(117, 375)
-	       .setTab("vario")
-	       ;
-	    MainP.customizeToggle(cp5.getController("analogClimb")) ;
+	                        .setCaptionLabel("Analog climb rate")
+	                        .setPosition(117, 375)
+	                        .setTab("vario")
+	                        ;
+	    MainP.customizeToggle(analogClimbTgl) ;
 	  
 	    cp5.addTextlabel("climbPinL")
 	       .setText("Pin            ")
@@ -307,7 +314,7 @@ public class TabVario {
 	    climbPin.addItem("11", 11) ;
 	    climbPin.setValue(3) ;
 	    climbPin.toUpperCase(false) ;
-	    cp5.getProperties().remove(cp5.getGroup("climbPin"), "ListBoxItems") ;
+	    cp5.getProperties().remove(climbPin, "ListBoxItems") ;
 	  
 	    // Output climb rate range
 	    cp5.addTextlabel("outClimbRateRngL")
@@ -318,22 +325,26 @@ public class TabVario {
 	       ;
 	    cp5.getProperties().remove(cp5.getController("outClimbRateRngL")) ;
 	  
-	    cp5.addRange("outClimbRateMinMax")
-	       .setPosition(306, 372)
-	       .setSize(100, 20)
-	       .setCaptionLabel("Max.")
-	       .setHandleSize(15)
-	       .setRange(-20, 20)
-	       .setRangeValues(-3, (float) 3.9)
-	       ;
-	    MainP.customizeRange(cp5.getController("outClimbRateMinMax")) ;
+	    outClimbRateMinMaxRng = cp5.addRange("outClimbRateMinMax")
+	                               .setPosition(306, 372)
+	                               .setSize(100, 20)
+	                               .setCaptionLabel("Max.")
+	                               .setHandleSize(15)
+	                               .setRange(-20, 20)
+	                               .setRangeValues(-3, (float) 3.9)
+	                               ;
+	    MainP.customizeRange(outClimbRateMinMaxRng) ;
 	    cp5.getTooltip().register("outClimbRateMinMax", "Analog climb rate range - Default: -3:3 -") ;
 	    
 	    // dropdownlist overlap
 	    climbPin.bringToFront() ;
-	    cp5.getGroup("vSpeed1").bringToFront() ;
-	    cp5.getGroup("vSpeed2").bringToFront() ;
+	    vSpeed1Ddl.bringToFront() ;
+	    vSpeed2Ddl.bringToFront() ;
 	  }
+
+	public static Range getPpmRngSensMinMaxRng() {
+		return ppmRngSensMinMaxRng;
+	}
 
 	public static DropdownList getvSpeed1Ddl() {
 		return vSpeed1Ddl;
@@ -343,6 +354,14 @@ public class TabVario {
 		return vSpeed2Ddl;
 	}
 	
+	public static Numberbox getPpmVspeedSwMinNbox() {
+		return ppmVspeedSwMinNbox;
+	}
+
+	public static Numberbox getPpmVspeedSwMaxNBox() {
+		return ppmVspeedSwMaxNBox;
+	}
+
 	public static Range getSensMinMaxRng() {
 		return sensMinMaxRng;
 	}
@@ -355,8 +374,16 @@ public class TabVario {
 		return vSpeedMaxNBox;
 	}
 
+	public static Slider getVarioHysteresisSld() {
+		return varioHysteresisSld;
+	}
+
 	public static DropdownList getClimbPin() {
 		return climbPin;
+	}
+
+	public static Range getOutClimbRateMinMaxRng() {
+		return outClimbRateMinMaxRng;
 	}
 
 	public static Toggle getAnalogClimbTgl() {

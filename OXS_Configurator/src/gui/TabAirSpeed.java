@@ -4,6 +4,8 @@ import oxsc.MainP;
 import processing.core.PApplet;
 import controlP5.ControlP5;
 import controlP5.Controller;
+import controlP5.Numberbox;
+import controlP5.Range;
 
 public class TabAirSpeed {
 	
@@ -11,6 +13,9 @@ public class TabAirSpeed {
 	//private final ControlP5 cp5 ;
 	@SuppressWarnings("unused")
 	private final PApplet p ; // TODO check if needed
+	private static Numberbox aSpeedResetNBox;
+	private static Range ppmRngCompMinMaxRng;
+	private static Range ppmCompMinMaxRng;
 	
 	public TabAirSpeed(PApplet p, ControlP5 cp5) {
 		
@@ -30,20 +35,20 @@ public class TabAirSpeed {
 	    cp5.getTab("airSpeed").getCaptionLabel().toUpperCase(false) ;
 	  
 	    // PPM Air Speed reset
-	    cp5.addNumberbox("aSpeedReset")
-	       .setPosition(206, 154)
-	       .setSize(40, 20)
-	       .setColorActive(MainP.blueAct)
-	       .setRange(0, 100)
-	       .setMultiplier((float) 0.5)                     // set the sensitifity of the numberbox
-	       .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
-	       .setValue(100)
-	       .setCaptionLabel("PPM Air Speed reset                       ")
-	       .setColorCaptionLabel(0)
-	       .setTab("airSpeed")
-	       ;
-	    cp5.getController("aSpeedReset").getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
-	    cp5.getController("aSpeedReset").getCaptionLabel().toUpperCase(false) ;
+	    aSpeedResetNBox = cp5.addNumberbox("aSpeedReset")
+	                         .setPosition(206, 154)
+	                         .setSize(40, 20)
+	                         .setColorActive(MainP.blueAct)
+	                         .setRange(0, 100)
+	                         .setMultiplier((float) 0.5)                     // set the sensitifity of the numberbox
+	                         .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
+	                         .setValue(100)
+	                         .setCaptionLabel("PPM Air Speed reset                       ")
+	                         .setColorCaptionLabel(0)
+	                         .setTab("airSpeed")
+	                         ;
+	    aSpeedResetNBox.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
+	    aSpeedResetNBox.getCaptionLabel().toUpperCase(false) ;
 	  
 	    // PPM compensation at PPM range
 	    cp5.addTextlabel("ppmRngCompL")
@@ -54,17 +59,17 @@ public class TabAirSpeed {
 	       ;
 	    cp5.getProperties().remove(cp5.getController("ppmRngCompL")) ;
 	  
-	    cp5.addRange("ppmRngCompMinMax")
-	       .setPosition(206, 195)
-	       .setSize(200, 20)
-	       .setCaptionLabel("Max.")
-	       .setHandleSize(15)
-	       .setRange(0, 100)
-	       .setRangeValues(60, 90)
-	       ;
-	    MainP.customizeRange(cp5.getController("ppmRngCompMinMax")) ;
+	    ppmRngCompMinMaxRng = cp5.addRange("ppmRngCompMinMax")
+	                             .setPosition(206, 195)
+	                             .setSize(200, 20)
+	                             .setCaptionLabel("Max.")
+	                             .setHandleSize(15)
+	                             .setRange(0, 100)
+	                             .setRangeValues(60, 90)
+	                             ;
+	    MainP.customizeRange(ppmRngCompMinMaxRng) ;
 	    cp5.getTooltip().register("ppmRngCompMinMax", "- Default: 10:40 -") ;
-	    cp5.getController("ppmRngCompMinMax").setTab("airSpeed") ;
+	    ppmRngCompMinMaxRng.setTab("airSpeed") ;
 	  
 	    // PPM compensation
 	    cp5.addTextlabel("ppmCompL")
@@ -75,18 +80,30 @@ public class TabAirSpeed {
 	       ;
 	    cp5.getProperties().remove(cp5.getController("ppmCompL")) ;
 	  
-	    cp5.addRange("ppmCompMinMax")
-	       .setPosition(206, 223)
-	       .setSize(200, 20)
-	       .setCaptionLabel("Max.")
-	       .setHandleSize(15)
-	       .setRange(0, 150)
-	       .setRangeValues((float) 80.5, 120)
-	       ;
-	    MainP.customizeRange(cp5.getController("ppmCompMinMax")) ;
+	    ppmCompMinMaxRng = cp5.addRange("ppmCompMinMax")
+	                          .setPosition(206, 223)
+	                          .setSize(200, 20)
+	                          .setCaptionLabel("Max.")
+	                          .setHandleSize(15)
+	                          .setRange(0, 150)
+	                          .setRangeValues((float) 80.5, 120)
+	                          ;
+	    MainP.customizeRange(ppmCompMinMaxRng) ;
 	    cp5.getTooltip().register("ppmCompMinMax", "- Default: 10:40 -") ;
-	    cp5.getController("ppmCompMinMax").setTab("airSpeed") ;
+	    ppmCompMinMaxRng.setTab("airSpeed") ;
 	    
 	  }
+
+	public static Numberbox getaSpeedResetNBox() {
+		return aSpeedResetNBox;
+	}
+
+	public static Range getPpmRngCompMinMaxRng() {
+		return ppmRngCompMinMaxRng;
+	}
+
+	public static Range getPpmCompMinMaxRng() {
+		return ppmCompMinMaxRng;
+	}
 
 }

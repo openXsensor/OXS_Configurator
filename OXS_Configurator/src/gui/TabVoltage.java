@@ -5,6 +5,7 @@ import processing.core.PConstants;
 import controlP5.ControlP5;
 import controlP5.Controller;
 import controlP5.DropdownList;
+import controlP5.Numberbox;
 import controlP5.Toggle;
 
 //import processing.core.PApplet;
@@ -16,8 +17,10 @@ public class TabVoltage {
 	private static final int voltNbr = 6;
 	private static Toggle[] voltTgl = new Toggle[voltNbr + 1];
 	private static DropdownList[] ddlVolt = new DropdownList[voltNbr + 1];
+	private static Numberbox[] offsetVoltNBox = new Numberbox[voltNbr + 1];
 	private static DropdownList ddlNbrCells;
 	private static Toggle cellsTgl;
+
 
 	// private final PApplet p ; // TODO check if needed
 
@@ -62,9 +65,9 @@ public class TabVoltage {
 
 		for (int i = 1; i <= voltNbr; i++) {
 			ddlVolt[i] = cp5.addDropdownList("ddlVolt" + i)
-			   .setPosition(113 + 55 * (i - 1), 192)
-			   .setTab("voltage");
-			customizeDdlVpin(cp5.get(DropdownList.class, "ddlVolt" + i));
+			                .setPosition(113 + 55 * (i - 1), 192)
+			                .setTab("voltage");
+			customizeDdlVpin(ddlVolt[i]);
 			ddlVolt[i].setValue(-1);
 			cp5.getProperties().remove(ddlVolt[i], "ListBoxItems");
 		}
@@ -102,28 +105,30 @@ public class TabVoltage {
 		cp5.getTooltip().register("voltOffset", "- Default: 0 -");
 
 		for (int i = 1; i <= voltNbr; i++) {
-			cp5.addNumberbox("offsetVolt" + i)
-			   .setPosition(113 + 55 * (i - 1), 231)
-			   .setSize(45, 20)
-			   .setColorActive(MainP.blueAct)
-			   .setDecimalPrecision(0)
-			   .setRange(-5000, 5000)
-			   .setMultiplier(1) // set the sensitivity of  the numberbox
-			   .setDirection(Controller.HORIZONTAL) // change the control direction to left/right
-			   .setValue(0)
-			   .setCaptionLabel("")
-			   .setTab("voltage");
+			offsetVoltNBox[i] = cp5.addNumberbox("offsetVolt" + i)
+			                       .setPosition(113 + 55 * (i - 1), 231)
+			                       .setSize(45, 20)
+			                       .setColorActive(MainP.blueAct)
+			                       .setDecimalPrecision(0)
+			                       .setRange(-5000, 5000)
+			                       .setMultiplier(1) // set the sensitivity of  the numberbox
+			                       .setDirection(Controller.HORIZONTAL) // change the control direction to left/right
+			                       .setValue(0)
+			                       .setCaptionLabel("")
+			                       .setTab("voltage")
+			                       ;
 		}
 
 		// Cells monitoring -> Number of Cells
 		cellsTgl = cp5.addToggle("cells").setPosition(148, 296)
-		   .setCaptionLabel("Battery cells monitoring")
-		   .setColorForeground(MainP.orangeAct)
-		   .setColorBackground(MainP.darkBackGray)
-		   .setColorActive(MainP.blueAct)
-		   .setColorCaptionLabel(0)
-		   .setSize(15, 15)
-		   .setTab("voltage");
+		              .setCaptionLabel("Battery cells monitoring")
+		              .setColorForeground(MainP.orangeAct)
+		              .setColorBackground(MainP.darkBackGray)
+		              .setColorActive(MainP.blueAct)
+		              .setColorCaptionLabel(0)
+		              .setSize(15, 15)
+		              .setTab("voltage")
+		              ;
 		cellsTgl.getCaptionLabel()
 				.align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER)
 				.setPaddingX(10);
@@ -172,6 +177,10 @@ public class TabVoltage {
 
 	public static DropdownList[] getDdlVolt() {
 		return ddlVolt;
+	}
+
+	public static Numberbox[] getOffsetVoltNBox() {
+		return offsetVoltNBox;
 	}
 
 	public static DropdownList getDdlNbrCells() {
