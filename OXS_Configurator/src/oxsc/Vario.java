@@ -1,12 +1,12 @@
 package oxsc;
 
 import gui.TabData;
+import gui.TabVario;
 
 import java.util.ArrayList;
 
 import processing.core.PApplet;
 import controlP5.ControlP5;
-import controlP5.DropdownList;
 
 public class Vario extends Sensor {
 	
@@ -34,19 +34,16 @@ public class Vario extends Sensor {
 				new OXSdata("ALTIMETER_MAX", "Max Relative Altitude", varioName, null);
 			}
 			
-			cp5.get(DropdownList.class, "vSpeed1").addItem("       Vario 1", 0);
-			cp5.get(DropdownList.class, "vSpeed2").addItem("       Vario 1", 0);
-			cp5.get(DropdownList.class, "vSpeed1").setValue(0);
+			TabVario.getvSpeed1Ddl().addItem("       Vario 1", 0);
+			TabVario.getvSpeed2Ddl().addItem("       Vario 1", 0);
+			TabVario.getvSpeed1Ddl().setValue(0);
 
 			if (MainP.airSpeed != null) { // TODO better
 				new OXSdata("PRANDTL_DTE", "Prandtl dTE", "varAspeed", null);
-				new OXSdata("PRANDTL_COMPENSATION", "Prandtl Compensation",
-						"varAspeed", null);
+				new OXSdata("PRANDTL_COMPENSATION", "Prandtl Compensation", "varAspeed", null);
 
-				cp5.get(DropdownList.class, "vSpeed1").addItem(" V1 + A.Speed",
-						2);
-				cp5.get(DropdownList.class, "vSpeed2").addItem(" V1 + A.Speed",
-						2);
+				TabVario.getvSpeed1Ddl().addItem(" V1 + A.Speed",	2);
+				TabVario.getvSpeed2Ddl().addItem(" V1 + A.Speed",	2);
 			}
 		} else {
 			new OXSdata("ALTIMETER_" + varioName.substring(5), "Altitude "
@@ -56,9 +53,9 @@ public class Vario extends Sensor {
 			new OXSdata("ALT_OVER_10_SEC_" + varioName.substring(5),
 					"Alt. over 10 seconds " + varioName.substring(5), varioName, null);
 
-			cp5.get(DropdownList.class, "vSpeed1").addItem("       Vario 2", 1);
-			cp5.get(DropdownList.class, "vSpeed2").addItem("       Vario 2", 1);
-			cp5.get(DropdownList.class, "vSpeed2").setValue(1);
+			TabVario.getvSpeed1Ddl().addItem("       Vario 2", 1);
+			TabVario.getvSpeed2Ddl().addItem("       Vario 2", 1);
+			TabVario.getvSpeed2Ddl().setValue(1);
 
 		}
 	}
@@ -66,19 +63,19 @@ public class Vario extends Sensor {
 	public void removeSensor() {
 
 		if (this.getName().equals("vario")) {
-			cp5.get(DropdownList.class, "vSpeed1").removeItem("       Vario 1");
-			cp5.get(DropdownList.class, "vSpeed2").removeItem("       Vario 1");
+			TabVario.getvSpeed1Ddl().removeItem("       Vario 1");
+			TabVario.getvSpeed2Ddl().removeItem("       Vario 1");
 
 			// if ( airSpeed == null ) { // TODO better
-			cp5.get(DropdownList.class, "vSpeed1").removeItem(" V1 + A.Speed");
-			cp5.get(DropdownList.class, "vSpeed2").removeItem(" V1 + A.Speed");
+			TabVario.getvSpeed1Ddl().removeItem(" V1 + A.Speed");
+			TabVario.getvSpeed2Ddl().removeItem(" V1 + A.Speed");
 			// }
 			OXSdata.removeFromList("varAspeed");
 			PApplet.println("remove varAspeed");
 			//TabData.resetSentDataFields("varAspeed");
 		} else {
-			cp5.get(DropdownList.class, "vSpeed1").removeItem("       Vario 2");
-			cp5.get(DropdownList.class, "vSpeed2").removeItem("       Vario 2");
+			TabVario.getvSpeed1Ddl().removeItem("       Vario 2");
+			TabVario.getvSpeed2Ddl().removeItem("       Vario 2");
 		}
 
 		OXSdata.removeFromList(this);

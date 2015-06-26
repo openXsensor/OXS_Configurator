@@ -25,7 +25,7 @@ public class TabGeneralSettings {
 	private static Textlabel sensorIDTextlabel;
 	private static DropdownList sensorIDDdl;
 	private static DropdownList voltRefChoiceDdl;
-	private static Numberbox arduinoVccNbox;
+	private static Numberbox arduinoVccNBox;
 	private static Toggle saveEpromTgl;
 	private static Textlabel resetButtonPinTextLabel;
 	private static DropdownList resetBtnPinDdl;
@@ -176,7 +176,7 @@ public class TabGeneralSettings {
 		    voltRefChoiceDdl.toUpperCase(false) ;
 		    cp5.getProperties().remove(voltRefChoiceDdl, "ListBoxItems") ;
 		    
-		    arduinoVccNbox = cp5.addNumberbox("arduinoVccNb")
+		    arduinoVccNBox = cp5.addNumberbox("arduinoVccNb")
 					            .setPosition(265, 211)
 					            .setSize(37, 20)
 					            .setRange(0, (float) 9.99)
@@ -187,8 +187,8 @@ public class TabGeneralSettings {
 					            .setCaptionLabel("volts")
 					            .setColorCaptionLabel(0)
 					            ;
-		    arduinoVccNbox.getCaptionLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
-		    arduinoVccNbox.getCaptionLabel().toUpperCase(false) ;
+		    arduinoVccNBox.getCaptionLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
+		    arduinoVccNBox.getCaptionLabel().toUpperCase(false) ;
 		    cp5.getTooltip().register("arduinoVccNb", "Arduino alimentation voltage") ;
 		  
 		    // Save to EEPROM
@@ -304,8 +304,8 @@ public class TabGeneralSettings {
 		return voltRefChoiceDdl;
 	}
 
-	public static Numberbox getArduinoVccNbox() {
-		return arduinoVccNbox;
+	public static Numberbox getArduinoVccNBox() {
+		return arduinoVccNBox;
 	}
 
 	public static Toggle getSaveEpromTgl() {
@@ -366,12 +366,12 @@ public class TabGeneralSettings {
 		
 		// Voltage graying
 		if ( voltRefChoiceDdl.getValue() == 2 ) {
-			arduinoVccNbox.lock() 
+			arduinoVccNBox.lock() 
 						  .setColorBackground(MainP.grayedColor) 
 						  .setColorValueLabel(MainP.grayedColor) 
 						  .setColorCaptionLabel(MainP.grayedColor) ;
 		} else {
-			arduinoVccNbox.unlock()
+			arduinoVccNBox.unlock()
 						  .setColorBackground(MainP.darkBackGray)
 						  .setColorValueLabel(MainP.white)
 						  .setColorCaptionLabel(mainP.color(0)) ;
@@ -394,7 +394,7 @@ public class TabGeneralSettings {
 		mainP.rect(10, 258, 152, 20) ;
 		mainP.noStroke() ;
 	
-		if ( !mainP.tempActive ) {
+		if ( !MainP.tempActive ) {
 			temperatureTgl.setColorCaptionLabel(MainP.grayedColor)
 						  .setColorBackground(MainP.grayedColor) ;
 		}

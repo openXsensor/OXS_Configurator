@@ -17,9 +17,11 @@ public class TabVoltage {
 	private static final int voltNbr = 6;
 	private static Toggle[] voltTgl = new Toggle[voltNbr + 1];
 	private static DropdownList[] ddlVolt = new DropdownList[voltNbr + 1];
+	private static Numberbox[] dividerVoltNBox = new Numberbox[voltNbr + 1];
 	private static Numberbox[] offsetVoltNBox = new Numberbox[voltNbr + 1];
-	private static DropdownList ddlNbrCells;
 	private static Toggle cellsTgl;
+	private static DropdownList ddlNbrCells;
+
 
 
 	// private final PApplet p ; // TODO check if needed
@@ -82,17 +84,20 @@ public class TabVoltage {
 		cp5.getTooltip().register("voltDivider", "- Default: 1 -");
 
 		for (int i = 1; i <= voltNbr; i++) {
-			cp5.addNumberbox("dividerVolt" + i)
-			   .setPosition(113 + 55 * (i - 1), 202)
-			   .setSize(45, 20)
-			   .setColorActive(MainP.blueAct)
-			   .setDecimalPrecision(2)
-			   .setRange((float) 0.01, (float) 99.99)
-			   .setMultiplier((float) 0.01) // set the sensitivity of the numberbox
-			   .setDirection(Controller.HORIZONTAL) // change the control direction to left/right
-			   .setValue(1)
-			   .setCaptionLabel("")
-			   .setTab("voltage");
+			dividerVoltNBox[i] = cp5.addNumberbox("dividerVolt" + i)
+			                        .setPosition(113 + 55 * (i - 1), 202)
+			                        .setSize(45, 20)
+			                        .setColorActive(MainP.blueAct)
+			                        .setDecimalPrecision(2)
+			                        .setRange((float) 0.01, (float) 99.99)
+			                        // set the sensitivity of the numberbox
+			                        .setMultiplier((float) 0.01)
+			                        // change the control direction to left/right
+			                        .setDirection(Controller.HORIZONTAL)
+			                        .setValue(1)
+			                        .setCaptionLabel("")
+			                        .setTab("voltage")
+			                        ;
 		}
 
 		// Voltage 1-6 Offset
@@ -177,6 +182,10 @@ public class TabVoltage {
 
 	public static DropdownList[] getDdlVolt() {
 		return ddlVolt;
+	}
+
+	public static Numberbox[] getDividerVoltNBox() {
+		return dividerVoltNBox;
 	}
 
 	public static Numberbox[] getOffsetVoltNBox() {

@@ -7,6 +7,7 @@ import processing.core.PApplet;
 import controlP5.ControlP5;
 import controlP5.Controller;
 import controlP5.DropdownList;
+import controlP5.Numberbox;
 
 public class TabData {
 
@@ -14,13 +15,16 @@ public class TabData {
 
 	private static final int tabDataFieldNbr = 10;
 	private static DropdownList[] sentDataField = new DropdownList[tabDataFieldNbr + 1];
+	private static DropdownList[] hubDataField = new DropdownList[tabDataFieldNbr + 1];
+	private static DropdownList[] targetDataField = new DropdownList[tabDataFieldNbr + 1];
+	private static Numberbox[] dataMultiplierNBox = new Numberbox[tabDataFieldNbr + 1];
+	private static Numberbox[] dataDividerNBox = new Numberbox[tabDataFieldNbr + 1];
+	private static Numberbox[] dataOffsetNBox = new Numberbox[tabDataFieldNbr + 1];
 
 	@SuppressWarnings("unused")
 	private DropdownList oXSdataField; // TODO later
-	private static DropdownList[] targetDataField = new DropdownList[tabDataFieldNbr + 1];
 	@SuppressWarnings("unused")
 	private String[] dataDestFieldDisplayList = new String[tabDataFieldNbr + 1]; // TODO ?
-	private static DropdownList[] hubDataField = new DropdownList[tabDataFieldNbr + 1];
 	
 	// ------------------------- HUB protocol data list array --------------------------
 	private static String hubDataList[][] = new String[][] {
@@ -200,12 +204,12 @@ public class TabData {
 		for (int i = 1; i <= tabDataFieldNbr; i++) {
 			// Transmitted DATA field
 			sentDataField[i] = cp5.addDropdownList("sentDataField" + i)
-					           .setColorForeground(MainP.orangeAct)
-					           .setColorBackground(MainP.darkBackGray)
-					           .setColorActive(MainP.blueAct)
-					           .setPosition(10, 146 - 25 + i * 25)
-					           .setSize(135, 336 - 25 * i).setItemHeight(20)
-					           .setBarHeight(20).setTab("data");
+					              .setColorForeground(MainP.orangeAct)
+					              .setColorBackground(MainP.darkBackGray)
+					              .setColorActive(MainP.blueAct)
+					              .setPosition(10, 146 - 25 + i * 25)
+					              .setSize(135, 336 - 25 * i).setItemHeight(20)
+					              .setBarHeight(20).setTab("data");
 			sentDataField[i].getCaptionLabel().getStyle().marginTop = 2;
 			sentDataField[i].getCaptionLabel().set("----------");
 			sentDataField[i].toUpperCase(false);
@@ -213,21 +217,21 @@ public class TabData {
 
 			// HUB DATA field
 			hubDataField[i] = cp5.addDropdownList("hubDataField" + i)
-					.setColorForeground(MainP.orangeAct)
-					.setColorBackground(MainP.darkBackGray)
-					.setColorActive(MainP.blueAct)
-					.setPosition(150, 146 - 25 + i * 25)
-					.setSize(135, 336 - 25 * i).setItemHeight(20)
-					.setBarHeight(20).setTab("data");
+					             .setColorForeground(MainP.orangeAct)
+					             .setColorBackground(MainP.darkBackGray)
+					             .setColorActive(MainP.blueAct)
+					             .setPosition(150, 146 - 25 + i * 25)
+					             .setSize(135, 336 - 25 * i).setItemHeight(20)
+					             .setBarHeight(20).setTab("data");
 			for (int j = 0; j < TabData.hubDataList.length; j++) {
-				cp5.get(DropdownList.class, "hubDataField" + i).addItem(
+				hubDataField[i].addItem(
 						"" + TabData.hubDataList[j][1], j);
 			}
-			cp5.getGroup("hubDataField" + i).getCaptionLabel().getStyle().marginTop = 2;
-			cp5.get(DropdownList.class, "hubDataField" + i).toUpperCase(false);
-			cp5.get(DropdownList.class, "hubDataField" + i).setValue(0);
-			cp5.getGroup("hubDataField" + i).hide();
-			cp5.getProperties().remove(cp5.getGroup("hubDataField" + i),
+			hubDataField[i].getCaptionLabel().getStyle().marginTop = 2;
+			hubDataField[i].toUpperCase(false);
+			hubDataField[i].setValue(0);
+			hubDataField[i].hide();
+			cp5.getProperties().remove(hubDataField[i],
 					"ListBoxItems");
 
 			// Telemetry target DATA fields  old ->SMART PORT DATA field
@@ -251,53 +255,45 @@ public class TabData {
 			cp5.getProperties().remove(targetDataField[i], "ListBoxItems");
 
 			// Data sent multiplier
-			cp5.addNumberbox("dataMultiplier" + i)
-					.setColorActive(MainP.blueAct)
-					.setPosition(300, 125 - 25 + i * 25).setSize(40, 20)
-					.setRange(-1000, 1000).setMultiplier((float) 0.5) // set the
-																		// sensitifity
-																		// of
-																		// the
-																		// numberbox
-					.setDecimalPrecision(0).setDirection(Controller.HORIZONTAL) // change
-																				// the
-																				// control
-																				// direction
-																				// to
-																				// left/right
-					.setValue(1).setCaptionLabel("").setTab("data");
+			dataMultiplierNBox[i] = cp5.addNumberbox("dataMultiplier" + i)
+					                   .setColorActive(MainP.blueAct)
+					                   .setPosition(300, 125 - 25 + i * 25)
+					                   .setSize(40, 20)
+					                   // set the sensitivity of the numberbox
+					                   .setRange(-1000, 1000)
+					                   .setMultiplier((float) 0.5)
+					                   // change the control direction to left/right
+					                   .setDecimalPrecision(0)
+					                   .setDirection(Controller.HORIZONTAL)
+					                   .setValue(1).setCaptionLabel("")
+					                   .setTab("data");
 			cp5.getTooltip().register("dataMultiplier" + i, "- Default: 1 -");
 
 			// Data sent divider
-			cp5.addNumberbox("dataDivider" + i).setColorActive(MainP.blueAct)
-					.setPosition(350, 125 - 25 + i * 25).setSize(40, 20)
-					.setRange(1, 1000).setMultiplier((float) 0.5) // set the
-																	// sensitifity
-																	// of the
-																	// numberbox
-					.setDecimalPrecision(0).setDirection(Controller.HORIZONTAL) // change
-																				// the
-																				// control
-																				// direction
-																				// to
-																				// left/right
-					.setValue(1).setCaptionLabel("").setTab("data");
+			dataDividerNBox[i] = cp5.addNumberbox("dataDivider" + i)
+					                .setColorActive(MainP.blueAct)
+					                .setPosition(350, 125 - 25 + i * 25)
+					                .setSize(40, 20)
+					                .setRange(1, 1000)
+					                .setMultiplier((float) 0.5)
+					                .setDecimalPrecision(0)
+					                .setDirection(Controller.HORIZONTAL)
+					                .setValue(1)
+					                .setCaptionLabel("")
+					                .setTab("data");
 			cp5.getTooltip().register("dataDivider" + i, "- Default: 1 -");
 
 			// Data sent offset
-			cp5.addNumberbox("dataOffset" + i).setColorActive(MainP.blueAct)
-					.setPosition(400, 125 - 25 + i * 25).setSize(40, 20)
-					.setRange(-999, 999).setMultiplier((float) 0.5) // set the
-																	// sensitifity
-																	// of the
-																	// numberbox
-					.setDecimalPrecision(0).setDirection(Controller.HORIZONTAL) // change
-																				// the
-																				// control
-																				// direction
-																				// to
-																				// left/right
-					.setValue(0).setCaptionLabel("").setTab("data");
+			dataOffsetNBox[i] = cp5.addNumberbox("dataOffset" + i)
+					               .setColorActive(MainP.blueAct)
+					               .setPosition(400, 125 - 25 + i * 25)
+					               .setSize(40, 20)
+					               .setRange(-999, 999)
+					               .setMultiplier((float) 0.5) 
+					               .setDecimalPrecision(0)
+					               .setDirection(Controller.HORIZONTAL) 
+					               .setValue(0).setCaptionLabel("")
+					               .setTab("data");
 			cp5.getTooltip().register("dataOffset" + i, "- Default: 0 -");
 		}
 		
@@ -323,6 +319,18 @@ public class TabData {
 
 	public static DropdownList getTargetDataField(int i) {
 		return targetDataField[i];
+	}
+
+	public static Numberbox[] getDataMultiplierNBox() {
+		return dataMultiplierNBox;
+	}
+
+	public static Numberbox[] getDataDividerNBox() {
+		return dataDividerNBox;
+	}
+
+	public static Numberbox[] getDataOffsetNBox() {
+		return dataOffsetNBox;
 	}
 
 	public static int getDataSentFieldNbr() {

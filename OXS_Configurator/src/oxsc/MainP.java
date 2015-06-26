@@ -42,7 +42,6 @@ import controlP5.Button;
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.Controller;
-import controlP5.DropdownList;
 import controlP5.Group;
 import controlP5.Numberbox;
 import controlP5.Slider;
@@ -56,10 +55,10 @@ public class MainP extends PApplet {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public boolean tempActive = false; // Define temperature sensor availability
+	public static boolean tempActive = false; // Defines temperature sensor availability
 
-	String day = (day() < 10) ? "0" + day() : "" + day();
-	String month = (month() < 10) ? "0" + month() : "" + month();
+	public static String day = (day() < 10) ? "0" + day() : "" + day();
+	public static String month = (month() < 10) ? "0" + month() : "" + month();
 
 	public static final int tabGray = 0xFFC8C8C8; // gray 200
 	public static final int backDdlGray = 0xFFFFFFFF; // gray 190
@@ -503,10 +502,10 @@ public class MainP extends PApplet {
 			TabGeneralSettings.getOxsDir().setColorForeground(tabGray) ;
 		}
 
-		if ( cp5.isMouseOver ( cp5.getController("arduinoVccNb") ) ) {
-			cp5.getController("arduinoVccNb").setColorForeground(blueAct) ;
+		if ( cp5.isMouseOver ( TabGeneralSettings.getArduinoVccNBox() ) ) {
+			TabGeneralSettings.getArduinoVccNBox().setColorForeground(blueAct) ;
 		} else {
-			cp5.getController("arduinoVccNb").setColorForeground(grayedColor) ;
+			TabGeneralSettings.getArduinoVccNBox().setColorForeground(grayedColor) ;
 		}
 
 		if ( cp5.isMouseOver ( cp5.getController("ppmRngMin") ) ) {
@@ -545,25 +544,25 @@ public class MainP extends PApplet {
 			cp5.getController("ppmVspeedSwMax").setColorForeground(grayedColor) ;
 		}
 
-		if ( cp5.isMouseOver ( cp5.getController("aSpeedReset") ) ) {
-			cp5.getController("aSpeedReset").setColorForeground(orangeAct) ;
+		if ( cp5.isMouseOver ( TabAirSpeed.getaSpeedResetNBox() ) ) {
+			TabAirSpeed.getaSpeedResetNBox().setColorForeground(orangeAct) ;
 		} else {
-			cp5.getController("aSpeedReset").setColorForeground(grayedColor) ;
+			TabAirSpeed.getaSpeedResetNBox().setColorForeground(grayedColor) ;
 		}
 
 		for ( int i = 1; i <= TabVoltage.getVoltnbr(); i++ ) {
-			if ( cp5.isMouseOver ( cp5.getController( "dividerVolt" + i ) ) ) {
-				cp5.getController( "dividerVolt" + i ).setColorForeground(orangeAct) ;
+			if ( cp5.isMouseOver ( TabVoltage.getDividerVoltNBox()[i] ) ) {
+				TabVoltage.getDividerVoltNBox()[i].setColorForeground(orangeAct) ;
 			} else {
-				cp5.getController( "dividerVolt" + i ).setColorForeground(color(170)) ;
+				TabVoltage.getDividerVoltNBox()[i].setColorForeground(color(170)) ;
 			}
 		}
 
 		for ( int i = 1; i <= TabVoltage.getVoltnbr(); i++ ) {
-			if ( cp5.isMouseOver ( cp5.getController( "offsetVolt" + i ) ) ) {
-				cp5.getController( "offsetVolt" + i ).setColorForeground(orangeAct) ;
+			if ( cp5.isMouseOver ( TabVoltage.getOffsetVoltNBox()[i] ) ) {
+				TabVoltage.getOffsetVoltNBox()[i].setColorForeground(orangeAct) ;
 			} else {
-				cp5.getController( "offsetVolt" + i ).setColorForeground(color(170)) ;
+				TabVoltage.getOffsetVoltNBox()[i].setColorForeground(color(170)) ;
 			}
 		}
 		/*
@@ -895,52 +894,41 @@ public class MainP extends PApplet {
 	}
 
 	public void vario(boolean theFlag) {
-		if (theFlag==true && vario == null) {
-			vario = new Vario(this, cp5, "vario") ;
-			cp5.getTab("vario").show() ;
+		if (theFlag == true && vario == null) {
+			vario = new Vario(this, cp5, "vario");
+			cp5.getTab("vario").show();
 
-		} else if (theFlag==false && vario != null) {
-			if ( vario2 != null )
-				//vario2.removeSensor() ;
-				//vario2 = null ;
-				cp5.getController("vario2").setValue(0) ;
-			if ( ppm != null && airSpeed == null ) {
-				cp5.getController("ppm").setValue(0) ;
-				//ppm.removeSensor() ;
-				//ppm = null ;      
+		} else if (theFlag == false && vario != null) {
+			if (vario2 != null)
+				TabGeneralSettings.getVario2Tgl().setValue(0);
+			if (ppm != null && airSpeed == null) {
+				TabPPM.getPpmTgl().setValue(0);
 			}
-			vario.removeSensor() ;
-			vario = null ;
-			cp5.getTab("vario").hide() ;
+			vario.removeSensor();
+			vario = null;
+			cp5.getTab("vario").hide();
 		}
-		//println("a toggle event.") ;
 	}
 
 	void vario2(boolean theFlag) {
-		if (theFlag==true && vario2 == null) {
-			vario2 = new Vario(this, cp5, "vario2") ;
-			//cp5.getTab("vario").show() ;
-
-		} else if ( theFlag==false && vario2 != null ) {
-			vario2.removeSensor() ;
-			vario2 = null ;
-			//cp5.getTab("vario").hide() ;
-			//cp5.getController("vario2").setValue(0) ;
+		if (theFlag == true && vario2 == null) {
+			vario2 = new Vario(this, cp5, "vario2");
+		} else if (theFlag == false && vario2 != null) {
+			vario2.removeSensor();
+			vario2 = null;
 		}
-		//println("a toggle event.") ;
 	}
 
 	void airSpeed(boolean theFlag) {
-		if (theFlag==true && airSpeed == null) {
-			airSpeed = new AirSpeed(this, cp5, "airSpeed") ;
-			cp5.getTab("airSpeed").show() ;
-		} else if ( theFlag==false && airSpeed != null ) {
-			airSpeed.removeSensor() ;
-			airSpeed = null ;
-			cp5.getTab("airSpeed").hide() ;
-			if ( ppm != null && vario == null )
-				cp5.getController("ppm").setValue(0) ;
-
+		if (theFlag == true && airSpeed == null) {
+			airSpeed = new AirSpeed(this, cp5, "airSpeed");
+			cp5.getTab("airSpeed").show();
+		} else if (theFlag == false && airSpeed != null) {
+			airSpeed.removeSensor();
+			airSpeed = null;
+			cp5.getTab("airSpeed").hide();
+			if (ppm != null && vario == null)
+				TabPPM.getPpmTgl().setValue(0);
 		}
 	}
 
@@ -949,20 +937,22 @@ public class MainP extends PApplet {
 			cp5.getTab("voltage").show();
 		} else {
 			for (int i = 1; i <= TabVoltage.getVoltnbr(); i++) {
-				cp5.getController("volt" + i).setValue(0);
+				TabVoltage.getVoltTgl()[i].setValue(0);
 			}
 			cp5.getTab("voltage").hide();
 		}
 	}
 
-	void cells(boolean theFlag) {  // TODO clean
-		if ( theFlag == true && aVolt[1] != null ) {
-			new OXSdata("CELLS", "Cells monitoring", "voltCells", null) ;
-			TabData.populateSentDataFields() ;
+	void cells(boolean theFlag) { // TODO clean
+		if (theFlag == true && aVolt[1] != null) {
+			new OXSdata("CELLS", "Cells monitoring", "voltCells", null);
+			TabData.populateSentDataFields();
 		} else {
-			OXSdata.removeFromList("voltCells") ;  // TODO remove "Cells Monotoring" from ddl display
-			TabData.resetSentDataFields() ;
-//			TabData.populateSentDataFields() ;
+			OXSdata.removeFromList("voltCells"); // TODO remove
+													// "Cells Monotoring" from
+													// ddl display
+			TabData.resetSentDataFields();
+			// TabData.populateSentDataFields() ;
 		}
 	}
 
@@ -978,25 +968,25 @@ public class MainP extends PApplet {
 	}
 
 	void temperature(boolean theFlag) {
-		if (theFlag==true) {
-			cp5.getTab("temperature").show() ;
+		if (theFlag == true) {
+			cp5.getTab("temperature").show();
 		} else {
-			cp5.getTab("temperature").hide() ;
+			cp5.getTab("temperature").hide();
 		}
-		//println("a toggle event.") ;
+		// println("a toggle event.") ;
 	}
 
 	// RPM TAB display
 	void rpm(boolean theFlag) {
-		if (theFlag==true && rpm == null) {
-			rpm = new Rpm(this, cp5, "rpm") ;
-			//cp5.getTab("rpm").show() ;
-		} else if ( theFlag==false && rpm != null ) {
-			rpm.removeSensor() ;
-			rpm = null ;
-			//cp5.getTab("rpm").hide() ;
+		if (theFlag == true && rpm == null) {
+			rpm = new Rpm(this, cp5, "rpm");
+			// cp5.getTab("rpm").show() ;
+		} else if (theFlag == false && rpm != null) {
+			rpm.removeSensor();
+			rpm = null;
+			// cp5.getTab("rpm").hide() ;
 		}
-		//println("a toggle event.") ;
+		// println("a toggle event.") ;
 	}
 
 	void ppm(boolean theFlag) {
@@ -1050,10 +1040,10 @@ public class MainP extends PApplet {
 	public void saveButton(int theValue) {                                     // Save preset button
 		mbClose() ;
 		Validation.validationProcess(this, "preset") ;
-		if ( Validation.allValid == 2 ) {
+		if ( Validation.getAllValid() == 2 ) {
 			messageBox.hide() ;
 		}
-		if ( Validation.allValid != 0 ) {
+		if ( Validation.getAllValid() != 0 ) {
 			File presetDir = new File( ("src/Preset/type name") ) ;  // sketchPath("Preset/type name")
 			selectOutput("Type preset name to save:", "presetSave", presetDir) ;
 		}
@@ -1087,7 +1077,7 @@ public class MainP extends PApplet {
 	public void writeConfButton(int theValue) {
 		mbOkCancel() ;
 		Validation.validationProcess(this, "Config") ;
-		if ( Validation.allValid == 0) {
+		if ( Validation.getAllValid() == 0) {
 			mbClose() ;
 		}
 	}
@@ -1134,48 +1124,50 @@ public class MainP extends PApplet {
 
 	// =================================================================================================
 
-	public float round(float number, float decimal) {      // Rounding function
+	public static float round(float number, float decimal) {      // Rounding function
 		return (float)(round((number*pow(10, decimal))))/pow(10, decimal) ;
 	}
 
-	public float mVoltStep(int NbrVolt) {    // Voltage measurements milliVolt per ADC step calculation
+	public static float mVoltStep(int NbrVolt) {    // Voltage measurements milliVolt per ADC step calculation
 
 		float mVoltStep ;
-		float voltageDiv = cp5.getController("dividerVolt" + NbrVolt ).getValue() ;
-		float arduinoVcc = cp5.getController("arduinoVccNb").getValue() ;
+		float voltageDiv = TabVoltage.getDividerVoltNBox()[NbrVolt].getValue() ;
+		float arduinoVcc = TabGeneralSettings.getArduinoVccNBox().getValue() ;
 
-		if ( cp5.get(DropdownList.class, "voltRefChoice").getValue() == 1 ) {
+		if ( TabGeneralSettings.getVoltRefChoiceDdl().getValue() == 1 ) {
 			mVoltStep = (float) (( arduinoVcc * 1000.0 / 1024.0 ) * voltageDiv) ;
 		} else {
 			mVoltStep = (float) (( 1.1 * 1000.0 / 1024.0 ) * voltageDiv) ;
 		}
 		return mVoltStep ;
 	}
+	
+	// Current sensor milliAmp per ADC step calculation
+	public static float mAmpStep() {
 
-	public float mAmpStep() {    // Current sensor milliAmp per ADC step calculation
+		float mAmpStep;
+		float mAmpPmV;
+		float arduinoVcc = TabGeneralSettings.getArduinoVccNBox().getValue();
+		float currentDiv = TabCurrent.getCurrentDivNBox().getValue();
+		float currentOutSens = TabCurrent.getCurrentOutSensNBox().getValue();
 
-		float mAmpStep ;
-		float mAmpPmV ;
-		float arduinoVcc = cp5.getController("arduinoVccNb").getValue() ;
-		float currentDiv = cp5.getController("currentDivNb").getValue() ;
-		float currentOutSens = cp5.getController("currentOutSensNb").getValue() ;
-
-		mAmpPmV = (float) (( currentOutSens == 0 ) ? 0 : 1000.0 / currentOutSens) ;
-		if ( cp5.get(DropdownList.class, "voltRefChoice").getValue() == 1 ) {
-			mAmpStep = (float) (( arduinoVcc * 1000.0 / 1024.0 ) * mAmpPmV * currentDiv) ;
+		mAmpPmV = (float) ((currentOutSens == 0) ? 0 : 1000.0 / currentOutSens);
+		if (TabGeneralSettings.getVoltRefChoiceDdl().getValue() == 1) {
+			mAmpStep = (float) ((arduinoVcc * 1000.0 / 1024.0) * mAmpPmV * currentDiv);
 		} else {
-			mAmpStep = (float) (( 1.1 * 1000.0 / 1024.0 ) * mAmpPmV) ;
+			mAmpStep = (float) ((1.1 * 1000.0 / 1024.0) * mAmpPmV);
 		}
-		return mAmpStep ;
+		return mAmpStep;
 	}
 
-	public int offsetCurrent() {    // Current sensor offset calculation in ADC step
+	// Current sensor offset calculation in ADC step
+	public static int offsetCurrent() {
 
 		int offsetCurrent ;
 		//float currentVcc = cp5.getController("currentVccNb").getValue() ;
-		float currentOutOffset = cp5.getController("currentOutOffsetNb").getValue() ;
-		float currentDiv = cp5.getController("currentDivNb").getValue() ;
-		float arduinoVcc = cp5.getController("arduinoVccNb").getValue() ;
+		float currentOutOffset = TabCurrent.getCurrentOutOffsetNBox().getValue() ;
+		float currentDiv = TabCurrent.getCurrentDivNBox().getValue() ;
+		float arduinoVcc = TabGeneralSettings.getArduinoVccNBox().getValue() ;
 
 		//if ( cp5.getController( "currentDir" ).value() == 0 ) {
 		//  offsetCurrent = int( ( currentVcc / 2.0 + currentOutOffset / 1000.0 ) / arduinoVcc  * 1024.0 * currentDiv ) ;
@@ -1295,7 +1287,7 @@ public class MainP extends PApplet {
 	}
 
 	public void buttonOK(int theValue) {
-		if (Validation.allValid != 0) {
+		if (Validation.getAllValid() != 0) {
 			WriteConf.writeConf();
 		}
 		messageBox.hide();

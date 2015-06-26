@@ -4,12 +4,16 @@ import oxsc.MainP;
 import controlP5.ControlP5;
 import controlP5.Controller;
 import controlP5.DropdownList;
+import controlP5.Numberbox;
 
 public class TabCurrent {
 	
 	//private final ControlP5 cp5 ;
 	
 	private static DropdownList currentPinDdl;
+	private static Numberbox currentOutSensNBox;
+	private static Numberbox currentOutOffsetNBox;
+	private static Numberbox currentDivNBox;
 
 	public TabCurrent(ControlP5 cp5) {
 		
@@ -36,55 +40,57 @@ public class TabCurrent {
 	    cp5.getProperties().remove(cp5.getController("currentPinL")) ;
 	  
 	    currentPinDdl = cp5.addDropdownList("currentPin")
-	       .setColorForeground(MainP.orangeAct)
-	       .setColorBackground(MainP.darkBackGray)
-	       .setColorActive(MainP.blueAct)
-	       .setPosition(165, 146)
-	       .setSize(45, 200)
-	       .setItemHeight(20)
-	       .setBarHeight(20)
-	       .setTab("current")
-	       ;
-	    cp5.get(DropdownList.class, "currentPin").addItem(" --", -1) ;
-	    cp5.get(DropdownList.class, "currentPin").addItems(MainP.analogPins) ;
-	    cp5.getGroup("currentPin").getCaptionLabel().setPaddingX(12) ;
-	    cp5.getGroup("currentPin").getCaptionLabel().getStyle().marginTop = 2 ;
-	    cp5.get(DropdownList.class, "currentPin").setValue(-1) ;
-	    cp5.get(DropdownList.class, "currentPin").toUpperCase(false) ;
-	    cp5.getProperties().remove(cp5.getGroup("currentPin"), "ListBoxItems") ;
+	                       .setColorForeground(MainP.orangeAct)
+	                       .setColorBackground(MainP.darkBackGray)
+	                       .setColorActive(MainP.blueAct)
+	                       .setPosition(165, 146)
+	                       .setSize(45, 200)
+	                       .setItemHeight(20)
+	                       .setBarHeight(20)
+	                       .setTab("current")
+	                       ;
+	    currentPinDdl.addItem(" --", -1) ;
+	    currentPinDdl.addItems(MainP.analogPins) ;
+	    currentPinDdl.getCaptionLabel().setPaddingX(12) ;
+	    currentPinDdl.getCaptionLabel().getStyle().marginTop = 2 ;
+	    currentPinDdl.setValue(-1) ;
+	    currentPinDdl.toUpperCase(false) ;
+	    cp5.getProperties().remove(currentPinDdl, "ListBoxItems") ;
 	  
 	    // Current sensor output sensitivity
-	    cp5.addNumberbox("currentOutSensNb")
-	       .setColorActive(MainP.blueAct)
-	       .setPosition(165, 160)
-	       .setSize(45, 20)
-	       .setRange(0, 999)
-	       .setMultiplier(1)                       // set the sensitifity of the numberbox
-	       .setDecimalPrecision(0)
-	       .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
-	       .setCaptionLabel("Output sensitivity (mV/A)    ")
-	       .setColorCaptionLabel(0)
-	       .setTab("current")
-	       ;
-	    cp5.getController("currentOutSensNb").getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(7) ;
-	    cp5.getController("currentOutSensNb").getCaptionLabel().toUpperCase(false) ;
+	    currentOutSensNBox = cp5.addNumberbox("currentOutSensNb")
+	                            .setColorActive(MainP.blueAct)
+	                            .setPosition(165, 160)
+	                            .setSize(45, 20)
+	                            .setRange(0, 999)
+	                            // set the sensitifity of the numberbox
+	                            .setMultiplier(1)
+	                            .setDecimalPrecision(0)
+	                            // change the control direction to left/right
+	                            .setDirection(Controller.HORIZONTAL)
+	                            .setCaptionLabel("Output sensitivity (mV/A)    ")
+	                            .setColorCaptionLabel(0)
+	                            .setTab("current")
+	                            ;
+	    currentOutSensNBox.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(7) ;
+	    currentOutSensNBox.getCaptionLabel().toUpperCase(false) ;
 	  
 	    // Current sensor offset
-	    cp5.addNumberbox("currentOutOffsetNb")
-	       .setBroadcast(false)
-	       .setColorActive(MainP.blueAct)
-	       .setPosition(165, 195)
-	       .setSize(45, 20)
-	       .setRange(-5000, 5000)
-	       .setMultiplier(1)                       // set the sensitifity of the numberbox
-	       .setDecimalPrecision(0)
-	       .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
-	       .setCaptionLabel("Output offset                  mV")
-	       .setColorCaptionLabel(0)
-	       .setTab("current")
-	       ;
-	    cp5.getController("currentOutOffsetNb").getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
-	    cp5.getController("currentOutOffsetNb").getCaptionLabel().toUpperCase(false) ;
+	    currentOutOffsetNBox = cp5.addNumberbox("currentOutOffsetNb")
+	                              .setBroadcast(false)
+	                              .setColorActive(MainP.blueAct)
+	                              .setPosition(165, 195)
+	                              .setSize(45, 20)
+	                              .setRange(-5000, 5000)
+	                              .setMultiplier(1)
+	                              .setDecimalPrecision(0)
+	                              .setDirection(Controller.HORIZONTAL)
+	                              .setCaptionLabel("Output offset                  mV")
+	                              .setColorCaptionLabel(0)
+	                              .setTab("current")
+	                              ;
+	    currentOutOffsetNBox.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
+	    currentOutOffsetNBox.getCaptionLabel().toUpperCase(false) ;
 	    //cp5.getTooltip().register("currentOutOffsetNb", "...") ;
 	  
 	    cp5.addNumberbox("currentOutOffsetMA")
@@ -109,21 +115,21 @@ public class TabCurrent {
 	    cp5.getController("currentOutOffsetMA").setBroadcast(true) ;
 	  
 	    // Current sensor divider factor
-	    cp5.addNumberbox("currentDivNb")
-	       .setColorActive(MainP.blueAct)
-	       .setPosition(165, 230)
-	       .setSize(45, 20)
-	       .setRange((float)0.01, (float) 99.99)
-	       .setMultiplier((float) 0.01)                    // set the sensitifity of the numberbox
-	       .setDecimalPrecision(2)
-	       .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
-	       .setValue(1)
-	       .setCaptionLabel("Divider factor                      ")
-	       .setColorCaptionLabel(0)
-	       .setTab("current")
-	       ;
-	    cp5.getController("currentDivNb").getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(9) ;
-	    cp5.getController("currentDivNb").getCaptionLabel().toUpperCase(false) ;
+	    currentDivNBox = cp5.addNumberbox("currentDivNb")
+	                        .setColorActive(MainP.blueAct)
+	                        .setPosition(165, 230)
+	                        .setSize(45, 20)
+	                        .setRange((float)0.01, (float) 99.99)
+	                        .setMultiplier((float) 0.01)                    // set the sensitifity of the numberbox
+	                        .setDecimalPrecision(2)
+	                        .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
+	                        .setValue(1)
+	                        .setCaptionLabel("Divider factor                      ")
+	                        .setColorCaptionLabel(0)
+	                        .setTab("current")
+	                        ;
+	    currentDivNBox.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(9) ;
+	    currentDivNBox.getCaptionLabel().toUpperCase(false) ;
 	    cp5.getTooltip().register("currentDivNb", "- Default: 1 -") ;
 	  
 	    /*
@@ -171,11 +177,23 @@ public class TabCurrent {
 	    */
 	    
 	    // dropdownlist overlap
-	    cp5.getGroup("currentPin").bringToFront() ;
+	    currentPinDdl.bringToFront() ;
 	  }
 
 	public static DropdownList getCurrentPinDdl() {
 		return currentPinDdl;
+	}
+
+	public static Numberbox getCurrentOutSensNBox() {
+		return currentOutSensNBox;
+	}
+
+	public static Numberbox getCurrentOutOffsetNBox() {
+		return currentOutOffsetNBox;
+	}
+
+	public static Numberbox getCurrentDivNBox() {
+		return currentDivNBox;
 	}
 
 }

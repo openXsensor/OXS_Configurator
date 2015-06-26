@@ -23,13 +23,13 @@ public class Validation {
 	private static String outputConfigDir = "";
 	private static final String oxsVersion = "v2.x";
 	private static final String oxsCversion = "v2.3";
-	static boolean numPinsValid;
-	static boolean analogPinsValid;
-	static int vSpeedValid; // 0 -> not valid 1 -> warning 2 -> valid
-	static boolean cellsValid;
-	static boolean sentDataValid;
-	static int versionValid; // 0 -> not valid 1 -> warning 2 -> valid	
-	static int allValid; // 0 -> not valid 1 -> warning 2 -> valid
+	private static boolean numPinsValid;
+	private static boolean analogPinsValid;
+	private static int vSpeedValid; // 0 -> not valid 1 -> warning 2 -> valid
+	private static boolean cellsValid;
+	private static boolean sentDataValid;
+	private static int versionValid; // 0 -> not valid 1 -> warning 2 -> valid	
+	private static int allValid; // 0 -> not valid 1 -> warning 2 -> valid
 	
 
 
@@ -47,6 +47,10 @@ public class Validation {
 
 	public static String getOutputConfigDir() {
 		return outputConfigDir;
+	}
+
+	public static int getAllValid() {
+		return allValid;
 	}
 
 	public static void validationProcess(MainP mainPori, String theString) {
@@ -213,7 +217,7 @@ public class Validation {
 
 				if ( Integer.parseInt(analogPinsValidation[i][1]) != -1 && Integer.parseInt(analogPinsValidation[j][1]) != -1 && Integer.parseInt(analogPinsValidation[i][2]) >= 1 && Integer.parseInt(analogPinsValidation[j][2]) >= 1 ) {
 					if ( analogPinsValidation[i][1].equals(analogPinsValidation[j][1]) ) {
-						//println("Attention !!  " + analogPinsValidation[i][0] + " is using the same pin n�A" + analogPinsValidation[i][1] + " as " + analogPinsValidation[j][0] + " !") ;
+						//println("Attention !!  " + analogPinsValidation[i][0] + " is using the same pin n°A" + analogPinsValidation[i][1] + " as " + analogPinsValidation[j][0] + " !") ;
 						analogPinsValid = false ;
 						MainP.messageList.append("- " + analogPinsValidation[i][0] + " is using the same pin n°A" + analogPinsValidation[i][1] + " as " + analogPinsValidation[j][0] + " !") ;
 					}
@@ -267,7 +271,7 @@ public class Validation {
 
 	}
 
-	public static void validateCells() {
+	public static void validateCells() {  // TODO remove validateCells
 
 		int cellsNbr = 0 ;
 
@@ -302,57 +306,57 @@ public class Validation {
 			oxsMeasureValidationList[i][4] = "0" ;                                                                          // is measurement active
 		}
 		for ( int i = 1 ; i <= TabData.getDataSentFieldNbr() ; i++ ) {
-			switch ( (int) TabData.getSentDataField(i).getValue() ) {
-			case 1 :                 // "ALTIMETER"
-			case 2 :                 // "VERTICAL_SPEED"
-			case 3 :                 // "ALT_OVER_10_SEC"
-			case 7 :                 // "SENSITIVITY"
+			switch ( TabData.getSentDataField(i).getCaptionLabel().getText() ) {
+			case "Altitude" :
+			case "Vertical Speed" :
+			case "Alt. over 10 seconds" :
+			case "Vario sensitivity" :
 				if ( TabGeneralSettings.getVarioTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
-			case 4 :                 // "ALTIMETER_2"
-			case 5 :                 // "VERTICAL_SPEED_2"
-			case 6 :                 // "ALT_OVER_10_SEC_2"
+			case "Altitude 2" :            
+			case "Vertical Speed 2" :      
+			case "Alt. over 10 seconds 2" :
 				if ( TabGeneralSettings.getVario2Tgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
-			case 8 :                 // "AIR_SPEED"
+			case "Air Speed" :
 				if ( TabGeneralSettings.getAirSpeedTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
-			case 9 :                 // "PRANDTL_DTE"
-			case 10 :                // "PRANDTL_COMPENSATION"
+			case "Prandtl dTE" :
+			case "Prandtl Compensation" :
 				if ( TabGeneralSettings.getVarioTgl().getValue() == 1 && TabGeneralSettings.getAirSpeedTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
-			case 11 :                // "PPM_VSPEED"
-				if ( TabGeneralSettings.getVarioTgl().getValue() == 1 && TabPPM.getPpmTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
-				break ;
-			case 12 :                 // "CURRENTMA"
-			case 13 :                 // "MILLIAH"
+			//case 11 :                // TODO "PPM_VSPEED"
+			//	if ( TabGeneralSettings.getVarioTgl().getValue() == 1 && TabPPM.getPpmTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+			//	break ;
+			case "Current (mA)" :
+			case "Consumption (mAh)" :
 				if ( TabGeneralSettings.getCurrentTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
-			case 14 :                 // "CELLS"
+			case "Cells monitoring" :
 				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getCellsTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
-			case 15 :                 // "VOLT1"
+			case "Volt 1" :
 				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[1].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
-			case 16 :                 // "VOLT2"
+			case "Volt 2" :
 				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[2].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
-			case 17 :                // "VOLT3"
+			case "Volt 3" :
 				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[3].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
-			case 18 :                // "VOLT4"
+			case "Volt 4" :
 				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[4].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
-			case 19 :                // "VOLT5"
+			case "Volt 5" :
 				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[5].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
-			case 20 :                // "VOLT6"
+			case "Volt 6" :
 				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[6].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
-			case 21 :                // "RPM"
+			case "RPM" :
 				if ( TabGeneralSettings.getRpmTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
-			case 22 :                // "PPM"
+			case "PPM value" :
 				if ( TabPPM.getPpmTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			}
@@ -362,12 +366,12 @@ public class Validation {
 		int oxsMeasureCountSPORT[][] = new int[TabData.getSentDataList().length + 1][TabData.getsPortDataList().length] ;               // array { sentData, sPortData }
 	
 		for ( int i = 1 ; i <= TabData.getDataSentFieldNbr() ; i++ ) {
-			float sentDataFieldNb = TabData.getSentDataField(i).getValue() ;
+			int sentDataFieldNb = (int) TabData.getSentDataField(i).getValue() ;
 			String sentDataFieldName = TabData.getSentDataField(i).getCaptionLabel().getText() ; // TODO ori: tab7.getDdlFieldDisplay("sentDataField" + i)
 	
-			float sPortDataFieldNb = TabData.getTargetDataField(i).getValue() ;
-			String sPortDataFieldName = TabData.getSentDataField(i).getCaptionLabel().getText() ; // TODO ori: tab7.getDdlFieldDisplay("sPortDataField" + i)
-			PApplet.println("(for) nom dest. = " + sPortDataFieldName) ;
+			int targetDataFieldNb = (int) TabData.getTargetDataField(i).getValue() ;
+			String targetDataFieldName = TabData.getTargetDataField(i).getCaptionLabel().getText() ; // TODO ori: tab7.getDdlFieldDisplay("sPortDataField" + i)
+			PApplet.println("(for) nom dest. = " + targetDataFieldName) ;
 	
 			if ( sentDataFieldNb > 0 ) {   // if OXS measurement field is not empty
 				oxsMeasureCount ++ ;
@@ -392,33 +396,37 @@ public class Validation {
 			            oxsMeasureCountHUB[sentDataList.length][int( cp5.getGroup("hubDataField" + i).getValue() )] ++ ;
 	
 			        } else*/ 
-				if ( sPortDataFieldNb == 0 ) {         // if telemetry field is empty
+				if ( targetDataFieldNb == 0 ) {         // if telemetry field is empty
 					sentDataValid = false ;
 					MainP.messageList.append( "- The " + sentDataFieldName + " measure is not sent !" ) ;
 				} else if ( MainP.protocol.getName() == "FrSky" ) {          // if FrSky protocol
-					/*} else*/ if ( ( sentDataFieldName == "Cells monitoring" || sentDataFieldName == "RPM" )   // OXS measurement must be default
-							&& sPortDataFieldName != "DEFAULT" ) {
+					/*} else*/ if ( ( sentDataFieldName.equals("Cells monitoring") || sentDataFieldName.equals("RPM") )   // OXS measurement must be default
+							&& !targetDataFieldName.equals("DEFAULT") ) {
 						sentDataValid = false ;
 						MainP.messageList.append( "- " + sentDataFieldName + " must be set to DEFAULT !" ) ;
-					} else if ( ( oxsMeasureValidationList[i][0].equals("ALT_OVER_10_SEC") || oxsMeasureValidationList[i][0].equals("ALT_OVER_10_SEC_2")   // OXS measurement can't be default
-							|| oxsMeasureValidationList[i][0].equals("SENSITIVITY") || oxsMeasureValidationList[i][0].equals("PRANDTL_COMPENSATION")
-							|| oxsMeasureValidationList[i][0].equals("VOLT1") || oxsMeasureValidationList[i][0].equals("VOLT2")
-							|| oxsMeasureValidationList[i][0].equals("VOLT3") || oxsMeasureValidationList[i][0].equals("VOLT4")
-							|| oxsMeasureValidationList[i][0].equals("VOLT5") || oxsMeasureValidationList[i][0].equals("VOLT6")
-							|| oxsMeasureValidationList[i][0].equals("PPM") ) && oxsMeasureValidationList[i][3].equals("DEFAULT") ) {
+					// OXS measurement can't be default
+					} else if ( ( sentDataFieldName.equals("Alt. over 10 seconds") || sentDataFieldName.equals("Alt. over 10 seconds 2")
+							|| sentDataFieldName.equals("Vario sensitivity") || sentDataFieldName.equals("Prandtl Compensation")
+							|| sentDataFieldName.equals("Volt 1") || sentDataFieldName.equals("Volt 2")
+							|| sentDataFieldName.equals("Volt 3") || sentDataFieldName.equals("Volt 4")
+							|| sentDataFieldName.equals("Volt 5") || sentDataFieldName.equals("Volt 6")
+							|| sentDataFieldName.equals("PPM value") ) && targetDataFieldName.equals("DEFAULT") ) {
 						sentDataValid = false ;
-						MainP.messageList.append( "- " + oxsMeasureValidationList[i][1] + " can't be set to DEFAULT !" ) ;
-					} else if ( ( oxsMeasureValidationList[i][0].equals("ALTIMETER") || oxsMeasureValidationList[i][0].equals("ALTIMETER_2") )   // Only one Altitude DEFAULT
-							&& oxsMeasureValidationList[i][3].equals("DEFAULT") ) {
+						MainP.messageList.append( "- " + sentDataFieldName + " can't be set to DEFAULT !" ) ;
+					// Only one Altitude DEFAULT
+					} else if ( ( sentDataFieldName.equals("Altitude") || sentDataFieldName.equals("Altitude 2") )
+							&& targetDataFieldName.equals("DEFAULT") ) {
 						for ( int j = i+1 ; j <= TabData.getDataSentFieldNbr() ; j++ ) {
-							if ( ( oxsMeasureValidationList[j][0].equals("ALTIMETER") || oxsMeasureValidationList[j][0].equals("ALTIMETER_2") )
-									&& oxsMeasureValidationList[j][3].equals("DEFAULT") ) {
+							if ( ( TabData.getSentDataField(j).getCaptionLabel().getText().equals("Altitude") 
+									|| TabData.getSentDataField(j).getCaptionLabel().getText().equals("Altitude 2") )
+									&& TabData.getTargetDataField(j).getCaptionLabel().getText().equals("DEFAULT") ) {
 								sentDataValid = false ;
-								MainP.messageList.append( "- " + oxsMeasureValidationList[j][1] + " Telemetry data field can't be set to DEFAULT as it's" ) ;
-								MainP.messageList.append( "  already used by " + oxsMeasureValidationList[i][1] + " measurement !" ) ;
+								MainP.messageList.append( "- " + TabData.getSentDataField(j).getCaptionLabel().getText() + " Telemetry data field can't be set to DEFAULT as it's" ) ;
+								MainP.messageList.append( "  already used by " + sentDataFieldName + " measurement !" ) ;
 							}
 						}
-					} else if ( ( oxsMeasureValidationList[i][0].equals("VERTICAL_SPEED") || oxsMeasureValidationList[i][0].equals("VERTICAL_SPEED_2")   // Only one V.Speed DEFAULT
+					// TODO Only one V.Speed DEFAULT
+					} else if ( ( oxsMeasureValidationList[i][0].equals("VERTICAL_SPEED") || oxsMeasureValidationList[i][0].equals("VERTICAL_SPEED_2")
 							|| oxsMeasureValidationList[i][0].equals("PRANDTL_DTE") || oxsMeasureValidationList[i][0].equals("PPM_VSPEED") )
 							&& oxsMeasureValidationList[i][3].equals("DEFAULT") ) {
 						for ( int j = i+1 ; j <= TabData.getDataSentFieldNbr() ; j++ ) {
@@ -437,8 +445,8 @@ public class Validation {
 						}
 					}
 	
-					oxsMeasureCountSPORT[(int) sentDataFieldNb][(int) sPortDataFieldNb] ++ ;
-					oxsMeasureCountSPORT[TabData.getSentDataList().length][(int) sPortDataFieldNb] ++ ;
+					oxsMeasureCountSPORT[sentDataFieldNb][targetDataFieldNb] ++ ;
+					oxsMeasureCountSPORT[TabData.getSentDataList().length][targetDataFieldNb] ++ ;
 				}
 				/*}*/ /*else if ( oxsMeasureValidationList[i][0].equals("CELLS") ) {
 			          sentDataValid = false ;
@@ -568,37 +576,27 @@ public class Validation {
 			versionValid = 1;
 
 			MainP.messageList.append("");
-			MainP.messageList
-					.append("                ** The Configurator can't find OXS version number **");
-			MainP.messageList
-					.append("                **      Configuration file may not be compatible...    **");
+			MainP.messageList.append("                ** The Configurator can't find OXS version number **");
+			MainP.messageList.append("                **      Configuration file may not be compatible...    **");
 
 		} else if (version.charAt(1) == oxsCversion.charAt(1)) {
 			MainP.messageList.append("Configuration file will be written to:");
 			MainP.messageList.append(outputConfigDir);
 			MainP.messageList.append("");
-			MainP.messageList
-					.append("                       ! If the file already exists, it will be replaced !");
+			MainP.messageList.append("                       ! If the file already exists, it will be replaced !");
 
 		} else if (version.charAt(1) > oxsCversion.charAt(1)) {
 			versionValid = 1;
 			MainP.messageList.append("");
-			MainP.messageList.append("        **  The Configurator "
-					+ oxsCversion + " can't set OXS " + version
-					+ " new features,  **");
-			MainP.messageList
-					.append("        **    if you need them, you can edit the config file by hand    **");
+			MainP.messageList.append("        **  The Configurator " + oxsCversion + " can't set OXS " + version + " new features,  **");
+			MainP.messageList.append("        **    if you need them, you can edit the config file by hand    **");
 			MainP.messageList.append("");
 		} else {
 			versionValid = 0;
-			MainP.messageList.append("            ** The Configurator "
-					+ oxsCversion + " isn't compatible with OXS " + version
-					+ " **");
+			MainP.messageList.append("            ** The Configurator "	+ oxsCversion + " isn't compatible with OXS " + version	+ " **");
 			MainP.messageList.append("");
-			MainP.messageList
-					.append("         You may go to \"https://code.google.com/p/openxsensor/\" and");
-			MainP.messageList
-					.append("       download the latest version of both OXS and OXS Configurator.");
+			MainP.messageList.append("         You may go to \"https://code.google.com/p/openxsensor/\" and");
+			MainP.messageList.append("       download the latest version of both OXS and OXS Configurator.");
 		}
 	}
 	
