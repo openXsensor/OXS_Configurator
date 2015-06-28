@@ -7,7 +7,7 @@ import processing.core.PApplet;
 import controlP5.ControlP5;
 import gui.TabCurrent;
 import gui.TabData;
-import gui.TabGeneralSettings;
+import static gui.TabGeneralSettings.*;
 import gui.TabPPM;
 import gui.TabVario;
 import gui.TabVoltage;
@@ -56,7 +56,7 @@ public class Validation {
 	public static void validationProcess(MainP mainPori, String theString) {
         mainP = mainPori;
 		// Config file writing destination
-		oxsDirectory = MainP.trim( TabGeneralSettings.getOxsDir().getText() ) ;
+		oxsDirectory = MainP.trim( getOxsDir().getText() ) ;
 		if ( oxsDirectory.equals("") ) {
 			outputConfigDir = mainP.sketchPath("oXs_config.h");
 		} else {
@@ -150,11 +150,11 @@ public class Validation {
 	public static void validateNumPins() {
 
 		String numPinsValidation[][] = new String[][] {                      // array { pin name, pin value, isActive }
-				{ "Serial output", "" + (int)TabGeneralSettings.getSerialPinDdl().getValue(), "2" },
-				{ "Reset button", "" + (int)TabGeneralSettings.getResetBtnPinDdl().getValue(), "" + (int) TabGeneralSettings.getSaveEpromTgl().getValue() + 1  },
-				{ "PPM input", "" + (int)TabPPM.getPpmPin().getValue(), "" + (int) TabPPM.getPpmTgl().getValue() + (int)TabGeneralSettings.getVarioTgl().getValue() + (int)TabGeneralSettings.getAirSpeedTgl().getValue() },
-				{ "Analog climb output", "" + (int)TabVario.getClimbPin().getValue(), "" + (int) TabVario.getAnalogClimbTgl().getValue() + (int)TabGeneralSettings.getVarioTgl().getValue() },
-				{ "RPM input", "" + 8, "" + (int) TabGeneralSettings.getRpmTgl().getValue() + 1 }
+				{ "Serial output", "" + (int)getSerialPinDdl().getValue(), "2" },
+				{ "Reset button", "" + (int)getResetBtnPinDdl().getValue(), "" + (int) getSaveEpromTgl().getValue() + 1  },
+				{ "PPM input", "" + (int)TabPPM.getPpmPin().getValue(), "" + (int) TabPPM.getPpmTgl().getValue() + (int)getVarioTgl().getValue() + (int)getAirSpeedTgl().getValue() },
+				{ "Analog climb output", "" + (int)TabVario.getClimbPin().getValue(), "" + (int) TabVario.getAnalogClimbTgl().getValue() + (int)getVarioTgl().getValue() },
+				{ "RPM input", "" + 8, "" + (int) getRpmTgl().getValue() + 1 }
 		} ;
 
 		for ( int i = 0; i < numPinsValidation.length; i++ ) {
@@ -182,7 +182,7 @@ public class Validation {
 		int voltActiveCount = 0 ;
 
 		for ( int i = 1 ; i <= TabVoltage.getVoltnbr() ; i++ ) {
-			if ( (int)TabGeneralSettings.getVoltageTgl().getValue() == 1 && (int)TabVoltage.getVoltTgl()[i].getValue() == 1 ) {
+			if ( (int)getVoltageTgl().getValue() == 1 && (int)TabVoltage.getVoltTgl()[i].getValue() == 1 ) {
 				voltActive[i] = "1" ;
 				voltActiveCount ++ ;
 			} else {
@@ -190,7 +190,7 @@ public class Validation {
 			}
 		}
 
-		if ( (int)TabGeneralSettings.getVoltageTgl().getValue() == 1 && voltActiveCount == 0 ) {
+		if ( (int)getVoltageTgl().getValue() == 1 && voltActiveCount == 0 ) {
 			analogPinsValid = false ;
 			MainP.messageList.append("- Voltage sensor is active but there is no voltage to measure !") ;
 		}
@@ -202,10 +202,10 @@ public class Validation {
 				{ "Voltage n°4", "" + (int)TabVoltage.getDdlVolt()[4].getValue(), "" + voltActive[4] },
 				{ "Voltage n°5", "" + (int)TabVoltage.getDdlVolt()[5].getValue(), "" + voltActive[5] },
 				{ "Voltage n°6", "" + (int)TabVoltage.getDdlVolt()[6].getValue(), "" + voltActive[6] },
-				{ "Current Sensor", "" + (int)TabCurrent.getCurrentPinDdl().getValue(), "" + (int)TabGeneralSettings.getCurrentTgl().getValue() },
+				{ "Current Sensor", "" + (int)TabCurrent.getCurrentPinDdl().getValue(), "" + (int)getCurrentTgl().getValue() },
 				//{ "Temperature Sensor", "" + (int)cp5.getGroup("tempPin").getValue(), "" + (int)cp5.getController("temperature").getValue() },
-				{ "Vario/Air Speed (A4-A5)", "4", "" + (int) TabGeneralSettings.getVarioTgl().getValue() + (int)TabGeneralSettings.getAirSpeedTgl().getValue() },
-				{ "Vario/Air Speed (A4-A5)", "5", "" + (int) TabGeneralSettings.getVarioTgl().getValue() + (int)TabGeneralSettings.getAirSpeedTgl().getValue() }
+				{ "Vario/Air Speed (A4-A5)", "4", "" + (int) getVarioTgl().getValue() + (int)getAirSpeedTgl().getValue() },
+				{ "Vario/Air Speed (A4-A5)", "5", "" + (int) getVarioTgl().getValue() + (int)getAirSpeedTgl().getValue() }
 		} ;
 
 		for ( int i = 0; i < analogPinsValidation.length; i++ ) {
@@ -235,25 +235,25 @@ public class Validation {
 
 	public static void validateVspeed() {
 
-		if ( TabGeneralSettings.getVarioTgl().getValue() == 1 ) {                                                     // test V.Speed types with sensors
+		if ( getVarioTgl().getValue() == 1 ) {                                                     // test V.Speed types with sensors
 
 			for (;;) {
-				if ( (int)TabVario.getvSpeed1Ddl().getValue() == 1 && TabGeneralSettings.getVario2Tgl().getValue() == 0 ) {
+				if ( (int)TabVario.getvSpeed1Ddl().getValue() == 1 && getVario2Tgl().getValue() == 0 ) {
 					vSpeedValid = 0 ;
 					MainP.messageList.append( "- You can't use Vario 2 V.Speed as Vario 2 is not activated !" ) ;
 					break ;
-				} else if ( (int)TabVario.getvSpeed1Ddl().getValue() == 2 && TabGeneralSettings.getAirSpeedTgl().getValue() == 0 ) {
+				} else if ( (int)TabVario.getvSpeed1Ddl().getValue() == 2 && getAirSpeedTgl().getValue() == 0 ) {
 					vSpeedValid = 0 ;
 					MainP.messageList.append( "- You can't use Vario 1 + A.Speed compensated V.Speed as Air Speed" ) ;
 					MainP.messageList.append( "  sensor is not activated !" ) ;
 					break ;
 				}
 
-				if ( TabPPM.getPpmTgl().getValue() == 1 && ( TabGeneralSettings.getVario2Tgl().getValue() == 1 || TabGeneralSettings.getAirSpeedTgl().getValue() == 1 ) ) {
-					if ( (int)TabVario.getvSpeed2Ddl().getValue() == 1 && TabGeneralSettings.getVario2Tgl().getValue() == 0 ) {
+				if ( TabPPM.getPpmTgl().getValue() == 1 && ( getVario2Tgl().getValue() == 1 || getAirSpeedTgl().getValue() == 1 ) ) {
+					if ( (int)TabVario.getvSpeed2Ddl().getValue() == 1 && getVario2Tgl().getValue() == 0 ) {
 						vSpeedValid = 0 ;
 						MainP.messageList.append( "- You can't use Vario 2 V.Speed as Vario 2 is not activated !" ) ;
-					} else if ( (int)TabVario.getvSpeed2Ddl().getValue() == 2 &&  TabGeneralSettings.getAirSpeedTgl().getValue() == 0 ) {
+					} else if ( (int)TabVario.getvSpeed2Ddl().getValue() == 2 &&  getAirSpeedTgl().getValue() == 0 ) {
 						vSpeedValid = 0 ;
 						MainP.messageList.append( "- You can't use Vario 1 + A.Speed compensated V.Speed as Air Speed" ) ;
 						MainP.messageList.append( "  sensor is not activated !" ) ;
@@ -297,7 +297,7 @@ public class Validation {
 		
 		int oxsMeasureCount = 0 ;
 	
-		String oxsMeasureValidationList[][] = new String[TabData.getDataSentFieldNbr() + 1][5] ;
+		String oxsMeasureValidationList[][] = new String[TabData.getTabDataFieldNbr() + 1][5] ;
 		for ( int i = 1 ; i < oxsMeasureValidationList.length ; i++ ) {
 			oxsMeasureValidationList[i][0] = "" + TabData.getSentDataList()[ (int) TabData.getSentDataField(i).getValue() ][0] ; // Data sent - ( OXS measurement )
 			oxsMeasureValidationList[i][1] = "" + TabData.getSentDataField(i).getCaptionLabel().getText() ;          // OXS measurement - ( Data sent )
@@ -305,56 +305,56 @@ public class Validation {
 			oxsMeasureValidationList[i][3] = "" + TabData.getTargetDataField(i).getCaptionLabel().getText() ;         // target data field
 			oxsMeasureValidationList[i][4] = "0" ;                                                                          // is measurement active
 		}
-		for ( int i = 1 ; i <= TabData.getDataSentFieldNbr() ; i++ ) {
+		for ( int i = 1 ; i <= TabData.getTabDataFieldNbr() ; i++ ) {
 			switch ( TabData.getSentDataField(i).getCaptionLabel().getText() ) {
 			case "Altitude" :
 			case "Vertical Speed" :
 			case "Alt. over 10 seconds" :
 			case "Vario sensitivity" :
-				if ( TabGeneralSettings.getVarioTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( getVarioTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case "Altitude 2" :            
 			case "Vertical Speed 2" :      
 			case "Alt. over 10 seconds 2" :
-				if ( TabGeneralSettings.getVario2Tgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( getVario2Tgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case "Air Speed" :
-				if ( TabGeneralSettings.getAirSpeedTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( getAirSpeedTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case "Prandtl dTE" :
 			case "Prandtl Compensation" :
-				if ( TabGeneralSettings.getVarioTgl().getValue() == 1 && TabGeneralSettings.getAirSpeedTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( getVarioTgl().getValue() == 1 && getAirSpeedTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			//case 11 :                // TODO "PPM_VSPEED"
 			//	if ( TabGeneralSettings.getVarioTgl().getValue() == 1 && TabPPM.getPpmTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 			//	break ;
 			case "Current (mA)" :
 			case "Consumption (mAh)" :
-				if ( TabGeneralSettings.getCurrentTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( getCurrentTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case "Cells monitoring" :
-				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getCellsTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( getVoltageTgl().getValue() == 1 && TabVoltage.getCellsTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case "Volt 1" :
-				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[1].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[1].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case "Volt 2" :
-				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[2].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[2].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case "Volt 3" :
-				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[3].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[3].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case "Volt 4" :
-				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[4].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[4].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case "Volt 5" :
-				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[5].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[5].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case "Volt 6" :
-				if ( TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[6].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[6].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case "RPM" :
-				if ( TabGeneralSettings.getRpmTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
+				if ( getRpmTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
 				break ;
 			case "PPM value" :
 				if ( TabPPM.getPpmTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
@@ -362,10 +362,11 @@ public class Validation {
 			}
 		}
 	
-		int oxsMeasureCountHUB[][] = new int[TabData.getSentDataList().length + 1][TabData.getHubDataList().length] ;
+		//int oxsMeasureCountHUB[][] = new int[TabData.getSentDataList().length + 1][TabData.getHubDataList().length] ;
 		int oxsMeasureCountSPORT[][] = new int[TabData.getSentDataList().length + 1][TabData.getsPortDataList().length] ;               // array { sentData, sPortData }
+		String[][] oXsTabDataFields = new String[TabData.getTabDataFieldNbr()][2];
 	
-		for ( int i = 1 ; i <= TabData.getDataSentFieldNbr() ; i++ ) {
+		for ( int i = 1 ; i <= TabData.getTabDataFieldNbr() ; i++ ) {
 			int sentDataFieldNb = (int) TabData.getSentDataField(i).getValue() ;
 			String sentDataFieldName = TabData.getSentDataField(i).getCaptionLabel().getText() ; // TODO ori: tab7.getDdlFieldDisplay("sentDataField" + i)
 	
@@ -416,7 +417,7 @@ public class Validation {
 					// Only one Altitude DEFAULT
 					} else if ( ( sentDataFieldName.equals("Altitude") || sentDataFieldName.equals("Altitude 2") )
 							&& targetDataFieldName.equals("DEFAULT") ) {
-						for ( int j = i+1 ; j <= TabData.getDataSentFieldNbr() ; j++ ) {
+						for ( int j = i+1 ; j <= TabData.getTabDataFieldNbr() ; j++ ) {
 							if ( ( TabData.getSentDataField(j).getCaptionLabel().getText().equals("Altitude") 
 									|| TabData.getSentDataField(j).getCaptionLabel().getText().equals("Altitude 2") )
 									&& TabData.getTargetDataField(j).getCaptionLabel().getText().equals("DEFAULT") ) {
@@ -425,28 +426,27 @@ public class Validation {
 								MainP.messageList.append( "  already used by " + sentDataFieldName + " measurement !" ) ;
 							}
 						}
-					// TODO Only one V.Speed DEFAULT
-					} else if ( ( oxsMeasureValidationList[i][0].equals("VERTICAL_SPEED") || oxsMeasureValidationList[i][0].equals("VERTICAL_SPEED_2")
-							|| oxsMeasureValidationList[i][0].equals("PRANDTL_DTE") || oxsMeasureValidationList[i][0].equals("PPM_VSPEED") )
-							&& oxsMeasureValidationList[i][3].equals("DEFAULT") ) {
-						for ( int j = i+1 ; j <= TabData.getDataSentFieldNbr() ; j++ ) {
-							/*if ( oxsMeasureValidationList[j][3].equals("Vertical Speed") ) {                    // V.Speed already used by DEFAULT
-			                    sentDataValid = false ;
-			                    messageList.append( "- Vertical Speed Telemetry data field is not available as it's already" ) ;
-			                    messageList.append( "  used by " + oxsMeasureValidationList[i][1] + " measurement !" ) ;
-			                  }*/
-							if ( ( oxsMeasureValidationList[j][0].equals("VERTICAL_SPEED") || oxsMeasureValidationList[j][0].equals("VERTICAL_SPEED_2")
-									|| oxsMeasureValidationList[j][0].equals("PRANDTL_DTE") || oxsMeasureValidationList[j][0].equals("PPM_VSPEED") )
-									&& oxsMeasureValidationList[j][3].equals("DEFAULT") ) {
+					// Only one V.Speed DEFAULT
+					} else if ( ( sentDataFieldName.equals("Vertical Speed") || sentDataFieldName.equals("Vertical Speed 2")
+							|| sentDataFieldName.equals("Prandtl dTE") || sentDataFieldName.equals("PPM_VSPEED") )
+							&& targetDataFieldName.equals("DEFAULT") ) {
+						for ( int j = i+1 ; j <= TabData.getTabDataFieldNbr() ; j++ ) {
+							if ( ( TabData.getSentDataField(j).getCaptionLabel().getText().equals("Vertical Speed")
+									|| TabData.getSentDataField(j).getCaptionLabel().getText().equals("Vertical Speed 2")
+									|| TabData.getSentDataField(j).getCaptionLabel().getText().equals("Prandtl dTE")
+									|| TabData.getSentDataField(j).getCaptionLabel().getText().equals("PPM_VSPEED") )
+									&& TabData.getTargetDataField(j).getCaptionLabel().getText().equals("DEFAULT") ) {
 								sentDataValid = false ;
-								MainP.messageList.append( "- " + oxsMeasureValidationList[j][1] + " Telemetry data field can't be set to DEFAULT as it's" ) ;
-								MainP.messageList.append( "  already used by " + oxsMeasureValidationList[i][1] + " measurement !" ) ;
+								MainP.messageList.append( "- " + TabData.getSentDataField(j).getCaptionLabel().getText() + " Telemetry data field can't be set to DEFAULT as it's" ) ;
+								MainP.messageList.append( "  already used by " + sentDataFieldName + " measurement !" ) ;
 							}
 						}
 					}
 	
 					oxsMeasureCountSPORT[sentDataFieldNb][targetDataFieldNb] ++ ;
 					oxsMeasureCountSPORT[TabData.getSentDataList().length][targetDataFieldNb] ++ ;
+					oXsTabDataFields[i][0] = sentDataFieldName;
+					oXsTabDataFields[i][1] = targetDataFieldName;
 				}
 				/*}*/ /*else if ( oxsMeasureValidationList[i][0].equals("CELLS") ) {
 			          sentDataValid = false ;
@@ -467,15 +467,9 @@ public class Validation {
 		}
 	
 		// ***  Duplicate tests  ***
-		if ( TabGeneralSettings.getProtocolDdl().getValue() == 1 ) {          //  HUB protocol => maybe not up to date since OXSC v2.0
+		/*if ( getProtocolDdl().getValue() == 1 ) {          //  HUB protocol => maybe not up to date since OXSC v2.0
 			for ( int k = 1 ; k <= TabData.getSentDataList().length ; k++ ) {
-				/*
-			      if ( k == sentDataList.length ) {
-			        print( "TOTAL: " ) ;
-			      } else {
-			        print( sentDataList[k][1] + ": " ) ;
-			      }
-				 */
+
 				for ( int l = 1 ; l < TabData.getHubDataList().length ; l++ ) {
 					//print( oxsMeasureCountHUB[k][l] + " " ) ;
 					if ( oxsMeasureCountHUB[k][l] > 1 && k < TabData.getSentDataList().length ) {
@@ -501,8 +495,8 @@ public class Validation {
 				sentDataValid = false ;
 				MainP.messageList.append( "- RPM not available as it's already used by RPM !" ) ;
 			}
-		} else if ( TabGeneralSettings.getProtocolDdl().getValue() == 2 ) {         //  SPORT protocol
-			for ( int k = 1 ; k <= TabData.getSentDataList().length ; k++ ) {
+		} else*/ if ( MainP.protocol.getName().equals("FrSky") ) {         // TODO FrSky protocol
+			for ( int k = 1 ; k <= Protocol.getDataList().length ; k++ ) {
 				/*
 			      if ( k == sentDataList.length ) {
 			        print( "TOTAL: " ) ;
@@ -545,6 +539,8 @@ public class Validation {
 				MainP.messageList.append( "  RPM measurement !" ) ;
 			}
 	
+			//for ()  // TODO first continue duplicate tests
+			
 		}
 	
 		if ( oxsMeasureCount == 0 ) {

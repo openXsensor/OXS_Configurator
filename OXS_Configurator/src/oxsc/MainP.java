@@ -418,7 +418,7 @@ public class MainP extends PApplet {
 			fill(10) ;
 			rect(298, 414, 124, 34) ;
 
-			for ( int i = 1 ; i <= TabData.getDataSentFieldNbr() ; i++ ) {            // Load and Save preset buttons hide
+			for ( int i = 1 ; i <= TabData.getTabDataFieldNbr() ; i++ ) {            // Load and Save preset buttons hide
 				if ( TabData.getSentDataField(i).isOpen() || TabData.getTargetDataField(i).isOpen() ) {
 					cp5.getController("loadButton").hide() ;
 					cp5.getController("saveButton").hide() ;
@@ -604,7 +604,7 @@ public class MainP extends PApplet {
 		  }
 		 */
 		// TODO in 1 loop ?? later
-		for ( int i = 1; i <= TabData.getDataSentFieldNbr(); i++ ) {
+		for ( int i = 1; i <= TabData.getTabDataFieldNbr(); i++ ) {
 			if ( cp5.isMouseOver ( cp5.getController( "dataMultiplier" + i ) ) ) {
 				cp5.getController( "dataMultiplier" + i ).setColorForeground(orangeAct) ;
 			} else {
@@ -612,7 +612,7 @@ public class MainP extends PApplet {
 			}
 		}
 
-		for ( int i = 1; i <= TabData.getDataSentFieldNbr(); i++ ) {
+		for ( int i = 1; i <= TabData.getTabDataFieldNbr(); i++ ) {
 			if ( cp5.isMouseOver ( cp5.getController( "dataDivider" + i ) ) ) {
 				cp5.getController( "dataDivider" + i ).setColorForeground(orangeAct) ;
 			} else {
@@ -620,7 +620,7 @@ public class MainP extends PApplet {
 			}
 		}
 
-		for ( int i = 1; i <= TabData.getDataSentFieldNbr(); i++ ) {
+		for ( int i = 1; i <= TabData.getTabDataFieldNbr(); i++ ) {
 			if ( cp5.isMouseOver ( cp5.getController( "dataOffset" + i ) ) ) {
 				cp5.getController( "dataOffset" + i ).setColorForeground(orangeAct) ;
 			} else {
@@ -710,7 +710,7 @@ public class MainP extends PApplet {
 		    }
 		  }
 		 */
-		for ( int i = 1; i <= TabData.getDataSentFieldNbr(); i++ ) {
+		for ( int i = 1; i <= TabData.getTabDataFieldNbr(); i++ ) {
 			if ( !cp5.isMouseOver ( TabData.getSentDataField(i) ) ) {
 				if (mousePressed == true) {
 					TabData.getSentDataField(i).close() ;
@@ -728,7 +728,7 @@ public class MainP extends PApplet {
 		  }
 		 */
 
-		for ( int i = 1; i <= TabData.getDataSentFieldNbr(); i++ ) {
+		for ( int i = 1; i <= TabData.getTabDataFieldNbr(); i++ ) {
 			if ( !cp5.isMouseOver ( TabData.getTargetDataField(i) ) ) {
 				if (mousePressed == true) {
 					TabData.getTargetDataField(i).close() ;
@@ -842,7 +842,7 @@ public class MainP extends PApplet {
 
 		// Selecting DEFAULT automatically in Telemetry data fields
 		// TODO group controllers ?
-		for (int i = 1; i <= TabData.getDataSentFieldNbr(); i++) {
+		for (int i = 1; i <= TabData.getTabDataFieldNbr(); i++) {
 
 			if (theEvent.isFrom(TabData.getSentDataField(i))) {
 
@@ -858,7 +858,7 @@ public class MainP extends PApplet {
 				case "Consumption (mAh)":
 				case "Cells monitoring":
 				case "RPM":
-					TabData.getTargetDataField(i).setValue(1);
+					TabData.getTargetDataField(i).setValue(1); //TODO don't like set method
 					break;
 				}
 

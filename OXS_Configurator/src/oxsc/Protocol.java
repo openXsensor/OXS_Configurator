@@ -49,14 +49,14 @@ public class Protocol {
 	public static Protocol createProtocol(String name) {
 		if (MainP.protocol == null || !MainP.protocol.getName().equals(name)) {
 			Protocol tempProt = new Protocol(name);
-			
+
 			updateUItargetDataList();
-			
-			// TODO OXSdata.updateList(); 
-			
+
+			// TODO OXSdata.updateList();
+
 			return tempProt;
 		}
-		return MainP.protocol ;
+		return MainP.protocol;
 
 	}
 

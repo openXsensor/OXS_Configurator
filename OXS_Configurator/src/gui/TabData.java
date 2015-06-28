@@ -305,6 +305,10 @@ public class TabData {
 		}
 	}
 
+	public static int getTabDataFieldNbr() {
+		return tabDataFieldNbr;
+	}
+	
 	public static String[][] getSentDataList() {
 		return sentDataList;
 	}
@@ -331,10 +335,6 @@ public class TabData {
 
 	public static Numberbox[] getDataOffsetNBox() {
 		return dataOffsetNBox;
-	}
-
-	public static int getDataSentFieldNbr() {
-		return tabDataFieldNbr;
 	}
 
 	public static String[][] getsPortDataList() {

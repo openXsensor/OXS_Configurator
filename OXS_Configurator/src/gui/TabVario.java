@@ -84,7 +84,7 @@ public class TabVario {
 	                          .setCaptionLabel("Max.")
 	                          .setHandleSize(15)
 	                          .setRange(20, 150)
-	                          .setRangeValues(20, (float) 100.5)
+	                          .setRangeValues(20, 100.5f)
 	                          ;
 	    MainP.customizeRange(ppmSensMinMaxRng) ;
 	    cp5.getTooltip().register("ppmSensMinMax", "RC control sensitivity range - Default: 20:100 -") ;
@@ -174,7 +174,7 @@ public class TabVario {
 	                             .setSize(40, 20)
 	                             .setColorActive(MainP.blueAct)
 	                             .setRange(0, 100)
-	                             .setMultiplier((float) 0.5)                     // set the sensitifity of the numberbox
+	                             .setMultiplier(0.5f)                     // set the sensitifity of the numberbox
 	                             .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
 	                             .setValue(10)
 	                             .setCaptionLabel("Min.")
@@ -189,7 +189,7 @@ public class TabVario {
 	                             .setSize(40, 20)
 	                             .setColorActive(MainP.blueAct)
 	                             .setRange(0, 100)
-	                             .setMultiplier((float) 0.5)                     // set the sensitifity of the numberbox
+	                             .setMultiplier(0.5f)                     // set the sensitifity of the numberbox
 	                             .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
 	                             .setValue(90)
 	                             .setCaptionLabel("Max.")
@@ -215,7 +215,7 @@ public class TabVario {
 	                       .setSize(220, 20)
 	                       .setHandleSize(15)
 	                       .setRange(20, 150)
-	                       .setRangeValues( (float) 50.9, (float) 50.9)
+	                       .setRangeValues(50.9f, 50.9f)
 	                       ;
 	    MainP.customizeRange(sensMinMaxRng) ;
 	    cp5.getTooltip().register("sensMinMax", "Sensitivity based on vertical speed - Default: 50:50 -") ;
@@ -235,7 +235,7 @@ public class TabVario {
 	                        .setSize(40, 20)
 	                        .setColorActive(MainP.blueAct)
 	                        .setBroadcast(false)
-	                        .setMultiplier((float) 0.5)                     // set the sensitifity of the numberbox
+	                        .setMultiplier(0.5f)                     // set the sensitifity of the numberbox
 	                        .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
 	                        .setValue(20)
 	                        .setCaptionLabel("Min.")
@@ -250,7 +250,7 @@ public class TabVario {
 	                        .setSize(40, 20)
 	                        .setColorActive(MainP.blueAct)
 	                        .setBroadcast(false)
-	                        .setMultiplier((float) 0.5)                     // set the sensitifity of the numberbox
+	                        .setMultiplier(0.5f)                     // set the sensitifity of the numberbox
 	                        .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
 	                        .setValue(100)
 	                        .setCaptionLabel("Max.")
@@ -331,7 +331,7 @@ public class TabVario {
 	                               .setCaptionLabel("Max.")
 	                               .setHandleSize(15)
 	                               .setRange(-20, 20)
-	                               .setRangeValues(-3, (float) 3.9)
+	                               .setRangeValues(-3, 3.9f)
 	                               ;
 	    MainP.customizeRange(outClimbRateMinMaxRng) ;
 	    cp5.getTooltip().register("outClimbRateMinMax", "Analog climb rate range - Default: -3:3 -") ;

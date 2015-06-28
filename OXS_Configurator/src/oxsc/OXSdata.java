@@ -13,7 +13,7 @@ public class OXSdata {
 	private String sensorType;
 	private String defaultValue;
 	
-	private static ArrayList<OXSdata> OXSdataList = new ArrayList<OXSdata>();
+	private static ArrayList<OXSdata> OXSdataList = new ArrayList<>();
 
 	public OXSdata(String name, String displayName, String sensorType, String defaultValue) {
 		this.name = name;

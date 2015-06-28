@@ -239,7 +239,7 @@ public class WriteConf {
 		output.println("") ;
 		output.println("// ***** 9.1 - FrSky data *****") ;
 		output.println("#define SETUP_FRSKY_DATA_TO_SEND    \\") ;
-		for ( int i = 1; i <= TabData.getDataSentFieldNbr(); i++ ) {
+		for ( int i = 1; i <= TabData.getTabDataFieldNbr(); i++ ) {
 			if ( TabData.getSentDataField(i).getValue() != 0 ) {
 				if ( !dataFirst ) {
 					output.println(" , \\") ;
