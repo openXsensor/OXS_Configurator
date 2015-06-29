@@ -254,14 +254,14 @@ public class WriteConf {
 							dataFirst = false ;
 						}
 					}
-				} else if ( TabGeneralSettings.getProtocolDdl().getValue() == 1 ) {
+				} /*else if ( TabGeneralSettings.getProtocolDdl().getValue() == 1 ) {
 					output.print("                        " + TabData.getHubDataList()[(int)TabData.getHubDataField(i).getValue()][0] + " , "
 							+ TabData.getSentDataList()[(int)TabData.getSentDataField(i).getValue()][0] + " , "
 							+ TabData.getDataMultiplierNBox()[i].getValueLabel().getText() + " , "
 							+ TabData.getDataDividerNBox()[i].getValueLabel().getText() + " , "
 							+ TabData.getDataOffsetNBox()[i].getValueLabel().getText() ) ;
 					dataFirst = false ;
-				} else {
+				}*/ else {
 					output.print("                        " + TabData.getsPortDataList()[(int)TabData.getTargetDataField(i).getValue()][0] + " , "
 							+ TabData.getSentDataList()[(int)TabData.getSentDataField(i).getValue()][0] + " , "
 							+ TabData.getDataMultiplierNBox()[i].getValueLabel().getText() + " , "

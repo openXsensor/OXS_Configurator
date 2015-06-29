@@ -544,7 +544,7 @@ public class Validation {
 				PApplet.println(oXsTabDataFields[i][0]);
 				if ( !oXsTabDataFields[i][0].equals("----------")) {
 					for (int j = i + 1; j <= TabData.getTabDataFieldNbr(); j++) {
-						if (oXsTabDataFields[i][1].equals(oXsTabDataFields[j][1])){
+						if (!oXsTabDataFields[i][0].equals("----------") && oXsTabDataFields[i][1].equals(oXsTabDataFields[j][1])){
 							sentDataValid = false ;
 							MainP.messageList.append( "- " + oXsTabDataFields[i][1] + " can't be used multiple times !" );
 						}
