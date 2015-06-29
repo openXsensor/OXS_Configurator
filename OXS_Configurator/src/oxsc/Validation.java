@@ -364,7 +364,7 @@ public class Validation {
 	
 		//int oxsMeasureCountHUB[][] = new int[TabData.getSentDataList().length + 1][TabData.getHubDataList().length] ;
 		int oxsMeasureCountSPORT[][] = new int[TabData.getSentDataList().length + 1][TabData.getsPortDataList().length] ;               // array { sentData, sPortData }
-		String[][] oXsTabDataFields = new String[TabData.getTabDataFieldNbr()][2];
+		String[][] oXsTabDataFields = new String[TabData.getTabDataFieldNbr() + 1][2];
 	
 		for ( int i = 1 ; i <= TabData.getTabDataFieldNbr() ; i++ ) {
 			int sentDataFieldNb = (int) TabData.getSentDataField(i).getValue() ;
@@ -445,8 +445,6 @@ public class Validation {
 	
 					oxsMeasureCountSPORT[sentDataFieldNb][targetDataFieldNb] ++ ;
 					oxsMeasureCountSPORT[TabData.getSentDataList().length][targetDataFieldNb] ++ ;
-					oXsTabDataFields[i][0] = sentDataFieldName;
-					oXsTabDataFields[i][1] = targetDataFieldName;
 				}
 				/*}*/ /*else if ( oxsMeasureValidationList[i][0].equals("CELLS") ) {
 			          sentDataValid = false ;
@@ -464,6 +462,8 @@ public class Validation {
 			          println("result = " + OXSdata.isInList( sentDataFieldName )) ;
 			      }*/
 			}
+			oXsTabDataFields[i][0] = sentDataFieldName;
+			oXsTabDataFields[i][1] = targetDataFieldName;
 		}
 	
 		// ***  Duplicate tests  ***
@@ -495,15 +495,16 @@ public class Validation {
 				sentDataValid = false ;
 				MainP.messageList.append( "- RPM not available as it's already used by RPM !" ) ;
 			}
-		} else*/ if ( MainP.protocol.getName().equals("FrSky") ) {         // TODO FrSky protocol
-			for ( int k = 1 ; k <= Protocol.getDataList().length ; k++ ) {
-				/*
+		} else*/ 
+		if ( MainP.protocol.getName().equals("FrSky") ) {         // TODO FrSky protocol
+			/*for ( int k = 1 ; k <= Protocol.getDataList().length ; k++ ) {
+				
 			      if ( k == sentDataList.length ) {
 			        print( "TOTAL: " ) ;
 			      } else {
 			        print( sentDataList[k][1] + ": " ) ;
 			      }
-				 */
+				 
 				for ( int l = 1 ; l < TabData.getsPortDataList().length ; l++ ) {
 					//print( oxsMeasureCountSPORT[k][l] + " " ) ;
 					if ( oxsMeasureCountSPORT[k][l] > 1 && k < TabData.getSentDataList().length ) {
@@ -537,9 +538,21 @@ public class Validation {
 				sentDataValid = false ;
 				MainP.messageList.append( "- RPM Telemetry data field is not available as it's already used by" ) ;
 				MainP.messageList.append( "  RPM measurement !" ) ;
-			}
+			}*/
 	
-			//for ()  // TODO first continue duplicate tests
+			for (int i = 1; i <= TabData.getTabDataFieldNbr(); i++) { // TODO first continue duplicate tests
+				PApplet.println(oXsTabDataFields[i][0]);
+				if ( !oXsTabDataFields[i][0].equals("----------")) {
+					for (int j = i + 1; j <= TabData.getTabDataFieldNbr(); j++) {
+						if (oXsTabDataFields[i][1].equals(oXsTabDataFields[j][1])){
+							sentDataValid = false ;
+							MainP.messageList.append( "- " + oXsTabDataFields[i][1] + " can't be used multiple times !" );
+						}
+					}
+					//MainP.messageList.append( "- RPM Telemetry data field is not available as it's already used by" );
+				}
+			}
+				
 			
 		}
 	
