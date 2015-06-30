@@ -542,17 +542,24 @@ public class Validation {
 	
 			for (int i = 1; i <= TabData.getTabDataFieldNbr(); i++) { // TODO first continue duplicate tests
 				PApplet.println(oXsTabDataFields[i][0]);
-				if ( !oXsTabDataFields[i][0].equals("----------")) {
+				System.out.println("premier i = " + i);
+				//if ( !oXsTabDataFields[i][0].equals("----------")) {
 					for (int j = i + 1; j <= TabData.getTabDataFieldNbr(); j++) {
-						if (!oXsTabDataFields[i][0].equals("----------") && oXsTabDataFields[i][1].equals(oXsTabDataFields[j][1])){
+						if (oXsTabDataFields[i][1].equals(oXsTabDataFields[j][1])){
 							sentDataValid = false ;
-							MainP.messageList.append( "- " + oXsTabDataFields[i][1] + " can't be used multiple times !" );
+							MainP.messageList.append( "- " + oXsTabDataFields[i][0]  );
+							System.out.println("i = " + i);
+							i = j - 1;
+							System.out.println("j = " + j);
+							break;
 						}
+						MainP.messageList.append( " can't be used multiple times !" );
+						
 					}
 					//MainP.messageList.append( "- RPM Telemetry data field is not available as it's already used by" );
-				}
+				//}
 			}
-				
+
 			
 		}
 	
