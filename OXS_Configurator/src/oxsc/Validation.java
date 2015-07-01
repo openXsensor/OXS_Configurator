@@ -1,6 +1,8 @@
 package oxsc;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import processing.core.PApplet;
@@ -496,7 +498,7 @@ public class Validation {
 				MainP.messageList.append( "- RPM not available as it's already used by RPM !" ) ;
 			}
 		} else*/ 
-		if ( MainP.protocol.getName().equals("FrSky") ) {         // TODO FrSky protocol
+		//if ( MainP.protocol.getName().equals("FrSky") ) {         // TODO FrSky protocol
 			/*for ( int k = 1 ; k <= Protocol.getDataList().length ; k++ ) {
 				
 			      if ( k == sentDataList.length ) {
@@ -540,28 +542,29 @@ public class Validation {
 				MainP.messageList.append( "  RPM measurement !" ) ;
 			}*/
 	
-			for (int i = 1; i <= TabData.getTabDataFieldNbr(); i++) { // TODO first continue duplicate tests
-				PApplet.println(oXsTabDataFields[i][0]);
+			// TODO first continue duplicate tests
+			for (int i = 1; i <= TabData.getTabDataFieldNbr(); i++) {
+				ArrayList<String> tempStr = new ArrayList<>();
 				System.out.println("premier i = " + i);
-				//if ( !oXsTabDataFields[i][0].equals("----------")) {
+				if (oXsTabDataFields[i][0] != null) {
+					tempStr.add(oXsTabDataFields[i][1]);
+					tempStr.add(oXsTabDataFields[i][0]);
 					for (int j = i + 1; j <= TabData.getTabDataFieldNbr(); j++) {
-						if (oXsTabDataFields[i][1].equals(oXsTabDataFields[j][1])){
-							sentDataValid = false ;
-							MainP.messageList.append( "- " + oXsTabDataFields[i][0]  );
-							System.out.println("i = " + i);
-							i = j - 1;
-							System.out.println("j = " + j);
-							break;
+						if (oXsTabDataFields[i][1].equals(oXsTabDataFields[j][1])) {
+							sentDataValid = false;
+							tempStr.add(oXsTabDataFields[j][0]);
+							oXsTabDataFields[j][0] = null;
 						}
-						MainP.messageList.append( " can't be used multiple times !" );
-						
 					}
-					//MainP.messageList.append( "- RPM Telemetry data field is not available as it's already used by" );
-				//}
+					System.out.println(tempStr);
+					MainP.messageList.append("- " + tempStr.get(0) + " can't be used at the same time by: ");
+					MainP.messageList
+							.append("  " + Arrays.toString(tempStr.stream().skip(1).toArray(String[]::new)) + " !");
+				}
 			}
 
 			
-		}
+		//}
 	
 		if ( oxsMeasureCount == 0 ) {
 			sentDataValid = false ;
