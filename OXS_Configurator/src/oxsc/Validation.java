@@ -3,6 +3,7 @@ package oxsc;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 import processing.core.PApplet;
@@ -299,71 +300,6 @@ public class Validation {
 		
 		int oxsMeasureCount = 0 ;
 	
-		String oxsMeasureValidationList[][] = new String[TabData.getTabDataFieldNbr() + 1][5] ;
-		for ( int i = 1 ; i < oxsMeasureValidationList.length ; i++ ) {
-			oxsMeasureValidationList[i][0] = "" + TabData.getSentDataList()[ (int) TabData.getSentDataField(i).getValue() ][0] ; // Data sent - ( OXS measurement )
-			oxsMeasureValidationList[i][1] = "" + TabData.getSentDataField(i).getCaptionLabel().getText() ;          // OXS measurement - ( Data sent )
-			oxsMeasureValidationList[i][2] = "" + TabData.getHubDataField(i).getCaptionLabel().getText() ;           // HUB data field
-			oxsMeasureValidationList[i][3] = "" + TabData.getTargetDataField(i).getCaptionLabel().getText() ;         // target data field
-			oxsMeasureValidationList[i][4] = "0" ;                                                                          // is measurement active
-		}
-		for ( int i = 1 ; i <= TabData.getTabDataFieldNbr() ; i++ ) {
-			switch ( TabData.getSentDataField(i).getCaptionLabel().getText() ) {
-			case "Altitude" :
-			case "Vertical Speed" :
-			case "Alt. over 10 seconds" :
-			case "Vario sensitivity" :
-				if ( getVarioTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
-				break ;
-			case "Altitude 2" :            
-			case "Vertical Speed 2" :      
-			case "Alt. over 10 seconds 2" :
-				if ( getVario2Tgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
-				break ;
-			case "Air Speed" :
-				if ( getAirSpeedTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
-				break ;
-			case "Prandtl dTE" :
-			case "Prandtl Compensation" :
-				if ( getVarioTgl().getValue() == 1 && getAirSpeedTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
-				break ;
-			//case 11 :                // TODO "PPM_VSPEED"
-			//	if ( TabGeneralSettings.getVarioTgl().getValue() == 1 && TabPPM.getPpmTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
-			//	break ;
-			case "Current (mA)" :
-			case "Consumption (mAh)" :
-				if ( getCurrentTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
-				break ;
-			case "Cells monitoring" :
-				if ( getVoltageTgl().getValue() == 1 && TabVoltage.getCellsTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
-				break ;
-			case "Volt 1" :
-				if ( getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[1].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
-				break ;
-			case "Volt 2" :
-				if ( getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[2].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
-				break ;
-			case "Volt 3" :
-				if ( getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[3].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
-				break ;
-			case "Volt 4" :
-				if ( getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[4].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
-				break ;
-			case "Volt 5" :
-				if ( getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[5].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
-				break ;
-			case "Volt 6" :
-				if ( getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[6].getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
-				break ;
-			case "RPM" :
-				if ( getRpmTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
-				break ;
-			case "PPM value" :
-				if ( TabPPM.getPpmTgl().getValue() == 1 ) { oxsMeasureValidationList[i][4] = "1" ; }
-				break ;
-			}
-		}
-	
 		//int oxsMeasureCountHUB[][] = new int[TabData.getSentDataList().length + 1][TabData.getHubDataList().length] ;
 		int oxsMeasureCountSPORT[][] = new int[TabData.getSentDataList().length + 1][TabData.getsPortDataList().length] ;               // array { sentData, sPortData }
 		String[][] oXsTabDataFields = new String[TabData.getTabDataFieldNbr() + 1][2];
@@ -403,7 +339,8 @@ public class Validation {
 					sentDataValid = false ;
 					MainP.messageList.append( "- The " + sentDataFieldName + " measure is not sent !" ) ;
 				} else if ( MainP.protocol.getName() == "FrSky" ) {          // if FrSky protocol
-					/*} else*/ if ( ( sentDataFieldName.equals("Cells monitoring") || sentDataFieldName.equals("RPM") )   // OXS measurement must be default
+					// OXS measurement must be default
+	/*} else*/ if ( ( sentDataFieldName.equals("Cells monitoring") || sentDataFieldName.equals("RPM") )
 							&& !targetDataFieldName.equals("DEFAULT") ) {
 						sentDataValid = false ;
 						MainP.messageList.append( "- " + sentDataFieldName + " must be set to DEFAULT !" ) ;
@@ -448,21 +385,6 @@ public class Validation {
 					oxsMeasureCountSPORT[sentDataFieldNb][targetDataFieldNb] ++ ;
 					oxsMeasureCountSPORT[TabData.getSentDataList().length][targetDataFieldNb] ++ ;
 				}
-				/*}*/ /*else if ( oxsMeasureValidationList[i][0].equals("CELLS") ) {
-			          sentDataValid = false ;
-			          messageList.append( "- " + oxsMeasureValidationList[i][1] + " is not activated in voltage tab. !" ) ;
-			      } else if ( oxsMeasureValidationList[i][0].equals("PPM_VSPEED") ) {
-			          sentDataValid = false ;
-			          messageList.append( "- PPM option is not activated in Vario tab. !" ) ;
-			      } else if ( oxsMeasureValidationList[i][0].equals("PRANDTL_DTE") || oxsMeasureValidationList[i][0].equals("PRANDTL_COMPENSATION") ) {
-			          sentDataValid = false ;
-			          messageList.append( "- " + oxsMeasureValidationList[i][1] + " needs Vario AND Air Speed sensor !" ) ;
-			      } else {
-			          sentDataValid = false ;
-			          messageList.append( "- " + oxsMeasureValidationList[i][1] + " needs the sensor to be active !" ) ;
-			          println("nom = " + sentDataFieldName) ;
-			          println("result = " + OXSdata.isInList( sentDataFieldName )) ;
-			      }*/
 			}
 			oXsTabDataFields[i][0] = sentDataFieldName;
 			oXsTabDataFields[i][1] = targetDataFieldName;
@@ -544,9 +466,9 @@ public class Validation {
 	
 			// TODO first continue duplicate tests
 			for (int i = 1; i <= TabData.getTabDataFieldNbr(); i++) {
-				ArrayList<String> tempStr = new ArrayList<>();
+				List<String> tempStr = new ArrayList<>();
 				System.out.println("premier i = " + i);
-				if (oXsTabDataFields[i][0] != null) {
+				if (!oXsTabDataFields[i][1].equals("----------") && oXsTabDataFields[i][0] != null) {
 					tempStr.add(oXsTabDataFields[i][1]);
 					tempStr.add(oXsTabDataFields[i][0]);
 					for (int j = i + 1; j <= TabData.getTabDataFieldNbr(); j++) {
