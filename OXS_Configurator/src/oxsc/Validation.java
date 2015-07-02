@@ -296,51 +296,30 @@ public class Validation {
 
 	}
 
-	public static void validateSentData() {                // TODO later better redundancy tests validateSentData()
+	public static void validateSentData() {   // TODO later better redundancy tests validateSentData()
 		
 		int oxsMeasureCount = 0 ;
-	
-		//int oxsMeasureCountHUB[][] = new int[TabData.getSentDataList().length + 1][TabData.getHubDataList().length] ;
-		int oxsMeasureCountSPORT[][] = new int[TabData.getSentDataList().length + 1][TabData.getsPortDataList().length] ;               // array { sentData, sPortData }
+
+		int oxsMeasureCountSPORT[][] = new int[TabData.getSentDataList().length + 1][TabData.getsPortDataList().length] ;    // array { sentData, sPortData }
 		String[][] oXsTabDataFields = new String[TabData.getTabDataFieldNbr() + 1][2];
 	
 		for ( int i = 1 ; i <= TabData.getTabDataFieldNbr() ; i++ ) {
 			int sentDataFieldNb = (int) TabData.getSentDataField(i).getValue() ;
-			String sentDataFieldName = TabData.getSentDataField(i).getCaptionLabel().getText() ; // TODO ori: tab7.getDdlFieldDisplay("sentDataField" + i)
+			String sentDataFieldName = TabData.getSentDataField(i).getCaptionLabel().getText() ;
 	
 			int targetDataFieldNb = (int) TabData.getTargetDataField(i).getValue() ;
-			String targetDataFieldName = TabData.getTargetDataField(i).getCaptionLabel().getText() ; // TODO ori: tab7.getDdlFieldDisplay("sPortDataField" + i)
+			String targetDataFieldName = TabData.getTargetDataField(i).getCaptionLabel().getText() ;
 			PApplet.println("(for) nom dest. = " + targetDataFieldName) ;
 	
 			if ( sentDataFieldNb > 0 ) {   // if OXS measurement field is not empty
 				oxsMeasureCount ++ ;
-				//if ( OXSdata.isInList( sentDataFieldName ) ) {                // if OXS measurement is valid (sensor available) TODO remove
-				/*if ( cp5.getGroup("protocolChoice").getValue() == 1 ) {          // if HUB protocol => maybe not up to date since OXSC v2.0
-			            if ( cp5.getGroup("hubDataField" + i).getValue() == 0 ) {    // if telemetry field is empty
-			              sentDataValid = false ;
-			              messageList.append( "- The " + oxsMeasureValidationList[i][1] + " measure is not sent !" ) ;
-			            } else if ( ( oxsMeasureValidationList[i][0].equals("ALTIMETER") || oxsMeasureValidationList[i][0].equals("CELLS")          // OXS measurement must be default
-			                          || oxsMeasureValidationList[i][0].equals("RPM") ) && !oxsMeasureValidationList[i][2].equals("DEFAULT") ) {
-			                sentDataValid = false ;
-			                messageList.append( "- " + oxsMeasureValidationList[i][1] + " must be set to DEFAULT !" ) ;
-			            } else if ( ( oxsMeasureValidationList[i][0].equals("SENSITIVITY") || oxsMeasureValidationList[i][0].equals("ALT_OVER_10_SEC")   // OXS measurement can't be default
-			                          || oxsMeasureValidationList[i][0].equals("VOLT1") || oxsMeasureValidationList[i][0].equals("VOLT2")
-			                          || oxsMeasureValidationList[i][0].equals("VOLT3") || oxsMeasureValidationList[i][0].equals("VOLT4")
-			                          || oxsMeasureValidationList[i][0].equals("VOLT5") || oxsMeasureValidationList[i][0].equals("VOLT6")
-			                          || oxsMeasureValidationList[i][0].equals("MILLIAH") ) && oxsMeasureValidationList[i][2].equals("DEFAULT") ) {
-			                sentDataValid = false ;
-			                messageList.append( "- " + oxsMeasureValidationList[i][1] + " can't be set to DEFAULT !" ) ;
-			            }
-			            oxsMeasureCountHUB[int( sentDataFieldNb )][int( cp5.getGroup("hubDataField" + i).getValue() )] ++ ;
-			            oxsMeasureCountHUB[sentDataList.length][int( cp5.getGroup("hubDataField" + i).getValue() )] ++ ;
-	
-			        } else*/ 
 				if ( targetDataFieldNb == 0 ) {         // if telemetry field is empty
 					sentDataValid = false ;
 					MainP.messageList.append( "- The " + sentDataFieldName + " measure is not sent !" ) ;
-				} else if ( MainP.protocol.getName() == "FrSky" ) {          // if FrSky protocol
-					// OXS measurement must be default
-	/*} else*/ if ( ( sentDataFieldName.equals("Cells monitoring") || sentDataFieldName.equals("RPM") )
+				// if FrSky protocol
+				} else if ( MainP.protocol.getName() == "FrSky" ) {
+				// OXS measurement must be default
+                if ( ( sentDataFieldName.equals("Cells monitoring") || sentDataFieldName.equals("RPM") )
 							&& !targetDataFieldName.equals("DEFAULT") ) {
 						sentDataValid = false ;
 						MainP.messageList.append( "- " + sentDataFieldName + " must be set to DEFAULT !" ) ;
@@ -391,108 +370,38 @@ public class Validation {
 		}
 	
 		// ***  Duplicate tests  ***
-		/*if ( getProtocolDdl().getValue() == 1 ) {          //  HUB protocol => maybe not up to date since OXSC v2.0
-			for ( int k = 1 ; k <= TabData.getSentDataList().length ; k++ ) {
 
-				for ( int l = 1 ; l < TabData.getHubDataList().length ; l++ ) {
-					//print( oxsMeasureCountHUB[k][l] + " " ) ;
-					if ( oxsMeasureCountHUB[k][l] > 1 && k < TabData.getSentDataList().length ) {
-						sentDataValid = false ;
-						MainP.messageList.append( "- " + TabData.getSentDataList()[k][1] + " can't be sent " + oxsMeasureCountHUB[k][l] + "X to the same " +  TabData.getHubDataList()[l][1] + " field !" ) ;
-					}
-					if ( k == TabData.getSentDataList().length && l > 1 && oxsMeasureCountHUB[TabData.getSentDataList().length][l] > 1 ) {
-						sentDataValid = false ;
-						MainP.messageList.append( "- Different measurements can't be sent to the same " +  TabData.getHubDataList()[l][1] + " field !" ) ;
-					}
-				}
-				//println("");
-			}
-			if ( oxsMeasureCountHUB[2][1] == 1 && oxsMeasureCountHUB[TabData.getSentDataList().length][2] >= 1 ) {  // Test VERTICAL_SPEED  default/VSpd
-				sentDataValid = false ;
-				MainP.messageList.append( "- Vertical Speed not available as it's already used by VERTICAL_SPEED !" ) ;
-			}
-			if ( oxsMeasureCountHUB[5][1] == 1 && oxsMeasureCountHUB[TabData.getSentDataList().length][3] >= 1 ) {  // Test CURRENTMA  default/Curr
-				sentDataValid = false ;
-				MainP.messageList.append( "- Current not available as it's already used by CURRENTMA !" ) ;
-			}
-			if ( oxsMeasureCountHUB[14][1] == 1 && oxsMeasureCountHUB[TabData.getSentDataList().length][7] >= 1 ) {  // Test RPM default/RPM
-				sentDataValid = false ;
-				MainP.messageList.append( "- RPM not available as it's already used by RPM !" ) ;
-			}
-		} else*/ 
-		//if ( MainP.protocol.getName().equals("FrSky") ) {         // TODO FrSky protocol
-			/*for ( int k = 1 ; k <= Protocol.getDataList().length ; k++ ) {
-				
-			      if ( k == sentDataList.length ) {
-			        print( "TOTAL: " ) ;
-			      } else {
-			        print( sentDataList[k][1] + ": " ) ;
-			      }
-				 
-				for ( int l = 1 ; l < TabData.getsPortDataList().length ; l++ ) {
-					//print( oxsMeasureCountSPORT[k][l] + " " ) ;
-					if ( oxsMeasureCountSPORT[k][l] > 1 && k < TabData.getSentDataList().length ) {
-						sentDataValid = false ;
-						MainP.messageList.append( "- " + TabData.getSentDataList()[k][1] + " can't be sent " + oxsMeasureCountSPORT[k][l] + "X to the same " +  TabData.getsPortDataList()[l][1] + " field !" ) ;
-					}
-					if ( k == TabData.getSentDataList().length && l > 1 && oxsMeasureCountSPORT[TabData.getSentDataList().length][l] > 1 ) {
-						sentDataValid = false ;
-						MainP.messageList.append( "- Different measurements can't be sent to the same " +  TabData.getsPortDataList()[l][1] + " field !" ) ;
+		// TODO first continue duplicate tests
+		for (int i = 1; i <= TabData.getTabDataFieldNbr(); i++) {
+			boolean duplicate = false;
+			List<String> tempStr = new ArrayList<>();
+			System.out.println("premier i = " + i);
+			if (!oXsTabDataFields[i][1].equals("----------") && oXsTabDataFields[i][0] != null) {
+				tempStr.add(oXsTabDataFields[i][1]);
+				tempStr.add(oXsTabDataFields[i][0]);
+				for (int j = i + 1; j <= TabData.getTabDataFieldNbr(); j++) {
+					if (oXsTabDataFields[i][1].equals(oXsTabDataFields[j][1])) {
+						duplicate = true;
+						sentDataValid = false;
+						tempStr.add(oXsTabDataFields[j][0]);
+						oXsTabDataFields[j][0] = null;
 					}
 				}
-				//println("");
-			}
-			if ( (oxsMeasureCountSPORT[1][1] == 1 || oxsMeasureCountSPORT[4][1] == 1) && oxsMeasureCountSPORT[TabData.getSentDataList().length][2] >= 1 ) {  // Test ALTITUDEs  default/Alt
-				sentDataValid = false ;
-				MainP.messageList.append( "- Altitude Telemetry data field is not available as it's already used by" ) ;
-				MainP.messageList.append( "  Altitude 1 or 2 measurement !" ) ;
-			}
-			if ( (oxsMeasureCountSPORT[2][1] == 1 || oxsMeasureCountSPORT[5][1] == 1 || oxsMeasureCountSPORT[9][1] == 1
-					|| oxsMeasureCountSPORT[11][1] == 1) && oxsMeasureCountSPORT[TabData.getSentDataList().length][3] >= 1 ) {  // Test VERTICAL_SPEEDs  default/VSpd
-				sentDataValid = false ;
-				MainP.messageList.append( "- Vertical Speed Telemetry data field is not available as it's already" ) ;
-				MainP.messageList.append( "  used by Vertical Speed measurement !" ) ;
-			}
-			if ( oxsMeasureCountSPORT[12][1] == 1 && oxsMeasureCountSPORT[TabData.getSentDataList().length][4] >= 1 ) {  // Test CURRENTMA  default/Curr
-				sentDataValid = false ;
-				MainP.messageList.append( "- Current Telemetry data field is not available as it's already used by" ) ;
-				MainP.messageList.append( "  Current (mA) measurement !" ) ;
-			}
-			if ( oxsMeasureCountSPORT[21][1] == 1 && oxsMeasureCountSPORT[TabData.getSentDataList().length][8] >= 1 ) {  // Test RPM default/RPM
-				sentDataValid = false ;
-				MainP.messageList.append( "- RPM Telemetry data field is not available as it's already used by" ) ;
-				MainP.messageList.append( "  RPM measurement !" ) ;
-			}*/
-	
-			// TODO first continue duplicate tests
-			for (int i = 1; i <= TabData.getTabDataFieldNbr(); i++) {
-				List<String> tempStr = new ArrayList<>();
-				System.out.println("premier i = " + i);
-				if (!oXsTabDataFields[i][1].equals("----------") && oXsTabDataFields[i][0] != null) {
-					tempStr.add(oXsTabDataFields[i][1]);
-					tempStr.add(oXsTabDataFields[i][0]);
-					for (int j = i + 1; j <= TabData.getTabDataFieldNbr(); j++) {
-						if (oXsTabDataFields[i][1].equals(oXsTabDataFields[j][1])) {
-							sentDataValid = false;
-							tempStr.add(oXsTabDataFields[j][0]);
-							oXsTabDataFields[j][0] = null;
-						}
-					}
-					System.out.println(tempStr);
+				System.out.println(tempStr);
+				if (duplicate) {
 					MainP.messageList.append("- " + tempStr.get(0) + " can't be used at the same time by: ");
 					MainP.messageList
 							.append("  " + Arrays.toString(tempStr.stream().skip(1).toArray(String[]::new)) + " !");
+					duplicate = false;
 				}
 			}
-
-			
-		//}
-	
-		if ( oxsMeasureCount == 0 ) {
-			sentDataValid = false ;
-			MainP.messageList.append( "- You don't have any OXS measurement set !" ) ;
 		}
-	
+
+		if (oxsMeasureCount == 0) {
+			sentDataValid = false;
+			MainP.messageList.append("- You don't have any OXS measurement set !");
+		}
+
 	}
 
 	public static void validateVersion() {
