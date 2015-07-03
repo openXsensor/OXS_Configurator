@@ -2,10 +2,8 @@ package oxsc;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-
 import processing.core.PApplet;
 import controlP5.ControlP5;
 import gui.TabCurrent;
@@ -375,6 +373,7 @@ public class Validation {
 		for (int i = 1; i <= TabData.getTabDataFieldNbr(); i++) {
 			boolean duplicate = false;
 			List<String> tempStr = new ArrayList<>();
+			String messageString = "";
 			System.out.println("premier i = " + i);
 			if (!oXsTabDataFields[i][1].equals("----------") && oXsTabDataFields[i][0] != null) {
 				tempStr.add(oXsTabDataFields[i][1]);
@@ -390,8 +389,14 @@ public class Validation {
 				System.out.println(tempStr);
 				if (duplicate) {
 					MainP.messageList.append("- " + tempStr.get(0) + " can't be used at the same time by: ");
-					MainP.messageList
-							.append("  " + Arrays.toString(tempStr.stream().skip(1).toArray(String[]::new)) + " !");
+					for (int j = 1; j < tempStr.size() - 1; j++) {
+							if (j < tempStr.size() - 2 ) {
+								messageString += tempStr.get(j) + ", ";
+							} else {
+								messageString += tempStr.get(j) + " and " + tempStr.get(j + 1);
+							}
+					}
+					MainP.messageList.append("  " + messageString + " !");
 					duplicate = false;
 				}
 			}
