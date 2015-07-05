@@ -86,6 +86,15 @@ public class Protocol {
 		return targetDataList;
 	}
 
+	public static String getDataCode(String dataName) {
+		for (int i = 0; i < targetDataList.length; i++) {
+			if (targetDataList[i][1].equals(dataName)) {
+				return targetDataList[i][0];
+			}
+		}
+		return null;
+	}
+
 	public static void updateUItargetDataList() { // TODO
 		for (int i = 0; i < targetDataList.length; i++) {
 			PApplet.print(targetDataList[i][0] + " - ");

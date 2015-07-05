@@ -115,7 +115,7 @@ public class WriteConf {
 		output.println("// ***** 4.5 - Vertical speeds calculations *****") ;
 		output.println("#define VARIO_PRIMARY              " + (int)TabVario.getvSpeed1Ddl().getValue() + "    // 0 means first ms5611, 1 means second ms5611 , 2 means vario based on vario 1 + compensation from airspeed") ;
 		output.println("#define VARIO_SECONDARY            " + (int)TabVario.getvSpeed2Ddl().getValue() + "    // 0 means first ms5611, 1 means second ms5611 , 2 means vario based on vario 1 + compensation from airspeed") ;
-		output.println("#define SWITCH_VARIO_MIN_AT_PPM    " + (int)TabVario.getPpmVspeedSwMinNbox().getValue() ) ;
+		output.println("#define SWITCH_VARIO_MIN_AT_PPM    " + (int)TabVario.getPpmVspeedSwMinNBox().getValue() ) ;
 		output.println("#define SWITCH_VARIO_MAX_AT_PPM    " + (int)TabVario.getPpmVspeedSwMaxNBox().getValue() ) ;
 		output.println("") ;
 		output.println("// ***** 4.6 - Analog vertical speed *****") ;
@@ -240,7 +240,7 @@ public class WriteConf {
 		output.println("// ***** 9.1 - FrSky data *****") ;
 		output.println("#define SETUP_FRSKY_DATA_TO_SEND    \\") ;
 		for ( int i = 1; i <= TabData.getTabDataFieldNbr(); i++ ) {
-			if ( TabData.getSentDataField(i).getValue() != 0 ) {
+			if ( !TabData.getSentDataField(i).getCaptionLabel().getText().equals("----------") ) {
 				if ( !dataFirst ) {
 					output.println(" , \\") ;
 				}
@@ -262,8 +262,8 @@ public class WriteConf {
 							+ TabData.getDataOffsetNBox()[i].getValueLabel().getText() ) ;
 					dataFirst = false ;
 				}*/ else {
-					output.print("                        " + TabData.getsPortDataList()[(int)TabData.getTargetDataField(i).getValue()][0] + " , "
-							+ TabData.getSentDataList()[(int)TabData.getSentDataField(i).getValue()][0] + " , "
+					output.print("                        " + Protocol.getDataCode(TabData.getTargetDataField(i).getCaptionLabel().getText()) + " , "
+							+ OXSdata.getName(TabData.getSentDataField(i).getCaptionLabel().getText()) + " , "
 							+ TabData.getDataMultiplierNBox()[i].getValueLabel().getText() + " , "
 							+ TabData.getDataDividerNBox()[i].getValueLabel().getText() + " , "
 							+ TabData.getDataOffsetNBox()[i].getValueLabel().getText() ) ;

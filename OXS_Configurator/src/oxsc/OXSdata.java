@@ -29,6 +29,10 @@ public class OXSdata {
 	public String getName() {
 		return name;
 	}
+	
+	public static String getName(String displayName) {
+		return OXSdataList.stream().filter(d -> d.displayName.equals(displayName)).findFirst().get().getName();
+	}
 
 	public String getDisplayName() {
 		return displayName;
