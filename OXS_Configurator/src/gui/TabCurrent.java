@@ -13,6 +13,7 @@ public class TabCurrent {
 	private static DropdownList currentPinDdl;
 	private static Numberbox currentOutSensNBox;
 	private static Numberbox currentOutOffsetNBox;
+	private static Numberbox currentOutOffsetMaNBox;
 	private static Numberbox currentDivNBox;
 
 	public TabCurrent(ControlP5 cp5) {
@@ -93,26 +94,26 @@ public class TabCurrent {
 	    currentOutOffsetNBox.getCaptionLabel().toUpperCase(false) ;
 	    //cp5.getTooltip().register("currentOutOffsetNb", "...") ;
 	  
-	    cp5.addNumberbox("currentOutOffsetMA")
-	       .setBroadcast(false)
-	       .setColorActive(MainP.blueAct)
-	       .setPosition(220, 195)
-	       .setSize(50, 20)
-	       .setRange(-99999, 99999)
-	       .setMultiplier(1)                       // set the sensitifity of the numberbox
-	       .setDecimalPrecision(0)
-	       .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
-	       .setCaptionLabel("mA")
-	       .setColorCaptionLabel(0)
-	       .setTab("current")
-	       ;
-	    cp5.getController("currentOutOffsetMA").getCaptionLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
-	    cp5.getController("currentOutOffsetMA").getCaptionLabel().toUpperCase(false) ;
-	    cp5.getProperties().remove(cp5.getController("currentOutOffsetMA")) ;
+	    currentOutOffsetMaNBox = cp5.addNumberbox("currentOutOffsetMA")
+	                                .setBroadcast(false)
+	                                .setColorActive(MainP.blueAct)
+	                                .setPosition(220, 195)
+	                                .setSize(50, 20)
+	                                .setRange(-99999, 99999)
+	                                .setMultiplier(1)                       // set the sensitifity of the numberbox
+	                                .setDecimalPrecision(0)
+	                                .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
+	                                .setCaptionLabel("mA")
+	                                .setColorCaptionLabel(0)
+	                                .setTab("current")
+	                                ;
+	    currentOutOffsetMaNBox.getCaptionLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
+	    currentOutOffsetMaNBox.getCaptionLabel().toUpperCase(false) ;
+	    cp5.getProperties().remove(currentOutOffsetMaNBox) ;
 	    //cp5.getTooltip().register("currentOutOffsetMA", "...") ;
 	  
-	    cp5.getController("currentOutOffsetNb").setBroadcast(true) ;
-	    cp5.getController("currentOutOffsetMA").setBroadcast(true) ;
+	    currentOutOffsetNBox.setBroadcast(true) ;
+	    currentOutOffsetMaNBox.setBroadcast(true) ;
 	  
 	    // Current sensor divider factor
 	    currentDivNBox = cp5.addNumberbox("currentDivNb")
@@ -190,6 +191,10 @@ public class TabCurrent {
 
 	public static Numberbox getCurrentOutOffsetNBox() {
 		return currentOutOffsetNBox;
+	}
+
+	public static Numberbox getCurrentOutOffsetMaNBox() {
+		return currentOutOffsetMaNBox;
 	}
 
 	public static Numberbox getCurrentDivNBox() {

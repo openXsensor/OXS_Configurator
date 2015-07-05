@@ -19,7 +19,6 @@ public class Validation {
 	private static ControlP5 cp5 ;
 	private static MainP mainP;
 
-	private static String version;
 	private static String oxsDirectory = "";
 	private static String outputConfigDir = "";
 	private static final String oxsVersion = "v2.x";
@@ -307,7 +306,6 @@ public class Validation {
 	
 			int targetDataFieldNb = (int) TabData.getTargetDataField(i).getValue() ;
 			String targetDataFieldName = TabData.getTargetDataField(i).getCaptionLabel().getText() ;
-			PApplet.println("(for) nom dest. = " + targetDataFieldName) ;
 	
 			if ( sentDataFieldNb > 0 ) {   // if OXS measurement field is not empty
 				oxsMeasureCount ++ ;
@@ -374,8 +372,7 @@ public class Validation {
 			boolean duplicate = false;
 			List<String> tempStr = new ArrayList<>();
 			String messageString = "";
-			System.out.println("premier i = " + i);
-			if (!oXsTabDataFields[i][1].equals("----------") && oXsTabDataFields[i][0] != null) {
+			if (!oXsTabDataFields[i][1].equals("----------") && !oXsTabDataFields[i][0].equals("----------") /*&& oXsTabDataFields[i][0] != null*/) {
 				tempStr.add(oXsTabDataFields[i][1]);
 				tempStr.add(oXsTabDataFields[i][0]);
 				for (int j = i + 1; j <= TabData.getTabDataFieldNbr(); j++) {
@@ -383,10 +380,9 @@ public class Validation {
 						duplicate = true;
 						sentDataValid = false;
 						tempStr.add(oXsTabDataFields[j][0]);
-						oXsTabDataFields[j][0] = null;
+						oXsTabDataFields[j][0] = "----------";
 					}
 				}
-				System.out.println(tempStr);
 				if (duplicate) {
 					MainP.messageList.append("- " + tempStr.get(0) + " can't be used at the same time by: ");
 					for (int j = 1; j < tempStr.size() - 1; j++) {
@@ -412,7 +408,8 @@ public class Validation {
 	public static void validateVersion() {
 
 		File versionFile = new File(oxsDirectory + "/version.oxs");
-
+		String version = null;
+		
 		try {
 			Scanner scanner = new Scanner(versionFile);
 

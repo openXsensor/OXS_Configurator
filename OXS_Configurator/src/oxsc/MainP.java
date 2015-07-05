@@ -91,12 +91,12 @@ public class MainP extends PApplet {
 	// Popup message; // TODO later
 
 	// Tabs declaration
-	TabGeneralSettings tabGenSet;
-	public TabPPM tabPPM;
-	TabVario tabVario;
-	TabAirSpeed tabAirSpeed;
-	TabVoltage tabVoltage;
-	TabCurrent tabCurrent;
+	public static TabGeneralSettings tabGenSet;
+	public static TabPPM tabPPM;
+	public static TabVario tabVario;
+	public static TabAirSpeed tabAirSpeed;
+	public static TabVoltage tabVoltage;
+	public static TabCurrent tabCurrent;
 //	TabTemperature tab5;
 	public static TabData tabData;
 
@@ -127,13 +127,13 @@ public class MainP extends PApplet {
 
 	public static Protocol protocol;
 
-	static Sensor vario;
-	static Sensor vario2;
-	static Sensor airSpeed;
+	public static Sensor vario;
+	public static Sensor vario2;
+	public static Sensor airSpeed;
 	public static Sensor[] aVolt = new Sensor[TabVoltage.getVoltnbr() + 1];
-	static Sensor current;
-	static Sensor rpm;
-	static Sensor ppm;
+	public static Sensor current;
+	public static Sensor rpm;
+	public static Sensor ppm;
 
 
 	public void setup() {
@@ -327,16 +327,14 @@ public class MainP extends PApplet {
 
 		case 0 :                                        // TAB GENERAL Settings
 			TabGeneralSettings.draw(this);
-
 			break ;
 
-		case 1 :                                                 // TAB Vario
+		case 1 :                                        // TAB Vario
 
 			TabVario.draw(this);
-
 			break ;
 
-		case 2 :                                                            // TAB Air Speed sensor
+		case 2 :                                        // TAB Air Speed sensor
 
 			stroke(blueAct) ;     // blue border
 			strokeWeight(3) ;
@@ -496,52 +494,52 @@ public class MainP extends PApplet {
 
 		// ----------------- Texfield and Numberbox mouse-over -----------------
 
-		if ( cp5.isMouseOver( TabGeneralSettings.getOxsDir() )  ) {
-			TabGeneralSettings.getOxsDir().setColorForeground(blueAct) ;
+		if (cp5.isMouseOver(TabGeneralSettings.getOxsDir())) {
+			TabGeneralSettings.getOxsDir().setColorForeground(blueAct);
 		} else {
-			TabGeneralSettings.getOxsDir().setColorForeground(tabGray) ;
+			TabGeneralSettings.getOxsDir().setColorForeground(tabGray);
 		}
 
-		if ( cp5.isMouseOver ( TabGeneralSettings.getArduinoVccNBox() ) ) {
-			TabGeneralSettings.getArduinoVccNBox().setColorForeground(blueAct) ;
+		if (cp5.isMouseOver(TabGeneralSettings.getArduinoVccNBox())) {
+			TabGeneralSettings.getArduinoVccNBox().setColorForeground(blueAct);
 		} else {
-			TabGeneralSettings.getArduinoVccNBox().setColorForeground(grayedColor) ;
+			TabGeneralSettings.getArduinoVccNBox().setColorForeground(grayedColor);
 		}
 
-		if ( cp5.isMouseOver ( cp5.getController("ppmRngMin") ) ) {
-			cp5.getController("ppmRngMin").setColorForeground(orangeAct) ;
+		if ( cp5.isMouseOver ( TabPPM.getPpmRngMinNBox()) ) {
+			TabPPM.getPpmRngMinNBox().setColorForeground(orangeAct) ;
 		} else {
-			cp5.getController("ppmRngMin").setColorForeground(grayedColor) ;
+			TabPPM.getPpmRngMinNBox().setColorForeground(grayedColor) ;
 		}
 
-		if ( cp5.isMouseOver ( cp5.getController("ppmRngMax") ) ) {
-			cp5.getController("ppmRngMax").setColorForeground(orangeAct) ;
+		if ( cp5.isMouseOver ( TabPPM.getPpmRngMaxNBox() ) ) {
+			TabPPM.getPpmRngMaxNBox().setColorForeground(orangeAct) ;
 		} else {
-			cp5.getController("ppmRngMax").setColorForeground(grayedColor) ;
+			TabPPM.getPpmRngMaxNBox().setColorForeground(grayedColor) ;
 		}
 
-		if ( cp5.isMouseOver ( cp5.getController("vSpeedMin") ) ) {
-			cp5.getController("vSpeedMin").setColorForeground(orangeAct) ;
+		if ( cp5.isMouseOver ( TabVario.getvSpeedMinNBox()) ) {
+			TabVario.getvSpeedMinNBox().setColorForeground(orangeAct) ;
 		} else {
-			cp5.getController("vSpeedMin").setColorForeground(grayedColor) ;
+			TabVario.getvSpeedMinNBox().setColorForeground(grayedColor) ;
 		}
 
-		if ( cp5.isMouseOver ( cp5.getController("vSpeedMax") ) ) {
-			cp5.getController("vSpeedMax").setColorForeground(orangeAct) ;
+		if ( cp5.isMouseOver ( TabVario.getvSpeedMaxNBox() ) ) {
+			TabVario.getvSpeedMaxNBox().setColorForeground(orangeAct) ;
 		} else {
-			cp5.getController("vSpeedMax").setColorForeground(grayedColor) ;
+			TabVario.getvSpeedMaxNBox().setColorForeground(grayedColor) ;
 		}
 
-		if ( cp5.isMouseOver ( cp5.getController("ppmVspeedSwMin") ) ) {
-			cp5.getController("ppmVspeedSwMin").setColorForeground(orangeAct) ;
+		if ( cp5.isMouseOver ( TabVario.getPpmVspeedSwMinNBox()) ) {
+			TabVario.getPpmVspeedSwMinNBox().setColorForeground(orangeAct) ;
 		} else {
-			cp5.getController("ppmVspeedSwMin").setColorForeground(grayedColor) ;
+			TabVario.getPpmVspeedSwMinNBox().setColorForeground(grayedColor) ;
 		}
 
-		if ( cp5.isMouseOver ( cp5.getController("ppmVspeedSwMax") ) ) {
-			cp5.getController("ppmVspeedSwMax").setColorForeground(orangeAct) ;
+		if ( cp5.isMouseOver ( TabVario.getPpmVspeedSwMaxNBox() ) ) {
+			TabVario.getPpmVspeedSwMaxNBox().setColorForeground(orangeAct) ;
 		} else {
-			cp5.getController("ppmVspeedSwMax").setColorForeground(grayedColor) ;
+			TabVario.getPpmVspeedSwMaxNBox().setColorForeground(grayedColor) ;
 		}
 
 		if ( cp5.isMouseOver ( TabAirSpeed.getaSpeedResetNBox() ) ) {
@@ -573,28 +571,28 @@ public class MainP extends PApplet {
 		  }
 		 */
 
-		if ( cp5.isMouseOver ( cp5.getController( "currentOutSensNb" ) ) ) {
-			cp5.getController( "currentOutSensNb" ).setColorForeground(orangeAct) ;
+		if ( cp5.isMouseOver ( TabCurrent.getCurrentOutSensNBox() ) ) {
+			TabCurrent.getCurrentOutSensNBox().setColorForeground(orangeAct) ;
 		} else {
-			cp5.getController( "currentOutSensNb" ).setColorForeground(color(170)) ;
+			TabCurrent.getCurrentOutSensNBox().setColorForeground(color(170)) ;
 		}
 
-		if ( cp5.isMouseOver ( cp5.getController( "currentOutOffsetNb" ) ) ) {
-			cp5.getController( "currentOutOffsetNb" ).setColorForeground(orangeAct) ;
+		if ( cp5.isMouseOver ( TabCurrent.getCurrentOutOffsetNBox() ) ) {
+			TabCurrent.getCurrentOutOffsetNBox().setColorForeground(orangeAct) ;
 		} else {
-			cp5.getController( "currentOutOffsetNb" ).setColorForeground(color(170)) ;
+			TabCurrent.getCurrentOutOffsetNBox().setColorForeground(color(170)) ;
 		}
 
-		if ( cp5.isMouseOver ( cp5.getController( "currentOutOffsetMA" ) ) ) {
-			cp5.getController( "currentOutOffsetMA" ).setColorForeground(orangeAct) ;
+		if ( cp5.isMouseOver ( TabCurrent.getCurrentOutOffsetMaNBox() ) ) {
+			TabCurrent.getCurrentOutOffsetMaNBox().setColorForeground(orangeAct) ;
 		} else {
-			cp5.getController( "currentOutOffsetMA" ).setColorForeground(color(170)) ;
+			TabCurrent.getCurrentOutOffsetMaNBox().setColorForeground(color(170)) ;
 		}
 
-		if ( cp5.isMouseOver ( cp5.getController( "currentDivNb" ) ) ) {
-			cp5.getController( "currentDivNb" ).setColorForeground(orangeAct) ;
+		if ( cp5.isMouseOver ( TabCurrent.getCurrentDivNBox() ) ) {
+			TabCurrent.getCurrentDivNBox().setColorForeground(orangeAct) ;
 		} else {
-			cp5.getController( "currentDivNb" ).setColorForeground(color(170)) ;
+			TabCurrent.getCurrentDivNBox().setColorForeground(color(170)) ;
 		}
 		/*
 		  if ( cp5.isMouseOver ( cp5.getController( "tempOffset" ) ) ) {
@@ -605,26 +603,26 @@ public class MainP extends PApplet {
 		 */
 		// TODO in 1 loop ?? later
 		for ( int i = 1; i <= TabData.getTabDataFieldNbr(); i++ ) {
-			if ( cp5.isMouseOver ( cp5.getController( "dataMultiplier" + i ) ) ) {
-				cp5.getController( "dataMultiplier" + i ).setColorForeground(orangeAct) ;
+			if ( cp5.isMouseOver ( TabData.getDataMultiplierNBox()[i] ) ) {
+				TabData.getDataMultiplierNBox()[i].setColorForeground(orangeAct) ;
 			} else {
-				cp5.getController( "dataMultiplier" + i ).setColorForeground(grayedColor) ;
+				TabData.getDataMultiplierNBox()[i].setColorForeground(grayedColor) ;
 			}
 		}
 
 		for ( int i = 1; i <= TabData.getTabDataFieldNbr(); i++ ) {
-			if ( cp5.isMouseOver ( cp5.getController( "dataDivider" + i ) ) ) {
-				cp5.getController( "dataDivider" + i ).setColorForeground(orangeAct) ;
+			if ( cp5.isMouseOver ( TabData.getDataDividerNBox()[i] ) ) {
+				TabData.getDataDividerNBox()[i].setColorForeground(orangeAct) ;
 			} else {
-				cp5.getController( "dataDivider" + i ).setColorForeground(grayedColor) ;
+				TabData.getDataDividerNBox()[i].setColorForeground(grayedColor) ;
 			}
 		}
 
 		for ( int i = 1; i <= TabData.getTabDataFieldNbr(); i++ ) {
-			if ( cp5.isMouseOver ( cp5.getController( "dataOffset" + i ) ) ) {
-				cp5.getController( "dataOffset" + i ).setColorForeground(orangeAct) ;
+			if ( cp5.isMouseOver ( TabData.getDataOffsetNBox()[i] ) ) {
+				TabData.getDataOffsetNBox()[i].setColorForeground(orangeAct) ;
 			} else {
-				cp5.getController( "dataOffset" + i ).setColorForeground(grayedColor) ;
+				TabData.getDataOffsetNBox()[i].setColorForeground(grayedColor) ;
 			}
 		}
 
@@ -642,21 +640,21 @@ public class MainP extends PApplet {
 			}
 		}
 
-		if ( !cp5.isMouseOver ( cp5.getGroup( "sensorID" ) ) ) {
+		if ( !cp5.isMouseOver ( TabGeneralSettings.getSensorIDDdl() ) ) {
 			if (mousePressed == true) {
-				cp5.getGroup( "sensorID" ).close() ;
+				TabGeneralSettings.getSensorIDDdl().close() ;
 			}
 		}
 
-		if ( !cp5.isMouseOver ( cp5.getGroup( "voltRefChoice" ) ) ) {
+		if ( !cp5.isMouseOver ( TabGeneralSettings.getVoltRefChoiceDdl() ) ) {
 			if (mousePressed == true) {
-				cp5.getGroup( "voltRefChoice" ).close() ;
+				TabGeneralSettings.getVoltRefChoiceDdl().close() ;
 			}
 		}
 
-		if ( !cp5.isMouseOver ( cp5.getGroup( "resetButtonPin" ) ) ) {
+		if ( !cp5.isMouseOver ( TabGeneralSettings.getResetBtnPinDdl() ) ) {
 			if (mousePressed == true) {
-				cp5.getGroup( "resetButtonPin" ).close() ;
+				TabGeneralSettings.getResetBtnPinDdl().close() ;
 			}
 		}
 
@@ -666,15 +664,15 @@ public class MainP extends PApplet {
 			}
 		}
 
-		if ( !cp5.isMouseOver ( cp5.getGroup( "vSpeed1" ) ) ) {
+		if ( !cp5.isMouseOver ( TabVario.getvSpeed1Ddl() ) ) {
 			if (mousePressed == true) {
-				cp5.getGroup( "vSpeed1" ).close() ;
+				TabVario.getvSpeed1Ddl().close() ;
 			}
 		}
 
-		if ( !cp5.isMouseOver ( cp5.getGroup( "vSpeed2" ) ) ) {
+		if ( !cp5.isMouseOver ( TabVario.getvSpeed2Ddl() ) ) {
 			if (mousePressed == true) {
-				cp5.getGroup( "vSpeed2" ).close() ;
+				TabVario.getvSpeed2Ddl().close() ;
 			}
 		}
 
@@ -685,9 +683,9 @@ public class MainP extends PApplet {
 		}
 
 		for ( int i = 1; i <= TabVoltage.getVoltnbr(); i++ ) {
-			if ( !cp5.isMouseOver ( cp5.getGroup( "ddlVolt" + i ) ) ) {
+			if ( !cp5.isMouseOver ( TabVoltage.getDdlVolt()[i] ) ) {
+				TabVoltage.getDdlVolt()[i].close() ;
 				if (mousePressed == true) {
-					cp5.getGroup( "ddlVolt" + i ).close() ;
 				}
 			}
 		}
@@ -698,9 +696,9 @@ public class MainP extends PApplet {
 			}
 		}
 
-		if ( !cp5.isMouseOver ( cp5.getGroup( "currentPin") ) ) {
+		if ( !cp5.isMouseOver ( TabCurrent.getCurrentPinDdl() ) ) {
 			if (mousePressed == true) {
-				cp5.getGroup( "currentPin" ).close() ;
+				TabCurrent.getCurrentPinDdl().close() ;
 			}
 		}
 		/*
@@ -739,7 +737,7 @@ public class MainP extends PApplet {
 		// ----------------- TAB DATA sent display -----------------
 
 		if (vario != null || airSpeed != null
-				|| cp5.getController("voltage").getValue() == 1
+				|| TabGeneralSettings.getVoltageTgl().getValue() == 1
 				|| current != null /* || temperature != null */|| rpm != null) {
 			cp5.getTab("data").show();
 		} else {
@@ -1125,7 +1123,7 @@ public class MainP extends PApplet {
 	// =================================================================================================
 
 	public static float round(float number, float decimal) {      // Rounding function
-		return (float)(round((number*pow(10, decimal))))/pow(10, decimal) ;
+		return round((number*pow(10, decimal)))/pow(10, decimal) ;
 	}
 
 	public static float mVoltStep(int NbrVolt) {    // Voltage measurements milliVolt per ADC step calculation
@@ -1135,9 +1133,9 @@ public class MainP extends PApplet {
 		float arduinoVcc = TabGeneralSettings.getArduinoVccNBox().getValue() ;
 
 		if ( TabGeneralSettings.getVoltRefChoiceDdl().getValue() == 1 ) {
-			mVoltStep = (float) (( arduinoVcc * 1000.0 / 1024.0 ) * voltageDiv) ;
+			mVoltStep = ( arduinoVcc * 1000.0f / 1024.0f ) * voltageDiv ;
 		} else {
-			mVoltStep = (float) (( 1.1 * 1000.0 / 1024.0 ) * voltageDiv) ;
+			mVoltStep = ( 1.1f * 1000.0f / 1024.0f ) * voltageDiv ;
 		}
 		return mVoltStep ;
 	}
@@ -1151,11 +1149,11 @@ public class MainP extends PApplet {
 		float currentDiv = TabCurrent.getCurrentDivNBox().getValue();
 		float currentOutSens = TabCurrent.getCurrentOutSensNBox().getValue();
 
-		mAmpPmV = (float) ((currentOutSens == 0) ? 0 : 1000.0 / currentOutSens);
+		mAmpPmV = (currentOutSens == 0) ? 0 : 1000.0f / currentOutSens;
 		if (TabGeneralSettings.getVoltRefChoiceDdl().getValue() == 1) {
-			mAmpStep = (float) ((arduinoVcc * 1000.0 / 1024.0) * mAmpPmV * currentDiv);
+			mAmpStep = (arduinoVcc * 1000.0f / 1024.0f) * mAmpPmV * currentDiv;
 		} else {
-			mAmpStep = (float) ((1.1 * 1000.0 / 1024.0) * mAmpPmV);
+			mAmpStep = (1.1f * 1000.0f / 1024.0f) * mAmpPmV;
 		}
 		return mAmpStep;
 	}

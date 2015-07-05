@@ -354,7 +354,7 @@ public class TabVario {
 		return vSpeed2Ddl;
 	}
 	
-	public static Numberbox getPpmVspeedSwMinNbox() {
+	public static Numberbox getPpmVspeedSwMinNBox() {
 		return ppmVspeedSwMinNbox;
 	}
 
