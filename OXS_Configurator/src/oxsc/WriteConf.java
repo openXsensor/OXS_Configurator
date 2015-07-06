@@ -18,8 +18,6 @@ public class WriteConf {
 	
 	public static void writeConf() {
 
-		boolean dataFirst = true ;
-
 		try {
 			output = new PrintWriter(Validation.getOutputConfigDir());
 		} catch (FileNotFoundException e) {
@@ -239,6 +237,39 @@ public class WriteConf {
 		output.println("") ;
 		output.println("// ***** 9.1 - FrSky data *****") ;
 		output.println("#define SETUP_FRSKY_DATA_TO_SEND    \\") ;
+		writeDataToSend();
+		output.println("") ;
+		output.println("") ;
+		output.println("// ***** 9.2 - Multiplex data *****") ;   // TODO in OXSC
+		output.println("") ;
+		output.println("") ;
+		
+		// ---------------------------------- Sequencer --------------------------------------
+		
+		output.println("// --------- 10 - Sequencer ---------") ;  // TODO in OXSC
+		output.println("") ;
+		output.println("") ;
+
+		// ---------------------------------- Debug --------------------------------------
+
+		output.println("// --------- 11 - Reserved for developer. DEBUG must be activated here when we want to debug one or several functions in some other files. ---------") ;
+		output.println("//#define DEBUG") ;
+		output.println("") ;
+		output.println("#ifdef DEBUG") ;
+		output.println("#include \"HardwareSerial.h\"") ;
+		output.println("#endif") ;
+		output.println("") ;
+
+		// ---------------------------------- The end --------------------------------------
+
+		output.print("#endif// End define OXS_CONFIG_h") ;
+
+		output.flush() ; // Writes the remaining data to the file
+		output.close() ; // Finishes the file
+	}
+
+	private static void writeDataToSend() {  // TODO second: writeDatatToSend protocol aware
+		boolean dataFirst = true ;
 		for ( int i = 1; i <= TabData.getTabDataFieldNbr(); i++ ) {
 			if ( !TabData.getSentDataField(i).getCaptionLabel().getText().equals("----------") ) {
 				if ( !dataFirst ) {
@@ -271,34 +302,6 @@ public class WriteConf {
 				}
 			}
 		}
-		output.println("") ;
-		output.println("") ;
-		output.println("// ***** 9.2 - Multiplex data *****") ;   // TODO in OXSC
-		output.println("") ;
-		output.println("") ;
-		
-		// ---------------------------------- Sequencer --------------------------------------
-		
-		output.println("// --------- 10 - Sequencer ---------") ;  // TODO in OXSC
-		output.println("") ;
-		output.println("") ;
-
-		// ---------------------------------- Debug --------------------------------------
-
-		output.println("// --------- 11 - Reserved for developer. DEBUG must be activated here when we want to debug one or several functions in some other files. ---------") ;
-		output.println("//#define DEBUG") ;
-		output.println("") ;
-		output.println("#ifdef DEBUG") ;
-		output.println("#include \"HardwareSerial.h\"") ;
-		output.println("#endif") ;
-		output.println("") ;
-
-		// ---------------------------------- The end --------------------------------------
-
-		output.print("#endif// End define OXS_CONFIG_h") ;
-
-		output.flush() ; // Writes the remaining data to the file
-		output.close() ; // Finishes the file
 	}
 
 }
