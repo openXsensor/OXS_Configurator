@@ -366,17 +366,15 @@ public class Validation {
 		}
 	
 		// ***  Duplicate tests  ***
-
-		// TODO first continue duplicate tests
 		for (int i = 1; i <= TabData.getTabDataFieldNbr(); i++) {
 			boolean duplicate = false;
 			List<String> tempStr = new ArrayList<>();
 			String messageString = "";
-			if (!oXsTabDataFields[i][1].equals("----------") && !oXsTabDataFields[i][0].equals("----------") /*&& oXsTabDataFields[i][0] != null*/) {
+			if (!oXsTabDataFields[i][0].equals("----------")) {
 				tempStr.add(oXsTabDataFields[i][1]);
 				tempStr.add(oXsTabDataFields[i][0]);
 				for (int j = i + 1; j <= TabData.getTabDataFieldNbr(); j++) {
-					if (oXsTabDataFields[i][1].equals(oXsTabDataFields[j][1])) {
+					if (!oXsTabDataFields[j][0].equals("----------") && oXsTabDataFields[i][1].equals(oXsTabDataFields[j][1])) {
 						duplicate = true;
 						sentDataValid = false;
 						tempStr.add(oXsTabDataFields[j][0]);
