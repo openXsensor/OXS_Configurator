@@ -237,7 +237,9 @@ public class WriteConf {
 		output.println("") ;
 		output.println("// ***** 9.1 - FrSky data *****") ;
 		output.println("#define SETUP_FRSKY_DATA_TO_SEND    \\") ;
+		
 		writeDataToSend();
+		
 		output.println("") ;
 		output.println("") ;
 		output.println("// ***** 9.2 - Multiplex data *****") ;   // TODO in OXSC
