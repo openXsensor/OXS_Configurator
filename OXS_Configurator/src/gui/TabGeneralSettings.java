@@ -66,7 +66,7 @@ public class TabGeneralSettings {
 		                ;
 		    oxsDir.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER) ;
 		    oxsDir.getCaptionLabel().toUpperCase(false) ;
-		    cp5.getTooltip().register("oxsDirectory", "Choose OXS source directory") ;
+		    cp5.getTooltip().register(oxsDir, "Choose OXS source directory") ;
 		  
 		    cp5.addButton("oxsDirButton")
 		       .setColorForeground(MainP.blueAct)
@@ -98,7 +98,7 @@ public class TabGeneralSettings {
 		    serialPinDdl.addItem("2", 2) ;
 		    serialPinDdl.addItem("4", 4) ;
 		    serialPinDdl.setValue(4) ;
-		    cp5.getProperties().remove(serialPinDdl, "ListBoxItems") ;
+		    cp5.getProperties().remove(serialPinDdl) ;
 
 		 // Protocol choice
 		    cp5.addTextlabel("protocol")
@@ -179,8 +179,8 @@ public class TabGeneralSettings {
 		    arduinoVccNBox = cp5.addNumberbox("arduinoVccNb")
 					            .setPosition(265, 211)
 					            .setSize(37, 20)
-					            .setRange(0, (float) 9.99)
-					            .setMultiplier((float) 0.01)                    // set the sensitifity of the numberbox
+					            .setRange(0, 9.99f)
+					            .setMultiplier(0.01f)                    // set the sensitifity of the numberbox
 					            .setDecimalPrecision(2)
 					            .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
 					            .setValue(5)
@@ -189,7 +189,7 @@ public class TabGeneralSettings {
 					            ;
 		    arduinoVccNBox.getCaptionLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
 		    arduinoVccNBox.getCaptionLabel().toUpperCase(false) ;
-		    cp5.getTooltip().register("arduinoVccNb", "Arduino alimentation voltage") ;
+		    cp5.getTooltip().register(arduinoVccNBox, "Arduino alimentation voltage") ;
 		  
 		    // Save to EEPROM
 		    saveEpromTgl = cp5.addToggle("saveEprom")
@@ -206,7 +206,7 @@ public class TabGeneralSettings {
 		                                 .setColorValueLabel(0)
 		                                 ;
 		    cp5.getProperties().remove(resetButtonPinTextLabel) ;
-		    cp5.getTooltip().register("resetButtonPinLabel", "- Default: 10 -") ;
+		    cp5.getTooltip().register(resetButtonPinTextLabel, "- Default: 10 -") ;
 		  
 		    resetBtnPinDdl = cp5.addDropdownList("resetButtonPin")
 						        .setPosition(355, 279)
