@@ -370,7 +370,7 @@ public class Validation {
 			boolean duplicate = false;
 			List<String> tempStr = new ArrayList<>();
 			String messageString = "";
-			if (!oXsTabDataFields[i][0].equals("----------")) {
+			if (!oXsTabDataFields[i][0].equals("----------") || !oXsTabDataFields[i][1].equals("----------")) {
 				tempStr.add(oXsTabDataFields[i][1]);
 				tempStr.add(oXsTabDataFields[i][0]);
 				for (int j = i + 1; j <= TabData.getTabDataFieldNbr(); j++) {

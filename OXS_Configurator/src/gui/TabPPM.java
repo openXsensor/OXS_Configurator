@@ -133,7 +133,7 @@ public class TabPPM {
 		mainP.fill(MainP.blueAct);
 		mainP.rect(mainP.width / 2 - 15, 101, 30, 13);
 		mainP.fill(255);
-		mainP.textFont(mainP.fontLabel);
+		mainP.textFont(MainP.fontLabel);
 		mainP.text("PPM", 212, 112);
 	
 		if ( ppmTgl.getValue() == 0 ) {         // RC remote

@@ -295,7 +295,7 @@ public class TabVoltage {
 			mainP.strokeWeight(3) ;
 			mainP.strokeCap(PConstants.PROJECT) ;
 			mainP.fill(MainP.blueAct) ;
-			mainP.textFont(mainP.fontCells) ;
+			mainP.textFont(MainP.fontCells) ;
 			mainP.text("BATTERY CELLS", 13, 122) ;
 			mainP.line ( 115, 122, 115, 137 ) ;
 			mainP.line ( 115, 122, 100 + 55 * nCells, 122 ) ;

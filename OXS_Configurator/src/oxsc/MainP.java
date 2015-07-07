@@ -24,6 +24,7 @@
 
 package oxsc;
 
+import gui.FileManagement;
 import gui.TabAirSpeed;
 import gui.TabCurrent;
 import gui.TabData;
@@ -77,11 +78,11 @@ public class MainP extends PApplet {
 	PShape oxsI;
 	PShape oxsL;
 
-	public PFont fontLabel; // = createFont("arial.ttf", 12, false) ;
-	PFont fontItalic; // = createFont("arial italic", 12, false) ;
-	public PFont fontCells; // = createFont("arial bold", 12, false) ;
-	PFont font16; // = createFont("arial", 16, false) ;
-	PFont font20; // = createFont("arial", 20, false) ;
+	public static PFont fontLabel; // = createFont("arial.ttf", 12, false) ;
+	public static PFont fontItalic; // = createFont("arial italic", 12, false) ;
+	public static PFont fontCells; // = createFont("arial bold", 12, false) ;
+	public static PFont font16; // = createFont("arial", 16, false) ;
+	public static PFont font20; // = createFont("arial", 20, false) ;
 
 	public ControlP5 cp5;
 
@@ -99,6 +100,7 @@ public class MainP extends PApplet {
 	public static TabCurrent tabCurrent;
 //	TabTemperature tab5;
 	public static TabData tabData;
+	public static FileManagement fileManagement;
 
 	public static String[] analogPins = new String[8]; // Analog pins array
 
@@ -232,45 +234,7 @@ public class MainP extends PApplet {
 		tabData = new TabData(cp5) ;
 
 		// ------------------------------ File dialog ------------------------------
-
-		// Load preset button
-		cp5.addButton("loadButton")
-		   .setColorForeground(blueAct)
-		   .setCaptionLabel("Load Preset")
-		   .setPosition(20, 419)
-		   .setSize(100, 25)
-		   .setTab("global")
-		   ;
-		cp5.getController("loadButton").getCaptionLabel().setFont(font16) ;
-		cp5.getController("loadButton").getCaptionLabel().toUpperCase(false) ;
-		cp5.getController("loadButton").getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER) ;
-
-		// Save preset button
-		cp5.addButton("saveButton")
-		   .setColorForeground(orangeAct)
-		   .setColorActive(blueAct)
-		   .setCaptionLabel("Save Preset")
-		   .setPosition(140, 419)
-		   .setSize(100, 25)
-		   .setTab("global")
-		   ;
-		cp5.getController("saveButton").getCaptionLabel().setFont(font16) ;
-		cp5.getController("saveButton").getCaptionLabel().toUpperCase(false) ;
-		cp5.getController("saveButton").getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER) ;
-
-
-		// Write button
-		cp5.addButton("writeConfButton")
-		   .setColorForeground(orangeAct)
-		   .setColorActive(blueAct)
-		   .setCaptionLabel("Write Config")
-		   .setPosition(300, 416)
-		   .setSize(120, 30)
-		   .setTab("data")
-		   ;
-		cp5.getController("writeConfButton").getCaptionLabel().setFont(font20) ;
-		cp5.getController("writeConfButton").getCaptionLabel().toUpperCase(false) ;
-		cp5.getController("writeConfButton").getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER) ;
+		fileManagement = new FileManagement(cp5);
 
 		// --------------------------------------------------------------------------
 
@@ -316,8 +280,8 @@ public class MainP extends PApplet {
 		rect(0, height-60, width, 3) ;
 
 		// Show preset buttons
-		cp5.getController("loadButton").show() ;
-		cp5.getController("saveButton").show() ;
+		FileManagement.getLoadPresetBtn().show() ;
+		FileManagement.getSavePresetBtn().show() ;
 
 		// ------------ Tabs specific display ------------
 
@@ -418,12 +382,12 @@ public class MainP extends PApplet {
 
 			for ( int i = 1 ; i <= TabData.getTabDataFieldNbr() ; i++ ) {            // Load and Save preset buttons hide
 				if ( TabData.getSentDataField(i).isOpen() || TabData.getTargetDataField(i).isOpen() ) {
-					cp5.getController("loadButton").hide() ;
-					cp5.getController("saveButton").hide() ;
+					FileManagement.getLoadPresetBtn().hide() ;
+					FileManagement.getSavePresetBtn().hide() ;
 					break ;
 				} else {
-					cp5.getController("loadButton").show() ;
-					cp5.getController("saveButton").show() ;
+					FileManagement.getLoadPresetBtn().show() ;
+					FileManagement.getSavePresetBtn().show() ;
 				}
 			}
 			/*
@@ -482,12 +446,12 @@ public class MainP extends PApplet {
 		// ---------------- End TAB specific display ---------------
 
 		// Load and Save preset buttons deco
-		if ( cp5.getController("loadButton").isVisible() ) {
+		if ( FileManagement.getLoadPresetBtn().isVisible() ) {
 			fill(blueAct) ;
 			rect(19, 418, 102, 27) ;
 		}
 
-		if ( cp5.getController("saveButton").isVisible() ) {
+		if ( FileManagement.getSavePresetBtn().isVisible() ) {
 			fill(orangeAct) ;
 			rect(139, 418, 102, 27) ;
 		}
@@ -788,7 +752,7 @@ public class MainP extends PApplet {
 
 		// Voltages sensor activation/desactivation
 		for (int i = 1; i <= TabVoltage.getVoltnbr(); i++) {
-			if (theEvent.isFrom(cp5.getController("volt" + i))) {
+			if (theEvent.isFrom(TabVoltage.getVoltTgl()[i])) {
 				switch ((int) theEvent.getController().getValue()) {
 				case 1:
 					if (aVolt[i] == null) {
@@ -802,7 +766,7 @@ public class MainP extends PApplet {
 						aVolt[i] = null;
 						TabVoltage.populateNbrCells();
 						if ( i == 1 ) {
-							cp5.getController("cells").setValue(0);
+							TabVoltage.getCellsTgl().setValue(0);
 						}
 					}
 					break;
