@@ -96,8 +96,8 @@ public class TabVario {
 	       .setColorValueLabel(0)
 	       .setTab("vario")
 	       ;
-	    cp5.getProperties().remove(cp5.getController("vSpeedTypeSw")) ;
 	    cp5.getTooltip().register("vSpeedTypeSw", "Choose the 2 different V.Speed you want to switch") ;
+	    cp5.getProperties().remove(cp5.getController("vSpeedTypeSw")) ;
 	  
 	    cp5.addTextlabel("vStSwitching")
 	       .setText("switching")
@@ -166,8 +166,8 @@ public class TabVario {
 	       .setColorValueLabel(0)
 	       .setTab("vario")
 	       ;
+	    cp5.getTooltip().register("ppmVspeedSw", "- Default: 10:90 -") ;
 	     cp5.getProperties().remove(cp5.getController("ppmVspeedSw")) ;
-	     cp5.getTooltip().register("ppmVspeedSw", "- Default: 10:90 -") ;
 	  
 	     ppmVspeedSwMinNbox = cp5.addNumberbox("ppmVspeedSwMin")
 	                             .setPosition(306, 240)
@@ -206,8 +206,8 @@ public class TabVario {
 	       .setColorValueLabel(0)
 	       .setTab("vario")
 	       ;
-	    cp5.getProperties().remove(cp5.getController("sensitivityRange")) ;
 	    cp5.getTooltip().register("sensitivityRange", "Sensitivity based on vertical speed - Default: 50:50 -") ;
+	    cp5.getProperties().remove(cp5.getController("sensitivityRange")) ;
 	  
 	    sensMinMaxRng = cp5.addRange("sensMinMax")
 	                       .setPosition(186, 277)
@@ -227,8 +227,8 @@ public class TabVario {
 	       .setColorValueLabel(0)
 	       .setTab("vario")
 	       ;
+	    cp5.getTooltip().register("vSpeedSensitivityRng", "Vertical speed threshold sensitivity - Default: 20:100 -") ;
 	     cp5.getProperties().remove(cp5.getController("vSpeedSensitivityRng")) ;
-	     cp5.getTooltip().register("vSpeedSensitivityRng", "Vertical speed threshold sensitivity - Default: 20:100 -") ;
 	  
 	     vSpeedMinNBox = cp5.addNumberbox("vSpeedMin")
 	                        .setPosition(306, 304)
@@ -296,8 +296,8 @@ public class TabVario {
 	       .setColorValueLabel(0)
 	       .setTab("vario")
 	       ;
-	    cp5.getProperties().remove(cp5.getController("climbPinL")) ;
 	    cp5.getTooltip().register("climbPinL", "- Default: 3 -") ;
+	    cp5.getProperties().remove(cp5.getController("climbPinL")) ;
 	  
 	    climbPin = cp5.addDropdownList("climbPin")
 	                  .setPosition(165, 393)

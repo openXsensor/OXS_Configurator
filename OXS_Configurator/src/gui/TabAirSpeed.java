@@ -40,8 +40,8 @@ public class TabAirSpeed {
 	                         .setSize(40, 20)
 	                         .setColorActive(MainP.blueAct)
 	                         .setRange(0, 100)
-	                         .setMultiplier((float) 0.5)                     // set the sensitifity of the numberbox
-	                         .setDirection(Controller.HORIZONTAL)    // change the control direction to left/right
+	                         .setMultiplier(0.5f)               // set the sensitifity of the numberbox
+	                         .setDirection(Controller.HORIZONTAL)      // change the control direction to left/right
 	                         .setValue(100)
 	                         .setCaptionLabel("PPM Air Speed reset                       ")
 	                         .setColorCaptionLabel(0)

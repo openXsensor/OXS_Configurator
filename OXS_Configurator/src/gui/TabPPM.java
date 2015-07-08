@@ -40,8 +40,8 @@ public class TabPPM {
 				.setColorValueLabel(0)
 				.hide()
 				;
-		cp5.getProperties().remove(cp5.getController("ppmPinL")) ;
 		cp5.getTooltip().register("ppmPinL", "- Default: 2 -");
+		cp5.getProperties().remove(cp5.getController("ppmPinL")) ;
 
 		ppmPin = cp5.addDropdownList("ppmPin")
 				.setPosition(118, 136)
@@ -68,8 +68,8 @@ public class TabPPM {
 		.setColorValueLabel(0)
 		.hide()
 		;
-		cp5.getProperties().remove(cp5.getController("ppmRngL")) ;
 		cp5.getTooltip().register("ppmRngL", "RC control range - Default: 988:2012 -");
+		cp5.getProperties().remove(cp5.getController("ppmRngL")) ;
 
 		ppmRngMinNBox = cp5.addNumberbox("ppmRngMin")
 		                   .setPosition(306, 115)

@@ -995,7 +995,7 @@ public class MainP extends PApplet {
 	}
 
 	public void loadButton(int theValue) {                                     // Load preset button
-		File presetDir = new File( sketchPath("Preset/...") ) ;
+		File presetDir = new File( sketchPath("src/Preset/...") ) ;
 		selectInput("Select a preset file to load:", "presetLoad", presetDir) ;
 	}
 
@@ -1013,7 +1013,7 @@ public class MainP extends PApplet {
 
 	public void presetLoad(File selection) { // TODO preset load
 		//PresetManagement.presetLoad(selection);
-		/*if (selection == null) {
+		if (selection == null) {
 			//println("Window was closed or the user hit cancel.") ;
 		} else {
 			//println("User selected " + selection.getAbsolutePath()) ;
@@ -1024,7 +1024,7 @@ public class MainP extends PApplet {
 			cp5.getController("varioHysteresis").getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(10) ;
 			cp5.getController("varioHysteresis").getValueLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(10) ;
 			//cp5.setBroadcast(true);
-		}*/
+		}
 	}
 
 	public void presetSave(File selection) { // TODO preset save

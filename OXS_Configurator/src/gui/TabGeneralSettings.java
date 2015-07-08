@@ -81,8 +81,8 @@ public class TabGeneralSettings {
 		       .setPosition(10, 142)
 		       .setColorValueLabel(0)
 		       ;
-		    cp5.getProperties().remove(cp5.getController("serialPinlabel")) ;
 		    cp5.getTooltip().register("serialPinlabel", "Choose the serial output Pin number - Default: 4 -") ;
+		    cp5.getProperties().remove(cp5.getController("serialPinlabel")) ;
 
 		 // Serial output pin
 		    serialPinDdl = cp5.addDropdownList("serialPin")
@@ -108,8 +108,8 @@ public class TabGeneralSettings {
 		       .setTab("default")
 		       ;
 		    //protocol.captionLabel().toUpperCase(false) ;
-		    cp5.getProperties().remove(cp5.getController("protocol")) ;
 		    cp5.getTooltip().register("protocol", "Choose protocol") ;
+		    cp5.getProperties().remove(cp5.getController("protocol")) ;
 
 		    protocolDdl = cp5.addDropdownList("protocolChoice")
 		                     .setPosition(100, 191)
@@ -133,8 +133,8 @@ public class TabGeneralSettings {
 		                           .setColorValueLabel(0x000000)
 		                           .setTab("default")
 		                           ;
-		    cp5.getProperties().remove(sensorIDTextlabel) ;
 		    cp5.getTooltip().register("sensorIDlabel", "Choose S.Port sensor ID - Default: 0x1B -") ;
+		    cp5.getProperties().remove(sensorIDTextlabel) ;
 		    
 		    sensorIDDdl = cp5.addDropdownList("sensorID")
 		    		         .setPosition(355, 191)
@@ -157,8 +157,8 @@ public class TabGeneralSettings {
 		       .setColorValueLabel(0)
 		       .setTab("default")
 		       ;
-		    cp5.getProperties().remove(cp5.getController("voltRef")) ;
 		    cp5.getTooltip().register("voltRef", "Choose voltage reference") ;
+		    cp5.getProperties().remove(cp5.getController("voltRef")) ;
 		  
 		    voltRefChoiceDdl = cp5.addDropdownList("voltRefChoice")
 						          .setPosition(160, 232)
@@ -205,8 +205,8 @@ public class TabGeneralSettings {
 		                                 .setPosition(210, 260)
 		                                 .setColorValueLabel(0)
 		                                 ;
-		    cp5.getProperties().remove(resetButtonPinTextLabel) ;
 		    cp5.getTooltip().register(resetButtonPinTextLabel, "- Default: 10 -") ;
+		    cp5.getProperties().remove(resetButtonPinTextLabel) ;
 		  
 		    resetBtnPinDdl = cp5.addDropdownList("resetButtonPin")
 						        .setPosition(355, 279)
@@ -229,8 +229,8 @@ public class TabGeneralSettings {
 		       .setPosition(191, 295)
 		       .setColorValueLabel(MainP.white)
 		       ;
-		    cp5.getProperties().remove(cp5.getController("sensors")) ;
 		    cp5.getTooltip().register("sensors", "Sensors settings") ;
+		    cp5.getProperties().remove(cp5.getController("sensors")) ;
 		  
 		    // Toggle buttons
 		    varioTgl = cp5.addToggle("vario")
