@@ -1039,6 +1039,7 @@ public class MainP extends PApplet {
 						selection.getAbsolutePath());
 				ObjectInputStream in = new ObjectInputStream(fileIn);
 				vario = (Vario) in.readObject();
+				tabData = (TabData) in.readObject();
 				in.close();
 				fileIn.close();
 			} catch (IOException i) {
@@ -1064,6 +1065,7 @@ public class MainP extends PApplet {
 						selection.getAbsolutePath());
 				ObjectOutputStream out = new ObjectOutputStream(fileOut);
 				out.writeObject(vario);
+				out.writeObject(tabData);
 				out.close();
 				fileOut.close();
 				System.out.printf(
@@ -1097,28 +1099,32 @@ public class MainP extends PApplet {
 		// default properties load/save key combinations are
 		// alt+shift+l to load properties
 		// alt+shift+s to save properties
-		if (key=='s') {
-			//cp5.saveProperties(("settings.oxs")) ;
+		if (key == 's') {
+			// cp5.saveProperties(("settings.oxs")) ;
 			savePreset();
-			cp5.getProperties().print() ;
-		} else if (key=='l') {
-			//cp5.loadProperties(("settings.oxs")) ;
+			cp5.getProperties().print();
+		} else if (key == 'l') {
+			// cp5.loadProperties(("settings.oxs")) ;
 			loadPreset();
 			// Hack to keep slider labels alignment
-			//cp5.getController("varioHysteresis").getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(10) ;
-			//cp5.getController("varioHysteresis").getValueLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(10) ;
+			// cp5.getController("varioHysteresis").getCaptionLabel().align(ControlP5.LEFT_OUTSIDE,
+			// ControlP5.CENTER).setPaddingX(10) ;
+			// cp5.getController("varioHysteresis").getValueLabel().align(ControlP5.RIGHT_OUTSIDE,
+			// ControlP5.CENTER).setPaddingX(10) ;
 
-			cp5.getProperties().print() ;
-		} else if ( key == 'c' ) {
-			println( "mAmp / step " + mAmpStep() ) ;
-			println( "Current offset " + offsetCurrent() ) ;
-		} else if ( key == 'p' ) {
-			//message.showOk("gxb");
-		} else if ( key == 'g' ) {
-
-		} else if ( key == 'd' ) {
-			vario = null ;
-			//println(vario.getMeasurementName(0)) ; 
+			cp5.getProperties().print();
+		} else if (key == 'c') {
+			println("mAmp / step " + mAmpStep());
+			println("Current offset " + offsetCurrent());
+		} else if (key == 'p') {
+			// message.showOk("gxb");
+		} else if (key == 'g') {
+			TabGeneralSettings.getVarioTgl().setValue(true);
+			TabData.getSentDataField(2).setCaptionLabel("Altitude");
+			TabData.getTargetDataField(2).setCaptionLabel("Altitude");
+		} else if (key == 'd') {
+			vario = null;
+			// println(vario.getMeasurementName(0)) ;
 		}
 	}
 

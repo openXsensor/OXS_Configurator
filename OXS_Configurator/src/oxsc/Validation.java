@@ -307,13 +307,13 @@ public class Validation {
 			int targetDataFieldNb = (int) TabData.getTargetDataField(i).getValue() ;
 			String targetDataFieldName = TabData.getTargetDataField(i).getCaptionLabel().getText() ;
 	
-			if ( sentDataFieldNb > 0 ) {   // if OXS measurement field is not empty
+			if ( !sentDataFieldName.equals("----------")) {   // if OXS measurement field is not empty
 				oxsMeasureCount ++ ;
-				if ( targetDataFieldNb == 0 ) {         // if telemetry field is empty
+				if ( targetDataFieldName.equals("----------") ) {         // if telemetry field is empty
 					sentDataValid = false ;
 					MainP.messageList.append( "- The " + sentDataFieldName + " measure is not sent !" ) ;
 				// if FrSky protocol
-				} else if ( MainP.protocol.getName() == "FrSky" ) {
+				} else if ( MainP.protocol.getName().equals("FrSky") ) {
 				// OXS measurement must be default
                 if ( ( sentDataFieldName.equals("Cells monitoring") || sentDataFieldName.equals("RPM") )
 							&& !targetDataFieldName.equals("DEFAULT") ) {
@@ -328,7 +328,7 @@ public class Validation {
 							|| sentDataFieldName.equals("PPM value") ) && targetDataFieldName.equals("DEFAULT") ) {
 						sentDataValid = false ;
 						MainP.messageList.append( "- " + sentDataFieldName + " can't be set to DEFAULT !" ) ;
-					// Only one Altitude DEFAULT
+					// Only one Altitude DEFAULT TODO remove
 					} else if ( ( sentDataFieldName.equals("Altitude") || sentDataFieldName.equals("Altitude 2") )
 							&& targetDataFieldName.equals("DEFAULT") ) {
 						for ( int j = i+1 ; j <= TabData.getTabDataFieldNbr() ; j++ ) {
@@ -340,7 +340,7 @@ public class Validation {
 								MainP.messageList.append( "  already used by " + sentDataFieldName + " measurement !" ) ;
 							}
 						}
-					// Only one V.Speed DEFAULT
+					// Only one V.Speed DEFAULT TODO remove
 					} else if ( ( sentDataFieldName.equals("Vertical Speed") || sentDataFieldName.equals("Vertical Speed 2")
 							|| sentDataFieldName.equals("Prandtl dTE") || sentDataFieldName.equals("PPM_VSPEED") )
 							&& targetDataFieldName.equals("DEFAULT") ) {

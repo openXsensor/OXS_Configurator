@@ -4,15 +4,22 @@ import oxsc.MainP;
 import oxsc.OXSdata;
 import oxsc.Protocol;
 import processing.core.PApplet;
+
+import java.io.Serializable;
+
 import controlP5.ControlP5;
 import controlP5.Controller;
 import controlP5.DropdownList;
 import controlP5.Numberbox;
 
-public class TabData {
+public class TabData implements Serializable {
 
 	//private static ControlP5 cp5;
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7423233652884681091L;
 	private static final int tabDataFieldNbr = 10;
 	private static DropdownList[] sentDataField = new DropdownList[tabDataFieldNbr + 1];
 	private static DropdownList[] hubDataField = new DropdownList[tabDataFieldNbr + 1];
