@@ -34,6 +34,12 @@ import gui.TabVario;
 import gui.TabVoltage;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PGraphics;
@@ -1012,27 +1018,59 @@ public class MainP extends PApplet {
 	}
 
 	public void presetLoad(File selection) { // TODO preset load
-		//PresetManagement.presetLoad(selection);
+		// PresetManagement.presetLoad(selection);
 		if (selection == null) {
-			//println("Window was closed or the user hit cancel.") ;
+			// println("Window was closed or the user hit cancel.") ;
 		} else {
-			//println("User selected " + selection.getAbsolutePath()) ;
-			//cp5.setBroadcast(false);
-			cp5.loadProperties(selection.getAbsolutePath()) ;
-
-			// Hack to keep slider labels alignement
-			cp5.getController("varioHysteresis").getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(10) ;
-			cp5.getController("varioHysteresis").getValueLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(10) ;
-			//cp5.setBroadcast(true);
+			/*
+			 * //println("User selected " + selection.getAbsolutePath()) ;
+			 * cp5.setBroadcast(false);
+			 * cp5.loadProperties(selection.getAbsolutePath()) ;
+			 * 
+			 * // Hack to keep slider labels alignement
+			 * cp5.getController("varioHysteresis").getCaptionLabel().align(
+			 * ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(10) ;
+			 * cp5.getController("varioHysteresis").getValueLabel().align(
+			 * ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(10) ;
+			 * cp5.setBroadcast(true);
+			 */
+			try {
+				FileInputStream fileIn = new FileInputStream(
+						selection.getAbsolutePath());
+				ObjectInputStream in = new ObjectInputStream(fileIn);
+				vario = (Vario) in.readObject();
+				in.close();
+				fileIn.close();
+			} catch (IOException i) {
+				i.printStackTrace();
+				return;
+			} catch (ClassNotFoundException c) {
+				System.out.println("Employee class not found");
+				c.printStackTrace();
+				return;
+			}
 		}
 	}
 
 	public void presetSave(File selection) { // TODO preset save
 		if (selection == null) {
-			//println("Window was closed or the user hit cancel.") ;
+			// println("Window was closed or the user hit cancel.") ;
 		} else {
-			println("User selected " + selection.getAbsolutePath()) ;
-			cp5.saveProperties(selection.getAbsolutePath()) ;
+			//println("User selected " + selection.getAbsolutePath());
+			//cp5.saveProperties(selection.getAbsolutePath());
+
+			try {
+				FileOutputStream fileOut = new FileOutputStream(
+						selection.getAbsolutePath());
+				ObjectOutputStream out = new ObjectOutputStream(fileOut);
+				out.writeObject(vario);
+				out.close();
+				fileOut.close();
+				System.out.printf(
+						"Serialized data is saved in " + selection.getAbsolutePath());
+			} catch (IOException i) {
+				i.printStackTrace();
+			}
 		}
 	}
 

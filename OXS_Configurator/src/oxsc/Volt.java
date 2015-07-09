@@ -8,6 +8,11 @@ public class Volt extends Sensor {
 
 	// private int parameters ;
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9135670042555878003L;
+
 	public Volt(PApplet p, ControlP5 cp5, String name) {
 		super(p, cp5, name);
 	}

@@ -2,12 +2,17 @@ package oxsc;
 
 import gui.TabData;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import processing.core.PApplet;
 
-public class OXSdata {
+public class OXSdata implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1600750914345136917L;
 	private String name;
 	private String displayName;
 	private String sensorType;

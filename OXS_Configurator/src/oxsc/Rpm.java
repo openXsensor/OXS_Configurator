@@ -8,7 +8,12 @@ public class Rpm extends Sensor {
 	
 	  //private int parameters ;
 
-	  public void addOXSdata() {
+	  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3858933033861114605L;
+
+	public void addOXSdata() {
 	    new OXSdata("RPM", "RPM", this.getName(), null) ;
 	  }
 

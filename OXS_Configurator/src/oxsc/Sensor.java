@@ -1,15 +1,20 @@
 package oxsc;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import gui.TabData;
 import processing.core.PApplet;
 import controlP5.ControlP5;
 
-public abstract class Sensor implements OXSdataController {
+public abstract class Sensor implements Serializable, OXSdataController {
 
-	protected final ControlP5 cp5;
-	protected final PApplet p;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1008770211961823541L;
+	protected transient final ControlP5 cp5;
+	protected transient final PApplet p;
 	
 	private static ArrayList<Sensor> sensorList = new ArrayList<Sensor>();
 

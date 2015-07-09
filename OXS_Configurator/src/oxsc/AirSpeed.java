@@ -9,6 +9,11 @@ public class AirSpeed extends Sensor {
 
 	// private int parameters;
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8910066996407698905L;
+
 	public void addOXSdata() {
 		new OXSdata("AIR_SPEED", "Air Speed", this.getName(), null);
 		if (MainP.vario != null) { // TODO better
