@@ -1,11 +1,14 @@
 package gui;
 
+import java.util.Properties;
+
 import controlP5.Button;
 import controlP5.ControlP5;
 import oxsc.MainP;
 
 public class FileManagement {
 	
+	private static Properties preset = new Properties();
 	private static Button loadPresetBtn;
 	private static Button savePresetBtn;
 	private static Button writeConfBtn;

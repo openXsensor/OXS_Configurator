@@ -2,6 +2,10 @@ package gui;
 
 import oxsc.MainP;
 import processing.core.PApplet;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import controlP5.ControlP5;
 import controlP5.Controller;
 import controlP5.DropdownList;
@@ -37,6 +41,8 @@ public class TabGeneralSettings {
 	private static Toggle temperatureTgl;
 	private static Toggle rpmTgl;
 	
+	private static List<Object> tabGenSetControllers = new ArrayList<>();
+	
 	private static final String[] sensorIDs = new String[] { "0x1B", "0xBA",
 			"0x39", "0x16", "0x95", "0x34" }; // Sensor ID array
 	
@@ -67,6 +73,7 @@ public class TabGeneralSettings {
 		    oxsDir.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER) ;
 		    oxsDir.getCaptionLabel().toUpperCase(false) ;
 		    cp5.getTooltip().register(oxsDir, "Choose OXS source directory") ;
+		    tabGenSetControllers.add(oxsDir);
 		  
 		    cp5.addButton("oxsDirButton")
 		       .setColorForeground(MainP.blueAct)
@@ -99,6 +106,7 @@ public class TabGeneralSettings {
 		    serialPinDdl.addItem("4", 4) ;
 		    serialPinDdl.setValue(4) ;
 		    cp5.getProperties().remove(serialPinDdl) ;
+		    tabGenSetControllers.add(serialPinDdl);
 
 		 // Protocol choice
 		    cp5.addTextlabel("protocol")
