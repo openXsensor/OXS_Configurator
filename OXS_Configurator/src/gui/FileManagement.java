@@ -8,6 +8,7 @@ import oxsc.MainP;
 
 public class FileManagement {
 	
+	@SuppressWarnings("unused")
 	private static Properties preset = new Properties();
 	private static Button loadPresetBtn;
 	private static Button savePresetBtn;

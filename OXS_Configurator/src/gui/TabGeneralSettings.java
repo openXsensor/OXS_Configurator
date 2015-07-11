@@ -41,7 +41,7 @@ public class TabGeneralSettings {
 	private static Toggle temperatureTgl;
 	private static Toggle rpmTgl;
 	
-	private static List<Object> tabGenSetControllers = new ArrayList<>();
+	private static List<Object> controllers = new ArrayList<>();
 	
 	private static final String[] sensorIDs = new String[] { "0x1B", "0xBA",
 			"0x39", "0x16", "0x95", "0x34" }; // Sensor ID array
@@ -73,7 +73,7 @@ public class TabGeneralSettings {
 		    oxsDir.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER) ;
 		    oxsDir.getCaptionLabel().toUpperCase(false) ;
 		    cp5.getTooltip().register(oxsDir, "Choose OXS source directory") ;
-		    tabGenSetControllers.add(oxsDir);
+		    controllers.add(oxsDir);
 		  
 		    cp5.addButton("oxsDirButton")
 		       .setColorForeground(MainP.blueAct)
@@ -106,7 +106,7 @@ public class TabGeneralSettings {
 		    serialPinDdl.addItem("4", 4) ;
 		    serialPinDdl.setValue(4) ;
 		    cp5.getProperties().remove(serialPinDdl) ;
-		    tabGenSetControllers.add(serialPinDdl);
+		    controllers.add(serialPinDdl);
 
 		 // Protocol choice
 		    cp5.addTextlabel("protocol")
@@ -133,6 +133,7 @@ public class TabGeneralSettings {
 		    protocolDdl.addItem("Multiplex", 2) ;
 		    protocolDdl.toUpperCase(false) ;
 		    cp5.getProperties().remove(protocolDdl, "ListBoxItems") ;
+		    controllers.add(protocolDdl);
 
 		    // Sensor ID choice
 		    sensorIDTextlabel = cp5.addTextlabel("sensorIDlabel")
@@ -157,6 +158,7 @@ public class TabGeneralSettings {
 		    sensorIDDdl.setValue(0) ;
 		    sensorIDDdl.toUpperCase(false) ;
 		    cp5.getProperties().remove(sensorIDDdl, "ListBoxItems") ;
+		    controllers.add(sensorIDDdl);
 		    
 		    // Voltage reference  
 		    cp5.addTextlabel("voltRef")
@@ -183,6 +185,7 @@ public class TabGeneralSettings {
 		    voltRefChoiceDdl.setValue(1) ;
 		    voltRefChoiceDdl.toUpperCase(false) ;
 		    cp5.getProperties().remove(voltRefChoiceDdl, "ListBoxItems") ;
+		    controllers.add(voltRefChoiceDdl);
 		    
 		    arduinoVccNBox = cp5.addNumberbox("arduinoVccNb")
 					            .setPosition(265, 211)
@@ -198,6 +201,7 @@ public class TabGeneralSettings {
 		    arduinoVccNBox.getCaptionLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
 		    arduinoVccNBox.getCaptionLabel().toUpperCase(false) ;
 		    cp5.getTooltip().register(arduinoVccNBox, "Arduino alimentation voltage") ;
+		    controllers.add(arduinoVccNBox);
 		  
 		    // Save to EEPROM
 		    saveEpromTgl = cp5.addToggle("saveEprom")
@@ -231,6 +235,7 @@ public class TabGeneralSettings {
 		    }
 		    resetBtnPinDdl.setValue(10) ;
 		    cp5.getProperties().remove(resetBtnPinDdl, "ListBoxItems") ;
+		    controllers.add(resetBtnPinDdl);
 		  
 		    cp5.addTextlabel("sensors")
 		       .setText("SENSORS")
@@ -350,6 +355,10 @@ public class TabGeneralSettings {
 
 	public static Toggle getRpmTgl() {
 		return rpmTgl;
+	}
+
+	public static List<Object> getControllers() {
+		return controllers;
 	}
 
 	public static void draw(MainP mainP) {
@@ -474,5 +483,6 @@ public class TabGeneralSettings {
 		// reposition the Labels
 		tglS.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER) ;		
 		tglS.getCaptionLabel().toUpperCase(false) ;
+		controllers.add(tglS);
 	}
 }

@@ -34,12 +34,6 @@ import gui.TabVario;
 import gui.TabVoltage;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PGraphics;
@@ -1034,22 +1028,7 @@ public class MainP extends PApplet {
 			 * ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(10) ;
 			 * cp5.setBroadcast(true);
 			 */
-			try {
-				FileInputStream fileIn = new FileInputStream(
-						selection.getAbsolutePath());
-				ObjectInputStream in = new ObjectInputStream(fileIn);
-				vario = (Vario) in.readObject();
-				tabData = (TabData) in.readObject();
-				in.close();
-				fileIn.close();
-			} catch (IOException i) {
-				i.printStackTrace();
-				return;
-			} catch (ClassNotFoundException c) {
-				System.out.println("Employee class not found");
-				c.printStackTrace();
-				return;
-			}
+
 		}
 	}
 
@@ -1057,22 +1036,24 @@ public class MainP extends PApplet {
 		if (selection == null) {
 			// println("Window was closed or the user hit cancel.") ;
 		} else {
-			//println("User selected " + selection.getAbsolutePath());
-			//cp5.saveProperties(selection.getAbsolutePath());
+			// println("User selected " + selection.getAbsolutePath());
+			// cp5.saveProperties(selection.getAbsolutePath());
 
-			try {
-				FileOutputStream fileOut = new FileOutputStream(
-						selection.getAbsolutePath());
-				ObjectOutputStream out = new ObjectOutputStream(fileOut);
-				out.writeObject(vario);
-				out.writeObject(tabData);
-				out.close();
-				fileOut.close();
-				System.out.printf(
-						"Serialized data is saved in " + selection.getAbsolutePath());
-			} catch (IOException i) {
-				i.printStackTrace();
-			}
+			// TODO first only one should be created
+			// object.getName - object.getValue  for ex => TabGeneralSettings.getOxsDir() - TabGeneralSettings.getOxsDir().getText()
+			@SuppressWarnings("unused")
+			PresetManagement newPreset = new PresetManagement();
+			PresetManagement.getUiUnits().stream().forEach(uiU -> uiU.stream().forEach(c -> {
+				System.out.println(c.getClass().getName() + " - " + c.getClass().toString());
+				if (c instanceof controlP5.DropdownList) {
+					controlP5.DropdownList co = (controlP5.DropdownList) c;
+					System.out.println(co.getCaptionLabel().getText());
+				}
+				if (c instanceof controlP5.Toggle) {
+					controlP5.Toggle co = (controlP5.Toggle) c;
+					System.out.println(co.getValue());
+				}
+			}));
 		}
 	}
 
