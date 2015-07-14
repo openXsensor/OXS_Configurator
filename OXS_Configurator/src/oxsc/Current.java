@@ -8,11 +8,6 @@ public class Current extends Sensor {
 	
 	//private int parameters;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2337303733439030951L;
-
 	public void addOXSdata() {
 		new OXSdata("CURRENTMA", "Current (mA)", this.getName(), null);
 		new OXSdata("MILLIAH", "Consumption (mAh)", this.getName(), null);

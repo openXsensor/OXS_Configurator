@@ -10,10 +10,6 @@ import controlP5.ControlP5;
 
 public class Vario extends Sensor {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -765165690628887985L;
 	// private int parameters ;
 	@SuppressWarnings("unused")
 	private static Sensor vario; // TODO

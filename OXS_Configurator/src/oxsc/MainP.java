@@ -34,6 +34,9 @@ import gui.TabVario;
 import gui.TabVoltage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PGraphics;
@@ -47,7 +50,6 @@ import controlP5.Group;
 import controlP5.Numberbox;
 import controlP5.Slider;
 import controlP5.Textarea;
-import controlP5.Textfield;
 
 public class MainP extends PApplet {
 
@@ -60,6 +62,7 @@ public class MainP extends PApplet {
 
 	public static String day = (day() < 10) ? "0" + day() : "" + day();
 	public static String month = (month() < 10) ? "0" + month() : "" + month();
+	public static String date = day + "/" + month + "/" + year();
 
 	public static final int tabGray = 0xFFC8C8C8; // gray 200
 	public static final int backDdlGray = 0xFFFFFFFF; // gray 190
@@ -137,6 +140,7 @@ public class MainP extends PApplet {
 	public static Sensor rpm;
 	public static Sensor ppm;
 
+	public static PresetManagement presetMan;
 
 	public void setup() {
 		
@@ -237,7 +241,8 @@ public class MainP extends PApplet {
 		fileManagement = new FileManagement(cp5);
 
 		// --------------------------------------------------------------------------
-
+		presetMan = new PresetManagement(cp5);
+		
 		// dropdownlist overlap
 		//cp5.getGroup("tempPin").bringToFront() ;
 
@@ -390,56 +395,6 @@ public class MainP extends PApplet {
 					FileManagement.getSavePresetBtn().show() ;
 				}
 			}
-			/*
-		    // Grayed multiplier + divider + offset if Telemetry data field == DEFAULT
-		    for ( int i = 1 ; i <= dataSentFieldNbr ; i++ ) {
-		      if ( cp5.getGroup("protocolChoice").value() == 1 ) {
-		        if ( cp5.getGroup("hubDataField" + i).value() == 1 ) {
-		          cp5.getController("dataMultiplier" + i).lock() ;
-		          cp5.getController("dataMultiplier" + i).setColorBackground(grayedColor) ;
-		          cp5.getController("dataMultiplier" + i).setColorValueLabel(grayedColor) ;
-		          cp5.getController("dataDivider" + i).lock() ;
-		          cp5.getController("dataDivider" + i).setColorBackground(grayedColor) ;
-		          cp5.getController("dataDivider" + i).setColorValueLabel(grayedColor) ;
-		          cp5.getController("dataOffset" + i).lock() ;
-		          cp5.getController("dataOffset" + i).setColorBackground(grayedColor) ;
-		          cp5.getController("dataOffset" + i).setColorValueLabel(grayedColor) ;
-		        } else {
-		          cp5.getController("dataMultiplier" + i).unlock() ;
-		          cp5.getController("dataMultiplier" + i).setColorBackground(OXSConfigurator._Gray) ;
-		          cp5.getController("dataMultiplier" + i).setColorValueLabel(white) ;
-		          cp5.getController("dataDivider" + i).unlock() ;
-		          cp5.getController("dataDivider" + i).setColorBackground(OXSConfigurator._Gray) ;
-		          cp5.getController("dataDivider" + i).setColorValueLabel(white) ;
-		          cp5.getController("dataOffset" + i).unlock() ;
-		          cp5.getController("dataOffset" + i).setColorBackground(OXSConfigurator._Gray) ;
-		          cp5.getController("dataOffset" + i).setColorValueLabel(white) ;
-		        }
-		      } else if ( cp5.getGroup("protocolChoice").value() == 2 ) {
-		        if ( TabData.targetDataField[i].value() == 1 ) {
-		          cp5.getController("dataMultiplier" + i).lock() ;
-		          cp5.getController("dataMultiplier" + i).setColorBackground(grayedColor) ;
-		          cp5.getController("dataMultiplier" + i).setColorValueLabel(grayedColor) ;
-		          cp5.getController("dataDivider" + i).lock() ;
-		          cp5.getController("dataDivider" + i).setColorBackground(grayedColor) ;
-		          cp5.getController("dataDivider" + i).setColorValueLabel(grayedColor) ;
-		          cp5.getController("dataOffset" + i).lock() ;
-		          cp5.getController("dataOffset" + i).setColorBackground(grayedColor) ;
-		          cp5.getController("dataOffset" + i).setColorValueLabel(grayedColor) ;
-		        } else {
-		          cp5.getController("dataMultiplier" + i).unlock() ;
-		          cp5.getController("dataMultiplier" + i).setColorBackground(OXSConfigurator._Gray) ;
-		          cp5.getController("dataMultiplier" + i).setColorValueLabel(white) ;
-		          cp5.getController("dataDivider" + i).unlock() ;
-		          cp5.getController("dataDivider" + i).setColorBackground(OXSConfigurator._Gray) ;
-		          cp5.getController("dataDivider" + i).setColorValueLabel(white) ;
-		          cp5.getController("dataOffset" + i).unlock() ;
-		          cp5.getController("dataOffset" + i).setColorBackground(OXSConfigurator._Gray) ;
-		          cp5.getController("dataOffset" + i).setColorValueLabel(white) ;
-		        }
-		      }
-		    }
-			 */
 			break ;
 		}
 
@@ -622,9 +577,9 @@ public class MainP extends PApplet {
 			}
 		}
 
-		if ( !cp5.isMouseOver ( TabPPM.getPpmPin() ) ) {
+		if ( !cp5.isMouseOver ( TabPPM.getPpmPinDdl() ) ) {
 			if (mousePressed == true) {
-				TabPPM.getPpmPin().close() ;
+				TabPPM.getPpmPinDdl().close() ;
 			}
 		}
 
@@ -640,9 +595,9 @@ public class MainP extends PApplet {
 			}
 		}
 
-		if ( !cp5.isMouseOver ( TabVario.getClimbPin() ) ) {
+		if ( !cp5.isMouseOver ( TabVario.getClimbPinDdl() ) ) {
 			if (mousePressed == true) {
-				TabVario.getClimbPin().close() ;
+				TabVario.getClimbPinDdl().close() ;
 			}
 		}
 
@@ -701,7 +656,7 @@ public class MainP extends PApplet {
 		// ----------------- TAB DATA sent display -----------------
 
 		if (vario != null || airSpeed != null
-				|| TabGeneralSettings.getVoltageTgl().getValue() == 1
+				|| TabGeneralSettings.getVoltageTgl().getValue() == 1.0
 				|| current != null /* || temperature != null */|| rpm != null) {
 			cp5.getTab("data").show();
 		} else {
@@ -850,12 +805,12 @@ public class MainP extends PApplet {
 		cp5.setMouseWheelRotation(e.getWheelRotation()) ;
 	}
 
-	void oxsDirButton(int theValue) {
+	public void oxsDirButton(int theValue) {
 		//println("oxsDir button: "+theValue) ;
 		selectFolder("Select OXS source folder:", "folderSelected") ;
 	}
 
-	public void vario(boolean theFlag) {
+	public void varioTgl(boolean theFlag) {
 		if (theFlag == true && vario == null) {
 			vario = new Vario(this, cp5, "vario");
 			cp5.getTab("vario").show();
@@ -872,7 +827,7 @@ public class MainP extends PApplet {
 		}
 	}
 
-	void vario2(boolean theFlag) {
+	void vario2Tgl(boolean theFlag) {
 		if (theFlag == true && vario2 == null) {
 			vario2 = new Vario(this, cp5, "vario2");
 		} else if (theFlag == false && vario2 != null) {
@@ -881,7 +836,7 @@ public class MainP extends PApplet {
 		}
 	}
 
-	void airSpeed(boolean theFlag) {
+	void airSpeedTgl(boolean theFlag) {
 		if (theFlag == true && airSpeed == null) {
 			airSpeed = new AirSpeed(this, cp5, "airSpeed");
 			cp5.getTab("airSpeed").show();
@@ -894,7 +849,7 @@ public class MainP extends PApplet {
 		}
 	}
 
-	void voltage(boolean theFlag) {
+	void voltageTgl(boolean theFlag) {
 		if (theFlag == true) {
 			cp5.getTab("voltage").show();
 		} else {
@@ -905,7 +860,7 @@ public class MainP extends PApplet {
 		}
 	}
 
-	void cells(boolean theFlag) { // TODO clean
+	void cellsTgl(boolean theFlag) { // TODO clean
 		if (theFlag == true && aVolt[1] != null) {
 			new OXSdata("CELLS", "Cells monitoring", "voltCells", null);
 			TabData.populateSentDataFields();
@@ -918,7 +873,7 @@ public class MainP extends PApplet {
 		}
 	}
 
-	void current(boolean theFlag) {
+	void currentTgl(boolean theFlag) {
 		if (theFlag == true && current == null) {
 			current = new Current(this, cp5, "current");
 			cp5.getTab("current").show();
@@ -929,7 +884,7 @@ public class MainP extends PApplet {
 		}
 	}
 
-	void temperature(boolean theFlag) {
+	void temperatureTgl(boolean theFlag) {
 		if (theFlag == true) {
 			cp5.getTab("temperature").show();
 		} else {
@@ -939,7 +894,7 @@ public class MainP extends PApplet {
 	}
 
 	// RPM TAB display
-	void rpm(boolean theFlag) {
+	void rpmTgl(boolean theFlag) {
 		if (theFlag == true && rpm == null) {
 			rpm = new Rpm(this, cp5, "rpm");
 			// cp5.getTab("rpm").show() ;
@@ -1011,8 +966,7 @@ public class MainP extends PApplet {
 		}
 	}
 
-	public void presetLoad(File selection) { // TODO preset load
-		// PresetManagement.presetLoad(selection);
+	public void presetLoad(File selection) throws FileNotFoundException, IOException { // TODO preset load
 		if (selection == null) {
 			// println("Window was closed or the user hit cancel.") ;
 		} else {
@@ -1028,32 +982,15 @@ public class MainP extends PApplet {
 			 * ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(10) ;
 			 * cp5.setBroadcast(true);
 			 */
-
+			PresetManagement.presetLoad(selection);
 		}
 	}
-
-	public void presetSave(File selection) { // TODO preset save
+	
+	public void presetSave(File selection) throws FileNotFoundException {
 		if (selection == null) {
 			// println("Window was closed or the user hit cancel.") ;
 		} else {
-			// println("User selected " + selection.getAbsolutePath());
-			// cp5.saveProperties(selection.getAbsolutePath());
-
-			// TODO first only one should be created
-			// object.getName - object.getValue  for ex => TabGeneralSettings.getOxsDir() - TabGeneralSettings.getOxsDir().getText()
-			@SuppressWarnings("unused")
-			PresetManagement newPreset = new PresetManagement();
-			PresetManagement.getUiUnits().stream().forEach(uiU -> uiU.stream().forEach(c -> {
-				System.out.println(c.getClass().getName() + " - " + c.getClass().toString());
-				if (c instanceof controlP5.DropdownList) {
-					controlP5.DropdownList co = (controlP5.DropdownList) c;
-					System.out.println(co.getCaptionLabel().getText());
-				}
-				if (c instanceof controlP5.Toggle) {
-					controlP5.Toggle co = (controlP5.Toggle) c;
-					System.out.println(co.getValue());
-				}
-			}));
+			PresetManagement.presetSave(selection);
 		}
 	}
 
@@ -1070,7 +1007,7 @@ public class MainP extends PApplet {
 			//println("Window was closed or the user hit cancel.") ;
 		} else {
 			//println("User selected " + selection.getAbsolutePath()) ;
-			cp5.get(Textfield.class, "oxsDirectory").setText(selection.getAbsolutePath()) ;
+			TabGeneralSettings.getOxsDir().setText(selection.getAbsolutePath()) ;
 		}
 	}
 
@@ -1082,27 +1019,21 @@ public class MainP extends PApplet {
 		// alt+shift+s to save properties
 		if (key == 's') {
 			// cp5.saveProperties(("settings.oxs")) ;
-			savePreset();
-			cp5.getProperties().print();
 		} else if (key == 'l') {
 			// cp5.loadProperties(("settings.oxs")) ;
-			loadPreset();
 			// Hack to keep slider labels alignment
 			// cp5.getController("varioHysteresis").getCaptionLabel().align(ControlP5.LEFT_OUTSIDE,
 			// ControlP5.CENTER).setPaddingX(10) ;
 			// cp5.getController("varioHysteresis").getValueLabel().align(ControlP5.RIGHT_OUTSIDE,
 			// ControlP5.CENTER).setPaddingX(10) ;
-
-			cp5.getProperties().print();
 		} else if (key == 'c') {
 			println("mAmp / step " + mAmpStep());
 			println("Current offset " + offsetCurrent());
 		} else if (key == 'p') {
 			// message.showOk("gxb");
 		} else if (key == 'g') {
-			TabGeneralSettings.getVarioTgl().setValue(true);
-			TabData.getSentDataField(2).setCaptionLabel("Altitude");
-			TabData.getTargetDataField(2).setCaptionLabel("Altitude");
+			cp5.getGroup("serialPinDdl").setValue(4);
+//			TabGeneralSettings.getSerialPinDdl().setValue(4);
 		} else if (key == 'd') {
 			vario = null;
 			// println(vario.getMeasurementName(0)) ;
@@ -1284,62 +1215,6 @@ public class MainP extends PApplet {
 		messageBox.hide();
 	}
 		
-	// Preset
-
-	public void savePreset() {
-		// Tab Gen.
-		cp5.getProperties().copy(cp5.getController("oxsDirectory"), "Preset");
-		cp5.getProperties().copy(cp5.getGroup("serialPin"), "Preset");
-		cp5.getProperties().copy(cp5.getGroup("sensorID"), "Preset");
-		cp5.getProperties().copy(cp5.getGroup("protocolChoice"), "Preset");
-		cp5.getProperties().copy(cp5.getGroup("voltRefChoice"), "Preset");
-		cp5.getProperties().copy(cp5.getController("arduinoVccNb"), "Preset");
-		cp5.getProperties().copy(cp5.getController("saveEprom"), "Preset");
-		cp5.getProperties().copy(cp5.getGroup("resetButtonPin"), "Preset");
-
-		cp5.getProperties().copy(cp5.getController("vario"), "Preset");
-		cp5.getProperties().copy(cp5.getController("vario2"), "Preset");
-		cp5.getProperties().copy(cp5.getController("airSpeed"), "Preset");
-		cp5.getProperties().copy(cp5.getController("voltage"), "Preset");
-		cp5.getProperties().copy(cp5.getController("current"), "Preset");
-		cp5.getProperties().copy(cp5.getController("rpm"), "Preset");
-
-		// PPM
-		cp5.getProperties().copy(cp5.getController("ppm"), "Preset");
-		cp5.getProperties().copy(cp5.getGroup("ppmPin"), "Preset");
-		cp5.getProperties().copy(cp5.getController("ppmRngMin"), "Preset");
-		cp5.getProperties().copy(cp5.getController("ppmRngMax"), "Preset");
-
-		// Tab Vario
-		cp5.getProperties().copy(cp5.getController("ppmRngSensMinMax"), "Preset");
-		cp5.getProperties().copy(cp5.getController("ppmSensMinMax"), "Preset");
-		cp5.getProperties().copy(cp5.getGroup("vSpeed1"), "Preset");
-		cp5.getProperties().copy(cp5.getGroup("vSpeed2"), "Preset");
-		cp5.getProperties().copy(cp5.getController("ppmVspeedSwMin"), "Preset");
-		cp5.getProperties().copy(cp5.getController("ppmVspeedSwMax"), "Preset");
-
-		cp5.getProperties().copy(cp5.getController("sensMinMax"), "Preset");
-		cp5.getProperties().copy(cp5.getController("vSpeedMin"), "Preset");
-		cp5.getProperties().copy(cp5.getController("vSpeedMax"), "Preset");
-
-		cp5.getProperties().copy(cp5.getController("varioHysteresis"), "Preset");
-
-		cp5.getProperties().copy(cp5.getController("analogClimb"), "Preset");
-		cp5.getProperties().copy(cp5.getGroup("climbPin"), "Preset");
-		cp5.getProperties().copy(cp5.getController("outClimbRateMinMax"), "Preset");
-
-		cp5.saveProperties("testPreset.ser", "Preset");
-
-	}
-
-	public void loadPreset() {
-		cp5.loadProperties(("testPreset.ser"));
-
-		// Hack to keep slider labels alignement
-		cp5.getController("varioHysteresis").getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(10) ;
-		cp5.getController("varioHysteresis").getValueLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(10) ;
-	}
-
 	public static void main(String _args[]) {
 		PApplet.main(new String[] { oxsc.MainP.class
 				.getName() });

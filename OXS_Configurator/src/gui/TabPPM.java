@@ -14,12 +14,12 @@ public class TabPPM {
 	private static ControlP5 cp5 ;
 	@SuppressWarnings("unused")
 	private final PApplet p ; // TODO check if needed
+
+	private static Toggle ppmTgl;
+	private static Textlabel ppmPinL;
+	private static DropdownList ppmPinDdl;
 	private static Numberbox ppmRngMinNBox;
 	private static Numberbox ppmRngMaxNBox;
-	
-	private static Textlabel ppmPinL;
-	private static Toggle ppmTgl;
-	private static DropdownList ppmPin;
 
 	public TabPPM(PApplet p, ControlP5 cp5) {
 		
@@ -28,46 +28,46 @@ public class TabPPM {
 
 		// RC Remote PPM pin and settings
 		ppmTgl = cp5.addToggle("ppm")
-		.setCaptionLabel("PPM")
-		.setPosition(53, 117)
-		.hide()
-		;
+		            .setCaptionLabel("PPM")
+		            .setPosition(53, 117)
+		            .hide()
+		            ;
 		MainP.customizeToggle(cp5.getController("ppm")) ;
 
 		ppmPinL = cp5.addTextlabel("ppmPinL")
-				.setText("Pin       ")
-				.setPosition(90, 117)
-				.setColorValueLabel(0)
-				.hide()
-				;
+				     .setText("Pin       ")
+				     .setPosition(90, 117)
+				     .setColorValueLabel(0)
+				     .hide()
+				     ;
 		cp5.getTooltip().register("ppmPinL", "- Default: 2 -");
 		cp5.getProperties().remove(cp5.getController("ppmPinL")) ;
 
-		ppmPin = cp5.addDropdownList("ppmPin")
-				.setPosition(118, 136)
-				.setSize(30, 75)
-				.setColorForeground(MainP.orangeAct)
-				.setColorActive(MainP.blueAct)
-				.setBackgroundColor(MainP.backDdlGray)
-				.setItemHeight(20)
-				.setBarHeight(20)
-				.hide()
-				;
-		ppmPin.getCaptionLabel().set(" ");
-		ppmPin.getCaptionLabel().getStyle().marginTop = 2 ;
-		ppmPin.addItem(" 2", 2);
-		ppmPin.addItem(" 3", 3);
-		ppmPin.setValue(2);
-		ppmPin.toUpperCase(false) ;
+		ppmPinDdl = cp5.addDropdownList("ppmPin")
+				       .setPosition(118, 136)
+				       .setSize(30, 75)
+				       .setColorForeground(MainP.orangeAct)
+				       .setColorActive(MainP.blueAct)
+				       .setBackgroundColor(MainP.backDdlGray)
+				       .setItemHeight(20)
+				       .setBarHeight(20)
+				       .hide()
+				       ;
+		ppmPinDdl.getCaptionLabel().set(" ");
+		ppmPinDdl.getCaptionLabel().getStyle().marginTop = 2 ;
+		ppmPinDdl.addItem(" 2", 2);
+		ppmPinDdl.addItem(" 3", 3);
+		ppmPinDdl.setValue(2);
+		ppmPinDdl.toUpperCase(false) ;
 		cp5.getProperties().remove(cp5.getGroup("ppmPin"), "ListBoxItems") ;
 
 		// PPM range setting
 		cp5.addTextlabel("ppmRngL")
-		.setText("PPM range (µs)                                                                          ")
-		.setPosition(175, 117)
-		.setColorValueLabel(0)
-		.hide()
-		;
+		   .setText("PPM range (µs)                                                                          ")
+		   .setPosition(175, 117)
+		   .setColorValueLabel(0)
+		   .hide()
+		   ;
 		cp5.getTooltip().register("ppmRngL", "RC control range - Default: 988:2012 -");
 		cp5.getProperties().remove(cp5.getController("ppmRngL")) ;
 
@@ -106,8 +106,8 @@ public class TabPPM {
 		return ppmTgl;
 	}
 
-	public static DropdownList getPpmPin() {
-		return ppmPin;
+	public static DropdownList getPpmPinDdl() {
+		return ppmPinDdl;
 	}
 
 	public static Numberbox getPpmRngMinNBox() {
@@ -137,43 +137,40 @@ public class TabPPM {
 		mainP.text("PPM", 212, 112);
 	
 		if ( ppmTgl.getValue() == 0 ) {         // RC remote
-			ppmPin.hide() ;
+			ppmPinDdl.hide() ;
 			mainP.fill(MainP.grayedColor) ;
 			mainP.rect(118, 115, 30, 20) ;
 			ppmPinL.setColorValueLabel(MainP.grayedColor) ;
 	
 			cp5.getController("ppmRngL").setColorValueLabel(MainP.grayedColor) ;
-			cp5.getController("ppmRngMin").lock() ;
-			cp5.getController("ppmRngMin").setColorBackground(MainP.grayedColor) ;
-			cp5.getController("ppmRngMin").setColorValueLabel(MainP.grayedColor) ;
-			cp5.getController("ppmRngMin").setColorCaptionLabel(MainP.grayedColor) ;
-	
-			cp5.getController("ppmRngMax").lock() ;
-			cp5.getController("ppmRngMax").setColorBackground(MainP.grayedColor) ;
-			cp5.getController("ppmRngMax").setColorValueLabel(MainP.grayedColor) ;
-			cp5.getController("ppmRngMax").setColorCaptionLabel(MainP.grayedColor) ;
+			ppmRngMinNBox.lock()
+			             .setColorBackground(MainP.grayedColor)
+			             .setColorValueLabel(MainP.grayedColor)
+			             .setColorCaptionLabel(MainP.grayedColor);
+			ppmRngMaxNBox.lock()
+			             .setColorBackground(MainP.grayedColor)
+			             .setColorValueLabel(MainP.grayedColor)
+			             .setColorCaptionLabel(MainP.grayedColor);
 		} else {
 			mainP.fill(MainP.lightBlue) ;                                    // toggle border filled
 			mainP.rect(12, 114, 58, 20) ;
-			ppmPin.show() ;
+			ppmPinDdl.show() ;
 			ppmPinL.setColorValueLabel(0) ;
 	
 			cp5.getController("ppmRngL").setColorValueLabel(mainP.color(0)) ;
-			cp5.getController("ppmRngMin").unlock() ;
-			cp5.getController("ppmRngMin").setColorBackground(MainP.darkBackGray) ;
-			cp5.getController("ppmRngMin").setColorValueLabel(mainP.color(255)) ;
-			cp5.getController("ppmRngMin").setColorCaptionLabel(mainP.color(0)) ;
-	
-			cp5.getController("ppmRngMax").unlock() ;
-			cp5.getController("ppmRngMax").setColorBackground(MainP.darkBackGray) ;
-			cp5.getController("ppmRngMax").setColorValueLabel(mainP.color(255)) ;
-			cp5.getController("ppmRngMax").setColorCaptionLabel(mainP.color(0)) ;
+			ppmRngMinNBox.unlock()
+			             .setColorBackground(MainP.darkBackGray)
+			             .setColorValueLabel(MainP.white)
+			             .setColorCaptionLabel(mainP.color(0));
+			ppmRngMaxNBox.unlock()
+			             .setColorBackground(MainP.darkBackGray)
+			             .setColorValueLabel(MainP.white)
+			             .setColorCaptionLabel(mainP.color(0));
 		}
 	
 		mainP.stroke(MainP.darkBackGray) ;                               // toggle border
 		mainP.noFill() ;
 		mainP.rect(12, 114, 58, 20) ;
 		mainP.noStroke() ;
-	
 	}
 }

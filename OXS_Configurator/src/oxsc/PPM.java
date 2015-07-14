@@ -8,11 +8,6 @@ public class PPM extends Sensor {
 
 	// private int parameters ;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1974895806073046781L;
-
 	public void addOXSdata() {
 		new OXSdata("PPM", "PPM value", this.getName(), null);
 	}

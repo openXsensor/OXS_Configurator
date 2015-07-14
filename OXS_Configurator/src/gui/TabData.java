@@ -5,21 +5,18 @@ import oxsc.OXSdata;
 import oxsc.Protocol;
 import processing.core.PApplet;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import controlP5.ControlP5;
 import controlP5.Controller;
 import controlP5.DropdownList;
 import controlP5.Numberbox;
 
-public class TabData implements Serializable {
+public class TabData {
 
 	//private static ControlP5 cp5;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7423233652884681091L;
 	private static final int tabDataFieldNbr = 10;
 	private static DropdownList[] sentDataField = new DropdownList[tabDataFieldNbr + 1];
 	private static DropdownList[] hubDataField = new DropdownList[tabDataFieldNbr + 1];
@@ -177,14 +174,20 @@ public class TabData implements Serializable {
 			//{ "TEMP1", "Temperature 1" }                         //
 	} ;
 	
+	private static List<Object> controllers = new ArrayList<>();
+	
 	public TabData(ControlP5 cp5) {
 		
 		//TabData.cp5 = cp5;
 
-		cp5.getTab("data").setHeight(20).setColorForeground(MainP.tabGray)
-				.setColorBackground(0xFF285A28) // color(40, 90, 40)
-				.setColorActive(0xFF3CBE3C) // color(60, 190, 60)
-				.setLabel("DATA sent").setId(7).hide();
+		cp5.getTab("data").setHeight(20)
+						  .setColorForeground(MainP.tabGray)
+				          .setColorBackground(0xFF285A28) // color(40, 90, 40)
+				          .setColorActive(0xFF3CBE3C) // color(60, 190, 60)
+				          .setLabel("DATA sent")
+				          .setId(7)
+				          .hide()
+				          ;
 		cp5.getTab("data").getCaptionLabel().toUpperCase(false);
 
 		// Text Labels
@@ -221,6 +224,7 @@ public class TabData implements Serializable {
 			sentDataField[i].getCaptionLabel().set("----------");
 			sentDataField[i].toUpperCase(false);
 			cp5.getProperties().remove(sentDataField[i], "ListBoxItems");
+			controllers.add(sentDataField[i]);
 
 			// HUB DATA field
 			hubDataField[i] = cp5.addDropdownList("hubDataField" + i)
@@ -228,8 +232,10 @@ public class TabData implements Serializable {
 					             .setColorBackground(MainP.darkBackGray)
 					             .setColorActive(MainP.blueAct)
 					             .setPosition(150, 146 - 25 + i * 25)
-					             .setSize(135, 336 - 25 * i).setItemHeight(20)
-					             .setBarHeight(20).setTab("data");
+					             .setSize(135, 336 - 25 * i)
+					             .setItemHeight(20)
+					             .setBarHeight(20)
+					             .setTab("data");
 			for (int j = 0; j < TabData.hubDataList.length; j++) {
 				hubDataField[i].addItem(
 						"" + TabData.hubDataList[j][1], j);
@@ -247,20 +253,17 @@ public class TabData implements Serializable {
 					                .setColorBackground(MainP.darkBackGray)
 					                .setColorActive(MainP.blueAct)
 					                .setPosition(150, 146 - 25 + i * 25)
-					                .setSize(135, 336 - 25 * i).setItemHeight(20)
-					                .setBarHeight(20).setTab("data");
-			/*
-			 * for (int j = 0; j < sPortDataList.length; j++ ) {
-			 * targetDataField[i].addItem("" +
-			 * sPortDataList[j][1], j) ; }
-			 */
+					                .setSize(135, 336 - 25 * i)
+					                .setItemHeight(20)
+					                .setBarHeight(20)
+					                .setTab("data");
 			targetDataField[i].addItem("----------", 0);
 			targetDataField[i].setValue(0);
 			targetDataField[i].getCaptionLabel().getStyle().marginTop = 2;
 			targetDataField[i].toUpperCase(false);
-			// targetDataField[i].hide() ;
 			cp5.getProperties().remove(targetDataField[i], "ListBoxItems");
-
+			controllers.add(targetDataField[i]);
+			
 			// Data sent multiplier
 			dataMultiplierNBox[i] = cp5.addNumberbox("dataMultiplier" + i)
 					                   .setColorActive(MainP.blueAct)
@@ -268,13 +271,14 @@ public class TabData implements Serializable {
 					                   .setSize(40, 20)
 					                   // set the sensitivity of the numberbox
 					                   .setRange(-1000, 1000)
-					                   .setMultiplier((float) 0.5)
+					                   .setMultiplier(0.5f)
 					                   // change the control direction to left/right
 					                   .setDecimalPrecision(0)
 					                   .setDirection(Controller.HORIZONTAL)
 					                   .setValue(1).setCaptionLabel("")
 					                   .setTab("data");
 			cp5.getTooltip().register("dataMultiplier" + i, "- Default: 1 -");
+			controllers.add(dataMultiplierNBox[i]);
 
 			// Data sent divider
 			dataDividerNBox[i] = cp5.addNumberbox("dataDivider" + i)
@@ -282,13 +286,14 @@ public class TabData implements Serializable {
 					                .setPosition(350, 125 - 25 + i * 25)
 					                .setSize(40, 20)
 					                .setRange(1, 1000)
-					                .setMultiplier((float) 0.5)
+					                .setMultiplier(0.5f)
 					                .setDecimalPrecision(0)
 					                .setDirection(Controller.HORIZONTAL)
 					                .setValue(1)
 					                .setCaptionLabel("")
 					                .setTab("data");
 			cp5.getTooltip().register("dataDivider" + i, "- Default: 1 -");
+			controllers.add(dataDividerNBox[i]);
 
 			// Data sent offset
 			dataOffsetNBox[i] = cp5.addNumberbox("dataOffset" + i)
@@ -296,12 +301,13 @@ public class TabData implements Serializable {
 					               .setPosition(400, 125 - 25 + i * 25)
 					               .setSize(40, 20)
 					               .setRange(-999, 999)
-					               .setMultiplier((float) 0.5) 
+					               .setMultiplier(0.5f) 
 					               .setDecimalPrecision(0)
 					               .setDirection(Controller.HORIZONTAL) 
 					               .setValue(0).setCaptionLabel("")
 					               .setTab("data");
 			cp5.getTooltip().register("dataOffset" + i, "- Default: 0 -");
+			controllers.add(dataOffsetNBox[i]);
 		}
 		
 		// dropdownlist overlap
@@ -316,10 +322,6 @@ public class TabData implements Serializable {
 		return tabDataFieldNbr;
 	}
 	
-	public static String[][] getSentDataList() {
-		return sentDataList;
-	}
-
 	public static DropdownList getSentDataField(int i) {
 		return sentDataField[i];
 	}
@@ -344,12 +346,20 @@ public class TabData implements Serializable {
 		return dataOffsetNBox;
 	}
 
+	public static String[][] getHubDataList() {
+		return hubDataList;
+	}
+	
 	public static String[][] getsPortDataList() {
 		return sPortDataList;
 	}
 
-	public static String[][] getHubDataList() {
-		return hubDataList;
+	public static String[][] getSentDataList() {
+		return sentDataList;
+	}
+	
+	public static List<Object> getControllers() {
+		return controllers;
 	}
 
 	public static void populateSentDataFields() {

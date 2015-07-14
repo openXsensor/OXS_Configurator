@@ -149,31 +149,39 @@ public class Validation {
 	
 	public static void validateNumPins() {
 
-		String numPinsValidation[][] = new String[][] {                      // array { pin name, pin value, isActive }
-				{ "Serial output", "" + (int)getSerialPinDdl().getValue(), "2" },
-				{ "Reset button", "" + (int)getResetBtnPinDdl().getValue(), "" + (int) getSaveEpromTgl().getValue() + 1  },
-				{ "PPM input", "" + (int)TabPPM.getPpmPin().getValue(), "" + (int) TabPPM.getPpmTgl().getValue() + (int)getVarioTgl().getValue() + (int)getAirSpeedTgl().getValue() },
-				{ "Analog climb output", "" + (int)TabVario.getClimbPin().getValue(), "" + (int) TabVario.getAnalogClimbTgl().getValue() + (int)getVarioTgl().getValue() },
-				{ "RPM input", "" + 8, "" + (int) getRpmTgl().getValue() + 1 }
+		int ppmInputIsActive = 0;
+		if (TabPPM.getPpmTgl().getValue() == 1.0
+				&& (getVarioTgl().getValue() == 1.0 || getAirSpeedTgl().getValue() == 1.0)) {
+			ppmInputIsActive = 1;
+		}
+
+		int analogClimbOutputIsActive = 0;
+		if (TabVario.getAnalogClimbTgl().getValue() == 1.0 && getVarioTgl().getValue() == 1.0) {
+			analogClimbOutputIsActive = 1;
+		}
+		
+		String numPinsValidation[][] = new String[][] {        // array { pin name, pin value, isActive }
+				{ "Serial output", "" + (int)getSerialPinDdl().getValue(), "1" },
+				{ "Reset button", "" + (int)getResetBtnPinDdl().getValue(), "" + (int) getSaveEpromTgl().getValue() },
+				{ "PPM input", "" + (int)TabPPM.getPpmPinDdl().getValue(), "" + ppmInputIsActive },
+				{ "Analog climb output", "" + (int)TabVario.getClimbPinDdl().getValue(), "" + analogClimbOutputIsActive },
+				{ "RPM input", "" + 8, "" + (int) getRpmTgl().getValue() }
 		} ;
 
 		for ( int i = 0; i < numPinsValidation.length; i++ ) {
 			for ( int j = i+1; j < numPinsValidation.length; j++ ) {
-				if ( Integer.parseInt(numPinsValidation[i][1]) != -1 && Integer.parseInt(numPinsValidation[j][1]) != -1 && Integer.parseInt(numPinsValidation[i][2]) > 1 && Integer.parseInt(numPinsValidation[j][2]) > 1 ) {
+				if ( Integer.parseInt(numPinsValidation[i][1]) != -1 
+						&& Integer.parseInt(numPinsValidation[j][1]) != -1 
+						&& Integer.parseInt(numPinsValidation[i][2]) == 1 
+						&& Integer.parseInt(numPinsValidation[j][2]) == 1 ) {
 					if ( numPinsValidation[i][1].equals(numPinsValidation[j][1]) ) {
-						//println("Attention !!  " + numPinsValidation[i][0] + " is using the same pin n°" + numPinsValidation[i][1] + " as " + numPinsValidation[j][0] + " !") ;
 						numPinsValid = false ;
 						MainP.messageList.append("- " + numPinsValidation[i][0] + " is using the same pin n°" + numPinsValidation[i][1] + " as " + numPinsValidation[j][0] + " !") ;
 					}
 				}
 			}
 		}
-		/*
-			  if ( numPinsValid ) {
-			    println("No problem found with numeric pins ;)") ;
-			    messageList.append("No problem found with numeric pins ;)") ;
-			  }
-		 */
+		
 	}
 
 	public static void validateAnalogPins() {

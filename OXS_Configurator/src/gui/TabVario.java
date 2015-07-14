@@ -20,7 +20,7 @@ public class TabVario {
 	private static Range ppmSensMinMaxRng;
 	private static DropdownList vSpeed1Ddl;
 	private static DropdownList vSpeed2Ddl;
-	private static Numberbox ppmVspeedSwMinNbox;
+	private static Numberbox ppmVspeedSwMinNBox;
 	private static Numberbox ppmVspeedSwMaxNBox;
 	private static Range sensMinMaxRng;
 	private static Numberbox vSpeedMinNBox;
@@ -28,7 +28,7 @@ public class TabVario {
 	private static Slider varioHysteresisSld;
 	
 	private static Toggle analogClimbTgl;	
-	private static DropdownList climbPin;
+	private static DropdownList climbPinDdl;
 	private static Range outClimbRateMinMaxRng;
 	
 	public TabVario(PApplet p, ControlP5 cp5) {
@@ -169,7 +169,7 @@ public class TabVario {
 	    cp5.getTooltip().register("ppmVspeedSw", "- Default: 10:90 -") ;
 	     cp5.getProperties().remove(cp5.getController("ppmVspeedSw")) ;
 	  
-	     ppmVspeedSwMinNbox = cp5.addNumberbox("ppmVspeedSwMin")
+	     ppmVspeedSwMinNBox = cp5.addNumberbox("ppmVspeedSwMin")
 	                             .setPosition(306, 240)
 	                             .setSize(40, 20)
 	                             .setColorActive(MainP.blueAct)
@@ -181,8 +181,8 @@ public class TabVario {
 	                             .setColorCaptionLabel(0)
 	                             .setTab("vario")
 	                             ;
-	     ppmVspeedSwMinNbox.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
-	     ppmVspeedSwMinNbox.getCaptionLabel().toUpperCase(false) ;
+	     ppmVspeedSwMinNBox.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
+	     ppmVspeedSwMinNBox.getCaptionLabel().toUpperCase(false) ;
 	  
 	     ppmVspeedSwMaxNBox = cp5.addNumberbox("ppmVspeedSwMax")
 	                             .setPosition(366, 240)
@@ -299,7 +299,7 @@ public class TabVario {
 	    cp5.getTooltip().register("climbPinL", "- Default: 3 -") ;
 	    cp5.getProperties().remove(cp5.getController("climbPinL")) ;
 	  
-	    climbPin = cp5.addDropdownList("climbPin")
+	    climbPinDdl = cp5.addDropdownList("climbPin")
 	                  .setPosition(165, 393)
 	                  .setSize(30, 75)
 	                  .setColorForeground(MainP.orangeAct)
@@ -309,12 +309,12 @@ public class TabVario {
 	                  .setBarHeight(20)
 	                  .setTab("vario")
 	                  ;
-	    climbPin.getCaptionLabel().getStyle().marginTop = 2 ;
-	    climbPin.addItem(" 3", 3) ;
-	    climbPin.addItem("11", 11) ;
-	    climbPin.setValue(3) ;
-	    climbPin.toUpperCase(false) ;
-	    cp5.getProperties().remove(climbPin, "ListBoxItems") ;
+	    climbPinDdl.getCaptionLabel().getStyle().marginTop = 2 ;
+	    climbPinDdl.addItem(" 3", 3) ;
+	    climbPinDdl.addItem("11", 11) ;
+	    climbPinDdl.setValue(3) ;
+	    climbPinDdl.toUpperCase(false) ;
+	    cp5.getProperties().remove(climbPinDdl, "ListBoxItems") ;
 	  
 	    // Output climb rate range
 	    cp5.addTextlabel("outClimbRateRngL")
@@ -337,13 +337,17 @@ public class TabVario {
 	    cp5.getTooltip().register("outClimbRateMinMax", "Analog climb rate range - Default: -3:3 -") ;
 	    
 	    // dropdownlist overlap
-	    climbPin.bringToFront() ;
+	    climbPinDdl.bringToFront() ;
 	    vSpeed1Ddl.bringToFront() ;
 	    vSpeed2Ddl.bringToFront() ;
 	  }
 
 	public static Range getPpmRngSensMinMaxRng() {
 		return ppmRngSensMinMaxRng;
+	}
+
+	public static Range getPpmSensMinMaxRng() {
+		return ppmSensMinMaxRng;
 	}
 
 	public static DropdownList getvSpeed1Ddl() {
@@ -355,7 +359,7 @@ public class TabVario {
 	}
 	
 	public static Numberbox getPpmVspeedSwMinNBox() {
-		return ppmVspeedSwMinNbox;
+		return ppmVspeedSwMinNBox;
 	}
 
 	public static Numberbox getPpmVspeedSwMaxNBox() {
@@ -378,8 +382,8 @@ public class TabVario {
 		return varioHysteresisSld;
 	}
 
-	public static DropdownList getClimbPin() {
-		return climbPin;
+	public static DropdownList getClimbPinDdl() {
+		return climbPinDdl;
 	}
 
 	public static Range getOutClimbRateMinMaxRng() {
@@ -408,94 +412,94 @@ public class TabVario {
 		mainP.line(10, 363, 440, 363) ;
 		mainP.noStroke() ;
 	
-		if ( cp5.getController("ppm").getValue() == 0 ) {
+		if ( TabPPM.getPpmTgl().getValue() == 0 ) {
 			cp5.getController("ppmRngSensL").setColorValueLabel(MainP.grayedColor) ;
-			cp5.getController("ppmRngSensMinMax").lock() ;
-			cp5.getController("ppmRngSensMinMax").setColorForeground(MainP.grayedColor) ;
-			cp5.getController("ppmRngSensMinMax").setColorBackground(MainP.grayedColor) ;
-			cp5.getController("ppmRngSensMinMax").setColorValueLabel(MainP.grayedColor) ;
-			cp5.getController("ppmRngSensMinMax").setColorCaptionLabel(MainP.grayedColor) ;
+			ppmRngSensMinMaxRng.lock()
+			                   .setColorForeground(MainP.grayedColor)
+			                   .setColorBackground(MainP.grayedColor)
+			                   .setColorValueLabel(MainP.grayedColor)
+			                   .setColorCaptionLabel(MainP.grayedColor);
 	
 			cp5.getController("ppmSensRngL").setColorValueLabel(MainP.grayedColor) ;
-			cp5.getController("ppmSensMinMax").lock() ;
-			cp5.getController("ppmSensMinMax").setColorForeground(MainP.grayedColor) ;
-			cp5.getController("ppmSensMinMax").setColorBackground(MainP.grayedColor) ;
-			cp5.getController("ppmSensMinMax").setColorValueLabel(MainP.grayedColor) ;
-			cp5.getController("ppmSensMinMax").setColorCaptionLabel(MainP.grayedColor) ;
+			ppmSensMinMaxRng.lock()
+			                .setColorForeground(MainP.grayedColor)
+			                .setColorBackground(MainP.grayedColor)
+			                .setColorValueLabel(MainP.grayedColor)
+			                .setColorCaptionLabel(MainP.grayedColor);
 		} else {
 			cp5.getController("ppmRngSensL").setColorValueLabel(mainP.color(0)) ;
-			cp5.getController("ppmRngSensMinMax").unlock() ;
-			cp5.getController("ppmRngSensMinMax").setColorForeground(MainP.blueAct) ;
-			cp5.getController("ppmRngSensMinMax").setColorBackground(MainP.darkBackGray) ;
-			cp5.getController("ppmRngSensMinMax").setColorValueLabel(MainP.white) ;
-			cp5.getController("ppmRngSensMinMax").setColorCaptionLabel(mainP.color(0)) ;
+			ppmRngSensMinMaxRng.unlock()
+			                   .setColorForeground(MainP.blueAct)
+			                   .setColorBackground(MainP.darkBackGray)
+			                   .setColorValueLabel(MainP.white)
+			                   .setColorCaptionLabel(mainP.color(0));
 	
 			cp5.getController("ppmSensRngL").setColorValueLabel(mainP.color(0)) ;
-			cp5.getController("ppmSensMinMax").unlock() ;
-			cp5.getController("ppmSensMinMax").setColorForeground(MainP.blueAct) ;
-			cp5.getController("ppmSensMinMax").setColorBackground(MainP.darkBackGray) ;
-			cp5.getController("ppmSensMinMax").setColorValueLabel(MainP.white) ;
-			cp5.getController("ppmSensMinMax").setColorCaptionLabel(mainP.color(0)) ;
+			ppmSensMinMaxRng.unlock()
+			                .setColorForeground(MainP.blueAct)
+			                .setColorBackground(MainP.darkBackGray)
+			                .setColorValueLabel(MainP.white)
+			                .setColorCaptionLabel(mainP.color(0));
 		}
 	
-		if ( cp5.getController("ppm").getValue() == 0 || ( mainP.cp5.getController("vario2").getValue() == 0 && mainP.cp5.getController("airSpeed").getValue() == 0 ) ) {
+		if ( TabPPM.getPpmTgl().getValue() == 0 || ( TabGeneralSettings.getVario2Tgl().getValue() == 0 && TabGeneralSettings.getAirSpeedTgl().getValue() == 0 ) ) {
 			cp5.getController("vStSw2L").setColorValueLabel(MainP.grayedColor) ;
 			cp5.getController("vStSwitching").setColorValueLabel(MainP.grayedColor) ;
-			cp5.getGroup("vSpeed2").hide() ;
+			vSpeed2Ddl.hide() ;
 			mainP.fill(MainP.grayedColor) ;
 			mainP.rect(306, 213, 100, 20) ;
 	
 			cp5.getController("ppmVspeedSw").setColorValueLabel(MainP.grayedColor) ;
-			cp5.getController("ppmVspeedSwMin").lock() ;
-			cp5.getController("ppmVspeedSwMin").setColorBackground(MainP.grayedColor) ;
-			cp5.getController("ppmVspeedSwMin").setColorForeground(MainP.grayedColor) ;
-			cp5.getController("ppmVspeedSwMin").setColorValueLabel(MainP.grayedColor) ;
-			cp5.getController("ppmVspeedSwMin").setColorCaptionLabel(MainP.grayedColor) ;
-			cp5.getController("ppmVspeedSwMax").lock() ;
-			cp5.getController("ppmVspeedSwMax").setColorBackground(MainP.grayedColor) ;
-			cp5.getController("ppmVspeedSwMax").setColorForeground(MainP.grayedColor) ;
-			cp5.getController("ppmVspeedSwMax").setColorValueLabel(MainP.grayedColor) ;
-			cp5.getController("ppmVspeedSwMax").setColorCaptionLabel(MainP.grayedColor) ;
+			ppmVspeedSwMinNBox.lock()
+			                  .setColorBackground(MainP.grayedColor)
+			                  .setColorForeground(MainP.grayedColor)
+			                  .setColorValueLabel(MainP.grayedColor)
+			                  .setColorCaptionLabel(MainP.grayedColor);
+			ppmVspeedSwMaxNBox.lock()
+			                  .setColorBackground(MainP.grayedColor)
+			                  .setColorForeground(MainP.grayedColor)
+			                  .setColorValueLabel(MainP.grayedColor)
+			                  .setColorCaptionLabel(MainP.grayedColor);
 		} else {
 			cp5.getController("vStSw2L").setColorValueLabel(mainP.color(0)) ;
 			cp5.getController("vStSwitching").setColorValueLabel(mainP.color(0)) ;
-			cp5.getGroup("vSpeed2").show() ;
+			vSpeed2Ddl.show() ;
 	
 			cp5.getController("ppmVspeedSw").setColorValueLabel(mainP.color(0)) ;
-			cp5.getController("ppmVspeedSwMin").unlock() ;
-			cp5.getController("ppmVspeedSwMin").setColorBackground(MainP.darkBackGray) ;
-			cp5.getController("ppmVspeedSwMin").setColorValueLabel(MainP.white) ;
-			cp5.getController("ppmVspeedSwMin").setColorCaptionLabel(mainP.color(0)) ;
-			cp5.getController("ppmVspeedSwMax").unlock() ;
-			cp5.getController("ppmVspeedSwMax").setColorBackground(MainP.darkBackGray) ;
-			cp5.getController("ppmVspeedSwMax").setColorValueLabel(MainP.white) ;
-			cp5.getController("ppmVspeedSwMax").setColorCaptionLabel(mainP.color(0)) ;
+			ppmVspeedSwMinNBox.unlock()
+			                  .setColorBackground(MainP.darkBackGray) 
+			                  .setColorValueLabel(MainP.white)
+			                  .setColorCaptionLabel(mainP.color(0));
+			ppmVspeedSwMaxNBox.unlock()
+			                  .setColorBackground(MainP.darkBackGray)
+			                  .setColorValueLabel(MainP.white)
+			                  .setColorCaptionLabel(mainP.color(0));
 		}
 	
-		if ( cp5.getController("analogClimb").getValue() == 0 ) {                    // Analog climb rate
+		if ( analogClimbTgl.getValue() == 0 ) {                    // Analog climb rate
 			cp5.getController("climbPinL").setColorValueLabel(MainP.grayedColor) ;
-			cp5.getGroup("climbPin").hide() ;
+			climbPinDdl.hide() ;
 			mainP.fill(MainP.grayedColor) ;
 			mainP.rect(165, 372, 30, 20) ;
 	
 			cp5.getController("outClimbRateRngL").setColorValueLabel(MainP.grayedColor) ;
-			cp5.getController("outClimbRateMinMax").lock() ;
-			cp5.getController("outClimbRateMinMax").setColorForeground(MainP.grayedColor) ;
-			cp5.getController("outClimbRateMinMax").setColorBackground(MainP.grayedColor) ;
-			cp5.getController("outClimbRateMinMax").setColorValueLabel(MainP.grayedColor) ;
-			cp5.getController("outClimbRateMinMax").setColorCaptionLabel(MainP.grayedColor) ;
+			outClimbRateMinMaxRng.lock()
+			                     .setColorForeground(MainP.grayedColor)
+			                     .setColorBackground(MainP.grayedColor)
+			                     .setColorValueLabel(MainP.grayedColor)
+			                     .setColorCaptionLabel(MainP.grayedColor);
 		} else {
 			mainP.fill(MainP.lightBlue) ;                                    // toggle border filled
 			mainP.rect(10, 372, 124, 20) ;
 			cp5.getController("climbPinL").setColorValueLabel(mainP.color(0)) ;
-			cp5.getGroup("climbPin").show() ;
+			climbPinDdl.show() ;
 	
 			cp5.getController("outClimbRateRngL").setColorValueLabel(mainP.color(0)) ;
-			cp5.getController("outClimbRateMinMax").unlock() ;
-			cp5.getController("outClimbRateMinMax").setColorForeground(MainP.blueAct) ;
-			cp5.getController("outClimbRateMinMax").setColorBackground(MainP.darkBackGray) ;
-			cp5.getController("outClimbRateMinMax").setColorValueLabel(MainP.white) ;
-			cp5.getController("outClimbRateMinMax").setColorCaptionLabel(mainP.color(0)) ;
+			outClimbRateMinMaxRng.unlock()
+			                     .setColorForeground(MainP.blueAct)
+			                     .setColorBackground(MainP.darkBackGray)
+			                     .setColorValueLabel(MainP.white)
+			                     .setColorCaptionLabel(mainP.color(0));
 		}
 	
 		mainP.stroke(MainP.darkBackGray) ;                               // toggle border
@@ -503,10 +507,10 @@ public class TabVario {
 		mainP.rect(10, 372, 124, 20) ;
 		mainP.noStroke() ;
 	
-		if ( cp5.getGroup("climbPin").isOpen() ) {    // climb pin dropdown free
-			cp5.getController("saveButton").hide() ;
+		if ( climbPinDdl.isOpen() ) {    // climb pin dropdown free
+			FileManagement.getSavePresetBtn().hide() ;
 		} else {
-			cp5.getController("saveButton").show() ;
+			FileManagement.getSavePresetBtn().show() ;
 		}
 	}
 	  
