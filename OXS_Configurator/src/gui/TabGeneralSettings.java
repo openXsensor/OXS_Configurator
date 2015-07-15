@@ -54,7 +54,7 @@ public class TabGeneralSettings {
 		    general = cp5.getTab("default")
 		                 .setHeight(20)
 		                 .setColorLabel(MainP.white)
-		                 .setColorForeground(MainP.tabGray)
+		                 //.setColorForeground(MainP.tabGray)
 		                 .setColorBackground(MainP.darkBackGray)
 		                 .setColorActive(MainP.orangeAct)
 		                 .setLabel("GENERAL Settings")
@@ -96,8 +96,9 @@ public class TabGeneralSettings {
 		                      .setPosition(160, 161)
 		                      .setSize(25, 300)
 		                      .setColorForeground(MainP.blueAct)
-		                      .setBackgroundColor(MainP.backDdlGray)
-		                      .setColorBackground(MainP.orangeAct)
+		                      //.setColorBackground(MainP.backDdlGray)
+		                      //.setBackgroundColor(MainP.backDdlGray)
+		                      .setColorActive(MainP.orangeAct)
 		                      .setItemHeight(20)
 		                      .setBarHeight(20)
 		                      ;
@@ -123,19 +124,13 @@ public class TabGeneralSettings {
 		    protocolDdl = cp5.addDropdownList("protocolDdl")
 		                     .setPosition(100, 191)
 		                     .setSize(105, 300)
-		                     .setColorForeground(MainP.blueAct)
-		                     .setBackgroundColor(MainP.backDdlGray)
-		                     .setItemHeight(20)
-		                     .setBarHeight(20)
 		                     ;
 		    protocolDdl.getCaptionLabel().set("Choose") ;
-		    protocolDdl.getCaptionLabel().getStyle().marginTop = 2 ;
 		    protocolDdl.addItem("FrSky", 1) ;
 		    protocolDdl.addItem("Multiplex", 2) ;
-		    protocolDdl.toUpperCase(false) ;
-		    cp5.getProperties().remove(protocolDdl, "ListBoxItems") ;
-		    controllers.add(protocolDdl);
+		    customizeDdl(protocolDdl);
 
+		    
 		    // Sensor ID choice
 		    sensorIDTextlabel = cp5.addTextlabel("sensorIDTextlabel")
 		                           .setText("Sensor ID                    ")
@@ -149,17 +144,12 @@ public class TabGeneralSettings {
 		    sensorIDDdl = cp5.addDropdownList("sensorIDDdl")
 		    		         .setPosition(355, 191)
 		    		         .setSize(50, 300)
-		    		         .setColorForeground(MainP.blueAct)
-		    		         .setBackgroundColor(MainP.backDdlGray)
-		    		         .setItemHeight(20)
-		    		         .setBarHeight(20)
 		    		         ;
-		    sensorIDDdl.getCaptionLabel().align(ControlP5.LEFT, ControlP5.CENTER).setPaddingX(8) ;
 		    sensorIDDdl.addItems(sensorIDs) ;
 		    sensorIDDdl.setValue(0) ;
-		    sensorIDDdl.toUpperCase(false) ;
-		    cp5.getProperties().remove(sensorIDDdl, "ListBoxItems") ;
-		    controllers.add(sensorIDDdl);
+		    customizeDdl(sensorIDDdl);
+		    sensorIDDdl.getCaptionLabel().getStyle().marginTop = 0;
+		    sensorIDDdl.getCaptionLabel().align(ControlP5.LEFT, ControlP5.CENTER).setPaddingX(8) ;
 		    
 		    // Voltage reference  
 		    cp5.addTextlabel("voltRef")
@@ -174,19 +164,12 @@ public class TabGeneralSettings {
 		    voltRefChoiceDdl = cp5.addDropdownList("voltRefChoiceDdl")
 						          .setPosition(160, 232)
 						          .setSize(95, 100)
-						          .setColorForeground(MainP.blueAct)
-						          .setBackgroundColor(MainP.backDdlGray)
-						          .setItemHeight(20)
-						          .setBarHeight(20)
 						          ;
 		    voltRefChoiceDdl.getCaptionLabel().set("Choose") ;
-		    voltRefChoiceDdl.getCaptionLabel().getStyle().marginTop = 2 ;
 		    voltRefChoiceDdl.addItem("  Arduino VCC", 1) ;
 		    voltRefChoiceDdl.addItem("Internal (1.1V)", 2) ;
 		    voltRefChoiceDdl.setValue(1) ;
-		    voltRefChoiceDdl.toUpperCase(false) ;
-		    cp5.getProperties().remove(voltRefChoiceDdl, "ListBoxItems") ;
-		    controllers.add(voltRefChoiceDdl);
+		    customizeDdl(voltRefChoiceDdl);
 		    
 		    arduinoVccNBox = cp5.addNumberbox("arduinoVccNBox")
 					            .setPosition(265, 211)
@@ -475,15 +458,26 @@ public class TabGeneralSettings {
 		mainP.noStroke() ;
 	}
 
-	public static void customizeToggleSensor(Controller<?> tglS) {
-		tglS.setColorForeground(MainP.blueAct) ;
-		tglS.setColorBackground(MainP.darkBackGray) ;
-		tglS.setColorCaptionLabel(0) ;
-		tglS.setSize(15, 15) ;
-		tglS.setTab("default") ;
+	public static void customizeToggleSensor(Toggle tglS) {
+		tglS.setColorForeground(MainP.blueAct)
+		    .setColorBackground(MainP.darkBackGray)
+		    .setColorCaptionLabel(0)
+		    .setSize(15, 15)
+		    .setTab("default");
 		// reposition the Labels
-		tglS.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER) ;		
-		tglS.getCaptionLabel().toUpperCase(false) ;
+		tglS.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER)		
+		    .toUpperCase(false) ;
 		controllers.add(tglS);
+	}
+	
+	public static void customizeDdl(DropdownList ddlS) {
+		ddlS.setColorForeground(MainP.blueAct)
+		    .setBackgroundColor(MainP.backDdlGray)
+		    .setItemHeight(20)
+			.setBarHeight(20)
+			.setTab("default");
+		ddlS.getCaptionLabel().getStyle().marginTop = 2;
+		ddlS.toUpperCase(false);
+		controllers.add(ddlS);
 	}
 }
