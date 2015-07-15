@@ -110,19 +110,21 @@ public class MainP extends PApplet {
 	public static StringList messageList = new StringList(); // TODO later
 
 	// Variables to set the controllers data type
-	int vSpeedMin;
-	int vSpeedMax;
-	int sensMinMax;
+	int ppmRngSensMinMaxRng;
+	int ppmSensMinMaxRng;
+	int ppmVspeedSwMinNBox;
+	int ppmVspeedSwMaxNBox;
+	int sensMinMaxRng;
+	int vSpeedMinNBox;
+	int vSpeedMaxNBox;
+	int varioHysteresisSld;
+	int outClimbRateMinMaxRng;
+	
 	int vSpeedMinMax;
 	int ppmRngMinMax;
 	int ppmRngMin;
 	int ppmRngMax;
-	int varioHysteresis;
-	int ppmRngSensMinMax;
-	int ppmSensMinMax;
-	int ppmVspeedSwMin;
-	int ppmVspeedSwMax;
-	int outClimbRateMinMax;
+	
 	int aSpeedReset;
 	int ppmRngCompMinMax;
 	int ppmCompMinMax;

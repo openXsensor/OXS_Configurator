@@ -2,6 +2,10 @@ package gui;
 
 import oxsc.MainP;
 import processing.core.PApplet;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import controlP5.ControlP5;
 import controlP5.Controller;
 import controlP5.DropdownList;
@@ -20,6 +24,8 @@ public class TabPPM {
 	private static DropdownList ppmPinDdl;
 	private static Numberbox ppmRngMinNBox;
 	private static Numberbox ppmRngMaxNBox;
+	
+	private static List<Object> controllers = new ArrayList<>(); // TODO first - TabPPM preset
 
 	public TabPPM(PApplet p, ControlP5 cp5) {
 		

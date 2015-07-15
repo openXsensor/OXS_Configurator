@@ -2,6 +2,10 @@ package gui;
 
 import oxsc.MainP;
 import processing.core.PApplet;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import controlP5.ControlP5;
 import controlP5.Controller;
 import controlP5.DropdownList;
@@ -26,10 +30,11 @@ public class TabVario {
 	private static Numberbox vSpeedMinNBox;
 	private static Numberbox vSpeedMaxNBox;
 	private static Slider varioHysteresisSld;
-	
-	private static Toggle analogClimbTgl;	
+	private static Toggle analogClimbTgl;
 	private static DropdownList climbPinDdl;
 	private static Range outClimbRateMinMaxRng;
+	
+	private static List<Object> controllers = new ArrayList<>();
 	
 	public TabVario(PApplet p, ControlP5 cp5) {
 
@@ -56,9 +61,8 @@ public class TabVario {
 	       .setColorValueLabel(0)
 	       .setTab("vario")
 	       ;
-	    cp5.getProperties().remove(cp5.getController("ppmRngSensL")) ;
 	  
-	    ppmRngSensMinMaxRng = cp5.addRange("ppmRngSensMinMax")
+	    ppmRngSensMinMaxRng = cp5.addRange("ppmRngSensMinMaxRng")
 	                             .setPosition(186, 151)
 	                             .setSize(220, 20)
 	                             .setCaptionLabel("Max.")
@@ -67,7 +71,8 @@ public class TabVario {
 	                             .setRangeValues(10, 40)
 	                             ;
 	    MainP.customizeRange(ppmRngSensMinMaxRng) ;
-	    cp5.getTooltip().register("ppmRngSensMinMax", "- Default: 10:40 -") ;
+	    cp5.getTooltip().register(ppmRngSensMinMaxRng, "- Default: 10:40 -") ;
+	    controllers.add(ppmRngSensMinMaxRng);
 	  
 	    // PPM sensitivity range
 	    cp5.addTextlabel("ppmSensRngL")
@@ -76,9 +81,8 @@ public class TabVario {
 	       .setColorValueLabel(0)
 	       .setTab("vario")
 	       ;
-	    cp5.getProperties().remove(cp5.getController("ppmSensRngL")) ;
 	  
-	    ppmSensMinMaxRng = cp5.addRange("ppmSensMinMax")
+	    ppmSensMinMaxRng = cp5.addRange("ppmSensMinMaxRng")
 	                          .setPosition(186, 178)
 	                          .setSize(220, 20)
 	                          .setCaptionLabel("Max.")
@@ -87,7 +91,8 @@ public class TabVario {
 	                          .setRangeValues(20, 100.5f)
 	                          ;
 	    MainP.customizeRange(ppmSensMinMaxRng) ;
-	    cp5.getTooltip().register("ppmSensMinMax", "RC control sensitivity range - Default: 20:100 -") ;
+	    cp5.getTooltip().register(ppmSensMinMaxRng, "RC control sensitivity range - Default: 20:100 -") ;
+	    controllers.add(ppmSensMinMaxRng);
 	  
 	    // V.Speed type switching
 	    cp5.addTextlabel("vSpeedTypeSw")
@@ -97,7 +102,6 @@ public class TabVario {
 	       .setTab("vario")
 	       ;
 	    cp5.getTooltip().register("vSpeedTypeSw", "Choose the 2 different V.Speed you want to switch") ;
-	    cp5.getProperties().remove(cp5.getController("vSpeedTypeSw")) ;
 	  
 	    cp5.addTextlabel("vStSwitching")
 	       .setText("switching")
@@ -105,7 +109,6 @@ public class TabVario {
 	       .setColorValueLabel(0)
 	       .setTab("vario")
 	       ;
-	    cp5.getProperties().remove(cp5.getController("vStSwitching")) ;
 	  
 	    cp5.addTextlabel("vStSw1L")
 	       .setText("1")
@@ -113,9 +116,8 @@ public class TabVario {
 	       .setColorValueLabel(0)
 	       .setTab("vario")
 	       ;
-	    cp5.getProperties().remove(cp5.getController("vStSw1L")) ;
 	  
-	    vSpeed1Ddl = cp5.addDropdownList("vSpeed1")
+	    vSpeed1Ddl = cp5.addDropdownList("vSpeed1Ddl")
 	                    .setPosition(186, 234)
 	                    .setSize(100, 75)
 	                    .setColorForeground(MainP.orangeAct)
@@ -131,7 +133,7 @@ public class TabVario {
 	    //cp5.get(DropdownList.class, "vSpeed1").addItem(" V1 + A.Speed", 2) ;
 	    //cp5.get(DropdownList.class, "vSpeed1").setValue(0) ;
 	    vSpeed1Ddl.toUpperCase(false) ;
-	    cp5.getProperties().remove(vSpeed1Ddl, "ListBoxItems") ;
+	    controllers.add(vSpeed1Ddl);
 	  
 	    cp5.addTextlabel("vStSw2L")
 	       .setText("2")
@@ -139,9 +141,8 @@ public class TabVario {
 	       .setColorValueLabel(0)
 	       .setTab("vario")
 	       ;
-	    cp5.getProperties().remove(cp5.getController("vStSw2L")) ;
 	  
-	    vSpeed2Ddl = cp5.addDropdownList("vSpeed2")
+	    vSpeed2Ddl = cp5.addDropdownList("vSpeed2Ddl")
 	                    .setPosition(306, 234)
 	                    .setSize(100, 75)
 	                    .setColorForeground(MainP.orangeAct)
@@ -157,7 +158,7 @@ public class TabVario {
 	    //cp5.get(DropdownList.class, "vSpeed2").addItem(" V1 + A.Speed", 2) ;
 	    //cp5.get(DropdownList.class, "vSpeed2").setValue(1) ;
 	    vSpeed2Ddl.toUpperCase(false) ;
-	    cp5.getProperties().remove(vSpeed2Ddl, "ListBoxItems") ;
+	    controllers.add(vSpeed2Ddl);
 	  
 	    // PPM Vertical speed switching values
 	    cp5.addTextlabel("ppmVspeedSw")
@@ -167,9 +168,8 @@ public class TabVario {
 	       .setTab("vario")
 	       ;
 	    cp5.getTooltip().register("ppmVspeedSw", "- Default: 10:90 -") ;
-	     cp5.getProperties().remove(cp5.getController("ppmVspeedSw")) ;
 	  
-	     ppmVspeedSwMinNBox = cp5.addNumberbox("ppmVspeedSwMin")
+	     ppmVspeedSwMinNBox = cp5.addNumberbox("ppmVspeedSwMinNBox")
 	                             .setPosition(306, 240)
 	                             .setSize(40, 20)
 	                             .setColorActive(MainP.blueAct)
@@ -183,8 +183,9 @@ public class TabVario {
 	                             ;
 	     ppmVspeedSwMinNBox.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
 	     ppmVspeedSwMinNBox.getCaptionLabel().toUpperCase(false) ;
+	     controllers.add(ppmVspeedSwMinNBox);
 	  
-	     ppmVspeedSwMaxNBox = cp5.addNumberbox("ppmVspeedSwMax")
+	     ppmVspeedSwMaxNBox = cp5.addNumberbox("ppmVspeedSwMaxNBox")
 	                             .setPosition(366, 240)
 	                             .setSize(40, 20)
 	                             .setColorActive(MainP.blueAct)
@@ -198,6 +199,7 @@ public class TabVario {
 	                             ;
 	     ppmVspeedSwMaxNBox.getCaptionLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
 	     ppmVspeedSwMaxNBox.getCaptionLabel().toUpperCase(false) ;
+	     controllers.add(ppmVspeedSwMaxNBox);
 	  
 	    // Vario sensitivity range
 	    cp5.addTextlabel("sensitivityRange")
@@ -207,9 +209,8 @@ public class TabVario {
 	       .setTab("vario")
 	       ;
 	    cp5.getTooltip().register("sensitivityRange", "Sensitivity based on vertical speed - Default: 50:50 -") ;
-	    cp5.getProperties().remove(cp5.getController("sensitivityRange")) ;
 	  
-	    sensMinMaxRng = cp5.addRange("sensMinMax")
+	    sensMinMaxRng = cp5.addRange("sensMinMaxRng")
 	                       .setPosition(186, 277)
 	                       .setCaptionLabel("Max.")
 	                       .setSize(220, 20)
@@ -218,7 +219,8 @@ public class TabVario {
 	                       .setRangeValues(50.9f, 50.9f)
 	                       ;
 	    MainP.customizeRange(sensMinMaxRng) ;
-	    cp5.getTooltip().register("sensMinMax", "Sensitivity based on vertical speed - Default: 50:50 -") ;
+	    cp5.getTooltip().register(sensMinMaxRng, "Sensitivity based on vertical speed - Default: 50:50 -") ;
+	    controllers.add(sensMinMaxRng);
 	  
 	    // Vario Vertical speed switching sensitivity range
 	    cp5.addTextlabel("vSpeedSensitivityRng")
@@ -228,9 +230,8 @@ public class TabVario {
 	       .setTab("vario")
 	       ;
 	    cp5.getTooltip().register("vSpeedSensitivityRng", "Vertical speed threshold sensitivity - Default: 20:100 -") ;
-	     cp5.getProperties().remove(cp5.getController("vSpeedSensitivityRng")) ;
 	  
-	     vSpeedMinNBox = cp5.addNumberbox("vSpeedMin")
+	     vSpeedMinNBox = cp5.addNumberbox("vSpeedMinNBox")
 	                        .setPosition(306, 304)
 	                        .setSize(40, 20)
 	                        .setColorActive(MainP.blueAct)
@@ -244,8 +245,9 @@ public class TabVario {
 	                        ;
 	     vSpeedMinNBox.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
 	     vSpeedMinNBox.getCaptionLabel().toUpperCase(false) ;
+	     controllers.add(vSpeedMinNBox);
 	  
-	     vSpeedMaxNBox = cp5.addNumberbox("vSpeedMax")
+	     vSpeedMaxNBox = cp5.addNumberbox("vSpeedMaxNBox")
 	                        .setPosition(366, 304)
 	                        .setSize(40, 20)
 	                        .setColorActive(MainP.blueAct)
@@ -259,12 +261,13 @@ public class TabVario {
 	                        ;
 	     vSpeedMaxNBox.getCaptionLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
 	     vSpeedMaxNBox.getCaptionLabel().toUpperCase(false) ;
+	     controllers.add(vSpeedMaxNBox);
 	  
 		vSpeedMinNBox.setBroadcast(true);
 		vSpeedMaxNBox.setBroadcast(true);
 	  
 	    // Vario hysteresis
-		varioHysteresisSld = cp5.addSlider("varioHysteresis")
+		varioHysteresisSld = cp5.addSlider("varioHysteresisSld")
 	                            .setPosition(186, 340)
 	                            .setSize(220, 15)
 	                            .setCaptionLabel("Hysteresis (cm/s)")
@@ -279,16 +282,18 @@ public class TabVario {
 		varioHysteresisSld.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(78) ;
 		varioHysteresisSld.getValueLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(10) ;
 		varioHysteresisSld.getCaptionLabel().toUpperCase(false) ;
-	    cp5.getTooltip().register("varioHysteresis", "Minimum measurements difference - Default: 5 -") ;
+	    cp5.getTooltip().register(varioHysteresisSld, "Minimum measurements difference - Default: 5 -") ;
+	    controllers.add(varioHysteresisSld);
 	  
 	  
 	    // Analog climb rate  pin and settings
-	    analogClimbTgl = cp5.addToggle("analogClimb")
+	    analogClimbTgl = cp5.addToggle("analogClimbTgl")
 	                        .setCaptionLabel("Analog climb rate")
 	                        .setPosition(117, 375)
 	                        .setTab("vario")
 	                        ;
 	    MainP.customizeToggle(analogClimbTgl) ;
+	    controllers.add(analogClimbTgl);
 	  
 	    cp5.addTextlabel("climbPinL")
 	       .setText("Pin            ")
@@ -297,9 +302,8 @@ public class TabVario {
 	       .setTab("vario")
 	       ;
 	    cp5.getTooltip().register("climbPinL", "- Default: 3 -") ;
-	    cp5.getProperties().remove(cp5.getController("climbPinL")) ;
 	  
-	    climbPinDdl = cp5.addDropdownList("climbPin")
+	    climbPinDdl = cp5.addDropdownList("climbPinDdl")
 	                  .setPosition(165, 393)
 	                  .setSize(30, 75)
 	                  .setColorForeground(MainP.orangeAct)
@@ -314,7 +318,7 @@ public class TabVario {
 	    climbPinDdl.addItem("11", 11) ;
 	    climbPinDdl.setValue(3) ;
 	    climbPinDdl.toUpperCase(false) ;
-	    cp5.getProperties().remove(climbPinDdl, "ListBoxItems") ;
+	    controllers.add(climbPinDdl);
 	  
 	    // Output climb rate range
 	    cp5.addTextlabel("outClimbRateRngL")
@@ -323,9 +327,8 @@ public class TabVario {
 	       .setColorValueLabel(0)
 	       .setTab("vario")
 	       ;
-	    cp5.getProperties().remove(cp5.getController("outClimbRateRngL")) ;
 	  
-	    outClimbRateMinMaxRng = cp5.addRange("outClimbRateMinMax")
+	    outClimbRateMinMaxRng = cp5.addRange("outClimbRateMinMaxRng")
 	                               .setPosition(306, 372)
 	                               .setSize(100, 20)
 	                               .setCaptionLabel("Max.")
@@ -334,7 +337,8 @@ public class TabVario {
 	                               .setRangeValues(-3, 3.9f)
 	                               ;
 	    MainP.customizeRange(outClimbRateMinMaxRng) ;
-	    cp5.getTooltip().register("outClimbRateMinMax", "Analog climb rate range - Default: -3:3 -") ;
+	    cp5.getTooltip().register(outClimbRateMinMaxRng, "Analog climb rate range - Default: -3:3 -") ;
+	    controllers.add(outClimbRateMinMaxRng);
 	    
 	    // dropdownlist overlap
 	    climbPinDdl.bringToFront() ;
@@ -392,6 +396,10 @@ public class TabVario {
 
 	public static Toggle getAnalogClimbTgl() {
 		return analogClimbTgl;
+	}
+
+	public static List<Object> getControllers() {
+		return controllers;
 	}
 
 	public static void draw(MainP mainP) {

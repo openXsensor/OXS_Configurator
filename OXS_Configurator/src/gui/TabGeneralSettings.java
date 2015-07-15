@@ -54,7 +54,7 @@ public class TabGeneralSettings {
 		    general = cp5.getTab("default")
 		                 .setHeight(20)
 		                 .setColorLabel(MainP.white)
-		                 //.setColorForeground(MainP.tabGray)
+		                 .setColorForeground(MainP.tabGray)
 		                 .setColorBackground(MainP.darkBackGray)
 		                 .setColorActive(MainP.orangeAct)
 		                 .setLabel("GENERAL Settings")
@@ -89,26 +89,17 @@ public class TabGeneralSettings {
 		       .setColorValueLabel(0)
 		       ;
 		    cp5.getTooltip().register("serialPinlabel", "Choose the serial output Pin number - Default: 4 -") ;
-		    cp5.getProperties().remove(cp5.getController("serialPinlabel")) ;
 
 		 // Serial output pin
 		    serialPinDdl = cp5.addDropdownList("serialPinDdl")
 		                      .setPosition(160, 161)
 		                      .setSize(25, 300)
-		                      .setColorForeground(MainP.blueAct)
-		                      //.setColorBackground(MainP.backDdlGray)
-		                      //.setBackgroundColor(MainP.backDdlGray)
-		                      .setColorActive(MainP.orangeAct)
-		                      .setItemHeight(20)
-		                      .setBarHeight(20)
 		                      ;
 		    serialPinDdl.getCaptionLabel().set(" ") ;
-		    serialPinDdl.getCaptionLabel().getStyle().marginTop = 2 ;
 		    serialPinDdl.addItem("2", 2) ;
 		    serialPinDdl.addItem("4", 4) ;
 		    serialPinDdl.setValue(4) ;
-		    cp5.getProperties().remove(serialPinDdl) ;
-		    controllers.add(serialPinDdl);
+		    customizeDdl(serialPinDdl);
 
 		 // Protocol choice
 		    cp5.addTextlabel("protocol")
@@ -119,7 +110,6 @@ public class TabGeneralSettings {
 		       ;
 		    //protocol.captionLabel().toUpperCase(false) ;
 		    cp5.getTooltip().register("protocol", "Choose protocol") ;
-		    cp5.getProperties().remove(cp5.getController("protocol")) ;
 
 		    protocolDdl = cp5.addDropdownList("protocolDdl")
 		                     .setPosition(100, 191)
@@ -139,7 +129,6 @@ public class TabGeneralSettings {
 		                           .setTab("default")
 		                           ;
 		    cp5.getTooltip().register(sensorIDTextlabel, "Choose S.Port sensor ID - Default: 0x1B -") ;
-		    cp5.getProperties().remove(sensorIDTextlabel) ;
 		    
 		    sensorIDDdl = cp5.addDropdownList("sensorIDDdl")
 		    		         .setPosition(355, 191)
@@ -159,7 +148,6 @@ public class TabGeneralSettings {
 		       .setTab("default")
 		       ;
 		    cp5.getTooltip().register("voltRef", "Choose voltage reference") ;
-		    cp5.getProperties().remove(cp5.getController("voltRef")) ;
 		  
 		    voltRefChoiceDdl = cp5.addDropdownList("voltRefChoiceDdl")
 						          .setPosition(160, 232)
@@ -202,24 +190,17 @@ public class TabGeneralSettings {
 		                                 .setColorValueLabel(0)
 		                                 ;
 		    cp5.getTooltip().register(resetButtonPinTextLabel, "- Default: 10 -") ;
-		    cp5.getProperties().remove(resetButtonPinTextLabel) ;
 		  
 		    resetBtnPinDdl = cp5.addDropdownList("resetBtnPinDdl")
 						        .setPosition(355, 279)
 						        .setSize(30, 180)
-						        .setColorForeground(MainP.blueAct)
-						        .setBackgroundColor(MainP.backDdlGray)
-						        .setItemHeight(20)
-						        .setBarHeight(20)
 						        ;
 		    resetBtnPinDdl.getCaptionLabel().set(" ") ;
-		    resetBtnPinDdl.getCaptionLabel().getStyle().marginTop = 2 ;
 		    for ( int i = 2; i <= 12; i++ ) {
 		    	resetBtnPinDdl.addItem("" + i, i) ;
 		    }
 		    resetBtnPinDdl.setValue(10) ;
-		    cp5.getProperties().remove(resetBtnPinDdl, "ListBoxItems") ;
-		    controllers.add(resetBtnPinDdl);
+		    customizeDdl(resetBtnPinDdl);
 		  
 		    cp5.addTextlabel("sensors")
 		       .setText("SENSORS")
@@ -227,7 +208,6 @@ public class TabGeneralSettings {
 		       .setColorValueLabel(MainP.white)
 		       ;
 		    cp5.getTooltip().register("sensors", "Sensors settings") ;
-		    cp5.getProperties().remove(cp5.getController("sensors")) ;
 		  
 		    // Toggle buttons
 		    varioTgl = cp5.addToggle("varioTgl")
@@ -472,7 +452,8 @@ public class TabGeneralSettings {
 	
 	public static void customizeDdl(DropdownList ddlS) {
 		ddlS.setColorForeground(MainP.blueAct)
-		    .setBackgroundColor(MainP.backDdlGray)
+		    .setBackgroundColor(190)
+		    .setColorActive(MainP.orangeAct)
 		    .setItemHeight(20)
 			.setBarHeight(20)
 			.setTab("default");
