@@ -1,9 +1,9 @@
 package oxsc;
 
 import gui.TabData;
+import gui.TabVario;
 import processing.core.PApplet;
 import controlP5.ControlP5;
-import controlP5.DropdownList;
 
 public class AirSpeed extends Sensor {
 
@@ -16,16 +16,15 @@ public class AirSpeed extends Sensor {
 			new OXSdata("PRANDTL_COMPENSATION", "Prandtl Compensation",
 					"varAspeed", null);
 
-			cp5.get(DropdownList.class, "vSpeed1").addItem(" V1 + A.Speed", 2);
-			cp5.get(DropdownList.class, "vSpeed2").addItem(" V1 + A.Speed", 2);
+			TabVario.getvSpeed1Ddl().addItem(" V1 + A.Speed", 2);
+			TabVario.getvSpeed2Ddl().addItem(" V1 + A.Speed", 2);
 		}
 	}
 
 	public void removeSensor() {
 		// if ( vario == null ) { // TODO better
-		cp5.get(DropdownList.class, "vSpeed1").removeItem(" V1 + A.Speed");
-		cp5.get(DropdownList.class, "vSpeed2").removeItem(" V1 + A.Speed");
-		// }
+		TabVario.getvSpeed1Ddl().removeItem(" V1 + A.Speed");
+		TabVario.getvSpeed2Ddl().removeItem(" V1 + A.Speed");
 
 		OXSdata.removeFromList(this);
 		OXSdata.removeFromList("varAspeed");

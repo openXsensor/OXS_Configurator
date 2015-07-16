@@ -13,6 +13,8 @@ import controlP5.ControlP5;
 import gui.TabGeneralSettings;
 import gui.TabPPM;
 import gui.TabVario;
+import gui.TabVoltage;
+import gui.TabAirSpeed;
 import gui.TabData;
 
 public class PresetManagement {
@@ -31,6 +33,8 @@ public class PresetManagement {
 		uiUnits.add(TabGeneralSettings.getControllers());
 		uiUnits.add(TabPPM.getControllers());
 		uiUnits.add(TabVario.getControllers());
+		uiUnits.add(TabAirSpeed.getControllers());
+		uiUnits.add(TabVoltage.getControllers());
 
 		uiUnits.add(TabData.getControllers());
 	}
@@ -68,6 +72,7 @@ public class PresetManagement {
 					}  
 				}
 			}
+			TabGeneralSettings.getGenTab().bringToFront();
 		}
 	}
 

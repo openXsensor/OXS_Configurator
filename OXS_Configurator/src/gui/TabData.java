@@ -193,23 +193,18 @@ public class TabData {
 		// Text Labels
 		cp5.addTextlabel("sentData").setText("OXS measurement")
 				.setPosition(22, 104).setColorValueLabel(0).setTab("data");
-		cp5.getProperties().remove(cp5.getController("sentData"));
 
 		cp5.addTextlabel("DataFS").setText("Telemetry data field")
 				.setPosition(162, 104).setColorValueLabel(0).setTab("data");
-		cp5.getProperties().remove(cp5.getController("DataFS"));
 
 		cp5.addTextlabel("multiplierL").setText("Multiplier")
 				.setPosition(291, 104).setColorValueLabel(0).setTab("data");
-		cp5.getProperties().remove(cp5.getController("multiplierL"));
 
 		cp5.addTextlabel("dividerL").setText("Divider").setPosition(347, 104)
 				.setColorValueLabel(0).setTab("data");
-		cp5.getProperties().remove(cp5.getController("dividerL"));
 
 		cp5.addTextlabel("offsetL").setText("Offset").setPosition(400, 104)
 				.setColorValueLabel(0).setTab("data");
-		cp5.getProperties().remove(cp5.getController("offsetL"));
 
 		for (int i = 1; i <= tabDataFieldNbr; i++) {
 			// Transmitted DATA field
@@ -223,7 +218,6 @@ public class TabData {
 			sentDataField[i].getCaptionLabel().getStyle().marginTop = 2;
 			sentDataField[i].getCaptionLabel().set("----------");
 			sentDataField[i].toUpperCase(false);
-			cp5.getProperties().remove(sentDataField[i], "ListBoxItems");
 			controllers.add(sentDataField[i]);
 
 			// HUB DATA field
@@ -244,8 +238,6 @@ public class TabData {
 			hubDataField[i].toUpperCase(false);
 			hubDataField[i].setValue(0);
 			hubDataField[i].hide();
-			cp5.getProperties().remove(hubDataField[i],
-					"ListBoxItems");
 
 			// Telemetry target DATA fields  old ->SMART PORT DATA field
 			targetDataField[i] = cp5.addDropdownList("targetDataField" + i)
@@ -261,11 +253,10 @@ public class TabData {
 			targetDataField[i].setValue(0);
 			targetDataField[i].getCaptionLabel().getStyle().marginTop = 2;
 			targetDataField[i].toUpperCase(false);
-			cp5.getProperties().remove(targetDataField[i], "ListBoxItems");
 			controllers.add(targetDataField[i]);
 			
 			// Data sent multiplier
-			dataMultiplierNBox[i] = cp5.addNumberbox("dataMultiplier" + i)
+			dataMultiplierNBox[i] = cp5.addNumberbox("dataMultiplierNBox" + i)
 					                   .setColorActive(MainP.blueAct)
 					                   .setPosition(300, 125 - 25 + i * 25)
 					                   .setSize(40, 20)
@@ -277,11 +268,11 @@ public class TabData {
 					                   .setDirection(Controller.HORIZONTAL)
 					                   .setValue(1).setCaptionLabel("")
 					                   .setTab("data");
-			cp5.getTooltip().register("dataMultiplier" + i, "- Default: 1 -");
+			cp5.getTooltip().register(dataMultiplierNBox[i], "- Default: 1 -");
 			controllers.add(dataMultiplierNBox[i]);
 
 			// Data sent divider
-			dataDividerNBox[i] = cp5.addNumberbox("dataDivider" + i)
+			dataDividerNBox[i] = cp5.addNumberbox("dataDividerNBox" + i)
 					                .setColorActive(MainP.blueAct)
 					                .setPosition(350, 125 - 25 + i * 25)
 					                .setSize(40, 20)
@@ -292,11 +283,11 @@ public class TabData {
 					                .setValue(1)
 					                .setCaptionLabel("")
 					                .setTab("data");
-			cp5.getTooltip().register("dataDivider" + i, "- Default: 1 -");
+			cp5.getTooltip().register(dataDividerNBox[i], "- Default: 1 -");
 			controllers.add(dataDividerNBox[i]);
 
 			// Data sent offset
-			dataOffsetNBox[i] = cp5.addNumberbox("dataOffset" + i)
+			dataOffsetNBox[i] = cp5.addNumberbox("dataOffsetNBox" + i)
 					               .setColorActive(MainP.blueAct)
 					               .setPosition(400, 125 - 25 + i * 25)
 					               .setSize(40, 20)
@@ -306,7 +297,7 @@ public class TabData {
 					               .setDirection(Controller.HORIZONTAL) 
 					               .setValue(0).setCaptionLabel("")
 					               .setTab("data");
-			cp5.getTooltip().register("dataOffset" + i, "- Default: 0 -");
+			cp5.getTooltip().register(dataOffsetNBox[i], "- Default: 0 -");
 			controllers.add(dataOffsetNBox[i]);
 		}
 		

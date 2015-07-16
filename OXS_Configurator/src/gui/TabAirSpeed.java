@@ -2,6 +2,10 @@ package gui;
 
 import oxsc.MainP;
 import processing.core.PApplet;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import controlP5.ControlP5;
 import controlP5.Controller;
 import controlP5.Numberbox;
@@ -9,17 +13,18 @@ import controlP5.Range;
 
 public class TabAirSpeed {
 	
-	//@SuppressWarnings("unused")
-	//private final ControlP5 cp5 ;
+	private static ControlP5 cp5;
 	@SuppressWarnings("unused")
 	private final PApplet p ; // TODO check if needed
 	private static Numberbox aSpeedResetNBox;
 	private static Range ppmRngCompMinMaxRng;
 	private static Range ppmCompMinMaxRng;
 	
+	private static List<Object> controllers = new ArrayList<>();
+	
 	public TabAirSpeed(PApplet p, ControlP5 cp5) {
 		
-		//this.cp5 = cp5;
+		TabAirSpeed.cp5 = cp5;
 		this.p = p;
 	    
 	    cp5.getTab("airSpeed")
@@ -35,7 +40,7 @@ public class TabAirSpeed {
 	    cp5.getTab("airSpeed").getCaptionLabel().toUpperCase(false) ;
 	  
 	    // PPM Air Speed reset
-	    aSpeedResetNBox = cp5.addNumberbox("aSpeedReset")
+	    aSpeedResetNBox = cp5.addNumberbox("aSpeedResetNBox")
 	                         .setPosition(206, 154)
 	                         .setSize(40, 20)
 	                         .setColorActive(MainP.blueAct)
@@ -49,6 +54,7 @@ public class TabAirSpeed {
 	                         ;
 	    aSpeedResetNBox.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
 	    aSpeedResetNBox.getCaptionLabel().toUpperCase(false) ;
+	    controllers.add(aSpeedResetNBox);
 	  
 	    // PPM compensation at PPM range
 	    cp5.addTextlabel("ppmRngCompL")
@@ -57,9 +63,8 @@ public class TabAirSpeed {
 	       .setColorValueLabel(0)
 	       .setTab("airSpeed")
 	       ;
-	    cp5.getProperties().remove(cp5.getController("ppmRngCompL")) ;
 	  
-	    ppmRngCompMinMaxRng = cp5.addRange("ppmRngCompMinMax")
+	    ppmRngCompMinMaxRng = cp5.addRange("ppmRngCompMinMaxRng")
 	                             .setPosition(206, 195)
 	                             .setSize(200, 20)
 	                             .setCaptionLabel("Max.")
@@ -68,8 +73,9 @@ public class TabAirSpeed {
 	                             .setRangeValues(60, 90)
 	                             ;
 	    MainP.customizeRange(ppmRngCompMinMaxRng) ;
-	    cp5.getTooltip().register("ppmRngCompMinMax", "- Default: 10:40 -") ;
+	    cp5.getTooltip().register(ppmRngCompMinMaxRng, "- Default: 10:40 -") ;
 	    ppmRngCompMinMaxRng.setTab("airSpeed") ;
+	    controllers.add(ppmRngCompMinMaxRng);
 	  
 	    // PPM compensation
 	    cp5.addTextlabel("ppmCompL")
@@ -78,9 +84,8 @@ public class TabAirSpeed {
 	       .setColorValueLabel(0)
 	       .setTab("airSpeed")
 	       ;
-	    cp5.getProperties().remove(cp5.getController("ppmCompL")) ;
 	  
-	    ppmCompMinMaxRng = cp5.addRange("ppmCompMinMax")
+	    ppmCompMinMaxRng = cp5.addRange("ppmCompMinMaxRng")
 	                          .setPosition(206, 223)
 	                          .setSize(200, 20)
 	                          .setCaptionLabel("Max.")
@@ -89,8 +94,9 @@ public class TabAirSpeed {
 	                          .setRangeValues((float) 80.5, 120)
 	                          ;
 	    MainP.customizeRange(ppmCompMinMaxRng) ;
-	    cp5.getTooltip().register("ppmCompMinMax", "- Default: 10:40 -") ;
+	    cp5.getTooltip().register(ppmCompMinMaxRng, "- Default: 10:40 -") ;
 	    ppmCompMinMaxRng.setTab("airSpeed") ;
+	    controllers.add(ppmCompMinMaxRng);
 	    
 	  }
 
@@ -104,6 +110,69 @@ public class TabAirSpeed {
 
 	public static Range getPpmCompMinMaxRng() {
 		return ppmCompMinMaxRng;
+	}
+
+	public static List<Object> getControllers() {
+		return controllers;
+	}
+
+	public static void draw(MainP mainP) {
+		mainP.stroke(MainP.blueAct) ;     // blue border
+		mainP.strokeWeight(3) ;
+		mainP.noFill() ;
+		mainP.rect(4, 106, 442, 148) ;
+		mainP.line(4, 142, 446, 142) ;
+		mainP.strokeWeight(1) ;
+		mainP.noStroke() ;
+	
+		TabPPM.drawPPMzone(mainP) ;
+	
+		// separation lines
+		mainP.stroke(MainP.darkBackGray) ;
+		mainP.line(10, 184, 440, 184) ;
+		mainP.noStroke() ;
+	
+		if ( TabPPM.getPpmTgl().getValue() == 0.0 ) {
+			aSpeedResetNBox.lock()
+			               .setColorBackground(MainP.grayedColor)
+			               .setColorForeground(MainP.grayedColor) 
+			               .setColorValueLabel(MainP.grayedColor)
+			               .setColorCaptionLabel(MainP.grayedColor);
+	
+			cp5.getController("ppmRngCompL").setColorValueLabel(MainP.grayedColor) ;
+			ppmRngCompMinMaxRng.lock()
+			                   .setColorForeground(MainP.grayedColor)
+			                   .setColorBackground(MainP.grayedColor)
+			                   .setColorValueLabel(MainP.grayedColor)
+			                   .setColorCaptionLabel(MainP.grayedColor);
+	
+			cp5.getController("ppmCompL").setColorValueLabel(MainP.grayedColor) ;
+			ppmCompMinMaxRng.lock()
+			                .setColorForeground(MainP.grayedColor)
+			                .setColorBackground(MainP.grayedColor)
+			                .setColorValueLabel(MainP.grayedColor)
+			                .setColorCaptionLabel(MainP.grayedColor);
+	
+		} else {
+			aSpeedResetNBox.unlock()
+			               .setColorBackground(MainP.darkBackGray)
+			               .setColorValueLabel(MainP.white)
+			               .setColorCaptionLabel(mainP.color(0));
+	
+			cp5.getController("ppmRngCompL").setColorValueLabel(mainP.color(0)) ;
+			ppmRngCompMinMaxRng.unlock()
+			                   .setColorForeground(MainP.blueAct)
+			                   .setColorBackground(MainP.darkBackGray)
+			                   .setColorValueLabel(MainP.white)
+			                   .setColorCaptionLabel(mainP.color(0));
+	
+			cp5.getController("ppmCompL").setColorValueLabel(mainP.color(0)) ;
+			ppmCompMinMaxRng.unlock()
+			                .setColorForeground(MainP.blueAct)
+			                .setColorBackground(MainP.darkBackGray)
+			                .setColorValueLabel(MainP.white)
+			                .setColorCaptionLabel(mainP.color(0));
+		}
 	}
 
 }

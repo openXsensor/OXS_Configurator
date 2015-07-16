@@ -186,59 +186,52 @@ public class Validation {
 
 	public static void validateAnalogPins() {
 
-		String voltActive[] = new String[7] ;
+		String voltActive[] = new String[TabVoltage.getVoltnbr() + 1] ;
 		int voltActiveCount = 0 ;
 
 		for ( int i = 1 ; i <= TabVoltage.getVoltnbr() ; i++ ) {
-			if ( (int)getVoltageTgl().getValue() == 1 && (int)TabVoltage.getVoltTgl()[i].getValue() == 1 ) {
+			if ( getVoltageTgl().getValue() == 1.0 && TabVoltage.getVoltTgl()[i].getValue() == 1.0 ) {
 				voltActive[i] = "1" ;
-				voltActiveCount ++ ;
+				voltActiveCount++ ;
 			} else {
 				voltActive[i] = "0" ;
 			}
 		}
 
-		if ( (int)getVoltageTgl().getValue() == 1 && voltActiveCount == 0 ) {
+		if ( getVoltageTgl().getValue() == 1.0 && voltActiveCount == 0 ) {
 			analogPinsValid = false ;
 			MainP.messageList.append("- Voltage sensor is active but there is no voltage to measure !") ;
 		}
 
 		String analogPinsValidation[][] = new String[][] {              // array { pin name, pin value, isActive }
-				{ "Voltage n°1", "" + (int)TabVoltage.getDdlVolt()[1].getValue(), "" + voltActive[1] },
-				{ "Voltage n°2", "" + (int)TabVoltage.getDdlVolt()[2].getValue(), "" + voltActive[2] },
-				{ "Voltage n°3", "" + (int)TabVoltage.getDdlVolt()[3].getValue(), "" + voltActive[3] },
-				{ "Voltage n°4", "" + (int)TabVoltage.getDdlVolt()[4].getValue(), "" + voltActive[4] },
-				{ "Voltage n°5", "" + (int)TabVoltage.getDdlVolt()[5].getValue(), "" + voltActive[5] },
-				{ "Voltage n°6", "" + (int)TabVoltage.getDdlVolt()[6].getValue(), "" + voltActive[6] },
-				{ "Current Sensor", "" + (int)TabCurrent.getCurrentPinDdl().getValue(), "" + (int)getCurrentTgl().getValue() },
+				{ "Voltage n°1", TabVoltage.getDdlVolt()[1].getCaptionLabel().getText(), "" + voltActive[1] },
+				{ "Voltage n°2", TabVoltage.getDdlVolt()[2].getCaptionLabel().getText(), "" + voltActive[2] },
+				{ "Voltage n°3", TabVoltage.getDdlVolt()[3].getCaptionLabel().getText(), "" + voltActive[3] },
+				{ "Voltage n°4", TabVoltage.getDdlVolt()[4].getCaptionLabel().getText(), "" + voltActive[4] },
+				{ "Voltage n°5", TabVoltage.getDdlVolt()[5].getCaptionLabel().getText(), "" + voltActive[5] },
+				{ "Voltage n°6", TabVoltage.getDdlVolt()[6].getCaptionLabel().getText(), "" + voltActive[6] },
+				{ "Current Sensor", TabCurrent.getCurrentPinDdl().getCaptionLabel().getText(), "" + (int)getCurrentTgl().getValue() },
 				//{ "Temperature Sensor", "" + (int)cp5.getGroup("tempPin").getValue(), "" + (int)cp5.getController("temperature").getValue() },
-				{ "Vario/Air Speed (A4-A5)", "4", "" + (int) getVarioTgl().getValue() + (int)getAirSpeedTgl().getValue() },
-				{ "Vario/Air Speed (A4-A5)", "5", "" + (int) getVarioTgl().getValue() + (int)getAirSpeedTgl().getValue() }
+				{ "Vario/Air Speed (A4-A5)", "A4", "" + (int) (getVarioTgl().getValue() + getAirSpeedTgl().getValue()) },
+				{ "Vario/Air Speed (A4-A5)", "A5", "" + (int) (getVarioTgl().getValue() + getAirSpeedTgl().getValue()) }
 		} ;
 
 		for ( int i = 0; i < analogPinsValidation.length; i++ ) {
-			if ( Integer.parseInt(analogPinsValidation[i][1]) == -1 && Integer.parseInt(analogPinsValidation[i][2]) == 1 ) {
+			if ( analogPinsValidation[i][1].equals(" --") && analogPinsValidation[i][2].equals("1") ) {
 				analogPinsValid = false ;
 				MainP.messageList.append("- " + analogPinsValidation[i][0] + " has no pin assigned !") ;
 			}
-			for ( int j = i+1; j < analogPinsValidation.length; j++ ) {
-
-				if ( Integer.parseInt(analogPinsValidation[i][1]) != -1 && Integer.parseInt(analogPinsValidation[j][1]) != -1 && Integer.parseInt(analogPinsValidation[i][2]) >= 1 && Integer.parseInt(analogPinsValidation[j][2]) >= 1 ) {
+			for ( int j = i + 1; j < analogPinsValidation.length; j++ ) {
+				if ( !analogPinsValidation[i][1].equals(" --") && !analogPinsValidation[j][1].equals(" --")
+						&& Integer.parseInt(analogPinsValidation[i][2]) >= 1 && Integer.parseInt(analogPinsValidation[j][2]) >= 1 ) {
 					if ( analogPinsValidation[i][1].equals(analogPinsValidation[j][1]) ) {
-						//println("Attention !!  " + analogPinsValidation[i][0] + " is using the same pin n°A" + analogPinsValidation[i][1] + " as " + analogPinsValidation[j][0] + " !") ;
+						//println("Attention !!  " + analogPinsValidation[i][0] + " is using the same pin n°" + analogPinsValidation[i][1] + " as " + analogPinsValidation[j][0] + " !") ;
 						analogPinsValid = false ;
-						MainP.messageList.append("- " + analogPinsValidation[i][0] + " is using the same pin n°A" + analogPinsValidation[i][1] + " as " + analogPinsValidation[j][0] + " !") ;
+						MainP.messageList.append("- " + analogPinsValidation[i][0] + " is using the same pin n°" + analogPinsValidation[i][1] + " as " + analogPinsValidation[j][0] + " !") ;
 					}
 				}
-
 			}
 		}
-		/*
-			  if ( analogPinsValid ) {
-			    println("No problem found with analog pins ;)") ;
-			    messageList.append("No problem found with analog pins ;)") ;
-			  }
-		 */
 	}
 
 	public static void validateVspeed() {
@@ -378,7 +371,7 @@ public class Validation {
 			boolean duplicate = false;
 			List<String> tempStr = new ArrayList<>();
 			String messageString = "";
-			if (!oXsTabDataFields[i][0].equals("----------") || !oXsTabDataFields[i][1].equals("----------")) {
+			if (!oXsTabDataFields[i][0].equals("----------") && !oXsTabDataFields[i][1].equals("----------")) {
 				tempStr.add(oXsTabDataFields[i][1]);
 				tempStr.add(oXsTabDataFields[i][0]);
 				for (int j = i + 1; j <= TabData.getTabDataFieldNbr(); j++) {
@@ -459,13 +452,3 @@ public class Validation {
 	}
 	
 }
-
-
-	
-	
-	
-	
-	
-	
-	
-	

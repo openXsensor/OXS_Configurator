@@ -2,6 +2,10 @@ package gui;
 
 import oxsc.MainP;
 import processing.core.PConstants;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import controlP5.ControlP5;
 import controlP5.Controller;
 import controlP5.DropdownList;
@@ -22,7 +26,7 @@ public class TabVoltage {
 	private static Toggle cellsTgl;
 	private static DropdownList ddlNbrCells;
 
-
+	private static List<Object> controllers = new ArrayList<>();
 
 	// private final PApplet p ; // TODO check if needed
 
@@ -47,10 +51,9 @@ public class TabVoltage {
 		   .setPosition(10, 145)
 		   .setColorValueLabel(0)
 		   .setTab("voltage");
-		cp5.getProperties().remove(cp5.getController("voltages"));
 
 		for (int i = 1; i <= voltNbr; i++) {
-			voltTgl[i] = cp5.addToggle("volt" + i)
+			voltTgl[i] = cp5.addToggle("voltTgl" + i)
 					        .setCaptionLabel("" + i)
 					        .setPosition(128 + 55 * (i - 1), 147)
 					        .setTab("voltage");
@@ -63,7 +66,6 @@ public class TabVoltage {
 		   .setPosition(10, 173)
 	   	   .setColorValueLabel(0)
 	   	   .setTab("voltage");
-		cp5.getProperties().remove(cp5.getController("voltPin"));
 
 		for (int i = 1; i <= voltNbr; i++) {
 			ddlVolt[i] = cp5.addDropdownList("ddlVolt" + i)
@@ -71,7 +73,6 @@ public class TabVoltage {
 			                .setTab("voltage");
 			customizeDdlVpin(ddlVolt[i]);
 			ddlVolt[i].setValue(-1);
-			cp5.getProperties().remove(ddlVolt[i], "ListBoxItems");
 		}
 
 		// Voltage 1-6 divider factor
@@ -81,10 +82,9 @@ public class TabVoltage {
 		   .setColorValueLabel(0)
 		   .setTab("voltage");
 		cp5.getTooltip().register("voltDivider", "- Default: 1 -");
-		cp5.getProperties().remove(cp5.getController("voltDivider"));
 
 		for (int i = 1; i <= voltNbr; i++) {
-			dividerVoltNBox[i] = cp5.addNumberbox("dividerVolt" + i)
+			dividerVoltNBox[i] = cp5.addNumberbox("dividerVoltNBox" + i)
 			                        .setPosition(113 + 55 * (i - 1), 202)
 			                        .setSize(45, 20)
 			                        .setColorActive(MainP.blueAct)
@@ -98,6 +98,7 @@ public class TabVoltage {
 			                        .setCaptionLabel("")
 			                        .setTab("voltage")
 			                        ;
+			controllers.add(dividerVoltNBox[i]);
 		}
 
 		// Voltage 1-6 Offset
@@ -107,10 +108,9 @@ public class TabVoltage {
 		   .setColorValueLabel(0)
 		   .setTab("voltage");
 		cp5.getTooltip().register("voltOffset", "- Default: 0 -");
-		cp5.getProperties().remove(cp5.getController("voltOffset"));
 
 		for (int i = 1; i <= voltNbr; i++) {
-			offsetVoltNBox[i] = cp5.addNumberbox("offsetVolt" + i)
+			offsetVoltNBox[i] = cp5.addNumberbox("offsetVoltNBox" + i)
 			                       .setPosition(113 + 55 * (i - 1), 231)
 			                       .setSize(45, 20)
 			                       .setColorActive(MainP.blueAct)
@@ -122,10 +122,12 @@ public class TabVoltage {
 			                       .setCaptionLabel("")
 			                       .setTab("voltage")
 			                       ;
+			controllers.add(offsetVoltNBox[i]);
 		}
 
 		// Cells monitoring -> Number of Cells
-		cellsTgl = cp5.addToggle("cells").setPosition(148, 296)
+		cellsTgl = cp5.addToggle("cellsTgl")
+				      .setPosition(148, 296)
 		              .setCaptionLabel("Battery cells monitoring")
 		              .setColorForeground(MainP.orangeAct)
 		              .setColorBackground(MainP.darkBackGray)
@@ -138,13 +140,13 @@ public class TabVoltage {
 				.align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER)
 				.setPaddingX(10);
 		cellsTgl.getCaptionLabel().toUpperCase(false);
+		controllers.add(cellsTgl);
 
 		cp5.addTextlabel("NbrCells")
 		   .setText("Number of Cells")
 		   .setPosition(190, 295)
 		   .setColorValueLabel(0)
 		   .setTab("voltage");
-		cp5.getProperties().remove(cp5.getController("NbrCells"));
 
 		ddlNbrCells = cp5.addDropdownList("ddlNbrCells")
 						 .setColorForeground(MainP.orangeAct)
@@ -162,12 +164,12 @@ public class TabVoltage {
 		ddlNbrCells.getCaptionLabel().getStyle().marginTop = 2;
 		ddlNbrCells.getCaptionLabel().set("-");
 		ddlNbrCells.toUpperCase(false);
-		cp5.getProperties().remove(ddlNbrCells, "ListBoxItems");
+		controllers.add(ddlNbrCells);
 		
 		// dropdownlist overlap
 		ddlNbrCells.bringToFront() ;
 		for ( int i = 1; i <= voltNbr; i++ ) {
-			cp5.getGroup("ddlVolt" + i).bringToFront() ;
+			ddlVolt[i].bringToFront() ;
 		}
 
 	}
@@ -192,12 +194,16 @@ public class TabVoltage {
 		return offsetVoltNBox;
 	}
 
+	public static Toggle getCellsTgl() {
+		return cellsTgl;
+	}
+	
 	public static DropdownList getDdlNbrCells() {
 		return ddlNbrCells;
 	}
 
-	public static Toggle getCellsTgl() {
-		return cellsTgl;
+	public static List<Object> getControllers() {
+		return controllers;
 	}
 
 	public static void populateNbrCells() {
@@ -323,9 +329,10 @@ public class TabVoltage {
 		//ddlv.setValue(-1) ;
 	
 		ddlV.toUpperCase(false) ;
+		controllers.add(ddlV);
 	}
 
-	public static void customizeToggleVolt(Controller<?> tglV) {
+	public static void customizeToggleVolt(Toggle tglV) {
 		tglV.setColorForeground(MainP.orangeAct) ;
 		tglV.setColorBackground(MainP.darkBackGray) ;
 		tglV.setColorActive(MainP.blueAct) ;
@@ -335,6 +342,7 @@ public class TabVoltage {
 		// reposition the Labels
 		tglV.getCaptionLabel().align(ControlP5.CENTER, ControlP5.TOP_OUTSIDE).setPaddingX(10) ;	
 		tglV.getCaptionLabel().toUpperCase(false) ;
+		controllers.add(tglV);
 	}
 
 }

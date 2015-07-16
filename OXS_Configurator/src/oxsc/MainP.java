@@ -122,12 +122,9 @@ public class MainP extends PApplet {
 	int ppmRngMinNBox;
 	int ppmRngMaxNBox;
 	
-	int vSpeedMinMax;
-	int ppmRngMinMax;
-	
-	int aSpeedReset;
-	int ppmRngCompMinMax;
-	int ppmCompMinMax;
+	int aSpeedResetNBox;
+	int ppmRngCompMinMaxRng;
+	int ppmCompMinMaxRng;
 
 	int mBoxWidth = 400; // TODO later
 	int mBoxHeight = 320; // TODO later
@@ -150,8 +147,6 @@ public class MainP extends PApplet {
 		noStroke() ;
 
 		cp5 = new ControlP5(this) ;
-
-		cp5.getProperties().addSet("Preset");
 
 		//Alt+mouseDragged to move controllers on the screen
 		//Alt+Shift+h to show/hide controllers
@@ -190,7 +185,7 @@ public class MainP extends PApplet {
 		// By default all controllers are stored inside Tab 'default'
 		cp5.getWindow().setPositionOfTabs(0, 80) ;
 
-		// About
+		// About // TODO first - problem with button
 		cp5.addButton("about")
 		   .setCaptionLabel("About")
 		   .setPosition(380, 14)
@@ -242,7 +237,7 @@ public class MainP extends PApplet {
 		// ------------------------------ File dialog ------------------------------
 		fileManagement = new FileManagement(cp5);
 
-		// --------------------------------------------------------------------------
+		// --------------------------- Preset Management ---------------------------
 		presetMan = new PresetManagement(cp5);
 		
 		// dropdownlist overlap
@@ -301,73 +296,14 @@ public class MainP extends PApplet {
 			break ;
 
 		case 1 :                                        // TAB Vario
-
 			TabVario.draw(this);
 			break ;
 
 		case 2 :                                        // TAB Air Speed sensor
-
-			stroke(blueAct) ;     // blue border
-			strokeWeight(3) ;
-			noFill() ;
-			rect(4, 106, 442, 148) ;
-			line(4, 142, 446, 142) ;
-			strokeWeight(1) ;
-			noStroke() ;
-
-			TabPPM.drawPPMzone(this) ;
-
-			// separation lines
-			stroke(MainP.darkBackGray) ;
-			line(10, 184, 440, 184) ;
-			noStroke() ;
-
-			if ( cp5.getController("ppm").getValue() == 0 ) {
-				cp5.getController("aSpeedReset").lock() ;
-				cp5.getController("aSpeedReset").setColorBackground(grayedColor) ;
-				cp5.getController("aSpeedReset").setColorForeground(grayedColor) ;
-				cp5.getController("aSpeedReset").setColorValueLabel(grayedColor) ;
-				cp5.getController("aSpeedReset").setColorCaptionLabel(grayedColor) ;
-
-				cp5.getController("ppmRngCompL").setColorValueLabel(grayedColor) ;
-				cp5.getController("ppmRngCompMinMax").lock() ;
-				cp5.getController("ppmRngCompMinMax").setColorForeground(grayedColor) ;
-				cp5.getController("ppmRngCompMinMax").setColorBackground(grayedColor) ;
-				cp5.getController("ppmRngCompMinMax").setColorValueLabel(grayedColor) ;
-				cp5.getController("ppmRngCompMinMax").setColorCaptionLabel(grayedColor) ;
-
-				cp5.getController("ppmCompL").setColorValueLabel(grayedColor) ;
-				cp5.getController("ppmCompMinMax").lock() ;
-				cp5.getController("ppmCompMinMax").setColorForeground(grayedColor) ;
-				cp5.getController("ppmCompMinMax").setColorBackground(grayedColor) ;
-				cp5.getController("ppmCompMinMax").setColorValueLabel(grayedColor) ;
-				cp5.getController("ppmCompMinMax").setColorCaptionLabel(grayedColor) ;
-
-			} else {
-				cp5.getController("aSpeedReset").unlock() ;
-				cp5.getController("aSpeedReset").setColorBackground(MainP.darkBackGray) ;
-				cp5.getController("aSpeedReset").setColorValueLabel(white) ;
-				cp5.getController("aSpeedReset").setColorCaptionLabel(color(0)) ;
-
-				cp5.getController("ppmRngCompL").setColorValueLabel(color(0)) ;
-				cp5.getController("ppmRngCompMinMax").unlock() ;
-				cp5.getController("ppmRngCompMinMax").setColorForeground(blueAct) ;
-				cp5.getController("ppmRngCompMinMax").setColorBackground(MainP.darkBackGray) ;
-				cp5.getController("ppmRngCompMinMax").setColorValueLabel(white) ;
-				cp5.getController("ppmRngCompMinMax").setColorCaptionLabel(color(0)) ;
-
-				cp5.getController("ppmCompL").setColorValueLabel(color(0)) ;
-				cp5.getController("ppmCompMinMax").unlock() ;
-				cp5.getController("ppmCompMinMax").setColorForeground(blueAct) ;
-				cp5.getController("ppmCompMinMax").setColorBackground(MainP.darkBackGray) ;
-				cp5.getController("ppmCompMinMax").setColorValueLabel(white) ;
-				cp5.getController("ppmCompMinMax").setColorCaptionLabel(color(0)) ;
-			}
-
+			TabAirSpeed.draw(this);
 			break ;
 
 		case 3 :                                                 // TAB Voltage / Other
-
 			TabVoltage.draw(this);
 			break ;
 
@@ -749,11 +685,11 @@ public class MainP extends PApplet {
 
 		// Protocol selection - Showing right Telemetry data list in fields
 		if (theEvent.isFrom(TabGeneralSettings.getProtocolDdl())) {
-			switch ((int) theEvent.getGroup().getValue()) {
-			case 1:
+			switch (theEvent.getGroup().getCaptionLabel().getText()) {
+			case "FrSky":
 					protocol = Protocol.createProtocol("FrSky");
 				break;
-			case 2:
+			case "Multiplex":
 					protocol = Protocol.createProtocol("Multiplex");
 				break;
 			}
@@ -1139,7 +1075,7 @@ public class MainP extends PApplet {
 		rng.getCaptionLabel().toUpperCase(false) ;
 	}
 
-	public void createMessageBox() { // TODO second move to gui package
+	public void createMessageBox() { // TODO first - problem with button + move to gui package
 
 		// create a group to store the messageBox elements
 		messageBox = cp5.addGroup("messageBox", width / 2 - mBoxWidth / 2, 76, mBoxWidth)

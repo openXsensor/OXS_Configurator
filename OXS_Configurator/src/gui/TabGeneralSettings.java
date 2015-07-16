@@ -22,7 +22,7 @@ public class TabGeneralSettings {
 	@SuppressWarnings("unused")
 	private final PApplet p ; // TODO check if needed
 
-	private static Tab general;
+	private static Tab genTab;
 	private static Textfield oxsDir;
 	private static DropdownList serialPinDdl;
 	private static DropdownList protocolDdl;
@@ -51,7 +51,7 @@ public class TabGeneralSettings {
 		this.cp5 = cp5;
 		this.p = p;
 		
-		    general = cp5.getTab("default")
+		    genTab = cp5.getTab("default")
 		                 .setHeight(20)
 		                 .setColorLabel(MainP.white)
 		                 .setColorForeground(MainP.tabGray)
@@ -60,7 +60,7 @@ public class TabGeneralSettings {
 		                 .setLabel("GENERAL Settings")
 		                 .setId(0)
 		                 ;
-		    general.getCaptionLabel().toUpperCase(false) ;
+		    genTab.getCaptionLabel().toUpperCase(false) ;
 
 		    // OXS directory
 		    oxsDir = cp5.addTextfield("oxsDir")
@@ -261,6 +261,10 @@ public class TabGeneralSettings {
 		    protocolDdl.bringToFront() ;
 		    sensorIDDdl.bringToFront() ;
 		    serialPinDdl.bringToFront() ;
+	}
+
+	public static Tab getGenTab() {
+		return genTab;
 	}
 
 	public static Textfield getOxsDir() { return oxsDir; }
