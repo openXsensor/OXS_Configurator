@@ -15,30 +15,30 @@ import controlP5.Toggle;
 
 public class TabPPM {
 	
-	private static ControlP5 cp5 ;
 	@SuppressWarnings("unused")
 	private final PApplet p ; // TODO check if needed
 
 	private static Toggle ppmTgl;
 	private static Textlabel ppmPinL;
 	private static DropdownList ppmPinDdl;
+	private static Textlabel ppmRngL;
 	private static Numberbox ppmRngMinNBox;
 	private static Numberbox ppmRngMaxNBox;
 	
-	private static List<Object> controllers = new ArrayList<>(); // TODO first - TabPPM preset
+	private static List<Object> controllers = new ArrayList<>();
 
 	public TabPPM(PApplet p, ControlP5 cp5) {
 		
-		TabPPM.cp5 = cp5;
 		this.p = p;
 
 		// RC Remote PPM pin and settings
-		ppmTgl = cp5.addToggle("ppm")
+		ppmTgl = cp5.addToggle("ppmTgl")
 		            .setCaptionLabel("PPM")
 		            .setPosition(53, 117)
 		            .hide()
 		            ;
-		MainP.customizeToggle(cp5.getController("ppm")) ;
+		MainP.customizeToggle(ppmTgl) ;
+		controllers.add(ppmTgl);
 
 		ppmPinL = cp5.addTextlabel("ppmPinL")
 				     .setText("Pin       ")
@@ -46,10 +46,9 @@ public class TabPPM {
 				     .setColorValueLabel(0)
 				     .hide()
 				     ;
-		cp5.getTooltip().register("ppmPinL", "- Default: 2 -");
-		cp5.getProperties().remove(cp5.getController("ppmPinL")) ;
+		cp5.getTooltip().register(ppmPinL, "- Default: 2 -");
 
-		ppmPinDdl = cp5.addDropdownList("ppmPin")
+		ppmPinDdl = cp5.addDropdownList("ppmPinDdl")
 				       .setPosition(118, 136)
 				       .setSize(30, 75)
 				       .setColorForeground(MainP.orangeAct)
@@ -65,19 +64,18 @@ public class TabPPM {
 		ppmPinDdl.addItem(" 3", 3);
 		ppmPinDdl.setValue(2);
 		ppmPinDdl.toUpperCase(false) ;
-		cp5.getProperties().remove(cp5.getGroup("ppmPin"), "ListBoxItems") ;
+		controllers.add(ppmPinDdl);
 
 		// PPM range setting
-		cp5.addTextlabel("ppmRngL")
-		   .setText("PPM range (µs)                                                                          ")
-		   .setPosition(175, 117)
-		   .setColorValueLabel(0)
-		   .hide()
-		   ;
-		cp5.getTooltip().register("ppmRngL", "RC control range - Default: 988:2012 -");
-		cp5.getProperties().remove(cp5.getController("ppmRngL")) ;
+		ppmRngL = cp5.addTextlabel("ppmRngL")
+		             .setText("PPM range (µs)                                                                          ")
+		             .setPosition(175, 117)
+		             .setColorValueLabel(0)
+		             .hide()
+		             ;
+		cp5.getTooltip().register(ppmRngL, "RC control range - Default: 988:2012 -");
 
-		ppmRngMinNBox = cp5.addNumberbox("ppmRngMin")
+		ppmRngMinNBox = cp5.addNumberbox("ppmRngMinNBox")
 		                   .setPosition(306, 115)
 		                   .setSize(40, 20)
 		                   .setColorActive(MainP.blueAct)
@@ -91,8 +89,9 @@ public class TabPPM {
 		                   ;
 		ppmRngMinNBox.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
 		ppmRngMinNBox.getCaptionLabel().toUpperCase(false) ;
+		controllers.add(ppmRngMinNBox);
 
-		ppmRngMaxNBox = cp5.addNumberbox("ppmRngMax")
+		ppmRngMaxNBox = cp5.addNumberbox("ppmRngMaxNBox")
 		                   .setPosition(366, 115)
 		                   .setSize(40, 20)
 		                   .setColorActive(MainP.blueAct)
@@ -105,15 +104,24 @@ public class TabPPM {
 		                   .hide()
 		                   ;
 		ppmRngMaxNBox.getCaptionLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(5) ;
-		ppmRngMaxNBox.getCaptionLabel().toUpperCase(false) ;    
+		ppmRngMaxNBox.getCaptionLabel().toUpperCase(false) ;
+		controllers.add(ppmRngMaxNBox);
 	}
 
 	public static Toggle getPpmTgl() {
 		return ppmTgl;
 	}
 
+	public static Textlabel getPpmPinL() {
+		return ppmPinL;
+	}
+
 	public static DropdownList getPpmPinDdl() {
 		return ppmPinDdl;
+	}
+
+	public static Textlabel getPpmRngL() {
+		return ppmRngL;
 	}
 
 	public static Numberbox getPpmRngMinNBox() {
@@ -122,6 +130,10 @@ public class TabPPM {
 
 	public static Numberbox getPpmRngMaxNBox() {
 		return ppmRngMaxNBox;
+	}
+
+	public static List<Object> getControllers() {
+		return controllers;
 	}
 
 	public static void drawPPMzone(MainP mainP) {
@@ -148,7 +160,7 @@ public class TabPPM {
 			mainP.rect(118, 115, 30, 20) ;
 			ppmPinL.setColorValueLabel(MainP.grayedColor) ;
 	
-			cp5.getController("ppmRngL").setColorValueLabel(MainP.grayedColor) ;
+			ppmRngL.setColorValueLabel(MainP.grayedColor) ;
 			ppmRngMinNBox.lock()
 			             .setColorBackground(MainP.grayedColor)
 			             .setColorValueLabel(MainP.grayedColor)
@@ -163,7 +175,7 @@ public class TabPPM {
 			ppmPinDdl.show() ;
 			ppmPinL.setColorValueLabel(0) ;
 	
-			cp5.getController("ppmRngL").setColorValueLabel(mainP.color(0)) ;
+			ppmRngL.setColorValueLabel(mainP.color(0)) ;
 			ppmRngMinNBox.unlock()
 			             .setColorBackground(MainP.darkBackGray)
 			             .setColorValueLabel(MainP.white)

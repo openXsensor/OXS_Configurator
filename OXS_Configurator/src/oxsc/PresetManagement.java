@@ -11,6 +11,7 @@ import java.util.List;
 
 import controlP5.ControlP5;
 import gui.TabGeneralSettings;
+import gui.TabPPM;
 import gui.TabVario;
 import gui.TabData;
 
@@ -28,7 +29,7 @@ public class PresetManagement {
 	
 	public static void addControllersList(){
 		uiUnits.add(TabGeneralSettings.getControllers());
-
+		uiUnits.add(TabPPM.getControllers());
 		uiUnits.add(TabVario.getControllers());
 
 		uiUnits.add(TabData.getControllers());

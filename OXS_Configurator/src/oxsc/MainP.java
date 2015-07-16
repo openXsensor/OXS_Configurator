@@ -47,7 +47,6 @@ import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.Controller;
 import controlP5.Group;
-import controlP5.Numberbox;
 import controlP5.Slider;
 import controlP5.Textarea;
 
@@ -120,10 +119,11 @@ public class MainP extends PApplet {
 	int varioHysteresisSld;
 	int outClimbRateMinMaxRng;
 	
+	int ppmRngMinNBox;
+	int ppmRngMaxNBox;
+	
 	int vSpeedMinMax;
 	int ppmRngMinMax;
-	int ppmRngMin;
-	int ppmRngMax;
 	
 	int aSpeedReset;
 	int ppmRngCompMinMax;
@@ -673,38 +673,38 @@ public class MainP extends PApplet {
 		// therefore you need to check the originator of the Event with if (theEvent.isGroup()) to avoid an error message thrown by controlP5.
 
 		if ( theEvent.isFrom(cp5.getTab("vario")) ) {           //  Tab vario : display PPM parameters
-			cp5.getController("ppm").setTab("vario") ;
-			cp5.getController("ppm").show() ;
-			cp5.getController("ppmPinL").setTab("vario") ;
-			cp5.getController("ppmPinL").show() ;
-			cp5.getController("ppmRngL").setTab("vario") ;
-			cp5.getController("ppmRngL").show() ;
-			cp5.getController("ppmRngMin").setTab("vario") ;
-			cp5.getController("ppmRngMin").show() ;
-			cp5.getController("ppmRngMax").setTab("vario") ;
-			cp5.getController("ppmRngMax").show() ;
-			cp5.getGroup("ppmPin").setTab("vario") ;
+			TabPPM.getPpmTgl().setTab("vario")
+			                  .show();
+			TabPPM.getPpmPinL().setTab("vario")
+			                   .show();
+			TabPPM.getPpmPinDdl().setTab("vario");
+			TabPPM.getPpmRngL().setTab("vario")
+			                   .show();
+			TabPPM.getPpmRngMinNBox().setTab("vario")
+			                         .show();
+			TabPPM.getPpmRngMaxNBox().setTab("vario")
+			                         .show();
 		} else if ( theEvent.isFrom(cp5.getTab("airSpeed")) ) {  //  Tab Air Speed : display PPM parameters
-			cp5.getController("ppm").setTab("airSpeed") ;
-			cp5.getController("ppm").show() ;
-			cp5.getController("ppmPinL").setTab("airSpeed") ;
-			cp5.getController("ppmPinL").show() ;
-			cp5.getController("ppmRngL").setTab("airSpeed") ;
-			cp5.getController("ppmRngL").show() ;
-			cp5.getController("ppmRngMin").setTab("airSpeed") ;
-			cp5.getController("ppmRngMin").show() ;
-			cp5.getController("ppmRngMax").setTab("airSpeed") ;
-			cp5.getController("ppmRngMax").show() ;
-			cp5.getGroup("ppmPin").setTab("airSpeed") ;
+			TabPPM.getPpmTgl().setTab("airSpeed")
+			                  .show();
+			TabPPM.getPpmPinL().setTab("airSpeed")
+			                   .show();
+			TabPPM.getPpmPinDdl().setTab("airSpeed") ;
+			TabPPM.getPpmRngL().setTab("airSpeed")
+			                   .show();
+			TabPPM.getPpmRngMinNBox().setTab("airSpeed")
+			                         .show();
+			TabPPM.getPpmRngMaxNBox().setTab("airSpeed")
+			                         .show();
 		}
 
-		if ( theEvent.isFrom(cp5.getController("vSpeedMax")) || theEvent.isFrom(cp5.getController("vSpeedMin")) ) {   //  V speed sensitivity range interaction
-			cp5.getController("vSpeedMax").setBroadcast(false) ;
-			cp5.getController("vSpeedMin").setBroadcast(false) ;
-			cp5.get(Numberbox.class, "vSpeedMax").setRange( cp5.getController("vSpeedMin").getValue(), 1000 ) ;
-			cp5.get(Numberbox.class, "vSpeedMin").setRange( 0, cp5.getController("vSpeedMax").getValue() ) ;
-			cp5.getController("vSpeedMin").setBroadcast(true) ;
-			cp5.getController("vSpeedMax").setBroadcast(true) ;
+		if ( theEvent.isFrom(TabVario.getvSpeedMaxNBox()) || theEvent.isFrom(TabVario.getvSpeedMinNBox()) ) {   //  V speed sensitivity range interaction
+			TabVario.getvSpeedMaxNBox().setBroadcast(false) ;
+			TabVario.getvSpeedMinNBox().setBroadcast(false) ;
+			TabVario.getvSpeedMaxNBox().setRange( TabVario.getvSpeedMinNBox().getValue(), 1000 ) ;
+			TabVario.getvSpeedMinNBox().setRange( 0, TabVario.getvSpeedMaxNBox().getValue() ) ;
+			TabVario.getvSpeedMinNBox().setBroadcast(true) ;
+			TabVario.getvSpeedMaxNBox().setBroadcast(true) ;
 		}
 
 		// Voltages sensor activation/desactivation

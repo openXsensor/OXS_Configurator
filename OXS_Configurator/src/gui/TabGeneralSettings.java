@@ -335,7 +335,7 @@ public class TabGeneralSettings {
 		mainP.smooth() ;
 	
 		// Sensor ID graying
-		if ( protocolDdl.getValue() != 1.0 ) {
+		if ( protocolDdl.getCaptionLabel().getText().equals("Multiplex") ) {
 			sensorIDTextlabel.setColorValueLabel(MainP.grayedColor) ;
 			sensorIDDdl.hide() ;
 			mainP.fill(MainP.grayedColor) ;
@@ -346,7 +346,7 @@ public class TabGeneralSettings {
 		}
 		
 		// Voltage graying
-		if ( voltRefChoiceDdl.getValue() == 2.0 ) {
+		if ( voltRefChoiceDdl.getCaptionLabel().getText().equals("Internal (1.1V)") ) {
 			arduinoVccNBox.lock() 
 						  .setColorBackground(MainP.grayedColor) 
 						  .setColorValueLabel(MainP.grayedColor) 

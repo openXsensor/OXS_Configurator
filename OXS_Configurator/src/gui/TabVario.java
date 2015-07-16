@@ -420,7 +420,7 @@ public class TabVario {
 		mainP.line(10, 363, 440, 363) ;
 		mainP.noStroke() ;
 	
-		if ( TabPPM.getPpmTgl().getValue() == 0 ) {
+		if ( TabPPM.getPpmTgl().getValue() == 0.0 ) {
 			cp5.getController("ppmRngSensL").setColorValueLabel(MainP.grayedColor) ;
 			ppmRngSensMinMaxRng.lock()
 			                   .setColorForeground(MainP.grayedColor)
@@ -450,7 +450,8 @@ public class TabVario {
 			                .setColorCaptionLabel(mainP.color(0));
 		}
 	
-		if ( TabPPM.getPpmTgl().getValue() == 0 || ( TabGeneralSettings.getVario2Tgl().getValue() == 0 && TabGeneralSettings.getAirSpeedTgl().getValue() == 0 ) ) {
+		if ( TabPPM.getPpmTgl().getValue() == 0.0 
+				|| ( TabGeneralSettings.getVario2Tgl().getValue() == 0.0 && TabGeneralSettings.getAirSpeedTgl().getValue() == 0.0 ) ) {
 			cp5.getController("vStSw2L").setColorValueLabel(MainP.grayedColor) ;
 			cp5.getController("vStSwitching").setColorValueLabel(MainP.grayedColor) ;
 			vSpeed2Ddl.hide() ;
