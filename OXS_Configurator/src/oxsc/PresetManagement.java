@@ -15,6 +15,7 @@ import gui.TabPPM;
 import gui.TabVario;
 import gui.TabVoltage;
 import gui.TabAirSpeed;
+import gui.TabCurrent;
 import gui.TabData;
 
 public class PresetManagement {
@@ -35,6 +36,7 @@ public class PresetManagement {
 		uiUnits.add(TabVario.getControllers());
 		uiUnits.add(TabAirSpeed.getControllers());
 		uiUnits.add(TabVoltage.getControllers());
+		uiUnits.add(TabCurrent.getControllers());
 
 		uiUnits.add(TabData.getControllers());
 	}

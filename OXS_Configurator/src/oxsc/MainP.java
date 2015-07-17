@@ -667,20 +667,20 @@ public class MainP extends PApplet {
 			}
 		}
 
-		//  Current sensor output offset interaction
-		if ( theEvent.isFrom(cp5.getController("currentOutOffsetNb") ) /*|| theEvent.isFrom(cp5.getController("currentOutSensNb"))*/ ) {
-			cp5.getController("currentOutOffsetMA").setBroadcast(false) ;
-			float currentOutSens = cp5.getController("currentOutSensNb").getValue() ;
-			float currentOutOffsetMV = cp5.getController("currentOutOffsetNb").getValue() ;
-			cp5.getController("currentOutOffsetMA").setValue( ( currentOutOffsetMV / currentOutSens ) * 1000 ) ;
-			cp5.getController("currentOutOffsetMA").setBroadcast(true) ;
+		//  Current sensor output offset interaction // TODO current - if output sens = 0
+		if ( theEvent.isFrom(TabCurrent.getCurrentOutOffsetNBox() ) /*|| theEvent.isFrom(cp5.getController("currentOutSensNb"))*/ ) {
+			TabCurrent.getCurrentOutOffsetMaNBox().setBroadcast(false) ;
+			float currentOutSens = TabCurrent.getCurrentOutSensNBox().getValue() ;
+			float currentOutOffsetMV = TabCurrent.getCurrentOutOffsetNBox().getValue() ;
+			TabCurrent.getCurrentOutOffsetMaNBox().setValue((float) ((currentOutOffsetMV / currentOutSens) * 1000.0));
+			TabCurrent.getCurrentOutOffsetMaNBox().setBroadcast(true);
 		}
-		if ( theEvent.isFrom(cp5.getController("currentOutOffsetMA")) ) {
-			cp5.getController("currentOutOffsetNb").setBroadcast(false) ;
-			float currentOutSens = cp5.getController("currentOutSensNb").getValue() ;
-			float currentOutOffsetMA = cp5.getController("currentOutOffsetMA").getValue() ;
-			cp5.getController("currentOutOffsetNb").setValue( ( currentOutOffsetMA / 1000 ) * currentOutSens ) ;
-			cp5.getController("currentOutOffsetNb").setBroadcast(true) ;
+		if ( theEvent.isFrom(TabCurrent.getCurrentOutOffsetMaNBox()) ) {
+			TabCurrent.getCurrentOutOffsetNBox().setBroadcast(false) ;
+			float currentOutSens = TabCurrent.getCurrentOutSensNBox().getValue() ;
+			float currentOutOffsetMA = TabCurrent.getCurrentOutOffsetMaNBox().getValue() ;
+			TabCurrent.getCurrentOutOffsetNBox().setValue((float) ((currentOutOffsetMA / 1000.0 ) * currentOutSens));
+			TabCurrent.getCurrentOutOffsetNBox().setBroadcast(true);
 		}
 
 		// Protocol selection - Showing right Telemetry data list in fields
@@ -844,7 +844,7 @@ public class MainP extends PApplet {
 		// println("a toggle event.") ;
 	}
 
-	void ppm(boolean theFlag) {
+	void ppmTgl(boolean theFlag) {
 		if (theFlag == true && ppm == null) {
 			ppm = new PPM(this, cp5, "ppm");
 		} else if (theFlag == false && ppm != null) {
