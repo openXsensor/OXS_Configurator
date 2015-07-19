@@ -25,6 +25,7 @@
 package oxsc;
 
 import gui.FileManagement;
+import gui.MessageBox;
 import gui.TabAirSpeed;
 import gui.TabCurrent;
 import gui.TabData;
@@ -41,14 +42,10 @@ import processing.core.PApplet;
 import processing.core.PFont;
 import processing.core.PGraphics;
 import processing.core.PShape;
-import processing.data.StringList;
-import controlP5.Button;
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.Controller;
-import controlP5.Group;
 import controlP5.Slider;
-import controlP5.Textarea;
 
 public class MainP extends PApplet {
 
@@ -65,13 +62,13 @@ public class MainP extends PApplet {
 
 	public static final int tabGray = 0xFFC8C8C8; // gray 200
 	public static final int backDdlGray = 0xFFFFFFFF; // gray 190
+	public static final int grayedColor = 0xFF9B9B9B; // gray 155
 	public static final int topBottomGray = 0xFF969696; // gray 150
 	public static final int darkBackGray = 0xFF464646; // gray 70
 	public static final int blueAct = 0xFF0FA5FF; // color(15, 165, 255);
 	public static final int lightBlue = 0xFFB5CFDB; // color(181, 207, 219);
 	public static final int orangeAct = 0xFFFF8000; // color(255, 128, 0);
 	public static final int lightOrange = 0xFFDBBFB5; // color(219, 191, 181);
-	public static final int grayedColor = 0xFF9B9B9B; // color(155);
 	public static final int okColor = 0xFF18D018; // color(24, 208, 24);
 	public static final int warnColor = 0xFFFFB700; // color(255, 183, 0);
 	public static final int errorColor = 0xFFFF2323; // color(255, 35, 35);
@@ -88,11 +85,6 @@ public class MainP extends PApplet {
 
 	public ControlP5 cp5;
 
-	public static Group messageBox; // TODO later
-	public static Textarea messageBoxTextarea;
-	public static Button buttonOKBtn;
-	// Popup message; // TODO later
-
 	// Tabs declaration
 	public static TabGeneralSettings tabGenSet;
 	public static TabPPM tabPPM;
@@ -105,8 +97,6 @@ public class MainP extends PApplet {
 	public static FileManagement fileManagement;
 
 	public static String[] analogPins = new String[8]; // Analog pins array
-
-	public static StringList messageList = new StringList(); // TODO later
 
 	// Variables to set the controllers data type
 	int ppmRngSensMinMaxRng;
@@ -126,9 +116,6 @@ public class MainP extends PApplet {
 	int ppmRngCompMinMaxRng;
 	int ppmCompMinMaxRng;
 
-	int mBoxWidth = 400; // TODO later
-	int mBoxHeight = 320; // TODO later
-
 	public static Protocol protocol;
 
 	public static Sensor vario;
@@ -141,6 +128,8 @@ public class MainP extends PApplet {
 
 	public static PresetManagement presetMan;
 
+	public static MessageBox messageBox;
+	
 	public void setup() {
 		
 		size(450, 460) ;
@@ -175,10 +164,6 @@ public class MainP extends PApplet {
 		}
 
 		cp5.setFont(fontLabel, 12) ;
-
-		//message = new Popup(this, cp5);           // TODO later popup
-
-
 
 
 		// ------------------------ TABS definition ------------------------
@@ -240,6 +225,9 @@ public class MainP extends PApplet {
 		// --------------------------- Preset Management ---------------------------
 		presetMan = new PresetManagement(this, cp5);
 		
+		// ------------------------------ Message Box ------------------------------
+		messageBox = new MessageBox(cp5, this);
+		
 		// dropdownlist overlap
 		//cp5.getGroup("tempPin").bringToFront() ;
 
@@ -247,7 +235,7 @@ public class MainP extends PApplet {
 		cp5.getTooltip().setDelay(1000) ;
 		cp5.getTooltip().getLabel().toUpperCase(false) ;
 
-		createMessageBox() ;                     	     //  Message box creation
+		
 		TabGeneralSettings.getProtocolDdl().setValue(1); // Set the protocol ddl value after telemetry fields creation
 		new OXSdata("----------", "----------", "noSensor", null) ;
 
@@ -748,6 +736,10 @@ public class MainP extends PApplet {
 		selectFolder("Select OXS source folder:", "folderSelected") ;
 	}
 
+	public void about(boolean theFlag) {
+		MessageBox.about();
+	}
+	
 	public void varioTgl(boolean theFlag) {
 		if (theFlag == true && vario == null) {
 			vario = new Vario(this, cp5, "vario");
@@ -853,50 +845,16 @@ public class MainP extends PApplet {
 		}
 	}
 
-	void about(boolean theFlag) {
-
-		mbClose() ;
-
-		messageList.clear() ;
-
-		messageList.append( "                            OXS Configurator " + Validation.getOxsCversion() + " for OXS " + Validation.getOxsVersion() ) ;
-		messageList.append( "                                                       ---" ) ;
-		messageList.append( "                         -- OpenXsensor configuration file GUI --" ) ;
-		messageList.append( "\n" ) ;
-		messageList.append( "Contributors:" ) ;
-		messageList.append( "" ) ;
-		messageList.append( "- Rainer Schloßhan" ) ;
-		messageList.append( "- Bertrand Songis" ) ;
-		messageList.append( "- André Bernet" ) ;
-		messageList.append( "- Michael Blandford" ) ;
-		messageList.append( "- Michel Strens" ) ;
-		messageList.append( "- David Laburthe" ) ;
-		messageList.append( "" ) ;
-		messageList.append( "" ) ;
-
-		String[] messageListArray = messageList.array() ;
-
-		String joinedMessageList = join(messageListArray, "\n") ;
-
-		messageBoxTextarea.setText(joinedMessageList) ;
-
-		buttonOKBtn.setColorForeground(orangeAct) ;
-		buttonOKBtn.setColorBackground(color(100)) ;
-		buttonOKBtn.setColorActive(blueAct) ;
-		messageBox.setBackgroundColor(blueAct) ;
-		messageBox.show() ;
-	}
-
 	public void loadButton(int theValue) {                                     // Load preset button
 		File presetDir = new File( sketchPath("src/Preset/...") ) ;
 		selectInput("Select a preset file to load:", "presetLoad", presetDir) ;
 	}
 
 	public void saveButton(int theValue) {                                     // Save preset button
-		mbClose() ;
+		MessageBox.mbClose() ;
 		Validation.validationProcess(this, "preset") ;
 		if ( Validation.getAllValid() == 2 ) {
-			messageBox.hide() ;
+			MessageBox.getGroup().hide() ;
 		}
 		if ( Validation.getAllValid() != 0 ) {
 			File presetDir = new File( ("src/Preset/type name") ) ;  // sketchPath("Preset/type name")
@@ -922,10 +880,10 @@ public class MainP extends PApplet {
 	}
 
 	public void writeConfButton(int theValue) {
-		mbOkCancel() ;
+		MessageBox.mbOkCancel() ;
 		Validation.validationProcess(this, "Config") ;
 		if ( Validation.getAllValid() == 0) {
-			mbClose() ;
+			MessageBox.mbClose() ;
 		}
 	}
 
@@ -1064,82 +1022,15 @@ public class MainP extends PApplet {
 		rng.getCaptionLabel().toUpperCase(false) ;
 	}
 
-	public void createMessageBox() { // TODO first - problem with button + move to gui package
-
-		// create a group to store the messageBox elements
-		messageBox = cp5.addGroup("messageBox", width / 2 - mBoxWidth / 2, 76, mBoxWidth)
-				        .setBackgroundHeight(mBoxHeight)
-				        .setBackgroundColor(color(240))
-				        .setTab("global")
-				        .hideBar()
-				        .hide()
-				        ;
-
-		// add a Textaera to the messageBox.
-		messageBoxTextarea = cp5.addTextarea("messageBoxLabel")
-		                        .setPosition(5,5)
-		                        .setSize(mBoxWidth - 10, mBoxHeight - 48)
-		                        .setLineHeight(14)
-		                        .setColor(white)
-		                        .setColorActive(orangeAct)
-		                        //.setBorderColor(color(0))
-		                        .setColorBackground(color(120))
-		                        .setColorForeground(blueAct)
-		                        .setScrollBackground(color(80))
-		                        //.setTab("global")
-		                        ;
-		messageBoxTextarea.moveTo(messageBox) ;
-
-		// OK button to the messageBox.
-		buttonOKBtn = cp5.addButton(this, "btnOK", "buttonOK", 0, width / 2 - 60, 218, 80, 30) ;
-		buttonOKBtn.moveTo(messageBox) ;
-		buttonOKBtn.setColorForeground(color(blueAct)) ;
-		buttonOKBtn.setColorBackground(color(100)) ;
-		buttonOKBtn.setColorActive(color(orangeAct)) ;
-		buttonOKBtn.getCaptionLabel().setFont(font20) ;
-		buttonOKBtn.getCaptionLabel().toUpperCase(false) ;
-		buttonOKBtn.getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER).setPaddingX(10) ;
-
-		// Cancel button to the messageBox.
-		cp5.addButton(this, "btnCancel", "buttonCancel", 0, mBoxWidth / 2 + 5, mBoxHeight - 37, 80, 30)
-		   .moveTo(messageBox)
-		   .setCaptionLabel("Cancel")
-		   .setColorForeground(blueAct)
-		   .setColorBackground(color(100))
-		   .setColorActive(orangeAct)
-		   .hide()
-		   ;
-		cp5.getController("buttonCancel").getCaptionLabel().setFont(font20) ;
-		cp5.getController("buttonCancel").getCaptionLabel().toUpperCase(false) ;
-		cp5.getController("buttonCancel").getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER).setPaddingX(10) ;
-
-	}
-
-	public void mbOkCancel() {
-		buttonOKBtn.setPosition(mBoxWidth / 2 - 80 - 5, mBoxHeight - 37) ;
-		buttonOKBtn.setSize(80, 30) ;
-		buttonOKBtn.setCaptionLabel("OK") ;
-
-		cp5.getController("buttonCancel").show() ;
-	}
-
-	public void mbClose() {
-		buttonOKBtn.setPosition(mBoxWidth / 2 - 40 , mBoxHeight - 37) ;
-		buttonOKBtn.setSize(80, 30) ;
-		buttonOKBtn.setCaptionLabel("CLOSE") ;
-
-		cp5.getController("buttonCancel").hide() ;
-	}
-
 	public void buttonOK(int theValue) {
 		if (Validation.getAllValid() != 0) {
 			WriteConf.writeConf();
 		}
-		messageBox.hide();
+		MessageBox.getGroup().hide();
 	}
 
 	public void buttonCancel(int theValue) {
-		messageBox.hide();
+		MessageBox.getGroup().hide();
 	}
 		
 	public static void main(String _args[]) {
