@@ -7,9 +7,26 @@ public class Protocol {
 	
 	private String name ;
 	
-	private static String targetDataList[][] ;
+	private static String[][] targetDataList;
+	
+	// ------------------------- HUB protocol data list array --------------------------
+		/*private static String hubDataList[][] = new String[][] {
+			{ "----------", "----------" },
+			{ "DEFAULTFIELD", "DEFAULT" },
+			{ "Vspd", "Vertical Speed" },            // FRSKY_USERDATA_VERT_SPEED
+			{ "Curr", "Current" },                   // FRSKY_USERDATA_CURRENT
+			{ "Vfas", "Vfas" },                      // FRSKY_USERDATA_VFAS_NEW
+			{ "T1", "Temperature 1" },               // FRSKY_USERDATA_TEMP1
+			{ "T2", "Temperature 2" },               // FRSKY_USERDATA_TEMP2
+			{ "Rpm", "RPM" },                        // FRSKY_USERDATA_RPM
+			{ "Fuel", "Fuel" },                      // FRSKY_USERDATA_FUEL
+			{ "AccX", "Acceleration X" },            // FRSKY_USERDATA_ACC_X
+			{ "AccY", "Acceleration Y" },            // FRSKY_USERDATA_ACC_Y
+			{ "AccZ", "Acceleration Z" }             // FRSKY_USERDATA_ACC_Z
+		} ;*/
 
-	private static String frSkyDataList[][] = new String[][] {
+	// -------------------- SMART PORT protocol data list array --------------------
+	private static String[][] frSkyDataList = new String[][] {
 			{ "----------", "----------" },
 			{ "DEFAULTFIELD", "DEFAULT" },          // 1
 			{ "Alt", "Altitude" },                  // 2  ALT_FIRST_ID
@@ -28,7 +45,8 @@ public class Protocol {
 			{ "ASpd", "Air Speed (S.Port only)" }   // 15 AIR_SPEED_FIRST_ID
 	};
 
-	private static String multiplexDataList[][] = new String[][] {
+	// -------------------- Multiplex protocol data list array --------------------
+	private static String[][] multiplexDataList = new String[][] {
 			{ "----------", "----------" },
 			{ "2", "2" },
 			{ "3", "3" },

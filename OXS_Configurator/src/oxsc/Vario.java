@@ -12,8 +12,6 @@ public class Vario extends Sensor {
 	
 	// private int parameters ;
 	@SuppressWarnings("unused")
-	private static Sensor vario; // TODO
-	@SuppressWarnings("unused")
 	private ArrayList<OXSdata> dataList = new ArrayList<OXSdata>(); // or string array ?
 
 	public Vario(PApplet p, ControlP5 cp5, String name) {

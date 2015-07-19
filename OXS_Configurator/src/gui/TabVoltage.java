@@ -314,12 +314,12 @@ public class TabVoltage {
 	}
 
 	public static void customizeDdlVpin(DropdownList ddlV) {
-		ddlV.setSize(45, 200) ;
-		ddlV.setColorForeground(MainP.orangeAct) ;
-		ddlV.setColorBackground(MainP.darkBackGray) ;
-		ddlV.setColorActive(MainP.blueAct) ;
-		ddlV.setItemHeight(20) ;
-		ddlV.setBarHeight(20) ;
+		ddlV.setSize(45, 200)
+		    .setColorForeground(MainP.orangeAct)
+		    .setBackgroundColor(190) // can't use standard color
+		    .setColorActive(MainP.blueAct)
+		    .setItemHeight(20)
+		    .setBarHeight(20);
 		ddlV.getCaptionLabel().set(" ") ;
 		ddlV.getCaptionLabel().setPaddingX(12) ;
 		ddlV.getCaptionLabel().getStyle().marginTop = 2 ;

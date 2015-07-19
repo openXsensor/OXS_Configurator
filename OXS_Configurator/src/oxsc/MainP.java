@@ -45,7 +45,6 @@ import processing.core.PShape;
 import controlP5.ControlEvent;
 import controlP5.ControlP5;
 import controlP5.Controller;
-import controlP5.Slider;
 
 public class MainP extends PApplet {
 
@@ -170,7 +169,7 @@ public class MainP extends PApplet {
 		// By default all controllers are stored inside Tab 'default'
 		cp5.getWindow().setPositionOfTabs(0, 80) ;
 
-		// About // TODO first - problem with button
+		// About
 		cp5.addButton("about")
 		   .setCaptionLabel("About")
 		   .setPosition(380, 14)
@@ -982,42 +981,24 @@ public class MainP extends PApplet {
 	}
 		
 	// Customize functions
-
-	void customizeSlider(Controller<Slider> sld) {
-		sld.setColorForeground(blueAct) ;
-		sld.setColorCaptionLabel(0) ;
-		sld.setColorValueLabel(0) ;
-		sld.setSize(150, 15) ;
-		sld.setValue(50) ;
-		sld.setTab("vario") ;
-		// reposition the Labels for controller 'slider'
-		sld.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(10) ;
-		sld.getValueLabel().align(ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(10) ;
-
-		sld.getCaptionLabel().toUpperCase(false) ;
-	}
-
 	public static void customizeToggle(Controller<?> tgl) {
 		tgl.setColorForeground(orangeAct) ;
-		tgl.setColorBackground(MainP.darkBackGray) ;
+		tgl.setColorBackground(darkBackGray) ;
 		tgl.setColorActive(blueAct) ;
 		tgl.setColorCaptionLabel(0) ;
 		tgl.setSize(15, 15) ;
-
 		// reposition the Labels
 		tgl.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(10) ;
-
 		tgl.getCaptionLabel().toUpperCase(false) ;
 	}
 
 	public static void customizeRange(Controller<?> rng) {
 		rng.setColorForeground(blueAct) ;
-		rng.setColorBackground(MainP.darkBackGray) ;
+		rng.setColorBackground(darkBackGray) ;
 		rng.setColorActive(orangeAct) ;
 		//rng.setSize(200, 20) ;
 		rng.setColorCaptionLabel(0) ;
 		rng.setTab("vario") ;
-
 		//rng.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER) ;
 		rng.getCaptionLabel().toUpperCase(false) ;
 	}

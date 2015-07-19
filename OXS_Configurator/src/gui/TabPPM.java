@@ -53,7 +53,7 @@ public class TabPPM {
 				       .setSize(30, 75)
 				       .setColorForeground(MainP.orangeAct)
 				       .setColorActive(MainP.blueAct)
-				       .setBackgroundColor(MainP.backDdlGray)
+				       .setBackgroundColor(190) // can't use standard color
 				       .setItemHeight(20)
 				       .setBarHeight(20)
 				       .hide()

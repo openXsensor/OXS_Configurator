@@ -48,7 +48,7 @@ public class TabCurrent {
 	  
 	    currentPinDdl = cp5.addDropdownList("currentPinDdl")
 	                       .setColorForeground(MainP.orangeAct)
-	                       .setColorBackground(MainP.darkBackGray)
+	                       .setBackgroundColor(190) // can't use standard color
 	                       .setColorActive(MainP.blueAct)
 	                       .setPosition(165, 146)
 	                       .setSize(45, 200)

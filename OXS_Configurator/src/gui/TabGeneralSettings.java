@@ -456,7 +456,7 @@ public class TabGeneralSettings {
 	
 	public static void customizeDdl(DropdownList ddlS) {
 		ddlS.setColorForeground(MainP.blueAct)
-		    .setBackgroundColor(190)
+		    .setBackgroundColor(190) // can't use standard color
 		    .setColorActive(MainP.orangeAct)
 		    .setItemHeight(20)
 			.setBarHeight(20)

@@ -46,27 +46,27 @@ public class MessageBox {
 		              .setColorBackground(mainP.color(120))
 		              .setColorForeground(MainP.blueAct)
 		              .setScrollBackground(mainP.color(80))
-		              //.setTab("global")
+		              .moveTo(group)
 		              ;
-		textarea.moveTo(group) ;
 	
 		// OK button to the messageBox.
 		buttonOKBtn = cp5.addButton(mainP, "btnOK", "buttonOK", 0, mainP.width / 2 - 60, 218, 80, 30)
-		                 .moveTo(group)
 		                 .setColorForeground(mainP.color(MainP.blueAct))
 		                 .setColorBackground(mainP.color(100))
-		                 .setColorActive(mainP.color(MainP.orangeAct));
+		                 .setColorActive(mainP.color(MainP.orangeAct))
+		                 .moveTo(group)
+		                 ;
 		buttonOKBtn.getCaptionLabel().setFont(MainP.font20);
 		buttonOKBtn.getCaptionLabel().toUpperCase(false);
 		buttonOKBtn.getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER).setPaddingX(10);
 	
 		// Cancel button to the messageBox.
 		buttonCancel = cp5.addButton(mainP, "btnCancel", "buttonCancel", 0, mBoxWidth / 2 + 5, mBoxHeight - 37, 80, 30)
-		                  .moveTo(group)
 		                  .setCaptionLabel("Cancel")
 		                  .setColorForeground(MainP.blueAct)
 		                  .setColorBackground(mainP.color(100))
 		                  .setColorActive(MainP.orangeAct)
+		                  .moveTo(group)
 		                  .hide()
 		                  ;
 		buttonCancel.getCaptionLabel().setFont(MainP.font20) ;

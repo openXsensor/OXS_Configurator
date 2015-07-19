@@ -120,20 +120,12 @@ public class TabVario {
 	    vSpeed1Ddl = cp5.addDropdownList("vSpeed1Ddl")
 	                    .setPosition(186, 234)
 	                    .setSize(100, 75)
-	                    .setColorForeground(MainP.orangeAct)
-	                    .setColorActive(MainP.blueAct)
-	                    .setBackgroundColor(MainP.backDdlGray)
-	                    .setItemHeight(20)
-	                    .setBarHeight(20)
-	                    .setTab("vario")
 	                    ;
-	    vSpeed1Ddl.getCaptionLabel().getStyle().marginTop = 2 ;
 	    //cp5.get(DropdownList.class, "vSpeed1").addItem("       Vario 1", 0) ;
 	    //cp5.get(DropdownList.class, "vSpeed1").addItem("       Vario 2", 1) ;
 	    //cp5.get(DropdownList.class, "vSpeed1").addItem(" V1 + A.Speed", 2) ;
 	    //cp5.get(DropdownList.class, "vSpeed1").setValue(0) ;
-	    vSpeed1Ddl.toUpperCase(false) ;
-	    controllers.add(vSpeed1Ddl);
+	    customizeDdl(vSpeed1Ddl);
 	  
 	    cp5.addTextlabel("vStSw2L")
 	       .setText("2")
@@ -145,20 +137,12 @@ public class TabVario {
 	    vSpeed2Ddl = cp5.addDropdownList("vSpeed2Ddl")
 	                    .setPosition(306, 234)
 	                    .setSize(100, 75)
-	                    .setColorForeground(MainP.orangeAct)
-	                    .setColorActive(MainP.blueAct)
-	                    .setBackgroundColor(MainP.backDdlGray)
-	                    .setItemHeight(20)
-	                    .setBarHeight(20)
-	                    .setTab("vario")
 	                    ;
-	    vSpeed2Ddl.getCaptionLabel().getStyle().marginTop = 2 ;
 	    //cp5.get(DropdownList.class, "vSpeed2").addItem("       Vario 1", 0) ;
 	    //cp5.get(DropdownList.class, "vSpeed2").addItem("       Vario 2", 1) ;
 	    //cp5.get(DropdownList.class, "vSpeed2").addItem(" V1 + A.Speed", 2) ;
 	    //cp5.get(DropdownList.class, "vSpeed2").setValue(1) ;
-	    vSpeed2Ddl.toUpperCase(false) ;
-	    controllers.add(vSpeed2Ddl);
+	    customizeDdl(vSpeed2Ddl);
 	  
 	    // PPM Vertical speed switching values
 	    cp5.addTextlabel("ppmVspeedSw")
@@ -306,19 +290,11 @@ public class TabVario {
 	    climbPinDdl = cp5.addDropdownList("climbPinDdl")
 	                  .setPosition(165, 393)
 	                  .setSize(30, 75)
-	                  .setColorForeground(MainP.orangeAct)
-	                  .setColorActive(MainP.blueAct)
-	                  .setBackgroundColor(MainP.backDdlGray)
-	                  .setItemHeight(20)
-	                  .setBarHeight(20)
-	                  .setTab("vario")
 	                  ;
-	    climbPinDdl.getCaptionLabel().getStyle().marginTop = 2 ;
 	    climbPinDdl.addItem(" 3", 3) ;
 	    climbPinDdl.addItem("11", 11) ;
 	    climbPinDdl.setValue(3) ;
-	    climbPinDdl.toUpperCase(false) ;
-	    controllers.add(climbPinDdl);
+	    customizeDdl(climbPinDdl);
 	  
 	    // Output climb rate range
 	    cp5.addTextlabel("outClimbRateRngL")
@@ -345,6 +321,19 @@ public class TabVario {
 	    vSpeed1Ddl.bringToFront() ;
 	    vSpeed2Ddl.bringToFront() ;
 	  }
+
+	private static void customizeDdl(DropdownList ddl) {
+		ddl.setColorForeground(MainP.orangeAct)
+           .setColorActive(MainP.blueAct)
+           .setBackgroundColor(190) // can't use standard color
+           .setItemHeight(20)
+           .setBarHeight(20)
+           .setTab("vario")
+           ;
+		ddl.getCaptionLabel().getStyle().marginTop = 2;
+		ddl.toUpperCase(false);
+		controllers.add(ddl);
+	}
 
 	public static Range getPpmRngSensMinMaxRng() {
 		return ppmRngSensMinMaxRng;

@@ -299,14 +299,10 @@ public class Validation {
 		
 		int oxsMeasureCount = 0 ;
 
-		int oxsMeasureCountSPORT[][] = new int[TabData.getSentDataList().length + 1][TabData.getsPortDataList().length] ;    // array { sentData, sPortData }
 		String[][] oXsTabDataFields = new String[TabData.getTabDataFieldNbr() + 1][2];
 	
 		for ( int i = 1 ; i <= TabData.getTabDataFieldNbr() ; i++ ) {
-			int sentDataFieldNb = (int) TabData.getSentDataField(i).getValue() ;
 			String sentDataFieldName = TabData.getSentDataField(i).getCaptionLabel().getText() ;
-	
-			int targetDataFieldNb = (int) TabData.getTargetDataField(i).getValue() ;
 			String targetDataFieldName = TabData.getTargetDataField(i).getCaptionLabel().getText() ;
 	
 			if ( !sentDataFieldName.equals("----------")) {   // if OXS measurement field is not empty
@@ -358,9 +354,6 @@ public class Validation {
 							}
 						}
 					}
-	
-					oxsMeasureCountSPORT[sentDataFieldNb][targetDataFieldNb] ++ ;
-					oxsMeasureCountSPORT[TabData.getSentDataList().length][targetDataFieldNb] ++ ;
 				}
 			}
 			oXsTabDataFields[i][0] = sentDataFieldName;
