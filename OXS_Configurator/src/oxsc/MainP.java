@@ -238,7 +238,7 @@ public class MainP extends PApplet {
 		fileManagement = new FileManagement(cp5);
 
 		// --------------------------- Preset Management ---------------------------
-		presetMan = new PresetManagement(cp5);
+		presetMan = new PresetManagement(this, cp5);
 		
 		// dropdownlist overlap
 		//cp5.getGroup("tempPin").bringToFront() ;
@@ -783,7 +783,7 @@ public class MainP extends PApplet {
 			airSpeed = null;
 			cp5.getTab("airSpeed").hide();
 			if (ppm != null && vario == null)
-				TabPPM.getPpmTgl().setValue(0);
+				TabPPM.getPpmTgl().setValue(0.0f);
 		}
 	}
 
@@ -792,7 +792,7 @@ public class MainP extends PApplet {
 			cp5.getTab("voltage").show();
 		} else {
 			for (int i = 1; i <= TabVoltage.getVoltnbr(); i++) {
-				TabVoltage.getVoltTgl()[i].setValue(0);
+				TabVoltage.getVoltTgl()[i].setValue(0.0f);
 			}
 			cp5.getTab("voltage").hide();
 		}
@@ -904,22 +904,11 @@ public class MainP extends PApplet {
 		}
 	}
 
-	public void presetLoad(File selection) throws FileNotFoundException, IOException { // TODO preset load
+	public void presetLoad(File selection) throws FileNotFoundException, IOException {
 		if (selection == null) {
 			// println("Window was closed or the user hit cancel.") ;
 		} else {
-			/*
-			 * //println("User selected " + selection.getAbsolutePath()) ;
-			 * cp5.setBroadcast(false);
-			 * cp5.loadProperties(selection.getAbsolutePath()) ;
-			 * 
-			 * // Hack to keep slider labels alignement
-			 * cp5.getController("varioHysteresis").getCaptionLabel().align(
-			 * ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(10) ;
-			 * cp5.getController("varioHysteresis").getValueLabel().align(
-			 * ControlP5.RIGHT_OUTSIDE, ControlP5.CENTER).setPaddingX(10) ;
-			 * cp5.setBroadcast(true);
-			 */
+			// println("User selected " + selection.getAbsolutePath()) ;
 			PresetManagement.presetLoad(selection);
 		}
 	}
