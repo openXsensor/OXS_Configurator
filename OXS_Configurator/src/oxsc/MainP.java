@@ -273,29 +273,28 @@ public class MainP extends PApplet {
 		FileManagement.getSavePresetBtn().show() ;
 
 		// ------------ Tabs specific display ------------
+		String currentTabName = cp5.getWindow(this).getCurrentTab().getName() ;
+		
+		switch (currentTabName) {
 
-		int currentTabId = cp5.getWindow(this).getCurrentTab().getId() ;
-
-		switch( currentTabId ) {
-
-		case 0 :                                        // TAB GENERAL Settings
+		case "default" :                                      // TAB GENERAL Settings
 			TabGeneralSettings.draw(this);
 			break ;
 
-		case 1 :                                        // TAB Vario
+		case "vario" :                                        // TAB Vario
 			TabVario.draw(this);
 			break ;
 
-		case 2 :                                        // TAB Air Speed sensor
+		case "airSpeed" :                                     // TAB Air Speed sensor
 			TabAirSpeed.draw(this);
 			break ;
 
-		case 3 :                                                 // TAB Voltage / Other
+		case "voltage" :                                      // TAB Voltage / Other
 			TabVoltage.draw(this);
 			break ;
 
-		case 4 :                                                            // TAB Current sensor
 			/*
+		case "current" :                                      // TAB Current sensor
 		    if ( cp5.getController("currentDir").value() == 0 ) {             // Current grayed switch
 		      cp5.getController("currentDirL").setColorValue(grayedColor) ;
 		      cp5.getController("currentDir").setColorCaptionLabel(color(0)) ;
@@ -303,23 +302,11 @@ public class MainP extends PApplet {
 		      cp5.getController("currentDirL").setColorValue(color(0)) ;
 		      cp5.getController("currentDir").setColorCaptionLabel(grayedColor) ;
 		    }
-			 */
 			break ;
+			 */
 
-		case 7 :                                                            // TAB DATA sent  dataSentDdlOpen
-			fill(10) ;
-			rect(298, 414, 124, 34) ;
-
-			for ( int i = 1 ; i <= TabData.getTabDataFieldNbr() ; i++ ) {            // Load and Save preset buttons hide
-				if ( TabData.getSentDataField(i).isOpen() || TabData.getTargetDataField(i).isOpen() ) {
-					FileManagement.getLoadPresetBtn().hide() ;
-					FileManagement.getSavePresetBtn().hide() ;
-					break ;
-				} else {
-					FileManagement.getLoadPresetBtn().show() ;
-					FileManagement.getSavePresetBtn().show() ;
-				}
-			}
+		case "data" :                                         // TAB DATA sent  dataSentDdlOpen
+			TabData.draw(this);
 			break ;
 		}
 
@@ -528,8 +515,8 @@ public class MainP extends PApplet {
 
 		for ( int i = 1; i <= TabVoltage.getVoltnbr(); i++ ) {
 			if ( !cp5.isMouseOver ( TabVoltage.getDdlVolt()[i] ) ) {
-				TabVoltage.getDdlVolt()[i].close() ;
 				if (mousePressed == true) {
+				TabVoltage.getDdlVolt()[i].close() ;
 				}
 			}
 		}

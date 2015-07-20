@@ -229,4 +229,20 @@ public class TabData {
 		}
 	}
 
+	public static void draw(MainP mainP) {
+		mainP.fill(10);
+		mainP.rect(298, 414, 124, 34);
+		// Load and Save preset buttons hide
+		for (int i = 1; i <= tabDataFieldNbr; i++) {
+			if (sentDataField[i].isOpen() || targetDataField[i].isOpen()) {
+				FileManagement.getLoadPresetBtn().hide();
+				FileManagement.getSavePresetBtn().hide();
+				break;
+			} else {
+				FileManagement.getLoadPresetBtn().show();
+				FileManagement.getSavePresetBtn().show();
+			}
+		}
+	}
+
 }
