@@ -299,9 +299,9 @@ public class Validation {
 		
 		int oxsMeasureCount = 0 ;
 
-		String[][] oXsTabDataFields = new String[TabData.getTabDataFieldNbr() + 1][2];
+		String[][] oXsTabDataFields = new String[TabData.getFieldNbr() + 1][2];
 	
-		for ( int i = 1 ; i <= TabData.getTabDataFieldNbr() ; i++ ) {
+		for ( int i = 1 ; i <= TabData.getFieldNbr() ; i++ ) {
 			String sentDataFieldName = TabData.getSentDataField(i).getCaptionLabel().getText() ;
 			String targetDataFieldName = TabData.getTargetDataField(i).getCaptionLabel().getText() ;
 	
@@ -329,7 +329,7 @@ public class Validation {
 					// Only one Altitude DEFAULT TODO remove
 					} else if ( ( sentDataFieldName.equals("Altitude") || sentDataFieldName.equals("Altitude 2") )
 							&& targetDataFieldName.equals("DEFAULT") ) {
-						for ( int j = i+1 ; j <= TabData.getTabDataFieldNbr() ; j++ ) {
+						for ( int j = i+1 ; j <= TabData.getFieldNbr() ; j++ ) {
 							if ( ( TabData.getSentDataField(j).getCaptionLabel().getText().equals("Altitude") 
 									|| TabData.getSentDataField(j).getCaptionLabel().getText().equals("Altitude 2") )
 									&& TabData.getTargetDataField(j).getCaptionLabel().getText().equals("DEFAULT") ) {
@@ -342,7 +342,7 @@ public class Validation {
 					} else if ( ( sentDataFieldName.equals("Vertical Speed") || sentDataFieldName.equals("Vertical Speed 2")
 							|| sentDataFieldName.equals("Prandtl dTE") || sentDataFieldName.equals("PPM_VSPEED") )
 							&& targetDataFieldName.equals("DEFAULT") ) {
-						for ( int j = i+1 ; j <= TabData.getTabDataFieldNbr() ; j++ ) {
+						for ( int j = i+1 ; j <= TabData.getFieldNbr() ; j++ ) {
 							if ( ( TabData.getSentDataField(j).getCaptionLabel().getText().equals("Vertical Speed")
 									|| TabData.getSentDataField(j).getCaptionLabel().getText().equals("Vertical Speed 2")
 									|| TabData.getSentDataField(j).getCaptionLabel().getText().equals("Prandtl dTE")
@@ -361,14 +361,14 @@ public class Validation {
 		}
 	
 		// ***  Duplicate tests  ***
-		for (int i = 1; i <= TabData.getTabDataFieldNbr(); i++) {
+		for (int i = 1; i <= TabData.getFieldNbr(); i++) {
 			boolean duplicate = false;
 			List<String> tempStr = new ArrayList<>();
 			String messageString = "";
 			if (!oXsTabDataFields[i][0].equals("----------") && !oXsTabDataFields[i][1].equals("----------")) {
 				tempStr.add(oXsTabDataFields[i][1]);
 				tempStr.add(oXsTabDataFields[i][0]);
-				for (int j = i + 1; j <= TabData.getTabDataFieldNbr(); j++) {
+				for (int j = i + 1; j <= TabData.getFieldNbr(); j++) {
 					if (!oXsTabDataFields[j][0].equals("----------") && oXsTabDataFields[i][1].equals(oXsTabDataFields[j][1])) {
 						duplicate = true;
 						sentDataValid = false;

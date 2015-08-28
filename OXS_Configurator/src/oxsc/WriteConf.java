@@ -271,7 +271,7 @@ public class WriteConf {
 
 	private static void writeDataToSend() {  // TODO second: writeDatatToSend protocol aware
 		boolean dataFirst = true ;
-		for ( int i = 1; i <= TabData.getTabDataFieldNbr(); i++ ) {
+		for ( int i = 1; i <= TabData.getFieldNbr(); i++ ) {
 			if ( !TabData.getSentDataField(i).getCaptionLabel().getText().equals("----------") ) {
 				if ( !dataFirst ) {
 					output.println(" , \\") ;

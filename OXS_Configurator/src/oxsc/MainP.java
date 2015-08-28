@@ -82,7 +82,7 @@ public class MainP extends PApplet {
 	public static PFont font16; // = createFont("arial", 16, false) ;
 	public static PFont font20; // = createFont("arial", 20, false) ;
 
-	public ControlP5 cp5;
+	public static ControlP5 cp5;
 
 	// Tabs declaration
 	public static TabGeneralSettings tabGenSet;
@@ -236,7 +236,7 @@ public class MainP extends PApplet {
 
 		
 		TabGeneralSettings.getProtocolDdl().setValue(1); // Set the protocol ddl value after telemetry fields creation
-		new OXSdata("----------", "----------", "noSensor", null) ;
+		new OXSdata("----------", "----------", "noSensor") ;
 
 	}
 
@@ -433,7 +433,7 @@ public class MainP extends PApplet {
 		  }
 		 */
 		// TODO in 1 loop ?? later
-		for ( int i = 1; i <= TabData.getTabDataFieldNbr(); i++ ) {
+		for ( int i = 1; i <= TabData.getFieldNbr(); i++ ) {
 			if ( cp5.isMouseOver ( TabData.getDataMultiplierNBox()[i] ) ) {
 				TabData.getDataMultiplierNBox()[i].setColorForeground(orangeAct) ;
 			} else {
@@ -441,7 +441,7 @@ public class MainP extends PApplet {
 			}
 		}
 
-		for ( int i = 1; i <= TabData.getTabDataFieldNbr(); i++ ) {
+		for ( int i = 1; i <= TabData.getFieldNbr(); i++ ) {
 			if ( cp5.isMouseOver ( TabData.getDataDividerNBox()[i] ) ) {
 				TabData.getDataDividerNBox()[i].setColorForeground(orangeAct) ;
 			} else {
@@ -449,7 +449,7 @@ public class MainP extends PApplet {
 			}
 		}
 
-		for ( int i = 1; i <= TabData.getTabDataFieldNbr(); i++ ) {
+		for ( int i = 1; i <= TabData.getFieldNbr(); i++ ) {
 			if ( cp5.isMouseOver ( TabData.getDataOffsetNBox()[i] ) ) {
 				TabData.getDataOffsetNBox()[i].setColorForeground(orangeAct) ;
 			} else {
@@ -539,7 +539,7 @@ public class MainP extends PApplet {
 		    }
 		  }
 		 */
-		for ( int i = 1; i <= TabData.getTabDataFieldNbr(); i++ ) {
+		for ( int i = 1; i <= TabData.getFieldNbr(); i++ ) {
 			if ( !cp5.isMouseOver ( TabData.getSentDataField(i) ) ) {
 				if (mousePressed == true) {
 					TabData.getSentDataField(i).close() ;
@@ -557,7 +557,7 @@ public class MainP extends PApplet {
 		  }
 		 */
 
-		for ( int i = 1; i <= TabData.getTabDataFieldNbr(); i++ ) {
+		for ( int i = 1; i <= TabData.getFieldNbr(); i++ ) {
 			if ( !cp5.isMouseOver ( TabData.getTargetDataField(i) ) ) {
 				if (mousePressed == true) {
 					TabData.getTargetDataField(i).close() ;
@@ -623,7 +623,7 @@ public class MainP extends PApplet {
 				switch ((int) theEvent.getController().getValue()) {
 				case 1:
 					if (aVolt[i] == null) {
-						aVolt[i] = new Volt(this, cp5, "volt" + i);
+						aVolt[i] = new Volt("volt" + i);
 						TabVoltage.populateNbrCells();
 					}
 					break;
@@ -671,11 +671,19 @@ public class MainP extends PApplet {
 
 		// Selecting DEFAULT automatically in Telemetry data fields
 		// TODO group controllers ?
-		for (int i = 1; i <= TabData.getTabDataFieldNbr(); i++) {
+		for (int i = 1; i <= TabData.getFieldNbr(); i++) {
 
 			if (theEvent.isFrom(TabData.getSentDataField(i))) {
-
-				switch (TabData.getSentDataField(i).getCaptionLabel().getText()) {
+				String dataFieldDisplayName = TabData.getSentDataField(i).getCaptionLabel().getText();
+				String defaultValue = OXSdata.getOXSdata(dataFieldDisplayName).getDefaultValue();
+				if (defaultValue != null) {
+					for (String[] stringArray : TabData.getTargetDataField(i).getListBoxItems()) {
+						if (stringArray[1].equals(defaultValue)) {
+							 TabData.getTargetDataField(i).setValue(Float.parseFloat(stringArray[2]));
+						}
+					}
+				}
+				/*switch (TabData.getSentDataField(i).getCaptionLabel().getText()) {
 				case "Altitude":
 				case "Vertical Speed":
 				case "Altitude 2":
@@ -689,7 +697,7 @@ public class MainP extends PApplet {
 				case "RPM":
 					TabData.getTargetDataField(i).setValue(1); //TODO don't like set method
 					break;
-				}
+				}*/
 
 				/*
 				 * println("oxsdataList : " +
@@ -728,9 +736,8 @@ public class MainP extends PApplet {
 	
 	public void varioTgl(boolean theFlag) {
 		if (theFlag == true && vario == null) {
-			vario = new Vario(this, cp5, "vario");
+			vario = new Vario("vario");
 			cp5.getTab("vario").show();
-
 		} else if (theFlag == false && vario != null) {
 			if (vario2 != null)
 				TabGeneralSettings.getVario2Tgl().setValue(0);
@@ -745,7 +752,7 @@ public class MainP extends PApplet {
 
 	void vario2Tgl(boolean theFlag) {
 		if (theFlag == true && vario2 == null) {
-			vario2 = new Vario(this, cp5, "vario2");
+			vario2 = new Vario("vario2");
 		} else if (theFlag == false && vario2 != null) {
 			vario2.removeSensor();
 			vario2 = null;
@@ -754,7 +761,7 @@ public class MainP extends PApplet {
 
 	void airSpeedTgl(boolean theFlag) {
 		if (theFlag == true && airSpeed == null) {
-			airSpeed = new AirSpeed(this, cp5, "airSpeed");
+			airSpeed = new AirSpeed("airSpeed");
 			cp5.getTab("airSpeed").show();
 		} else if (theFlag == false && airSpeed != null) {
 			airSpeed.removeSensor();
@@ -791,7 +798,7 @@ public class MainP extends PApplet {
 
 	void currentTgl(boolean theFlag) {
 		if (theFlag == true && current == null) {
-			current = new Current(this, cp5, "current");
+			current = new Current("current");
 			cp5.getTab("current").show();
 		} else if (theFlag == false && current != null) {
 			current.removeSensor();
@@ -812,7 +819,7 @@ public class MainP extends PApplet {
 	// RPM TAB display
 	void rpmTgl(boolean theFlag) {
 		if (theFlag == true && rpm == null) {
-			rpm = new Rpm(this, cp5, "rpm");
+			rpm = new Rpm("rpm");
 			// cp5.getTab("rpm").show() ;
 		} else if (theFlag == false && rpm != null) {
 			rpm.removeSensor();
@@ -824,7 +831,7 @@ public class MainP extends PApplet {
 
 	void ppmTgl(boolean theFlag) {
 		if (theFlag == true && ppm == null) {
-			ppm = new PPM(this, cp5, "ppm");
+			ppm = new PPM("ppm");
 		} else if (theFlag == false && ppm != null) {
 			ppm.removeSensor();
 			ppm = null;
@@ -990,7 +997,7 @@ public class MainP extends PApplet {
 		rng.getCaptionLabel().toUpperCase(false) ;
 	}
 
-	public void buttonOK(int theValue) {
+	public void buttonOK(int theValue) { // TODO First: problems with preset save btn and warning state validation
 		if (Validation.getAllValid() != 0) {
 			WriteConf.writeConf();
 		}

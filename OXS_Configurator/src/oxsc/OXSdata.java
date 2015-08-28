@@ -30,6 +30,10 @@ public class OXSdata implements Serializable {
 				+ this.displayName + " - " + this.defaultValue );
 		OXSdataList.add(this);
 	}
+	
+	public OXSdata(String name, String displayName, String sensorType) {
+		this(name, displayName, sensorType, null);
+	}
 
 	public String getName() {
 		return name;
@@ -38,13 +42,17 @@ public class OXSdata implements Serializable {
 	public static String getName(String displayName) {
 		return OXSdataList.stream().filter(d -> d.displayName.equals(displayName)).findFirst().get().getName();
 	}
-
+	
 	public String getDisplayName() {
 		return displayName;
 	}
 
 	public String getSensorType() {
 		return sensorType;
+	}
+
+	public String getDefaultValue() {
+		return defaultValue;
 	}
 
 	public static ArrayList<OXSdata> getList() {
@@ -55,6 +63,10 @@ public class OXSdata implements Serializable {
 		return OXSdataList.get(i);
 	}
 
+	public static OXSdata getOXSdata(String displayName) {
+		return OXSdataList.stream().filter(d -> d.displayName.equals(displayName)).findFirst().get();
+	}
+	
 	public static void addToList(OXSdata newData) {
 		OXSdataList.add(newData);
 	}

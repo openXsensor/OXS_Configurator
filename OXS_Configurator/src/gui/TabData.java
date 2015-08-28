@@ -164,7 +164,7 @@ public class TabData {
 		}
 	}
 
-	public static int getTabDataFieldNbr() {
+	public static int getFieldNbr() {
 		return tabDataFieldNbr;
 	}
 	
@@ -174,6 +174,12 @@ public class TabData {
 	
 	public static DropdownList getTargetDataField(int i) {
 		return targetDataField[i];
+	}
+	
+	public static void setTargetDataFieldItem(int i, String displayName) {
+		for (int j = 1; j < Protocol.getDataList().length; j++ ) {
+			// TODO second remove ??
+		}
 	}
 
 	public static Numberbox[] getDataMultiplierNBox() {
