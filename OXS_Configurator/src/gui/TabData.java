@@ -3,8 +3,6 @@ package gui;
 import oxsc.MainP;
 import oxsc.OXSdata;
 import oxsc.Protocol;
-import processing.core.PApplet;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,17 +15,17 @@ public class TabData {
 
 	//private static ControlP5 cp5;
 
-	private static final int tabDataFieldNbr = 10;
-	private static DropdownList[] sentDataField = new DropdownList[tabDataFieldNbr + 1];
-	private static DropdownList[] targetDataField = new DropdownList[tabDataFieldNbr + 1];
-	private static Numberbox[] dataMultiplierNBox = new Numberbox[tabDataFieldNbr + 1];
-	private static Numberbox[] dataDividerNBox = new Numberbox[tabDataFieldNbr + 1];
-	private static Numberbox[] dataOffsetNBox = new Numberbox[tabDataFieldNbr + 1];
+	private static final int FIELD_NBR = 10;
+	private static DropdownList[] sentDataField = new DropdownList[FIELD_NBR + 1];
+	private static DropdownList[] targetDataField = new DropdownList[FIELD_NBR + 1];
+	private static Numberbox[] dataMultiplierNBox = new Numberbox[FIELD_NBR + 1];
+	private static Numberbox[] dataDividerNBox = new Numberbox[FIELD_NBR + 1];
+	private static Numberbox[] dataOffsetNBox = new Numberbox[FIELD_NBR + 1];
 
 	@SuppressWarnings("unused")
 	private DropdownList oXSdataField; // TODO later
 	@SuppressWarnings("unused")
-	private String[] dataDestFieldDisplayList = new String[tabDataFieldNbr + 1]; // TODO ?
+	private String[] dataDestFieldDisplayList = new String[FIELD_NBR + 1]; // TODO later
 	
 	private static List<Object> controllers = new ArrayList<>();
 	
@@ -61,7 +59,7 @@ public class TabData {
 		cp5.addTextlabel("offsetL").setText("Offset").setPosition(400, 104)
 				.setColorValueLabel(0).setTab("data");
 
-		for (int i = 1; i <= tabDataFieldNbr; i++) {
+		for (int i = 1; i <= FIELD_NBR; i++) {
 			// Transmitted DATA field
 			sentDataField[i] = cp5.addDropdownList("sentDataField" + i)
 					              .setColorForeground(MainP.orangeAct)
@@ -74,25 +72,6 @@ public class TabData {
 			sentDataField[i].getCaptionLabel().set("----------");
 			sentDataField[i].toUpperCase(false);
 			controllers.add(sentDataField[i]);
-
-			// HUB DATA field
-			/*hubDataField[i] = cp5.addDropdownList("hubDataField" + i)
-					             .setColorForeground(MainP.orangeAct)
-					             .setColorBackground(MainP.darkBackGray)
-					             .setColorActive(MainP.blueAct)
-					             .setPosition(150, 146 - 25 + i * 25)
-					             .setSize(135, 336 - 25 * i)
-					             .setItemHeight(20)
-					             .setBarHeight(20)
-					             .setTab("data");
-			for (int j = 0; j < TabData.hubDataList.length; j++) {
-				hubDataField[i].addItem(
-						"" + TabData.hubDataList[j][1], j);
-			}
-			hubDataField[i].getCaptionLabel().getStyle().marginTop = 2;
-			hubDataField[i].toUpperCase(false);
-			hubDataField[i].setValue(0);
-			hubDataField[i].hide();*/
 
 			// Telemetry target DATA fields  old ->SMART PORT DATA field
 			targetDataField[i] = cp5.addDropdownList("targetDataField" + i)
@@ -157,7 +136,7 @@ public class TabData {
 		}
 		
 		// dropdownlist overlap
-		for ( int i = tabDataFieldNbr; i >= 1; i-- ) {
+		for ( int i = FIELD_NBR; i >= 1; i-- ) {
 			sentDataField[i].bringToFront() ;
 			//cp5.getGroup("hubDataField" + i).bringToFront() ;
 			targetDataField[i].bringToFront() ;
@@ -165,7 +144,7 @@ public class TabData {
 	}
 
 	public static int getFieldNbr() {
-		return tabDataFieldNbr;
+		return FIELD_NBR;
 	}
 	
 	public static DropdownList getSentDataField(int i) {
@@ -199,7 +178,7 @@ public class TabData {
 	}
 
 	public static void populateSentDataFields() {
-		for (int i = 1; i <= tabDataFieldNbr; i++) {
+		for (int i = 1; i <= FIELD_NBR; i++) {
 			sentDataField[i].clear();
 			for (int j = 0; j < OXSdata.getList().size(); j++)
 				sentDataField[i]
@@ -208,18 +187,18 @@ public class TabData {
 	}
 
 	public static void resetSentDataFields() { // TODO every time OXSdataList changes
-		for (int i = 1; i <= tabDataFieldNbr; i++) {
+		for (int i = 1; i <= FIELD_NBR; i++) {
 			String ddlFieldDisplay = TabData.getSentDataField(i)
 					.getCaptionLabel().getText();// oXSdataFieldDisplay[i];
-			PApplet.println("Data field n°" + i);
+			System.out.println("Data field n°" + i);
 			for (int j = 0; j < OXSdata.getList().size(); j++) {
-				PApplet.println("OXSdata id " + j);
+				System.out.println("OXSdata id " + j);
 				if (OXSdata.getItem(j).getDisplayName()
 						.contains(ddlFieldDisplay)) {
 					break;
 				} else if (j == OXSdata.getList().size() - 1) {
 					sentDataField[i].setValue(0);
-					PApplet.println("reset OXSdata "
+					System.out.println("reset OXSdata "
 							+ OXSdata.getItem(j).getDisplayName() + " id " + j
 							+ ": " + ddlFieldDisplay);
 				}
@@ -228,7 +207,7 @@ public class TabData {
 	}
 
 	public static void populateTargetDataFields() {
-		for (int i = 1; i <= tabDataFieldNbr; i++) {
+		for (int i = 1; i <= FIELD_NBR; i++) {
 			targetDataField[i].clear();
 			for (int j = 0; j < Protocol.getDataList().length; j++)
 				targetDataField[i].addItem(Protocol.getDataList()[j][1], j); 
@@ -239,7 +218,7 @@ public class TabData {
 		mainP.fill(10);
 		mainP.rect(298, 414, 124, 34);
 		// Load and Save preset buttons hide
-		for (int i = 1; i <= tabDataFieldNbr; i++) {
+		for (int i = 1; i <= FIELD_NBR; i++) {
 			if (sentDataField[i].isOpen() || targetDataField[i].isOpen()) {
 				FileManagement.getLoadPresetBtn().hide();
 				FileManagement.getSavePresetBtn().hide();

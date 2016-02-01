@@ -1,7 +1,6 @@
 package oxsc;
 
 import gui.TabData;
-import processing.core.PApplet;
 
 public class Protocol {
 	
@@ -75,7 +74,6 @@ public class Protocol {
 			return tempProt;
 		}
 		return MainP.protocol;
-
 	}
 
 	private Protocol(String name) {
@@ -88,10 +86,9 @@ public class Protocol {
 			targetDataList = multiplexDataList.clone();
 		}
 
-		
-		PApplet.println();
-		PApplet.println("Création d'un protocole " + this.getName() + ":");
-		//updateUItargetDataList() ; // TODO why not working ?
+		System.out.println();
+		System.out.println("Création d'un protocole " + this.getName() + ":");
+		updateUItargetDataList();
 	}
 	  
 	public String getName() {
@@ -113,12 +110,12 @@ public class Protocol {
 		return null;
 	}
 
-	public static void updateUItargetDataList() { // TODO
+	public static void updateUItargetDataList() { // TODO later
 		for (int i = 0; i < targetDataList.length; i++) {
-			PApplet.print(targetDataList[i][0] + " - ");
+			System.out.print(targetDataList[i][0] + " - ");
 		}
 
-		PApplet.println();
+		System.out.println();
 
 		TabData.populateTargetDataFields();
 	}

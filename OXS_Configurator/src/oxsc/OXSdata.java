@@ -2,17 +2,10 @@ package oxsc;
 
 import gui.TabData;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-import processing.core.PApplet;
+public class OXSdata {
 
-public class OXSdata implements Serializable {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1600750914345136917L;
 	private String name;
 	private String displayName;
 	private String sensorType;
@@ -25,8 +18,8 @@ public class OXSdata implements Serializable {
 		this.displayName = displayName;
 		this.sensorType = sensorType;
 		this.defaultValue = defaultValue;
-		
-		PApplet.println("Creation d'un objet OXSdata: " + this.name + " - "
+
+		System.out.println("Creation d'un objet OXSdata: " + this.name + " - "
 				+ this.displayName + " - " + this.defaultValue );
 		OXSdataList.add(this);
 	}
@@ -72,7 +65,7 @@ public class OXSdata implements Serializable {
 	}
 
 	public static boolean isInList(String displayNameTest) {
-		PApplet.println("(isInList) displayName to test: " + displayNameTest);
+		System.out.println("(isInList) displayName to test: " + displayNameTest);
 		for (int i = OXSdataList.size() - 1; i >= 0; i--) {
 			if (OXSdataList.get(i).displayName == displayNameTest)
 				return true;
@@ -82,7 +75,7 @@ public class OXSdata implements Serializable {
 
 	public static void removeFromList(Sensor sensor) { // TODO needed ?
 		for (int i = OXSdataList.size() - 1; i >= 0; i--) {
-			// println( sensor.getName() + " for n°: " + i ) ;
+			// System.out.println( sensor.getName() + " for n°: " + i ) ;
 			if (OXSdataList.get(i).sensorType == sensor.getName())
 				OXSdataList.remove(OXSdataList.get(i));
 		}
@@ -91,7 +84,7 @@ public class OXSdata implements Serializable {
 
 	public static void removeFromList(String sensorType) {
 		for (int i = OXSdataList.size() - 1; i >= 0; i--) {
-			// println( sensorType + " for n°: " + i ) ;
+			// System.out.println( sensorType + " for n°: " + i ) ;
 			if (OXSdataList.get(i).sensorType.contains(sensorType))
 				OXSdataList.remove(OXSdataList.get(i));
 		}
@@ -99,7 +92,7 @@ public class OXSdata implements Serializable {
 	}
 	
 	public static void updateList(){
-		// TODO
+		// TODO z
 	}
 
 }

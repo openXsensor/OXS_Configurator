@@ -1,8 +1,6 @@
 package gui;
 
 import oxsc.MainP;
-import processing.core.PApplet;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +15,6 @@ import controlP5.Toggle;
 public class TabVario {
 	
 	private static ControlP5 cp5 ;
-	@SuppressWarnings("unused")
-	private final PApplet p ;  // TODO check if needed
 
 	private static Range ppmRngSensMinMaxRng;
 	private static Range ppmSensMinMaxRng;
@@ -36,10 +32,9 @@ public class TabVario {
 	
 	private static List<Object> controllers = new ArrayList<>();
 	
-	public TabVario(PApplet p, ControlP5 cp5) {
+	public TabVario(ControlP5 cp5) {
 
 		TabVario.cp5 = cp5;
-		this.p = p;
 
 		// ---------------------------- Tab 1 : Vario settings ------------------------------
 		cp5.getTab("vario")
@@ -346,7 +341,7 @@ public class TabVario {
 	public static DropdownList getvSpeed1Ddl() {
 		return vSpeed1Ddl;
 	}
-	
+
 	public static DropdownList getvSpeed2Ddl() {
 		return vSpeed2Ddl;
 	}
@@ -512,7 +507,7 @@ public class TabVario {
 		}
 	}
 	  
-	  /*public void populateVspeedFields() {  // TODO
+	  /*public void populateVspeedFields() {  // TODO z
 	    cp5.get(DropdownList.class, "vSpeed1").clear() ;
 	    cp5.get(DropdownList.class, "vSpeed2").clear() ;
 	    for ( int i = 1; i <= dataSentFieldNbr; i++ ) {

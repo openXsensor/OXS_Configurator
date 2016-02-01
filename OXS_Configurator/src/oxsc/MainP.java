@@ -63,6 +63,7 @@ public class MainP extends PApplet {
 	public static final int backDdlGray = 0xFFFFFFFF; // gray 190
 	public static final int grayedColor = 0xFF9B9B9B; // gray 155
 	public static final int topBottomGray = 0xFF969696; // gray 150
+	public static final int lightBackGray = 0xFF646464; // gray 100
 	public static final int darkBackGray = 0xFF464646; // gray 70
 	public static final int blueAct = 0xFF0FA5FF; // color(15, 165, 255);
 	public static final int lightBlue = 0xFFB5CFDB; // color(181, 207, 219);
@@ -183,16 +184,16 @@ public class MainP extends PApplet {
 		cp5.getController("about").getCaptionLabel().toUpperCase(false) ;
 
 		// ----------------------- Tab 0 : GENERAL SETTINGS ----------------------
-		tabGenSet = new TabGeneralSettings(this, cp5) ;
+		tabGenSet = new TabGeneralSettings(cp5) ;
 
 		// ---------------- PPM settings : Tabs Vario + Air Speed ----------------
-		tabPPM = new TabPPM(this, cp5) ;
+		tabPPM = new TabPPM(cp5) ;
 
 		// ---------------------------- Tab 1 : Vario settings ------------------------------
-		tabVario = new TabVario(this, cp5) ;
+		tabVario = new TabVario(cp5) ;
 
 		// ---------------------------- Tab 2 : Air Speed settings ------------------------------
-		tabAirSpeed = new TabAirSpeed(this, cp5) ;
+		tabAirSpeed = new TabAirSpeed(cp5) ;
 
 		// ------------------------------ Tab 3 : Voltage settings ------------------------------
 		tabVoltage = new TabVoltage(cp5) ;
@@ -201,7 +202,7 @@ public class MainP extends PApplet {
 		tabCurrent = new TabCurrent(cp5) ;
 
 		// ------------------------------ Tab 5 : Temperature settings ------------------------------
-		//tab5 = new TabTemperature(this, cp5) ;
+		//tab5 = new TabTemperature(cp5) ;
 
 		// ------------------------------ Tab 6 : RPM settings ------------------------------   needed ?
 		cp5.getTab("rpm")
@@ -222,7 +223,7 @@ public class MainP extends PApplet {
 		fileManagement = new FileManagement(cp5);
 
 		// --------------------------- Preset Management ---------------------------
-		presetMan = new PresetManagement(this, cp5);
+		presetMan = new PresetManagement(cp5);
 		
 		// ------------------------------ Message Box ------------------------------
 		messageBox = new MessageBox(cp5, this);
@@ -432,24 +433,18 @@ public class MainP extends PApplet {
 		    cp5.getController( "tempOffset" ).setColorForeground(OXSConfigurator.tabGray) ;
 		  }
 		 */
-		// TODO in 1 loop ?? later
+
 		for ( int i = 1; i <= TabData.getFieldNbr(); i++ ) {
 			if ( cp5.isMouseOver ( TabData.getDataMultiplierNBox()[i] ) ) {
 				TabData.getDataMultiplierNBox()[i].setColorForeground(orangeAct) ;
 			} else {
 				TabData.getDataMultiplierNBox()[i].setColorForeground(grayedColor) ;
 			}
-		}
-
-		for ( int i = 1; i <= TabData.getFieldNbr(); i++ ) {
 			if ( cp5.isMouseOver ( TabData.getDataDividerNBox()[i] ) ) {
 				TabData.getDataDividerNBox()[i].setColorForeground(orangeAct) ;
 			} else {
 				TabData.getDataDividerNBox()[i].setColorForeground(grayedColor) ;
 			}
-		}
-
-		for ( int i = 1; i <= TabData.getFieldNbr(); i++ ) {
 			if ( cp5.isMouseOver ( TabData.getDataOffsetNBox()[i] ) ) {
 				TabData.getDataOffsetNBox()[i].setColorForeground(orangeAct) ;
 			} else {
@@ -457,7 +452,7 @@ public class MainP extends PApplet {
 			}
 		}
 
-		// ----------------- Dropdownlist: mouse pressed elsewhere closes list -----------------
+    	// ----------------- Dropdownlist: mouse pressed elsewhere closes list -----------------
 
 		if ( !cp5.isMouseOver ( TabGeneralSettings.getProtocolDdl() ) ) {
 			if (mousePressed == true) {
@@ -580,9 +575,11 @@ public class MainP extends PApplet {
 	public void controlEvent(ControlEvent theEvent) {
 		// DropdownList is of type ControlGroup.
 		// A controlEvent will be triggered from inside the ControlGroup class.
-		// therefore you need to check the originator of the Event with if (theEvent.isGroup()) to avoid an error message thrown by controlP5.
+		// therefore you need to check the originator of the Event with if (theEvent.isGroup())
+		// to avoid an error message thrown by controlP5.
 
-		if ( theEvent.isFrom(cp5.getTab("vario")) ) {           //  Tab vario : display PPM parameters
+		// Tab vario: display PPM parameters
+		if ( theEvent.isFrom(cp5.getTab("vario")) ) {
 			TabPPM.getPpmTgl().setTab("vario")
 			                  .show();
 			TabPPM.getPpmPinL().setTab("vario")
@@ -594,7 +591,9 @@ public class MainP extends PApplet {
 			                         .show();
 			TabPPM.getPpmRngMaxNBox().setTab("vario")
 			                         .show();
-		} else if ( theEvent.isFrom(cp5.getTab("airSpeed")) ) {  //  Tab Air Speed : display PPM parameters
+			
+		// Tab Air Speed: display PPM parameters
+		} else if ( theEvent.isFrom(cp5.getTab("airSpeed")) ) {
 			TabPPM.getPpmTgl().setTab("airSpeed")
 			                  .show();
 			TabPPM.getPpmPinL().setTab("airSpeed")
@@ -608,7 +607,8 @@ public class MainP extends PApplet {
 			                         .show();
 		}
 
-		if ( theEvent.isFrom(TabVario.getvSpeedMaxNBox()) || theEvent.isFrom(TabVario.getvSpeedMinNBox()) ) {   //  V speed sensitivity range interaction
+		// V speed sensitivity range interaction
+		if ( theEvent.isFrom(TabVario.getvSpeedMaxNBox()) || theEvent.isFrom(TabVario.getvSpeedMinNBox()) ) {
 			TabVario.getvSpeedMaxNBox().setBroadcast(false) ;
 			TabVario.getvSpeedMinNBox().setBroadcast(false) ;
 			TabVario.getvSpeedMaxNBox().setRange( TabVario.getvSpeedMinNBox().getValue(), 1000 ) ;
@@ -617,7 +617,7 @@ public class MainP extends PApplet {
 			TabVario.getvSpeedMaxNBox().setBroadcast(true) ;
 		}
 
-		// Voltages sensor activation/desactivation
+		// Voltages sensor activation/deactivation
 		for (int i = 1; i <= TabVoltage.getVoltnbr(); i++) {
 			if (theEvent.isFrom(TabVoltage.getVoltTgl()[i])) {
 				switch ((int) theEvent.getController().getValue()) {
@@ -695,12 +695,12 @@ public class MainP extends PApplet {
 				case "Consumption (mAh)":
 				case "Cells monitoring":
 				case "RPM":
-					TabData.getTargetDataField(i).setValue(1); //TODO don't like set method
+					TabData.getTargetDataField(i).setValue(1);
 					break;
 				}*/
 
 				/*
-				 * println("oxsdataList : " +
+				 * System.out.println("oxsdataList : " +
 				 * TabData.getSentDataField(i).getCaptionLabel() .getText());
 				 */
 			}
@@ -708,25 +708,26 @@ public class MainP extends PApplet {
 		/*
 		  if (theEvent.isGroup()) {
 		    // check if the Event was triggered from a ControlGroup
-		    println("event from group : "+theEvent.getGroup().getValue()+" from "+theEvent.getGroup()) ;
+		    System.out.println("event from group : "+theEvent.getGroup().getValue()+" from "+theEvent.getGroup()) ;
 		  } else if (theEvent.isController()) {
-		    println("event from controller : "+theEvent.getController().getValue()+" from "+theEvent.getController()) ;
+		    System.out.println("event from controller : "+theEvent.getController().getValue()+" from "+theEvent.getController()) ;
 		  }
 
 		  if (theEvent.isTab()) {
 		    // check if the Event was triggered from a Tab
-		    println("event from tab : " + theEvent.getTab().getName() ) ;
+		    System.out.println("event from tab : " + theEvent.getTab().getName() ) ;
 		  }
 		 */
 	}
 
-	public void mouseWheelMoved(java.awt.event.MouseWheelEvent e) {  // Mouse wheel support for scroll bars !!
+	// Mouse wheel support for scroll bars !!
+	public void mouseWheelMoved(java.awt.event.MouseWheelEvent e) {
 		super.mouseWheelMoved(e) ;
 		cp5.setMouseWheelRotation(e.getWheelRotation()) ;
 	}
 
 	public void oxsDirButton(int theValue) {
-		//println("oxsDir button: "+theValue) ;
+		//System.out.println("oxsDir button: "+theValue) ;
 		selectFolder("Select OXS source folder:", "folderSelected") ;
 	}
 
@@ -750,7 +751,7 @@ public class MainP extends PApplet {
 		}
 	}
 
-	void vario2Tgl(boolean theFlag) {
+	public void vario2Tgl(boolean theFlag) {
 		if (theFlag == true && vario2 == null) {
 			vario2 = new Vario("vario2");
 		} else if (theFlag == false && vario2 != null) {
@@ -759,7 +760,7 @@ public class MainP extends PApplet {
 		}
 	}
 
-	void airSpeedTgl(boolean theFlag) {
+	public void airSpeedTgl(boolean theFlag) {
 		if (theFlag == true && airSpeed == null) {
 			airSpeed = new AirSpeed("airSpeed");
 			cp5.getTab("airSpeed").show();
@@ -772,7 +773,7 @@ public class MainP extends PApplet {
 		}
 	}
 
-	void voltageTgl(boolean theFlag) {
+	public void voltageTgl(boolean theFlag) {
 		if (theFlag == true) {
 			cp5.getTab("voltage").show();
 		} else {
@@ -783,20 +784,18 @@ public class MainP extends PApplet {
 		}
 	}
 
-	void cellsTgl(boolean theFlag) { // TODO clean
+	public void cellsTgl(boolean theFlag) { // TODO z better
 		if (theFlag == true && aVolt[1] != null) {
 			new OXSdata("CELLS", "Cells monitoring", "voltCells", null);
 			TabData.populateSentDataFields();
 		} else {
-			OXSdata.removeFromList("voltCells"); // TODO remove
-													// "Cells Monotoring" from
-													// ddl display
+			OXSdata.removeFromList("voltCells");
 			TabData.resetSentDataFields();
-			// TabData.populateSentDataFields() ;
+			// TabData.populateSentDataFields();
 		}
 	}
 
-	void currentTgl(boolean theFlag) {
+	public void currentTgl(boolean theFlag) {
 		if (theFlag == true && current == null) {
 			current = new Current("current");
 			cp5.getTab("current").show();
@@ -807,17 +806,17 @@ public class MainP extends PApplet {
 		}
 	}
 
-	void temperatureTgl(boolean theFlag) {
+	public void temperatureTgl(boolean theFlag) {
 		if (theFlag == true) {
 			cp5.getTab("temperature").show();
 		} else {
 			cp5.getTab("temperature").hide();
 		}
-		// println("a toggle event.") ;
+		// System.out.println("a toggle event.") ;
 	}
 
 	// RPM TAB display
-	void rpmTgl(boolean theFlag) {
+	public void rpmTgl(boolean theFlag) {
 		if (theFlag == true && rpm == null) {
 			rpm = new Rpm("rpm");
 			// cp5.getTab("rpm").show() ;
@@ -826,10 +825,10 @@ public class MainP extends PApplet {
 			rpm = null;
 			// cp5.getTab("rpm").hide() ;
 		}
-		// println("a toggle event.") ;
+		// System.out.println("a toggle event.") ;
 	}
 
-	void ppmTgl(boolean theFlag) {
+	public void ppmTgl(boolean theFlag) {
 		if (theFlag == true && ppm == null) {
 			ppm = new PPM("ppm");
 		} else if (theFlag == false && ppm != null) {
@@ -838,12 +837,14 @@ public class MainP extends PApplet {
 		}
 	}
 
-	public void loadButton(int theValue) {                                     // Load preset button
+	// Load preset button
+	public void loadButton(int theValue) {
 		File presetDir = new File( sketchPath("src/Preset/...") ) ;
 		selectInput("Select a preset file to load:", "presetLoad", presetDir) ;
 	}
 
-	public void saveButton(int theValue) {                                     // Save preset button
+	// Save preset button
+	public void saveButton(int theValue) {
 		MessageBox.mbClose() ;
 		Validation.validationProcess(this, "preset") ;
 		if ( Validation.getAllValid() == 2 ) {
@@ -857,16 +858,16 @@ public class MainP extends PApplet {
 
 	public void presetLoad(File selection) throws FileNotFoundException, IOException {
 		if (selection == null) {
-			// println("Window was closed or the user hit cancel.") ;
+			// System.out.println("Window was closed or the user hit cancel.") ;
 		} else {
-			// println("User selected " + selection.getAbsolutePath()) ;
+			// System.out.println("User selected " + selection.getAbsolutePath()) ;
 			PresetManagement.presetLoad(selection);
 		}
 	}
 	
 	public void presetSave(File selection) throws FileNotFoundException {
 		if (selection == null) {
-			// println("Window was closed or the user hit cancel.") ;
+			// System.out.println("Window was closed or the user hit cancel.") ;
 		} else {
 			PresetManagement.presetSave(selection);
 		}
@@ -882,9 +883,9 @@ public class MainP extends PApplet {
 
 	public void folderSelected(File selection) {
 		if (selection == null) {
-			//println("Window was closed or the user hit cancel.") ;
+			//System.out.println("Window was closed or the user hit cancel.") ;
 		} else {
-			//println("User selected " + selection.getAbsolutePath()) ;
+			//System.out.println("User selected " + selection.getAbsolutePath()) ;
 			TabGeneralSettings.getOxsDir().setText(selection.getAbsolutePath()) ;
 		}
 	}
@@ -905,8 +906,8 @@ public class MainP extends PApplet {
 			// cp5.getController("varioHysteresis").getValueLabel().align(ControlP5.RIGHT_OUTSIDE,
 			// ControlP5.CENTER).setPaddingX(10) ;
 		} else if (key == 'c') {
-			println("mAmp / step " + mAmpStep());
-			println("Current offset " + offsetCurrent());
+			System.out.println("mAmp / step " + mAmpStep());
+			System.out.println("Current offset " + offsetCurrent());
 		} else if (key == 'p') {
 			// message.showOk("gxb");
 		} else if (key == 'g') {
@@ -914,17 +915,19 @@ public class MainP extends PApplet {
 //			TabGeneralSettings.getSerialPinDdl().setValue(4);
 		} else if (key == 'd') {
 			vario = null;
-			// println(vario.getMeasurementName(0)) ;
+			// System.out.println(vario.getMeasurementName(0)) ;
 		}
 	}
 
 	// =================================================================================================
 
-	public static float round(float number, float decimal) {      // Rounding function
+	// Rounding function
+	public static float round(float number, float decimal) {
 		return round((number*pow(10, decimal)))/pow(10, decimal) ;
 	}
 
-	public static float mVoltStep(int NbrVolt) {    // Voltage measurements milliVolt per ADC step calculation
+	// Voltage measurements milliVolt per ADC step calculation
+	public static float mVoltStep(int NbrVolt) {
 
 		float mVoltStep ;
 		float voltageDiv = TabVoltage.getDividerVoltNBox()[NbrVolt].getValue() ;

@@ -10,10 +10,7 @@ import processing.core.PApplet;
 import processing.data.StringList;
 
 public class MessageBox {
-	
-//	private static ControlP5 cp5;
-//	private static MainP mainP;
-	
+
 	private static Group group;
 	private static Textarea textarea;
 	private static Button buttonOKBtn;
@@ -23,8 +20,6 @@ public class MessageBox {
 	private static int mBoxHeight = 320;
 
 	public MessageBox(ControlP5 cp5, MainP mainP) {
-		//MessageBox.cp5 = cp5;
-		//MessageBox.mainP = mainP;
 
 		// create a group to store the messageBox elements
 		group = cp5.addGroup("messageBox", mainP.width / 2 - mBoxWidth / 2, 76, mBoxWidth)
@@ -52,7 +47,7 @@ public class MessageBox {
 		// OK button to the messageBox.
 		buttonOKBtn = cp5.addButton(mainP, "btnOK", "buttonOK", 0, mainP.width / 2 - 60, 218, 80, 30)
 		                 .setColorForeground(mainP.color(MainP.blueAct))
-		                 .setColorBackground(mainP.color(100))
+		                 .setColorBackground(MainP.lightBackGray)
 		                 .setColorActive(mainP.color(MainP.orangeAct))
 		                 .moveTo(group)
 		                 ;
@@ -64,7 +59,7 @@ public class MessageBox {
 		buttonCancel = cp5.addButton(mainP, "btnCancel", "buttonCancel", 0, mBoxWidth / 2 + 5, mBoxHeight - 37, 80, 30)
 		                  .setCaptionLabel("Cancel")
 		                  .setColorForeground(MainP.blueAct)
-		                  .setColorBackground(mainP.color(100))
+		                  .setColorBackground(MainP.lightBackGray)
 		                  .setColorActive(MainP.orangeAct)
 		                  .moveTo(group)
 		                  .hide()
@@ -119,7 +114,7 @@ public class MessageBox {
 		textarea.setText(joinedMessageList) ;
 	
 		buttonOKBtn.setColorForeground(MainP.orangeAct) ;
-		buttonOKBtn.setColorBackground(MainP.darkBackGray) ;
+		buttonOKBtn.setColorBackground(MainP.lightBackGray) ;
 		buttonOKBtn.setColorActive(MainP.blueAct) ;
 		group.setBackgroundColor(MainP.blueAct) ;
 		group.show() ;

@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import processing.core.PApplet;
 import controlP5.ControlP5;
 import gui.MessageBox;
 import gui.TabCurrent;
@@ -57,7 +56,7 @@ public class Validation {
 	public static void validationProcess(MainP mainPori, String theString) {
         mainP = mainPori;
 		// Config file writing destination
-		oxsDirectory = MainP.trim( getOxsDir().getText() ) ;
+		oxsDirectory = getOxsDir().getText().trim() ;
 		if ( oxsDirectory.equals("") ) {
 			outputConfigDir = mainP.sketchPath("oXs_config.h");
 		} else {
@@ -226,7 +225,7 @@ public class Validation {
 				if ( !analogPinsValidation[i][1].equals(" --") && !analogPinsValidation[j][1].equals(" --")
 						&& Integer.parseInt(analogPinsValidation[i][2]) >= 1 && Integer.parseInt(analogPinsValidation[j][2]) >= 1 ) {
 					if ( analogPinsValidation[i][1].equals(analogPinsValidation[j][1]) ) {
-						//println("Attention !!  " + analogPinsValidation[i][0] + " is using the same pin n°" + analogPinsValidation[i][1] + " as " + analogPinsValidation[j][0] + " !") ;
+						//System.out.println("Attention !!  " + analogPinsValidation[i][0] + " is using the same pin n°" + analogPinsValidation[i][1] + " as " + analogPinsValidation[j][0] + " !") ;
 						analogPinsValid = false ;
 						MessageBox.getMessageList().append("- " + analogPinsValidation[i][0] + " is using the same pin n°" + analogPinsValidation[i][1] + " as " + analogPinsValidation[j][0] + " !") ;
 					}
@@ -412,7 +411,7 @@ public class Validation {
 			}
 			scanner.close();
 		} catch (Exception e) {
-			PApplet.println("File version.oxs not found...");
+			System.out.println("File version.oxs not found...");
 			// e.printStackTrace();
 			version = null;
 		}
@@ -440,7 +439,7 @@ public class Validation {
 			versionValid = 0;
 			MessageBox.getMessageList().append("            ** The Configurator "	+ oxsCversion + " isn't compatible with OXS " + version	+ " **");
 			MessageBox.getMessageList().append("");
-			MessageBox.getMessageList().append("         You may go to \"https://code.google.com/p/openxsensor/\" and");
+			MessageBox.getMessageList().append("         You may go to \"https://code.google.com/p/openxsensor/\" and");  // TODO change URL
 			MessageBox.getMessageList().append("       download the latest version of both OXS and OXS Configurator.");
 		}
 	}

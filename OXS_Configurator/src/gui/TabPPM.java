@@ -1,8 +1,6 @@
 package gui;
 
 import oxsc.MainP;
-import processing.core.PApplet;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +12,6 @@ import controlP5.Textlabel;
 import controlP5.Toggle;
 
 public class TabPPM {
-	
-	@SuppressWarnings("unused")
-	private final PApplet p ; // TODO check if needed
 
 	private static Toggle ppmTgl;
 	private static Textlabel ppmPinL;
@@ -27,9 +22,7 @@ public class TabPPM {
 	
 	private static List<Object> controllers = new ArrayList<>();
 
-	public TabPPM(PApplet p, ControlP5 cp5) {
-		
-		this.p = p;
+	public TabPPM(ControlP5 cp5) {
 
 		// RC Remote PPM pin and settings
 		ppmTgl = cp5.addToggle("ppmTgl")

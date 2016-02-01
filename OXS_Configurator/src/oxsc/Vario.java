@@ -5,8 +5,6 @@ import gui.TabVario;
 
 import java.util.ArrayList;
 
-import processing.core.PApplet;
-
 public class Vario extends Sensor {
 	
 	// private int parameters ;
@@ -70,7 +68,7 @@ public class Vario extends Sensor {
 			TabVario.getvSpeed2Ddl().removeItem(" V1 + A.Speed");
 			// }
 			OXSdata.removeFromList("varAspeed");
-			PApplet.println("remove varAspeed");
+			System.out.println("remove varAspeed");
 			//TabData.resetSentDataFields("varAspeed");
 		} else {
 			TabVario.getvSpeed1Ddl().removeItem("       Vario 2");
@@ -78,8 +76,8 @@ public class Vario extends Sensor {
 		}
 
 		OXSdata.removeFromList(this);
-		PApplet.println(OXSdata.getList());
-		PApplet.println("remove " + this.getName());
+		System.out.println(OXSdata.getList());
+		System.out.println("remove " + this.getName());
 		TabData.resetSentDataFields();
 		//updateUIoXSdataList();
 		Sensor.getSensorList().remove(this);

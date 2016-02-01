@@ -3,7 +3,6 @@ package oxsc;
 import java.util.ArrayList;
 
 import gui.TabData;
-import processing.core.PApplet;
 
 public abstract class Sensor implements OXSdataController {
 	
@@ -17,8 +16,8 @@ public abstract class Sensor implements OXSdataController {
 		addOXSdata();
 		updateUIoXSdataList();
 		sensorList.add(this);
-		PApplet.println("Creation d'un objet " + this.getName());
-		PApplet.println(sensorList);
+		System.out.println("Creation d'un objet " + this.getName());
+		System.out.println(sensorList);
 	}
 
 	public String getName() {

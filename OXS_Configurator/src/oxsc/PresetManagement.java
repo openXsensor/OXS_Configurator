@@ -22,15 +22,13 @@ public class PresetManagement {
 	private static final String SPLIT_CHAR = " <> ";
 	
 	private static ControlP5 cp5;
-	@SuppressWarnings("unused")
-	private static MainP mainP;
+
 	@SuppressWarnings("unused")
 	private static File presetDir;
 	
 	private static List<List<Object>> uiUnits = new ArrayList<>();
 
-	public PresetManagement(MainP mainP, ControlP5 cp5) {
-		PresetManagement.mainP = mainP;
+	public PresetManagement(ControlP5 cp5) {
 		PresetManagement.cp5 = cp5;
 		addControllersList();		
 	}
@@ -90,10 +88,10 @@ public class PresetManagement {
 	}
 
 	public static void presetSave(File selection) throws FileNotFoundException {
-		// println("User selected " + selection.getAbsolutePath());
+		// System.out.println("User selected " + selection.getAbsolutePath());
 		try (PrintWriter output = new PrintWriter(selection)){
 			output.println("@ OXS Configurator " + Validation.getOxsCversion() + " preset file created the " + MainP.date);
-			PresetManagement.getUiUnits().stream().forEach(uiU -> {
+			uiUnits.stream().forEach(uiU -> {
 				output.println();
 				uiU.stream().forEach(c -> {
 					if (c instanceof controlP5.DropdownList) {

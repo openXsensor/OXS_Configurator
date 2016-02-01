@@ -1,7 +1,6 @@
 package gui;
 
 import oxsc.MainP;
-import processing.core.PApplet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +18,6 @@ public class TabGeneralSettings {
 	
 	@SuppressWarnings("unused")
 	private final ControlP5 cp5 ;
-	@SuppressWarnings("unused")
-	private final PApplet p ; // TODO check if needed
 
 	private static Tab genTab;
 	private static Textfield oxsDir;
@@ -46,10 +43,9 @@ public class TabGeneralSettings {
 	// Sensor ID array
 	private static final String[] sensorIDs = new String[] { "0x1B", "0xBA", "0x39", "0x16", "0x95", "0x34" };
 	
-	public TabGeneralSettings(PApplet p, ControlP5 cp5) {
+	public TabGeneralSettings(ControlP5 cp5) {
 		
 		this.cp5 = cp5;
-		this.p = p;
 		
 		    genTab = cp5.getTab("default")
 		                 .setHeight(20)

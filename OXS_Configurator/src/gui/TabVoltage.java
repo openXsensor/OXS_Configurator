@@ -12,8 +12,6 @@ import controlP5.DropdownList;
 import controlP5.Numberbox;
 import controlP5.Toggle;
 
-//import processing.core.PApplet;
-
 public class TabVoltage {
 
 	private static ControlP5 cp5;
@@ -28,12 +26,9 @@ public class TabVoltage {
 
 	private static List<Object> controllers = new ArrayList<>();
 
-	// private final PApplet p ; // TODO check if needed
-
 	public TabVoltage(ControlP5 cp5) {
 
 		TabVoltage.cp5 = cp5;
-		// this.p = p;
 
 		cp5.getTab("voltage")
 		   .setHeight(20)
@@ -230,8 +225,9 @@ public class TabVoltage {
 		mainP.stroke(MainP.darkBackGray) ;
 		mainP.line(10, 272, 440, 272) ;
 		mainP.noStroke() ;
-	
-		for ( int i = 1; i <= TabVoltage.getVoltnbr(); i++ ) {                   // Voltage tab grayed items
+
+		// Voltage tab grayed items
+		for ( int i = 1; i <= TabVoltage.getVoltnbr(); i++ ) {
 			if ( voltTgl[i].getValue() == 0 ) {
 				ddlVolt[i].hide() ;
 				mainP.fill(MainP.grayedColor) ;
@@ -258,8 +254,9 @@ public class TabVoltage {
 				                 ;
 			}
 		}
-	
-		if ( voltTgl[1].getValue() == 0 ) {      // Battery cells monitoring grayed
+
+		// Battery cells monitoring grayed
+		if ( voltTgl[1].getValue() == 0 ) {
 			mainP.stroke(MainP.grayedColor) ;                    // toggle border gray
 			mainP.noFill() ;
 			mainP.rect(10, 293, 155, 20) ;
@@ -279,8 +276,9 @@ public class TabVoltage {
 			        .setColorCaptionLabel(0)
 			        ;
 		}
-	
-		if ( cellsTgl.getValue() == 0 ) {                   // Cells number grayed
+
+		// Cells number grayed
+		if ( cellsTgl.getValue() == 0 ) {
 			cp5.getController("NbrCells").setColorValueLabel(MainP.grayedColor) ;
 			ddlNbrCells.hide() ;
 			mainP.fill(MainP.grayedColor) ;

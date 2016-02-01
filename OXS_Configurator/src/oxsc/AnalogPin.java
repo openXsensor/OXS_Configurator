@@ -14,7 +14,7 @@ public class AnalogPin {
 
 	public static void removeFromList(String pinName) {
 		for (int i = analogPinList.size() - 1; i >= 0; i--) {
-			// println( "sensorType for n°: " + i ) ;
+			// System.out.println( "sensorType for n°: " + i ) ;
 			if (analogPinList.get(i).name == pinName)
 				analogPinList.remove(analogPinList.get(i));
 		}
