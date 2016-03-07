@@ -752,7 +752,7 @@ public class MainP extends PApplet {
 	}
 
 	public void vario2Tgl(boolean theFlag) {
-		if (theFlag == true && vario2 == null) {
+		if (theFlag == true && vario != null && vario2 == null) {
 			vario2 = new Vario("vario2");
 		} else if (theFlag == false && vario2 != null) {
 			vario2.removeSensor();

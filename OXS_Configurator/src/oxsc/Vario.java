@@ -30,17 +30,13 @@ public class Vario extends Sensor {
 				new OXSdata("ALTIMETER_MAX", "Max Relative Altitude", varioName);
 			}
 			
-			TabVario.getvSpeed1Ddl().addItem("       Vario 1", 0);
-			TabVario.getvSpeed2Ddl().addItem("       Vario 1", 0);
+			TabVario.addToVspeedDdls("       Vario 1", 0);
 			TabVario.getvSpeed1Ddl().setValue(0);
 
-			/*if (MainP.airSpeed != null) { // TODO better
-				new OXSdata("PRANDTL_DTE", "Prandtl dTE", "varAspeed");
-				new OXSdata("PRANDTL_COMPENSATION", "Prandtl Compensation", "varAspeed");
-
-				TabVario.getvSpeed1Ddl().addItem(" V1 + A.Speed",	2);
-				TabVario.getvSpeed2Ddl().addItem(" V1 + A.Speed",	2);
-			}*/
+			if (MainP.airSpeed != null) {
+				TabVario.addToVspeedDdls(" V1 + A.Speed", 2);
+				TabVario.getvSpeed2Ddl().setValue(2);
+			}
 		} else {
 			new OXSdata("ALTIMETER_" + varioName.substring(5), "Altitude "
 					+ varioName.substring(5), varioName, "Altitude");
@@ -49,8 +45,8 @@ public class Vario extends Sensor {
 			new OXSdata("ALT_OVER_10_SEC_" + varioName.substring(5),
 					"Alt. over 10 seconds " + varioName.substring(5), varioName);
 
-			TabVario.getvSpeed1Ddl().addItem("       Vario 2", 1);
-			TabVario.getvSpeed2Ddl().addItem("       Vario 2", 1);
+			TabVario.addToVspeedDdls("       Vario 2", 1);
+			TabVario.addToVspeedDdls("       Average", 3);
 			TabVario.getvSpeed2Ddl().setValue(1);
 
 		}
@@ -59,20 +55,23 @@ public class Vario extends Sensor {
 
 	public void removeSensor() {
 
-		if (this.getName().equals("vario")) {
+		if (this.getName().equals("vario")) {  // TODO z better vSpeed choice
 			TabVario.getvSpeed1Ddl().removeItem("       Vario 1");
 			TabVario.getvSpeed2Ddl().removeItem("       Vario 1");
 
-			// if ( airSpeed == null ) { // TODO better
 			TabVario.getvSpeed1Ddl().removeItem(" V1 + A.Speed");
 			TabVario.getvSpeed2Ddl().removeItem(" V1 + A.Speed");
-			// }
+			TabVario.resetVspeedDdls();
+
 			OXSdata.removeFromList("varAspeed");
 			System.out.println("remove varAspeed");
 			//TabData.resetSentDataFields("varAspeed");
 		} else {
 			TabVario.getvSpeed1Ddl().removeItem("       Vario 2");
+			TabVario.getvSpeed1Ddl().removeItem("       Average");
 			TabVario.getvSpeed2Ddl().removeItem("       Vario 2");
+			TabVario.getvSpeed2Ddl().removeItem("       Average");
+			TabVario.resetVspeedDdls();
 		}
 
 		OXSdata.removeFromList(this);

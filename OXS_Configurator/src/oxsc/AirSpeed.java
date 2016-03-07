@@ -14,21 +14,16 @@ public class AirSpeed extends Sensor {
 
 	public void addOXSdata() {
 		new OXSdata("AIR_SPEED", "Air Speed", this.getName(), "Air Speed (S.Port only)");
-		/*if (MainP.vario != null) { // TODO better
-			new OXSdata("PRANDTL_DTE", "Prandtl dTE", "varAspeed");
-			new OXSdata("PRANDTL_COMPENSATION", "Prandtl Compensation",
-					"varAspeed");
-
-			TabVario.getvSpeed1Ddl().addItem(" V1 + A.Speed", 2);
-			TabVario.getvSpeed2Ddl().addItem(" V1 + A.Speed", 2);
-		}*/
-		
+		if (MainP.vario != null) {
+			TabVario.addToVspeedDdls(" V1 + A.Speed", 2);
+			TabVario.getvSpeed2Ddl().setValue(2);
+		}
 	}
 
-	public void removeSensor() {
-		// if ( vario == null ) { // TODO better
-		TabVario.getvSpeed1Ddl().removeItem(" V1 + A.Speed");
+	public void removeSensor() { // TODO z better vSpeed choice
+		TabVario.getvSpeed1Ddl().removeItem(" V1 + A.Speed"); 
 		TabVario.getvSpeed2Ddl().removeItem(" V1 + A.Speed");
+		TabVario.resetVspeedDdls();
 
 		OXSdata.removeFromList(this);
 		//OXSdata.removeFromList("varAspeed");

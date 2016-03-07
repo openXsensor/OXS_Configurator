@@ -24,13 +24,13 @@ public class VarAspeed extends Sensor {
 	}
 	
 	public static void createSensor() {
-		if (MainP.vario != null || MainP.airSpeed != null) {			
+		if ((MainP.vario != null || MainP.airSpeed != null) && varAspeed == null) {			
 			varAspeed = new VarAspeed("varAspeed");
 		}
 	}
 
 	public static void deleteSensor() {
-		if (varAspeed != null) {
+		if (varAspeed != null && (MainP.vario == null || MainP.vario2 == null || MainP.airSpeed == null)) {
 			varAspeed.removeSensor();
 			varAspeed = null;			
 		}

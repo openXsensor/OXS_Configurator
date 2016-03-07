@@ -330,6 +330,11 @@ public class TabVario {
 		controllers.add(ddl);
 	}
 
+	public static void resetVspeedDdls() {
+		vSpeed1Ddl.setValue(0);
+		vSpeed2Ddl.setValue(0);
+	}
+
 	public static Range getPpmRngSensMinMaxRng() {
 		return ppmRngSensMinMaxRng;
 	}
@@ -345,7 +350,17 @@ public class TabVario {
 	public static DropdownList getvSpeed2Ddl() {
 		return vSpeed2Ddl;
 	}
-	
+
+	public static void addToVspeedDdls(String name, int index) {
+		if (vSpeed1Ddl.getListBoxItems().length > 0) {
+			for (String[] listBoxItem : vSpeed1Ddl.getListBoxItems()) {
+				if (listBoxItem[1].equals(name)) return;
+			}
+		}
+		vSpeed1Ddl.addItem(name, index);
+		vSpeed2Ddl.addItem(name, index);
+	}
+
 	public static Numberbox getPpmVspeedSwMinNBox() {
 		return ppmVspeedSwMinNBox;
 	}
