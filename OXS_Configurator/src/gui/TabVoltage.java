@@ -256,7 +256,7 @@ public class TabVoltage {
 		}
 
 		// Battery cells monitoring grayed
-		if ( voltTgl[1].getValue() == 0 ) {
+		if (voltTgl[1].getValue() == 0 || MainP.protocol.getName().equals("Multiplex")) {
 			mainP.stroke(MainP.grayedColor) ;                    // toggle border gray
 			mainP.noFill() ;
 			mainP.rect(10, 293, 155, 20) ;

@@ -46,15 +46,17 @@ public class WriteConf {
 
         // ---------------------------------- Protocol --------------------------------------
         
-        output.println("// --------- 1 - General protocol ---------") ;
-        output.println("// ***** 1.1 - Multiplex protocol is used (otherwise oXs assumes it is Frsky protocol) *****") ; // TODO in OXSC
-        output.println("//#define MULTIPLEX") ;
-        output.println("") ;
-        output.println("// ***** 1.2 - FrSky protocol and device ID (required when Sport protocol is used)  *****") ;
-        output.println("//#define FRSKY_TYPE_SPORT") ;
-        output.println("//#define FRSKY_TYPE_HUB") ;
-		output.println("#define SENSOR_ID    " + TabGeneralSettings.getSensorIDDdl().getCaptionLabel().getText()) ;
-		output.println("") ;
+        output.println("// --------- 1 - General protocol ---------");
+        output.println("// ***** 1.1 - Multiplex protocol (if line commented oXs assumes it is Frsky protocol) *****");
+        if (MainP.protocol.getName().equals("Multiplex")) {
+        	output.println("#define MULTIPLEX");
+        } else {
+        	output.println("//#define MULTIPLEX");
+        }
+        output.println("");
+        output.println("// ***** 1.2 - FrSky device ID (required when Sport protocol is used)  *****");
+		output.println("#define SENSOR_ID    " + TabGeneralSettings.getSensorIDDdl().getCaptionLabel().getText());
+		output.println("");
 
 		// ---------------------------------- Serial pin --------------------------------------
 
@@ -234,22 +236,8 @@ public class WriteConf {
 		output.println("// --------- 9 - Data to transmit ---------");
 		output.println("// General set up to define which measurements are transmitted and how");
 		output.println("");
-		output.println("// ***** 9.1 - FrSky data *****") ;
-		output.println("#define SETUP_FRSKY_DATA_TO_SEND    \\") ;
-		
+
 		writeDataToSend();
-		
-		output.println("") ;
-		output.println("") ;
-		output.println("// ***** 9.2 - Multiplex data *****") ;   // TODO in OXSC
-		output.println("") ;
-		output.println("") ;
-		
-		// ---------------------------------- Sequencer --------------------------------------
-		
-		output.println("// --------- 10 - Sequencer ---------") ;  // TODO in OXSC
-		output.println("") ;
-		output.println("") ;
 
 		// ---------------------------------- Debug --------------------------------------
 
@@ -269,14 +257,23 @@ public class WriteConf {
 		output.close(); // Finishes the file
 	}
 
-	private static void writeDataToSend() {  // TODO second: writeDatatToSend protocol aware
-		boolean dataFirst = true ;
-		for ( int i = 1; i <= TabData.getFieldNbr(); i++ ) {
-			if ( !TabData.getSentDataField(i).getCaptionLabel().getText().equals("----------") ) {
-				if ( !dataFirst ) {
-					output.println(" , \\") ;
+	private static void writeDataToSend() {  // TODO z oxs data protocol check
+		boolean dataFirst = true;
+		if (MainP.protocol.getName().equals("Multiplex")) {
+			output.println("// ***** 9.2 - Multiplex data *****");
+			output.println("#define SETUP_MULTIPLEX_DATA_TO_SEND    \\");
+		} else {
+			output.println("// ***** 9.1 - FrSky data *****");
+			output.println("#define SETUP_FRSKY_DATA_TO_SEND    \\");
+		}
+		for (int i = 1; i <= TabData.getFieldNbr(); i++) {
+			String sentDataFieldName;
+			sentDataFieldName = TabData.getSentDataField(i).getCaptionLabel().getText();
+			if (!sentDataFieldName.equals("----------")) {
+				if (!dataFirst) {
+					output.println(" , \\");
 				}
-				if ( TabData.getSentDataField(i).getCaptionLabel().getText().equals("Cells monitoring") ) {
+				if (sentDataFieldName.equals("Cells monitoring")) {
 					if (TabVoltage.getCellsTgl().getValue() == 1) {
 						for (int j = 1; j <= (int) TabVoltage.getDdlNbrCells().getValue(); j += 2) {
 							output.print("                        " + "DEFAULTFIELD , CELLS_" + j + "_"	+ (j + 1) + " , 1 , 1 , 0");
@@ -286,23 +283,22 @@ public class WriteConf {
 							dataFirst = false;
 						}
 					}
-				} /*else if ( TabGeneralSettings.getProtocolDdl().getValue() == 1 ) {
-					output.print("                        " + TabData.getHubDataList()[(int)TabData.getHubDataField(i).getValue()][0] + " , "
-							+ TabData.getSentDataList()[(int)TabData.getSentDataField(i).getValue()][0] + " , "
-							+ TabData.getDataMultiplierNBox()[i].getValueLabel().getText() + " , "
-							+ TabData.getDataDividerNBox()[i].getValueLabel().getText() + " , "
-							+ TabData.getDataOffsetNBox()[i].getValueLabel().getText() ) ;
-					dataFirst = false ;
-				}*/ else {
-					output.print("                        " + Protocol.getDataCode(TabData.getTargetDataField(i).getCaptionLabel().getText()) + " , "
+				} else {
+					output.print("                        "	
+							+ Protocol.getDataCode(TabData.getTargetDataField(i).getCaptionLabel().getText()) + " , "
 							+ OXSdata.getName(TabData.getSentDataField(i).getCaptionLabel().getText()) + " , "
 							+ TabData.getDataMultiplierNBox()[i].getValueLabel().getText() + " , "
-							+ TabData.getDataDividerNBox()[i].getValueLabel().getText() + " , "
-							+ TabData.getDataOffsetNBox()[i].getValueLabel().getText() ) ;
-					dataFirst = false ;
+							+ TabData.getDataDividerNBox()[i].getValueLabel().getText()	+ " , "
+							+ TabData.getDataOffsetNBox()[i].getValueLabel().getText());
+					if (MainP.protocol.getName().equals("Multiplex")) {
+						output.print(", -16384 , 16383");
+					}
+					dataFirst = false;
 				}
 			}
 		}
+		output.println("");
+		output.println("");
 	}
 
 }

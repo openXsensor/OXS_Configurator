@@ -214,6 +214,24 @@ public class TabData {
 		}
 	}
 
+	public static void resetTargetDataFields() {
+		for (int i = 1; i <= FIELD_NBR; i++) {
+			/*
+			 * String ddlFieldDisplay = TabData.getTargetDataField(i)
+			 * .getCaptionLabel().getText(); System.out.println(
+			 * "Target Data field n°" + i); for (int j = 0; j <
+			 * OXSdata.getList().size(); j++) { System.out.println("OXSdata id "
+			 * + j); if (OXSdata.getItem(j).getDisplayName()
+			 * .contains(ddlFieldDisplay)) { break; } else if (j ==
+			 * OXSdata.getList().size() - 1) { sentDataField[i].setValue(0);
+			 * System.out.println("reset OXSdata " +
+			 * OXSdata.getItem(j).getDisplayName() + " id " + j + ": " +
+			 * ddlFieldDisplay); } }
+			 */
+			targetDataField[i].setValue(0);
+		}
+	}
+	
 	public static void draw(MainP mainP) {
 		mainP.fill(10);
 		mainP.rect(298, 414, 124, 34);

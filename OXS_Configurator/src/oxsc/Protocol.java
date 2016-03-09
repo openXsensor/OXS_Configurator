@@ -4,7 +4,7 @@ import gui.TabData;
 
 public class Protocol {
 	
-	private String name ;
+	private String name;
 	
 	private static String[][] targetDataList;
 	
@@ -66,11 +66,6 @@ public class Protocol {
 	public static Protocol createProtocol(String name) {
 		if (MainP.protocol == null || !MainP.protocol.getName().equals(name)) {
 			Protocol tempProt = new Protocol(name);
-
-			updateUItargetDataList();
-
-			// TODO OXSdata.updateList();
-
 			return tempProt;
 		}
 		return MainP.protocol;
@@ -80,9 +75,9 @@ public class Protocol {
 
 		this.name = name;
 
-		if (this.name == "FrSky") {
+		if (this.name.equals("FrSky")) {
 			targetDataList = frSkyDataList.clone();
-		} else if (this.name == "Multiplex") {
+		} else if (this.name.equals("Multiplex")) {
 			targetDataList = multiplexDataList.clone();
 		}
 
@@ -118,6 +113,7 @@ public class Protocol {
 		System.out.println();
 
 		TabData.populateTargetDataFields();
+		TabData.resetTargetDataFields();
 	}
 
 }

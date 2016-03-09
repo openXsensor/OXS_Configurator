@@ -667,6 +667,13 @@ public class MainP extends PApplet {
 					protocol = Protocol.createProtocol("Multiplex");
 				break;
 			}
+			// TODO z better: updating OXSdata according to the protocol
+			for (Sensor sensor : Sensor.getSensorList()) {
+				OXSdata.removeFromList(sensor);
+				sensor.addOXSdata();				
+			}
+			TabData.resetSentDataFields();
+			TabData.populateSentDataFields();
 		}
 
 		// Selecting DEFAULT automatically in Telemetry data fields

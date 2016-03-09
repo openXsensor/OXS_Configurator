@@ -45,6 +45,11 @@ public class Vario extends Sensor {
 			new OXSdata("ALT_OVER_10_SEC_" + varioName.substring(5),
 					"Alt. over 10 seconds " + varioName.substring(5), varioName);
 
+			if (MainP.protocol.getName().equals("Multiplex")) {
+				new OXSdata("REL_ALTIMETER_" + varioName.substring(5),
+						"Relative Altitude " + varioName.substring(5), varioName);
+			}
+			
 			TabVario.addToVspeedDdls("       Vario 2", 1);
 			TabVario.addToVspeedDdls("       Average", 3);
 			TabVario.getvSpeed2Ddl().setValue(1);
