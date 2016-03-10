@@ -157,7 +157,7 @@ public class TabVoltage {
 		 * for ( int i = 1; i <= 6; i++ ) { ddlNbrCells.addItem("" + i, i) ; }
 		 */
 		ddlNbrCells.getCaptionLabel().getStyle().marginTop = 2;
-		ddlNbrCells.getCaptionLabel().set("-");
+		// ddlNbrCells.getCaptionLabel().set("-");
 		ddlNbrCells.toUpperCase(false);
 		controllers.add(ddlNbrCells);
 		
@@ -209,10 +209,6 @@ public class TabVoltage {
 			} else {
 				// change NbrCells if not possible
 				if (ddlNbrCells.getValue() >= i) {
-					if (i == 1) {
-						// set NbrCells to "-" if volt1 == null
-						//ddlNbrCells.addItem("-", 0); TODO usefulness
-					}
 					ddlNbrCells.setValue(i - 1);
 				}
 				return;

@@ -791,10 +791,11 @@ public class MainP extends PApplet {
 		}
 	}
 
-	public void cellsTgl(boolean theFlag) { // TODO z better
+	public void cellsTgl(boolean theFlag) {
 		if (theFlag == true && aVolt[1] != null) {
-			new OXSdata("CELLS", "Cells monitoring", "voltCells", null);
+			new OXSdata("CELLS", "Cells monitoring", "voltCells", "DEFAULT");
 			TabData.populateSentDataFields();
+			TabVoltage.getDdlNbrCells().setValue(1);
 		} else {
 			OXSdata.removeFromList("voltCells");
 			TabData.resetSentDataFields();
