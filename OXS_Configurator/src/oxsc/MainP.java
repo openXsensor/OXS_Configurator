@@ -855,10 +855,10 @@ public class MainP extends PApplet {
 
 	// Save preset button
 	public void saveButton(int theValue) {
-		MessageBox.mbClose() ;
-		Validation.validationProcess(this, "preset") ;
+		MessageBox.mbClose();
+		Validation.validationProcess("preset");
 		if ( Validation.getAllValid() == 2 ) {
-			MessageBox.getGroup().hide() ;
+			MessageBox.getGroup().hide();
 		}
 		if ( Validation.getAllValid() != 0 ) {
 			File presetDir = new File(System.getProperty("user.dir") + PRESET_DEFAULT_DIR + "type name");
@@ -885,7 +885,7 @@ public class MainP extends PApplet {
 
 	public void writeConfButton(int theValue) {
 		MessageBox.mbOkCancel() ;
-		Validation.validationProcess(this, "Config") ;
+		Validation.validationProcess("Config") ;
 		if ( Validation.getAllValid() == 0) {
 			MessageBox.mbClose() ;
 		}

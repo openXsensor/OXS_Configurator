@@ -15,10 +15,11 @@ import gui.TabVoltage;
 
 public class Validation {
 
+	private static final String OXS_CONFIG_FILE_NAME = System.getProperty("file.separator") + "oXs_config.h";
 	private static String oxsDirectory = "";
 	private static String outputConfigDir = "";
-	private static final String oxsVersion = "v2.x";
-	private static final String oxsCversion = "v2.3";
+	private static final String oxsVersion = "v3.0";
+	private static final String oxsCversion = "v3.0";
 	private static boolean numPinsValid;
 	private static boolean analogPinsValid;
 	private static int vSpeedValid; // 0 -> not valid 1 -> warning 2 -> valid
@@ -50,9 +51,10 @@ public class Validation {
         // Config file writing destination
 		oxsDirectory = getOxsDir().getText().trim() ;
 		if ( oxsDirectory.equals("") ) {
-			outputConfigDir = mainP.sketchPath("oXs_config.h");
+			//outputConfigDir = mainP.sketchPath("oXs_config.h"); // find application root path
+			outputConfigDir = System.getProperty("user.dir") + OXS_CONFIG_FILE_NAME;
 		} else {
-			outputConfigDir = oxsDirectory + "/oXs_config.h" ;
+			outputConfigDir = oxsDirectory + OXS_CONFIG_FILE_NAME;
 		}
 
 		MessageBox.getMessageList().clear() ;
@@ -127,7 +129,7 @@ public class Validation {
 
 		String[] messageListArray = MessageBox.getMessageList().array() ;
 
-		String joinedMessageList = MainP.join(messageListArray, "\n") ;
+		String joinedMessageList = MainP.join(messageListArray, "\n") ; // TODO join string java API
 
 		MessageBox.getTextarea().setText(joinedMessageList) ;
 		//println(messageList) ;
