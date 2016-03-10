@@ -68,7 +68,7 @@ public class WriteConf {
 
 		output.println("// --------- 3 - PPM settings ---------");
 		if ((TabGeneralSettings.getVarioTgl().getValue() == 1 || TabGeneralSettings.getAirSpeedTgl().getValue() == 1) && TabPPM.getPpmTgl().getValue() == 1) {
-			output.println("#define PIN_PPM         " + (int)TabPPM.getPpmPinDdl().getValue() + "       // Arduino can read a PPM Signal coming from Tx. This allows to change the vario sensitivity using a pot or a switch on TX.") ;
+			output.println("#define PIN_PPM         " + TabPPM.getPpmPinDdl().getCaptionLabel().getText() + "       // Arduino can read a PPM Signal coming from Tx. This allows to change the vario sensitivity using a pot or a switch on TX.");
 		} else {
 			output.println("//#define PIN_PPM               // Arduino can read a PPM Signal coming from Tx. This allows to change the vario sensitivity using a pot or a switch on TX.");
 		}
@@ -83,7 +83,6 @@ public class WriteConf {
 		output.println("// ***** 4.1 - Connecting 1 or 2 MS5611 barometric sensor *****");
 		if ( TabGeneralSettings.getVarioTgl().getValue() == 1 ) {
 			output.println("#define VARIO                   // set as comment if there is no vario");
-			output.println("//#define SENSOR_IS_BMP180 // set as comment if baro sensor is MS5611") ;        // TODO in OXSC
 			if ( TabGeneralSettings.getVario2Tgl().getValue() == 1 ) {
 				output.println("#define VARIO2                  // set as comment if there is no second vario");
 			} else {
@@ -91,26 +90,24 @@ public class WriteConf {
 			}
 		} else {
 			output.println("//#define VARIO                 // set as comment if there is no vario");
-			output.println("//#define SENSOR_IS_BMP180      // set as comment if baro sensor is MS5611") ;        // TODO in OXSC
 			output.println("//#define VARIO2                // set as comment if there is no second vario");
 		}
-		output.println("") ;
-		output.println("// ***** 4.2 - Sensitivity predefined by program *****") ;
-		output.println("#define SENSITIVITY_MIN       " + (int)TabVario.getSensMinMaxRng().getArrayValue(0) ) ;
-		output.println("#define SENSITIVITY_MAX       " + (int)TabVario.getSensMinMaxRng().getArrayValue(1) ) ;
-		output.println("#define SENSITIVITY_MIN_AT    " + (int)TabVario.getvSpeedMinNBox().getValue() ) ;
-		output.println("#define SENSITIVITY_MAX_AT    " + (int)TabVario.getvSpeedMaxNBox().getValue() ) ;
-		output.println("") ;
-		output.println("// ***** 4.3 - Sensitivity adjusted from the TX *****") ;
-		output.println("#define SENSITIVITY_MIN_AT_PPM    " + (int)TabVario.getPpmRngSensMinMaxRng().getArrayValue(0) + "   // sensitivity will be changed by OXS only when PPM signal is between the specified range enlarged by -5/+5") ;
-		output.println("#define SENSITIVITY_MAX_AT_PPM    " + (int)TabVario.getPpmRngSensMinMaxRng().getArrayValue(1) ) ;
-		output.println("#define SENSITIVITY_PPM_MIN       " + (int)TabVario.getSensMinMaxRng().getArrayValue(0) + "   // common value for vario is 20") ;
-		output.println("#define SENSITIVITY_PPM_MAX       " + (int)TabVario.getSensMinMaxRng().getArrayValue(1) + "  // common value for vario is 100") ;
 		output.println("");
-		output.println("// ***** 4.4 - Hysteresis parameter & Alt compensation based on sensor temp *****") ;
-		output.println("#define VARIOHYSTERESIS    " + (int)TabVario.getVarioHysteresisSld().getValue() ) ;
-		output.println("//#define ALT_TEMP_COMPENSATION 800") ;                                                       // TODO in OXSC
-		output.println("") ;
+		output.println("// ***** 4.2 - Sensitivity predefined by program *****");
+		output.println("#define SENSITIVITY_MIN       " + (int)TabVario.getSensMinMaxRng().getArrayValue(0));
+		output.println("#define SENSITIVITY_MAX       " + (int)TabVario.getSensMinMaxRng().getArrayValue(1));
+		output.println("#define SENSITIVITY_MIN_AT    " + (int)TabVario.getvSpeedMinNBox().getValue());
+		output.println("#define SENSITIVITY_MAX_AT    " + (int)TabVario.getvSpeedMaxNBox().getValue());
+		output.println("");
+		output.println("// ***** 4.3 - Sensitivity adjusted from the TX *****");
+		output.println("#define SENSITIVITY_MIN_AT_PPM    " + (int)TabVario.getPpmRngSensMinMaxRng().getArrayValue(0) + "   // sensitivity will be changed by OXS only when PPM signal is between the specified range enlarged by -5/+5");
+		output.println("#define SENSITIVITY_MAX_AT_PPM    " + (int)TabVario.getPpmRngSensMinMaxRng().getArrayValue(1));
+		output.println("#define SENSITIVITY_PPM_MIN       " + (int)TabVario.getSensMinMaxRng().getArrayValue(0) + "   // common value for vario is 20");
+		output.println("#define SENSITIVITY_PPM_MAX       " + (int)TabVario.getSensMinMaxRng().getArrayValue(1) + "  // common value for vario is 100");
+		output.println("");
+		output.println("// ***** 4.4 - Hysteresis parameter *****");
+		output.println("#define VARIOHYSTERESIS    " + (int)TabVario.getVarioHysteresisSld().getValue());
+		output.println("");
 		output.println("// ***** 4.5 - Vertical speeds calculations *****");
 		output.println("#define VARIO_PRIMARY              " + (int)TabVario.getvSpeed1Ddl().getValue() + "    // 0 means first ms5611, 1 means second ms5611, 2 means vario based on vario 1 + compensation from airspeed, 3 means average of first and second ms5611");
 		output.println("#define VARIO_SECONDARY            " + (int)TabVario.getvSpeed2Ddl().getValue() + "    // 0 means first ms5611, 1 means second ms5611, 2 means vario based on vario 1 + compensation from airspeed, 3 means average of first and second ms5611");
@@ -148,7 +145,7 @@ public class WriteConf {
 		output.println("// --------- 6 - Voltages & Current sensor settings ---------");
 		output.println("");
 		output.println("// ***** 6.1 - Voltage Reference selection (VCC or 1.1V internal) *****");
-		if (TabGeneralSettings.getVoltRefChoiceDdl().getValue() == 1) {
+		if (TabGeneralSettings.getVoltRefChoiceDdl().getValue() == 1) {  // TODO z test string instead ?
 			output.print("//");
 		}
 		output.println("#define USE_INTERNAL_REFERENCE    // Select the voltage reference, comment the line to activate the VCC voltage reference");
@@ -241,7 +238,7 @@ public class WriteConf {
 
 		// ---------------------------------- Debug --------------------------------------
 
-		output.println("// --------- 11 - Reserved for developer. DEBUG must be activated here when we want to debug one or several functions in some other files. ---------");
+		output.println("// --------- 10 - Reserved for developer. DEBUG must be activated here when we want to debug one or several functions in some other files. ---------");
 		output.println("//#define DEBUG");
 		output.println("");
 		output.println("#ifdef DEBUG");
