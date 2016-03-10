@@ -59,6 +59,8 @@ public class MainP extends PApplet {
 	public static String month = (month() < 10) ? "0" + month() : "" + month();
 	public static String date = day + "/" + month + "/" + year();
 
+	private static final String PRESET_DEFAULT_DIR = "/Preset/";
+
 	public static final int tabGray = 0xFFC8C8C8; // gray 200
 	public static final int backDdlGray = 0xFFFFFFFF; // gray 190
 	public static final int grayedColor = 0xFF9B9B9B; // gray 155
@@ -845,10 +847,10 @@ public class MainP extends PApplet {
 		}
 	}
 
-	// Load preset button
+	// Load preset button  // TODO better with FileDialog
 	public void loadButton(int theValue) {
-		File presetDir = new File( sketchPath("src/Preset/...") ) ;
-		selectInput("Select a preset file to load:", "presetLoad", presetDir) ;
+		File presetDir = new File(System.getProperty("user.dir") + PRESET_DEFAULT_DIR + "..." );
+		selectInput("Select a preset file to load:", "presetLoad", presetDir);
 	}
 
 	// Save preset button
@@ -859,8 +861,8 @@ public class MainP extends PApplet {
 			MessageBox.getGroup().hide() ;
 		}
 		if ( Validation.getAllValid() != 0 ) {
-			File presetDir = new File( ("src/Preset/type name") ) ;  // sketchPath("Preset/type name")
-			selectOutput("Type preset name to save:", "presetSave", presetDir) ;
+			File presetDir = new File(System.getProperty("user.dir") + PRESET_DEFAULT_DIR + "type name");
+			selectOutput("Type preset name to save:", "presetSave", presetDir);
 		}
 	}
 

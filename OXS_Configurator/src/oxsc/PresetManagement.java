@@ -14,6 +14,7 @@ import gui.TabGeneralSettings;
 import gui.TabPPM;
 import gui.TabVario;
 import gui.TabVoltage;
+import gui.MessageBox;
 import gui.TabAirSpeed;
 import gui.TabCurrent;
 import gui.TabData;
@@ -49,42 +50,56 @@ public class PresetManagement {
 		return uiUnits;
 	}
 
-	public static void presetLoad(File selection) throws FileNotFoundException, IOException {
+	public static void presetLoad(File selection) {
 		//presetDir = new File(mainP.sketchPath("src/Preset/..."));
 		try (BufferedReader buff = new BufferedReader(new FileReader(selection))) {
 			String line;
-			while ((line = buff.readLine()) != null) {
-				if (line.length() > 0 && line.charAt(0) != '@') {
-					String[] temp = line.split(SPLIT_CHAR);
-					System.out.println("Loading " + temp[0] + " settings...");
-					if (cp5.getGroup(temp[0]) instanceof controlP5.DropdownList) {
-						controlP5.DropdownList dropDownList = (controlP5.DropdownList) cp5.getGroup(temp[0]);
-						for (String[] stringArray : dropDownList.getListBoxItems()) {
-							if (stringArray[1].equals(temp[1])) {
-								dropDownList.setValue(Float.parseFloat(stringArray[2]));
+			line = buff.readLine();
+			if (line.length() > 0 && line.contains("OXS Configurator " + Validation.getOxsCversion())) {
+				System.out.println("Valid preset file");
+				while ((line = buff.readLine()) != null) {  // TODO preset: line redifined ??
+					if (line.length() > 0 && line.charAt(0) != '@') {
+						String[] temp = line.split(SPLIT_CHAR);
+						System.out.println("Loading " + temp[0] + " settings...");
+						if (cp5.getGroup(temp[0]) instanceof controlP5.DropdownList) {
+							controlP5.DropdownList dropDownList = (controlP5.DropdownList) cp5.getGroup(temp[0]);
+							for (String[] stringArray : dropDownList.getListBoxItems()) {
+								if (stringArray[1].equals(temp[1])) {
+									dropDownList.setValue(Float.parseFloat(stringArray[2]));
+								}
 							}
+							//dropDownList.setCaptionLabel(temp[1]);
+						} else if (cp5.getController(temp[0]) instanceof controlP5.Toggle) {
+							controlP5.Toggle toggle = (controlP5.Toggle) cp5.getController(temp[0]);
+							toggle.setState(Boolean.parseBoolean(temp[1]));
+						} else if (cp5.getController(temp[0]) instanceof controlP5.Numberbox) {
+							controlP5.Numberbox numberbox = (controlP5.Numberbox) cp5.getController(temp[0]);
+							numberbox.setValue(Float.parseFloat(temp[1]));
+						} else if (cp5.getController(temp[0]) instanceof controlP5.Range) {
+							controlP5.Range range = (controlP5.Range) cp5.getController(temp[0]);
+							range.setLowValue(Float.parseFloat(temp[1]));
+							range.setHighValue(Float.parseFloat(temp[2]));
+						} else if (cp5.getController(temp[0]) instanceof controlP5.Slider) {
+							controlP5.Slider slider = (controlP5.Slider) cp5.getController(temp[0]);
+							slider.setValue(Float.parseFloat(temp[1]));
+						} else if (cp5.getController(temp[0]) instanceof controlP5.Textfield && temp.length > 1) {
+							controlP5.Textfield textField = (controlP5.Textfield) cp5.getController(temp[0]);
+							textField.setText(temp[1]);
+						}  else {
+							// TODO preset: parse unknown controller string
+							System.out.println("Unknown controller");
 						}
-						//dropDownList.setCaptionLabel(temp[1]);
-					} else if (cp5.getController(temp[0]) instanceof controlP5.Toggle) {
-						controlP5.Toggle toggle = (controlP5.Toggle) cp5.getController(temp[0]);
-						toggle.setState(Boolean.parseBoolean(temp[1]));
-					} else if (cp5.getController(temp[0]) instanceof controlP5.Numberbox) {
-						controlP5.Numberbox numberbox = (controlP5.Numberbox) cp5.getController(temp[0]);
-						numberbox.setValue(Float.parseFloat(temp[1]));
-					} else if (cp5.getController(temp[0]) instanceof controlP5.Range) {
-						controlP5.Range range = (controlP5.Range) cp5.getController(temp[0]);
-						range.setLowValue(Float.parseFloat(temp[1]));
-						range.setHighValue(Float.parseFloat(temp[2]));
-					} else if (cp5.getController(temp[0]) instanceof controlP5.Slider) {
-						controlP5.Slider slider = (controlP5.Slider) cp5.getController(temp[0]);
-						slider.setValue(Float.parseFloat(temp[1]));
-					} else if (cp5.getController(temp[0]) instanceof controlP5.Textfield && temp.length > 1) {
-						controlP5.Textfield textField = (controlP5.Textfield) cp5.getController(temp[0]);
-						textField.setText(temp[1]);
-					}  
+					}
 				}
+			} else {
+				MessageBox.presetLoad("");
+				System.out.println("Invalid preset file");
 			}
 			TabGeneralSettings.getGenTab().bringToFront();
+		} catch (IOException e) {
+			// TODO 2 catch file not found
+			System.out.println("File not found");
+			e.printStackTrace();
 		}
 	}
 

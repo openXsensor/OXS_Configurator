@@ -122,6 +122,33 @@ public class MessageBox {
 		group.show() ;
 	}
 
+	public static void presetLoad(String presetFileVersion) {  // TODO preset messBox: right place ?
+
+		mBabout = true;
+		mbClose();
+
+		messageList.clear();
+
+		messageList.append("                            OXS Configurator " + Validation.getOxsCversion() + " for OXS " + Validation.getOxsVersion());
+		messageList.append("                                                       ---");
+		messageList.append("                         -- OpenXsensor configuration file GUI --");
+		messageList.append("\n");
+		messageList.append("                           This preset file is not compatible with");
+		messageList.append("                                      OXS Configurator " + Validation.getOxsCversion());
+
+		String[] messageListArray = MessageBox.getMessageList().array();
+
+		String joinedMessageList = PApplet.join(messageListArray, "\n");
+
+		textarea.setText(joinedMessageList);
+
+		buttonOKBtn.setColorForeground(MainP.orangeAct);
+		buttonOKBtn.setColorBackground(MainP.lightBackGray);
+		buttonOKBtn.setColorActive(MainP.blueAct);
+		group.setBackgroundColor(MainP.blueAct);
+		group.show();
+	}
+
 	public static Group getGroup() {
 		return group;
 	}
