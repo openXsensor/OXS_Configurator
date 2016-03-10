@@ -18,6 +18,7 @@ public class MessageBox {
 	private static StringList messageList = new StringList();
 	private static int mBoxWidth = 400;
 	private static int mBoxHeight = 320;
+	private static boolean mBabout = false;
 
 	public MessageBox(ControlP5 cp5, MainP mainP) {
 
@@ -87,7 +88,8 @@ public class MessageBox {
 	}
 
 	public static void about() {
-	
+		
+		mBabout = true;
 		mbClose() ;
 	
 		messageList.clear() ;
@@ -134,6 +136,14 @@ public class MessageBox {
 
 	public static StringList getMessageList() {
 		return messageList;
+	}
+
+	public static boolean ismBabout() {
+		return mBabout;
+	}
+
+	public static void setmBabout(boolean mBabout) {
+		MessageBox.mBabout = mBabout;
 	}
 	
 }

@@ -1008,11 +1008,12 @@ public class MainP extends PApplet {
 		rng.getCaptionLabel().toUpperCase(false) ;
 	}
 
-	public void buttonOK(int theValue) { // TODO First: problems with preset save btn and warning state validation
-		if (Validation.getAllValid() != 0) {
+	public void buttonOK(int theValue) {
+		if (Validation.getAllValid() != 0 && !MessageBox.ismBabout()) {
 			WriteConf.writeConf();
 		}
 		MessageBox.getGroup().hide();
+		MessageBox.setmBabout(false);
 	}
 
 	public void buttonCancel(int theValue) {
