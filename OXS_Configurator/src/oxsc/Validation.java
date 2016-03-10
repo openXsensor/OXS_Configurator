@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import controlP5.ControlP5;
+
 import gui.MessageBox;
 import gui.TabCurrent;
 import gui.TabData;
@@ -14,10 +14,6 @@ import gui.TabVario;
 import gui.TabVoltage;
 
 public class Validation {
-	
-	@SuppressWarnings("unused")
-	private static ControlP5 cp5 ;
-	private static MainP mainP;
 
 	private static String oxsDirectory = "";
 	private static String outputConfigDir = "";
@@ -30,11 +26,8 @@ public class Validation {
 	private static boolean sentDataValid;
 	private static int versionValid; // 0 -> not valid 1 -> warning 2 -> valid	
 	private static int allValid; // 0 -> not valid 1 -> warning 2 -> valid
-	
 
-
-	public Validation(ControlP5 cp5) {  // Dummy constructor
-		Validation.cp5 = cp5;
+	public Validation() {
 	}
 
 	public static String getOxsVersion() {
@@ -53,9 +46,8 @@ public class Validation {
 		return allValid;
 	}
 
-	public static void validationProcess(MainP mainPori, String theString) {
-        mainP = mainPori;
-		// Config file writing destination
+	public static void validationProcess(String theString) {
+        // Config file writing destination
 		oxsDirectory = getOxsDir().getText().trim() ;
 		if ( oxsDirectory.equals("") ) {
 			outputConfigDir = mainP.sketchPath("oXs_config.h");

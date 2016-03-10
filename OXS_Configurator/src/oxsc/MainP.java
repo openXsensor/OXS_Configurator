@@ -1020,7 +1020,7 @@ public class MainP extends PApplet {
 		MessageBox.getGroup().hide();
 	}
 		
-	public static void main(String _args[]) {
+	public static void main(String[] _args) {
 		PApplet.main(new String[] { oxsc.MainP.class
 				.getName() });
 	}

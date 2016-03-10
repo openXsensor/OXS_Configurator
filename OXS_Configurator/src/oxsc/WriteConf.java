@@ -112,14 +112,14 @@ public class WriteConf {
 		output.println("//#define ALT_TEMP_COMPENSATION 800") ;                                                       // TODO in OXSC
 		output.println("") ;
 		output.println("// ***** 4.5 - Vertical speeds calculations *****");
-		output.println("#define VARIO_PRIMARY              " + (int)TabVario.getvSpeed1Ddl().getValue() + "    // 0 means first ms5611, 1 means second ms5611 , 2 means vario based on vario 1 + compensation from airspeed") ;
-		output.println("#define VARIO_SECONDARY            " + (int)TabVario.getvSpeed2Ddl().getValue() + "    // 0 means first ms5611, 1 means second ms5611 , 2 means vario based on vario 1 + compensation from airspeed") ;
-		output.println("#define SWITCH_VARIO_MIN_AT_PPM    " + (int)TabVario.getPpmVspeedSwMinNBox().getValue() ) ;
-		output.println("#define SWITCH_VARIO_MAX_AT_PPM    " + (int)TabVario.getPpmVspeedSwMaxNBox().getValue() ) ;
-		output.println("") ;
-		output.println("// ***** 4.6 - Analog vertical speed *****") ;
-		if ( TabGeneralSettings.getVarioTgl().getValue() == 1 && TabVario.getAnalogClimbTgl().getValue() == 1 ) {
-			output.println("#define PIN_ANALOG_VSPEED    " + TabVario.getClimbPinDdl().getCaptionLabel().getText() + "    // the pin used to write the vertical speed to the Rx A1 or A2 pin (can be 3 or 11 because it has to use timer 2)") ;
+		output.println("#define VARIO_PRIMARY              " + (int)TabVario.getvSpeed1Ddl().getValue() + "    // 0 means first ms5611, 1 means second ms5611, 2 means vario based on vario 1 + compensation from airspeed, 3 means average of first and second ms5611");
+		output.println("#define VARIO_SECONDARY            " + (int)TabVario.getvSpeed2Ddl().getValue() + "    // 0 means first ms5611, 1 means second ms5611, 2 means vario based on vario 1 + compensation from airspeed, 3 means average of first and second ms5611");
+		output.println("#define SWITCH_VARIO_MIN_AT_PPM    " + (int)TabVario.getPpmVspeedSwMinNBox().getValue());
+		output.println("#define SWITCH_VARIO_MAX_AT_PPM    " + (int)TabVario.getPpmVspeedSwMaxNBox().getValue());
+		output.println("");
+		output.println("// ***** 4.6 - Analog vertical speed *****");
+		if (TabGeneralSettings.getVarioTgl().getValue() == 1 && TabVario.getAnalogClimbTgl().getValue() == 1) {
+			output.println("#define PIN_ANALOG_VSPEED    " + TabVario.getClimbPinDdl().getCaptionLabel().getText() + "    // the pin used to write the vertical speed to the Rx A1 or A2 pin (can be 3 or 11 because it has to use timer 2)");
 		} else {
 			output.println("//#define PIN_ANALOG_VSPEED       //  the pin used to write the vertical speed to the Rx A1 or A2 pin (can be 3 or 11 because it has to use timer 2)");
 		}
