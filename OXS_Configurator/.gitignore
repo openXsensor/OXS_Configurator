@@ -1,6 +1,10 @@
+/.settings/
+/.project
+/.classpath
+/preferences.txt
 /bin/
 /lib/
-/.settings/
 /Preset/
-/oXs_config.h
-/.classpath
+/application.linux/
+/application.macosx/
+/application.windows/
