@@ -884,11 +884,7 @@ public class MainP extends PApplet {
 	}
 
 	public void writeConfButton(int theValue) {
-		MessageBox.mbOkCancel() ;
-		Validation.validationProcess("Config") ;
-		if ( Validation.getAllValid() == 0) {
-			MessageBox.mbClose() ;
-		}
+		Validation.validationProcess("Config");
 	}
 
 	public void folderSelected(File selection) {
@@ -1010,7 +1006,7 @@ public class MainP extends PApplet {
 		rng.getCaptionLabel().toUpperCase(false) ;
 	}
 
-	public void buttonOK(int theValue) {
+	public void buttonOK(int theValue) {        // TODO 1 improving MessageBox
 		if (Validation.getAllValid() != 0 && !MessageBox.ismBabout()) {
 			WriteConf.writeConf();
 		}

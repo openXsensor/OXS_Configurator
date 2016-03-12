@@ -20,6 +20,8 @@ public class Validation {
 	private static String outputConfigDir = "";
 	private static final String oxsVersion = "v3.0";
 	private static final String oxsCversion = "v3.0";
+	
+	private static StringBuilder message = new StringBuilder();
 	private static boolean numPinsValid;
 	private static boolean analogPinsValid;
 	private static int vSpeedValid; // 0 -> not valid 1 -> warning 2 -> valid
@@ -48,6 +50,9 @@ public class Validation {
 	}
 
 	public static void validationProcess(String theString) {
+		message.setLength(0);
+		message.append("\n");
+
         // Config file writing destination
 		oxsDirectory = getOxsDir().getText().trim() ;
 		if ( oxsDirectory.equals("") ) {
@@ -56,10 +61,6 @@ public class Validation {
 		} else {
 			outputConfigDir = oxsDirectory + OXS_CONFIG_FILE_NAME;
 		}
-
-		MessageBox.getMessageList().clear() ;
-		MessageBox.getMessageList().set(0, "") ;
-		MessageBox.getMessageList().append("") ;
 
 		numPinsValid = true ;
 		analogPinsValid = true ;
@@ -82,63 +83,50 @@ public class Validation {
 
 		if ( !numPinsValid || !analogPinsValid || vSpeedValid == 0 || !cellsValid || !sentDataValid || versionValid == 0 ) {
 
-			MessageBox.getGroup().setBackgroundColor(MainP.errorColor) ;
-
-			MessageBox.getMessageList().set(0, "                                              --- ERROR ---") ;
-			MessageBox.getMessageList().append("") ;
-			MessageBox.getMessageList().append("                                             ----------------------") ;
-			MessageBox.getMessageList().append("") ;
-			if ( theString.equals("preset") ) {
-				MessageBox.getMessageList().append("Preset file can't be saved !") ;
+			message.insert(0, "                                              --- ERROR ---\n");
+			message.append("\n");
+			message.append("                                             ----------------------\n");
+			message.append("\n") ;
+			if (option.equals("preset")) {
+				message.append("Preset file can't be saved !\n");
 			} else {
-				MessageBox.getMessageList().append("Config file can't be written !") ;
+				message.append("Config file can't be written !\n");
 			}
-			//cp5.get(Textarea.class, "messageBoxLabel").setColor(color(255,0,0)) ;
+
 			allValid = 0 ;
+			
+			MessageBox.error(message);
 
 		} else if ( vSpeedValid == 1 || versionValid == 1 ) {
 
-			MessageBox.getGroup().setBackgroundColor(MainP.warnColor) ;
-
-			MessageBox.getMessageList().set(0, "                                           ----  WARNING  ----") ;
-			MessageBox.getMessageList().append("") ;
-			MessageBox.getMessageList().append("                                             ----------------------") ;
-			MessageBox.getMessageList().append("") ;
-			if ( theString.equals("Config") ) {
-				MessageBox.getMessageList().append("Configuration file will be written to:") ;
-				MessageBox.getMessageList().append(outputConfigDir) ;
-				MessageBox.getMessageList().append("") ;
-				MessageBox.getMessageList().append("                       ! If the file already exists, it will be replaced !") ;
+			message.insert(0, "                                           ----  WARNING  ----\n");
+			message.append("\n");
+			message.append("                                             ----------------------\n");
+			message.append("\n");
+			if (option.equals("Config")) {
+				message.append("Configuration file will be written to:\n");
+				message.append(outputConfigDir + "\n");
+				message.append("\n");
+				message.append("                       ! If the file already exists, it will be replaced !\n");
 			}
-
+			
 			allValid = 1 ;
+			
+			MessageBox.warning(message);
 
 		} else {
 
-			MessageBox.getGroup().setBackgroundColor(MainP.okColor) ;
-
-			MessageBox.getMessageList().set(0, "                                         --- ALL IS GOOD ! ---") ;
-			if ( theString.equals("preset") ) {
-				MessageBox.getMessageList().append("Preset file can be saved !") ;
+			message.insert(0, "                                         --- ALL IS GOOD ! ---\n");
+			if (option.equals("preset")) {
+				message.append("Preset file can be saved !\n");
 			}
-			MessageBox.getMessageList().append("") ;
-			MessageBox.getMessageList().append("                                             ----------------------") ;
+			message.append("\n");
+			message.append("                                             ----------------------\n");
 
 			allValid = 2 ;
+			
+			MessageBox.good(message);
 		}
-
-		String[] messageListArray = MessageBox.getMessageList().array() ;
-
-		String joinedMessageList = MainP.join(messageListArray, "\n") ; // TODO join string java API
-
-		MessageBox.getTextarea().setText(joinedMessageList) ;
-		//println(messageList) ;
-
-		//messageBox.setBackgroundColor(color(240)) ;
-		MessageBox.getButtonOKBtn().setColorForeground(MainP.blueAct) ;
-		MessageBox.getButtonOKBtn().setColorActive(MainP.orangeAct) ;
-		MessageBox.getGroup().show() ;
-
 	}
 	
 	public static void validateNumPins() {
@@ -170,7 +158,7 @@ public class Validation {
 						&& Integer.parseInt(numPinsValidation[j][2]) == 1 ) {
 					if ( numPinsValidation[i][1].equals(numPinsValidation[j][1]) ) {
 						numPinsValid = false ;
-						MessageBox.getMessageList().append("- " + numPinsValidation[i][0] + " is using the same pin n°" + numPinsValidation[i][1] + " as " + numPinsValidation[j][0] + " !") ;
+						message.append("- " + numPinsValidation[i][0] + " is using the same pin n°" + numPinsValidation[i][1] + " as " + numPinsValidation[j][0] + " !\n");
 					}
 				}
 			}
@@ -194,7 +182,7 @@ public class Validation {
 
 		if ( getVoltageTgl().getValue() == 1.0 && voltActiveCount == 0 ) {
 			analogPinsValid = false ;
-			MessageBox.getMessageList().append("- Voltage sensor is active but there is no voltage to measure !") ;
+			message.append("- Voltage sensor is active but there is no voltage to measure !\n");
 		}
 
 		String analogPinsValidation[][] = new String[][] {              // array { pin name, pin value, isActive }
@@ -213,7 +201,7 @@ public class Validation {
 		for ( int i = 0; i < analogPinsValidation.length; i++ ) {
 			if ( analogPinsValidation[i][1].equals(" --") && analogPinsValidation[i][2].equals("1") ) {
 				analogPinsValid = false ;
-				MessageBox.getMessageList().append("- " + analogPinsValidation[i][0] + " has no pin assigned !") ;
+				message.append("- " + analogPinsValidation[i][0] + " has no pin assigned !\n");
 			}
 			for ( int j = i + 1; j < analogPinsValidation.length; j++ ) {
 				if ( !analogPinsValidation[i][1].equals(" --") && !analogPinsValidation[j][1].equals(" --")
@@ -221,7 +209,7 @@ public class Validation {
 					if ( analogPinsValidation[i][1].equals(analogPinsValidation[j][1]) ) {
 						//System.out.println("Attention !!  " + analogPinsValidation[i][0] + " is using the same pin n°" + analogPinsValidation[i][1] + " as " + analogPinsValidation[j][0] + " !") ;
 						analogPinsValid = false ;
-						MessageBox.getMessageList().append("- " + analogPinsValidation[i][0] + " is using the same pin n°" + analogPinsValidation[i][1] + " as " + analogPinsValidation[j][0] + " !") ;
+						message.append("- " + analogPinsValidation[i][0] + " is using the same pin n°" + analogPinsValidation[i][1] + " as " + analogPinsValidation[j][0] + " !\n");
 					}
 				}
 			}
@@ -235,28 +223,34 @@ public class Validation {
 			for (;;) {
 				if ( (int)TabVario.getvSpeed1Ddl().getValue() == 1 && getVario2Tgl().getValue() == 0 ) {
 					vSpeedValid = 0 ;
-					MessageBox.getMessageList().append( "- You can't use Vario 2 V.Speed as Vario 2 is not activated !" ) ;
+					//MessageBox.getMessageList().append( "- You can't use Vario 2 V.Speed as Vario 2 is not activated !" ) ;
+					message.append("- You can't use Vario 2 V.Speed as Vario 2 is not activated !\n");
 					break ;
 				} else if ( (int)TabVario.getvSpeed1Ddl().getValue() == 2 && getAirSpeedTgl().getValue() == 0 ) {
 					vSpeedValid = 0 ;
-					MessageBox.getMessageList().append( "- You can't use Vario 1 + A.Speed compensated V.Speed as Air Speed" ) ;
-					MessageBox.getMessageList().append( "  sensor is not activated !" ) ;
+					//MessageBox.getMessageList().append( "- You can't use Vario 1 + A.Speed compensated V.Speed as Air Speed" ) ;
+					//MessageBox.getMessageList().append( "  sensor is not activated !" ) ;
+					message.append("- You can't use Vario 1 + A.Speed compensated V.Speed as Air Speed\n");
+					message.append("  sensor is not activated !\n");
 					break ;
 				}
 
 				if ( TabPPM.getPpmTgl().getValue() == 1 && ( getVario2Tgl().getValue() == 1 || getAirSpeedTgl().getValue() == 1 ) ) {
 					if ( (int)TabVario.getvSpeed2Ddl().getValue() == 1 && getVario2Tgl().getValue() == 0 ) {
 						vSpeedValid = 0 ;
-						MessageBox.getMessageList().append( "- You can't use Vario 2 V.Speed as Vario 2 is not activated !" ) ;
+						message.append("- You can't use Vario 2 V.Speed as Vario 2 is not activated !\n");
 					} else if ( (int)TabVario.getvSpeed2Ddl().getValue() == 2 &&  getAirSpeedTgl().getValue() == 0 ) {
 						vSpeedValid = 0 ;
-						MessageBox.getMessageList().append( "- You can't use Vario 1 + A.Speed compensated V.Speed as Air Speed" ) ;
-						MessageBox.getMessageList().append( "  sensor is not activated !" ) ;
+						//MessageBox.getMessageList().append( "- You can't use Vario 1 + A.Speed compensated V.Speed as Air Speed" ) ;
+						//MessageBox.getMessageList().append( "  sensor is not activated !" ) ;
+						message.append("- You can't use Vario 1 + A.Speed compensated V.Speed as Air Speed\n");
+						message.append("  sensor is not activated !\n");
 					}
 
 					if ( (int)TabVario.getvSpeed1Ddl().getValue() == (int)TabVario.getvSpeed2Ddl().getValue() ) {
 						vSpeedValid = ( vSpeedValid == 0 ) ? 0 : 1 ;
-						MessageBox.getMessageList().append( "- You have set the same V.Speed types for switching in Vario TAB !" ) ;
+						//MessageBox.getMessageList().append( "- You have set the same V.Speed types for switching in Vario TAB !" ) ;
+						message.append("- You have set the same V.Speed types for switching in Vario TAB !\n");
 					}
 				}
 				break ;
@@ -302,14 +296,14 @@ public class Validation {
 				oxsMeasureCount ++ ;
 				if ( targetDataFieldName.equals("----------") ) {         // if telemetry field is empty
 					sentDataValid = false ;
-					MessageBox.getMessageList().append( "- The " + sentDataFieldName + " measure is not sent !" ) ;
+					message.append("- The " + sentDataFieldName + " measure is not sent !\n");
 				// if FrSky protocol
 				} else if ( MainP.protocol.getName().equals("FrSky") ) {
 				// OXS measurement must be default
                 if ( ( sentDataFieldName.equals("Cells monitoring") || sentDataFieldName.equals("RPM") )
 							&& !targetDataFieldName.equals("DEFAULT") ) {
 						sentDataValid = false ;
-						MessageBox.getMessageList().append( "- " + sentDataFieldName + " must be set to DEFAULT !" ) ;
+						message.append("- " + sentDataFieldName + " must be set to DEFAULT !\n");
 					// OXS measurement can't be default
 					} else if ( ( sentDataFieldName.equals("Alt. over 10 seconds") || sentDataFieldName.equals("Alt. over 10 seconds 2")
 							|| sentDataFieldName.equals("Vario sensitivity") || sentDataFieldName.equals("Prandtl Compensation")
@@ -318,7 +312,7 @@ public class Validation {
 							|| sentDataFieldName.equals("Volt 5") || sentDataFieldName.equals("Volt 6")
 							|| sentDataFieldName.equals("PPM value") ) && targetDataFieldName.equals("DEFAULT") ) {
 						sentDataValid = false ;
-						MessageBox.getMessageList().append( "- " + sentDataFieldName + " can't be set to DEFAULT !" ) ;
+						message.append("- " + sentDataFieldName + " can't be set to DEFAULT !\n");
 					// Only one Altitude DEFAULT TODO remove
 					} else if ( ( sentDataFieldName.equals("Altitude") || sentDataFieldName.equals("Altitude 2") )
 							&& targetDataFieldName.equals("DEFAULT") ) {
@@ -327,8 +321,8 @@ public class Validation {
 									|| TabData.getSentDataField(j).getCaptionLabel().getText().equals("Altitude 2") )
 									&& TabData.getTargetDataField(j).getCaptionLabel().getText().equals("DEFAULT") ) {
 								sentDataValid = false ;
-								MessageBox.getMessageList().append( "- " + TabData.getSentDataField(j).getCaptionLabel().getText() + " Telemetry data field can't be set to DEFAULT as it's" ) ;
-								MessageBox.getMessageList().append( "  already used by " + sentDataFieldName + " measurement !" ) ;
+								message.append("- " + TabData.getSentDataField(j).getCaptionLabel().getText() + " Telemetry data field can't be set to DEFAULT as it's\n");
+								message.append("  already used by " + sentDataFieldName + " measurement !\n");
 							}
 						}
 					// Only one V.Speed DEFAULT TODO remove
@@ -342,8 +336,8 @@ public class Validation {
 									|| TabData.getSentDataField(j).getCaptionLabel().getText().equals("PPM_VSPEED") )
 									&& TabData.getTargetDataField(j).getCaptionLabel().getText().equals("DEFAULT") ) {
 								sentDataValid = false ;
-								MessageBox.getMessageList().append( "- " + TabData.getSentDataField(j).getCaptionLabel().getText() + " Telemetry data field can't be set to DEFAULT as it's" ) ;
-								MessageBox.getMessageList().append( "  already used by " + sentDataFieldName + " measurement !" ) ;
+								message.append("- " + TabData.getSentDataField(j).getCaptionLabel().getText() + " Telemetry data field can't be set to DEFAULT as it's\n");
+								message.append("  already used by " + sentDataFieldName + " measurement !\n");
 							}
 						}
 					}
@@ -370,7 +364,7 @@ public class Validation {
 					}
 				}
 				if (duplicate) {
-					MessageBox.getMessageList().append("- " + tempStr.get(0) + " can't be used at the same time by: ");
+					message.append("- " + tempStr.get(0) + " can't be used at the same time by:\n");
 					for (int j = 1; j < tempStr.size() - 1; j++) {
 							if (j < tempStr.size() - 2 ) {
 								messageString += tempStr.get(j) + ", ";
@@ -378,7 +372,7 @@ public class Validation {
 								messageString += tempStr.get(j) + " and " + tempStr.get(j + 1);
 							}
 					}
-					MessageBox.getMessageList().append("  " + messageString + " !");
+					message.append("  " + messageString + " !\n");
 					duplicate = false;
 				}
 			}
@@ -386,7 +380,7 @@ public class Validation {
 
 		if (oxsMeasureCount == 0) {
 			sentDataValid = false;
-			MessageBox.getMessageList().append("- You don't have any OXS measurement set !");
+			message.append("- You don't have any OXS measurement set !\n");
 		}
 
 	}
@@ -413,28 +407,28 @@ public class Validation {
 		if (version == null) {
 			versionValid = 1;
 
-			MessageBox.getMessageList().append("");
-			MessageBox.getMessageList().append("                ** The Configurator can't find OXS version number **");
-			MessageBox.getMessageList().append("                **      Configuration file may not be compatible...    **");
+			message.append("                **   The Configurator can't find OXS version number   **\n");
+			message.append("                **         Configuration file may not be compatible...      **\n");
 
 		} else if (version.charAt(1) == oxsCversion.charAt(1)) {
-			MessageBox.getMessageList().append("Configuration file will be written to:");
-			MessageBox.getMessageList().append(outputConfigDir);
-			MessageBox.getMessageList().append("");
-			MessageBox.getMessageList().append("                       ! If the file already exists, it will be replaced !");
+			message.append("Configuration file will be written to:\n");
+			message.append(outputConfigDir + "\n");
+			message.append("\n");
+			message.append("                       ! If the file already exists, it will be replaced !\n");
 
 		} else if (version.charAt(1) > oxsCversion.charAt(1)) {
 			versionValid = 1;
-			MessageBox.getMessageList().append("");
-			MessageBox.getMessageList().append("        **  The Configurator " + oxsCversion + " can't set OXS " + version + " new features,  **");
-			MessageBox.getMessageList().append("        **    if you need them, you can edit the config file by hand    **");
-			MessageBox.getMessageList().append("");
+			
+			message.append("        **  The Configurator " + oxsCversion + " can't set OXS " + version + " new features,  **\n");
+			message.append("        **    if you need them, you can edit the config file by hand    **\n");
+			message.append("\n");
 		} else {
 			versionValid = 0;
-			MessageBox.getMessageList().append("            ** The Configurator "	+ oxsCversion + " isn't compatible with OXS " + version	+ " **");
-			MessageBox.getMessageList().append("");
-			MessageBox.getMessageList().append("         You may go to \"https://code.google.com/p/openxsensor/\" and");  // TODO change URL
-			MessageBox.getMessageList().append("       download the latest version of both OXS and OXS Configurator.");
+			
+			message.append("            ** The Configurator "	+ oxsCversion + " isn't compatible with OXS " + version	+ " **\n");
+			message.append("\n");
+			message.append("         You may go to \"https://code.google.com/p/openxsensor/\" and\n");  // TODO 1 change URL
+			message.append("       download the latest version of both OXS and OXS Configurator.\n");
 		}
 	}
 	

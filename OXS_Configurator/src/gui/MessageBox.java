@@ -6,16 +6,13 @@ import controlP5.Group;
 import controlP5.Textarea;
 import oxsc.MainP;
 import oxsc.Validation;
-import processing.core.PApplet;
-import processing.data.StringList;
 
 public class MessageBox {
 
-	private static Group group;
-	private static Textarea textarea;
-	private static Button buttonOKBtn;
-	private static Button buttonCancel;
-	private static StringList messageList = new StringList();
+	private static Group messageBox;
+	private static Textarea textArea;
+	private static Button okBtn;
+	private static Button cancelBtn;
 	private static int mBoxWidth = 400;
 	private static int mBoxHeight = 320;
 	private static boolean mBabout = false;
@@ -23,7 +20,7 @@ public class MessageBox {
 	public MessageBox(ControlP5 cp5, MainP mainP) {
 
 		// create a group to store the messageBox elements
-		group = cp5.addGroup("messageBox", mainP.width / 2 - mBoxWidth / 2, 76, mBoxWidth)
+		messageBox = cp5.addGroup("messageBox", mainP.width / 2 - mBoxWidth / 2, 76, mBoxWidth)
 				   .setBackgroundHeight(mBoxHeight)
 				   .setBackgroundColor(mainP.color(240))
 				   .setTab("global")
@@ -32,137 +29,146 @@ public class MessageBox {
 				   ;
 	
 		// add a Textarea to the messageBox.
-		textarea = cp5.addTextarea("messageBoxLabel")
+		textArea = cp5.addTextarea("messageBoxTextArea")
 		              .setPosition(5,5)
 		              .setSize(mBoxWidth - 10, mBoxHeight - 48)
 		              .setLineHeight(14)
 		              .setColor(MainP.white)
 		              .setColorActive(MainP.orangeAct)
-		              //.setBorderColor(color(0))
 		              .setColorBackground(mainP.color(120))
 		              .setColorForeground(MainP.blueAct)
 		              .setScrollBackground(mainP.color(80))
-		              .moveTo(group)
+		              .moveTo(messageBox)
 		              ;
 	
 		// OK button to the messageBox.
-		buttonOKBtn = cp5.addButton(mainP, "btnOK", "buttonOK", 0, mainP.width / 2 - 60, 218, 80, 30)
-		                 .setColorForeground(mainP.color(MainP.blueAct))
+		okBtn = cp5.addButton(mainP, "btnOK", "buttonOK", 0, mainP.width / 2 - 60, 218, 80, 30)
 		                 .setColorBackground(MainP.lightBackGray)
-		                 .setColorActive(mainP.color(MainP.orangeAct))
-		                 .moveTo(group)
+		                 .moveTo(messageBox)
 		                 ;
-		buttonOKBtn.getCaptionLabel().setFont(MainP.font20);
-		buttonOKBtn.getCaptionLabel().toUpperCase(false);
-		buttonOKBtn.getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER).setPaddingX(10);
+		okBtn.getCaptionLabel().setFont(MainP.font20);
+		okBtn.getCaptionLabel().toUpperCase(false);
+		okBtn.getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER).setPaddingX(10);
 	
 		// Cancel button to the messageBox.
-		buttonCancel = cp5.addButton(mainP, "btnCancel", "buttonCancel", 0, mBoxWidth / 2 + 5, mBoxHeight - 37, 80, 30)
+		cancelBtn = cp5.addButton(mainP, "btnCancel", "buttonCancel", 0, mBoxWidth / 2 + 5, mBoxHeight - 37, 80, 30)
 		                  .setCaptionLabel("Cancel")
 		                  .setColorForeground(MainP.blueAct)
 		                  .setColorBackground(MainP.lightBackGray)
 		                  .setColorActive(MainP.orangeAct)
-		                  .moveTo(group)
+		                  .moveTo(messageBox)
 		                  .hide()
 		                  ;
-		buttonCancel.getCaptionLabel().setFont(MainP.font20) ;
-		buttonCancel.getCaptionLabel().toUpperCase(false) ;
-		buttonCancel.getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER).setPaddingX(10) ;
+		cancelBtn.getCaptionLabel().setFont(MainP.font20) ;
+		cancelBtn.getCaptionLabel().toUpperCase(false) ;
+		cancelBtn.getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER).setPaddingX(10) ;
 
 	}
 
 	public static void mbOkCancel() {
-		buttonOKBtn.setPosition(mBoxWidth / 2 - 80 - 5, mBoxHeight - 37)
+		okBtn.setPosition(mBoxWidth / 2 - 80 - 5, mBoxHeight - 37)
 		           .setSize(80, 30)
 		           .setCaptionLabel("OK");
 
-		buttonCancel.show();
+		cancelBtn.show();
 	}
 
 	public static void mbClose() {
-		buttonOKBtn.setPosition(mBoxWidth / 2 - 40 , mBoxHeight - 37)
+		okBtn.setPosition(mBoxWidth / 2 - 40 , mBoxHeight - 37)
 		           .setSize(80, 30)
 		           .setCaptionLabel("CLOSE");
 
-		buttonCancel.hide();
+		cancelBtn.hide();
+	}
+	
+	public static void infos(StringBuilder message) {
+		
+		textArea.setText(message.toString());
+		
+		mbClose();
+		
+		okBtn.setColorForeground(MainP.orangeAct);
+		okBtn.setColorActive(MainP.blueAct);
+		messageBox.setBackgroundColor(MainP.blueAct);
+		messageBox.show();
+	}
+	
+	public static void warning(StringBuilder message) {
+		
+		textArea.setText(message.toString());
+		
+		mbOkCancel();
+		
+		okBtn.setColorForeground(MainP.blueAct);
+		okBtn.setColorActive(MainP.orangeAct);
+		messageBox.setBackgroundColor(MainP.warnColor);
+		messageBox.show();
 	}
 
+	public static void error(StringBuilder message) {
+		
+		textArea.setText(message.toString());
+		
+		mbClose();
+		
+		okBtn.setColorForeground(MainP.blueAct);
+		okBtn.setColorActive(MainP.orangeAct);
+		messageBox.setBackgroundColor(MainP.errorColor);
+		messageBox.show();
+	}
+	
+	public static void good(StringBuilder message) {
+		
+		textArea.setText(message.toString());
+		
+		mbOkCancel();
+		
+		okBtn.setColorForeground(MainP.blueAct);
+		okBtn.setColorActive(MainP.orangeAct);
+		messageBox.setBackgroundColor(MainP.okColor);
+		messageBox.show();
+	}
+	
 	public static void about() {
 		
 		mBabout = true;
-		mbClose() ;
 	
-		messageList.clear() ;
+		StringBuilder message = new StringBuilder();
 	
-		messageList.append( "                            OXS Configurator " + Validation.getOxsCversion() + " for OXS " + Validation.getOxsVersion() ) ;
-		messageList.append( "                                                       ---" ) ;
-		messageList.append( "                         -- OpenXsensor configuration file GUI --" ) ;
-		messageList.append( "\n" ) ;
-		messageList.append( "Contributors:" ) ;
-		messageList.append( "" ) ;
-		messageList.append( "- Rainer Schloßhan" ) ;
-		messageList.append( "- Bertrand Songis" ) ;
-		messageList.append( "- André Bernet" ) ;
-		messageList.append( "- Michael Blandford" ) ;
-		messageList.append( "- Michel Strens" ) ;
-		messageList.append( "- David Laburthe" ) ;
-		messageList.append( "" ) ;
-		messageList.append( "" ) ;
-	
-		String[] messageListArray = MessageBox.getMessageList().array() ;
-	
-		String joinedMessageList = PApplet.join(messageListArray, "\n") ;
-	
-		textarea.setText(joinedMessageList) ;
-	
-		buttonOKBtn.setColorForeground(MainP.orangeAct) ;
-		buttonOKBtn.setColorBackground(MainP.lightBackGray) ;
-		buttonOKBtn.setColorActive(MainP.blueAct) ;
-		group.setBackgroundColor(MainP.blueAct) ;
-		group.show() ;
+		message.append("                            OXS Configurator " + Validation.getOxsCversion() + " for OXS " + Validation.getOxsVersion() + "\n");
+		message.append("                                                       ---\n");
+		message.append("                         -- OpenXsensor configuration file GUI --\n");
+		message.append("\n");
+		message.append("Contributors:\n");
+		message.append("\n");
+		message.append("- Rainer Schloßhan\n");
+		message.append("- Bertrand Songis\n");
+		message.append("- André Bernet\n");
+		message.append("- Michael Blandford\n");
+		message.append("- Michel Strens\n");
+		message.append("- David Laburthe\n");
+
+		infos(message);
 	}
 
 	public static void presetLoad(String presetFileVersion) {  // TODO preset messBox: right place ?
 
 		mBabout = true;
-		mbClose();
 
-		messageList.clear();
+		StringBuilder message = new StringBuilder();
 
-		messageList.append("                            OXS Configurator " + Validation.getOxsCversion() + " for OXS " + Validation.getOxsVersion());
-		messageList.append("                                                       ---");
-		messageList.append("                         -- OpenXsensor configuration file GUI --");
-		messageList.append("\n");
-		messageList.append("                           This preset file is not compatible with");
-		messageList.append("                                      OXS Configurator " + Validation.getOxsCversion());
+		message.append("                            OXS Configurator " + Validation.getOxsCversion() + " for OXS " + Validation.getOxsVersion() + "\n");
+		message.append("                                                       ---\n");
+		message.append("                         -- OpenXsensor configuration file GUI --\n");
+		message.append("\n");
+		message.append("                           This preset file is not compatible with\n");
+		message.append("                                      OXS Configurator " + Validation.getOxsCversion() + "\n");
 
-		String[] messageListArray = MessageBox.getMessageList().array();
-
-		String joinedMessageList = PApplet.join(messageListArray, "\n");
-
-		textarea.setText(joinedMessageList);
-
-		buttonOKBtn.setColorForeground(MainP.orangeAct);
-		buttonOKBtn.setColorBackground(MainP.lightBackGray);
-		buttonOKBtn.setColorActive(MainP.blueAct);
-		group.setBackgroundColor(MainP.blueAct);
-		group.show();
+		infos(message);
 	}
 
 	public static Group getGroup() {
-		return group;
-	}
-
-	public static Textarea getTextarea() {
-		return textarea;
-	}
-
-	public static Button getButtonOKBtn() {
-		return buttonOKBtn;
-	}
-
-	public static StringList getMessageList() {
-		return messageList;
+		return messageBox;
 	}
 
 	public static boolean ismBabout() {
