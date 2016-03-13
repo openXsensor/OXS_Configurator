@@ -4,6 +4,8 @@ import gui.TabData;
 
 public class Protocol {
 	
+	private static final boolean DEBUG = false;
+
 	private String name;
 	
 	private static String[][] targetDataList;
@@ -81,8 +83,10 @@ public class Protocol {
 			targetDataList = multiplexDataList.clone();
 		}
 
-		System.out.println();
-		System.out.println("Création d'un protocole " + this.getName() + ":");
+		if (DEBUG) {
+			System.out.println();
+			System.out.println("Création d'un protocole " + this.getName() + ":");
+		}
 		updateUItargetDataList();
 	}
 	  
@@ -107,11 +111,14 @@ public class Protocol {
 
 	public static void updateUItargetDataList() { // TODO later
 		for (int i = 0; i < targetDataList.length; i++) {
-			System.out.print(targetDataList[i][0] + " - ");
+			if (DEBUG) {
+				System.out.print(targetDataList[i][0] + " - ");
+			}
 		}
 
-		System.out.println();
-
+		if (DEBUG) {
+			System.out.println();
+		}
 		TabData.populateTargetDataFields();
 		TabData.resetTargetDataFields();
 	}

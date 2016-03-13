@@ -1,14 +1,17 @@
 package oxsc;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import gui.TabData;
 
 public abstract class Sensor implements OXSdataController {
 	
-	private static ArrayList<Sensor> sensorList = new ArrayList<Sensor>();
-
+	private static final boolean DEBUG = true;
+	
 	private String name = "";
+	
+	private static List<Sensor> sensorList = new ArrayList<>();
 
 	protected Sensor(String name) {
 
@@ -16,15 +19,17 @@ public abstract class Sensor implements OXSdataController {
 		addOXSdata();
 		updateUIoXSdataList();
 		sensorList.add(this);
-		System.out.println("Creation d'un objet " + this.getName());
-		System.out.println(sensorList);
+		if (DEBUG) {
+			System.out.println("Creation d'un objet " + this.getName());
+			System.out.println(sensorList);
+		}
 	}
 
 	public String getName() {
 		return name;
 	}
 	
-	public static ArrayList<Sensor> getSensorList() {
+	public static List<Sensor> getSensorList() {
 		return sensorList;
 	}
 

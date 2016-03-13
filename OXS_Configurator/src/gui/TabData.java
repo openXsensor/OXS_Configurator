@@ -16,6 +16,7 @@ public class TabData {
 	//private static ControlP5 cp5;
 
 	private static final int FIELD_NBR = 10;
+	private static final boolean DEBUG = false;
 	private static DropdownList[] sentDataField = new DropdownList[FIELD_NBR + 1];
 	private static DropdownList[] targetDataField = new DropdownList[FIELD_NBR + 1];
 	private static Numberbox[] dataMultiplierNBox = new Numberbox[FIELD_NBR + 1];
@@ -188,19 +189,22 @@ public class TabData {
 
 	public static void resetSentDataFields() { // TODO every time OXSdataList changes
 		for (int i = 1; i <= FIELD_NBR; i++) {
-			String ddlFieldDisplay = TabData.getSentDataField(i)
-					.getCaptionLabel().getText();// oXSdataFieldDisplay[i];
-			System.out.println("Data field n°" + i);
+			String ddlFieldDisplay = TabData.getSentDataField(i).getCaptionLabel().getText();// oXSdataFieldDisplay[i];
+			if (DEBUG) {
+				System.out.println("Data field n°" + i);
+			}
 			for (int j = 0; j < OXSdata.getList().size(); j++) {
-				System.out.println("OXSdata id " + j);
-				if (OXSdata.getItem(j).getDisplayName()
-						.contains(ddlFieldDisplay)) {
+				if (DEBUG) {
+					System.out.println("OXSdata id " + j);
+				}
+				if (OXSdata.getItem(j).getDisplayName().contains(ddlFieldDisplay)) {
 					break;
 				} else if (j == OXSdata.getList().size() - 1) {
 					sentDataField[i].setValue(0);
-					System.out.println("reset OXSdata "
-							+ OXSdata.getItem(j).getDisplayName() + " id " + j
-							+ ": " + ddlFieldDisplay);
+					if (DEBUG) {
+						System.out.println("reset OXSdata " + OXSdata.getItem(j).getDisplayName() + " id " + j + ": "
+								+ ddlFieldDisplay);
+					}
 				}
 			}
 		}

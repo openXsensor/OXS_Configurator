@@ -116,10 +116,6 @@ public class TabVario {
 	                    .setPosition(186, 234)
 	                    .setSize(100, 75)
 	                    ;
-	    //cp5.get(DropdownList.class, "vSpeed1").addItem("       Vario 1", 0) ;
-	    //cp5.get(DropdownList.class, "vSpeed1").addItem("       Vario 2", 1) ;
-	    //cp5.get(DropdownList.class, "vSpeed1").addItem(" V1 + A.Speed", 2) ;
-	    //cp5.get(DropdownList.class, "vSpeed1").setValue(0) ;
 	    customizeDdl(vSpeed1Ddl);
 	  
 	    cp5.addTextlabel("vStSw2L")
@@ -133,10 +129,6 @@ public class TabVario {
 	                    .setPosition(306, 234)
 	                    .setSize(100, 75)
 	                    ;
-	    //cp5.get(DropdownList.class, "vSpeed2").addItem("       Vario 1", 0) ;
-	    //cp5.get(DropdownList.class, "vSpeed2").addItem("       Vario 2", 1) ;
-	    //cp5.get(DropdownList.class, "vSpeed2").addItem(" V1 + A.Speed", 2) ;
-	    //cp5.get(DropdownList.class, "vSpeed2").setValue(1) ;
 	    customizeDdl(vSpeed2Ddl);
 	  
 	    // PPM Vertical speed switching values
@@ -339,7 +331,7 @@ public class TabVario {
 		return ppmRngSensMinMaxRng;
 	}
 
-	public static Range getPpmSensMinMaxRng() {
+	public static Range getPpmSensMinMaxRng() { // remove ?
 		return ppmSensMinMaxRng;
 	}
 

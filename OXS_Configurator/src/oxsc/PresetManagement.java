@@ -22,6 +22,8 @@ import gui.TabData;
 public class PresetManagement {
 	
 	private static final String SPLIT_CHAR = " <> ";
+
+	private static final boolean DEBUG = false;
 	
 	private static ControlP5 cp5;
 
@@ -56,11 +58,15 @@ public class PresetManagement {
 			String line;
 			line = buff.readLine();
 			if (line.length() > 0 && line.contains("OXS Configurator " + Validation.getOxsCversion())) {
-				System.out.println("Valid preset file");
+				if (DEBUG) {
+					System.out.println("Valid preset file");
+				}
 				while ((line = buff.readLine()) != null) {  // TODO preset: line redifined ??
 					if (line.length() > 0 && line.charAt(0) != '@') {
 						String[] temp = line.split(SPLIT_CHAR);
-						System.out.println("Loading " + temp[0] + " settings...");
+						if (DEBUG) {
+							System.out.println("Loading " + temp[0] + " settings...");
+						}
 						if (cp5.getGroup(temp[0]) instanceof controlP5.DropdownList) {
 							controlP5.DropdownList dropDownList = (controlP5.DropdownList) cp5.getGroup(temp[0]);
 							for (String[] stringArray : dropDownList.getListBoxItems()) {
@@ -86,14 +92,18 @@ public class PresetManagement {
 							controlP5.Textfield textField = (controlP5.Textfield) cp5.getController(temp[0]);
 							textField.setText(temp[1]);
 						}  else {
-							// TODO preset: parse unknown controller string
-							System.out.println("Unknown controller");
+							if (DEBUG) {
+								// TODO preset: parse unknown controller string
+								System.out.println("Unknown controller");
+							}
 						}
 					}
 				}
 			} else {
 				MessageBox.presetLoad("");
-				System.out.println("Invalid preset file");
+				if (DEBUG) {
+					System.out.println("Invalid preset file");
+				}
 			}
 			TabGeneralSettings.getGenTab().bringToFront();
 		} catch (IOException e) {

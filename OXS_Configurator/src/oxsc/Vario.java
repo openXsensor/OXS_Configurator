@@ -53,7 +53,6 @@ public class Vario extends Sensor {
 			TabVario.addToVspeedDdls("       Vario 2", 1);
 			TabVario.addToVspeedDdls("       Average", 3);
 			TabVario.getvSpeed2Ddl().setValue(1);
-
 		}
 		
 	}

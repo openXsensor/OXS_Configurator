@@ -3,15 +3,18 @@ package oxsc;
 import gui.TabData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OXSdata {
+
+	private static final boolean DEBUG = false;
 
 	private String name;
 	private String displayName;
 	private String sensorType;
 	private String defaultValue;
 	
-	private static ArrayList<OXSdata> OXSdataList = new ArrayList<>();
+	private static List<OXSdata> OXSdataList = new ArrayList<>();
 
 	public OXSdata(String name, String displayName, String sensorType, String defaultValue) {
 		this.name = name;
@@ -19,8 +22,10 @@ public class OXSdata {
 		this.sensorType = sensorType;
 		this.defaultValue = defaultValue;
 
-		System.out.println("Creation d'un objet OXSdata: " + this.name + " - "
-				+ this.displayName + " - " + this.defaultValue );
+		if (DEBUG) {
+			System.out.println("Creation d'un objet OXSdata: " + this.name + " - " + this.displayName + " - "
+					+ this.defaultValue);
+		}
 		OXSdataList.add(this);
 	}
 	
@@ -48,7 +53,7 @@ public class OXSdata {
 		return defaultValue;
 	}
 
-	public static ArrayList<OXSdata> getList() {
+	public static List<OXSdata> getList() {
 		return OXSdataList;
 	}
 	
@@ -64,10 +69,9 @@ public class OXSdata {
 		OXSdataList.add(newData);
 	}
 
-	public static boolean isInList(String displayNameTest) {
-		System.out.println("(isInList) displayName to test: " + displayNameTest);
-		for (int i = OXSdataList.size() - 1; i >= 0; i--) {
-			if (OXSdataList.get(i).displayName == displayNameTest)
+	public static boolean isInList(String sensorDisplayName) {
+		for (OXSdata o : OXSdataList) {
+			if (o.displayName.equals(sensorDisplayName)) 
 				return true;
 		}
 		return false;
@@ -75,8 +79,7 @@ public class OXSdata {
 
 	public static void removeFromList(Sensor sensor) { // TODO needed ?
 		for (int i = OXSdataList.size() - 1; i >= 0; i--) {
-			// System.out.println( sensor.getName() + " for n°: " + i ) ;
-			if (OXSdataList.get(i).sensorType == sensor.getName())
+			if (OXSdataList.get(i).sensorType.equals(sensor.getName()))
 				OXSdataList.remove(OXSdataList.get(i));
 		}
 		TabData.populateSentDataFields();
@@ -84,8 +87,7 @@ public class OXSdata {
 
 	public static void removeFromList(String sensorType) {
 		for (int i = OXSdataList.size() - 1; i >= 0; i--) {
-			// System.out.println( sensorType + " for n°: " + i ) ;
-			if (OXSdataList.get(i).sensorType.contains(sensorType))
+			if (OXSdataList.get(i).sensorType.equals(sensorType))
 				OXSdataList.remove(OXSdataList.get(i));
 		}
 		TabData.populateSentDataFields();
