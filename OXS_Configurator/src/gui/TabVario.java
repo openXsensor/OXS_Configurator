@@ -352,6 +352,11 @@ public class TabVario {
 		vSpeed1Ddl.addItem(name, index);
 		vSpeed2Ddl.addItem(name, index);
 	}
+	
+	public static void removeFromVspeedDdls(String name) {
+		vSpeed1Ddl.removeItem(name);
+		vSpeed2Ddl.removeItem(name);
+	}
 
 	public static Numberbox getPpmVspeedSwMinNBox() {
 		return ppmVspeedSwMinNBox;

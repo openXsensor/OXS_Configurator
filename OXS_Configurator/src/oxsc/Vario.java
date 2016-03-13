@@ -24,6 +24,7 @@ public class Vario extends Sensor {
 			new OXSdata("VERTICAL_SPEED", "Vertical Speed", varioName, "Vertical Speed");
 			new OXSdata("ALT_OVER_10_SEC", "Alt. over 10 seconds", varioName);
 			new OXSdata("SENSITIVITY", "Vario sensitivity", varioName);
+			new OXSdata("PPM_VSPEED", "PPM V.Speed", varioName, "Vertical Speed");
 			
 			if (MainP.protocol.getName().equals("Multiplex")) {
 				new OXSdata("REL_ALTIMETER", "Relative Altitude", varioName);
@@ -60,21 +61,16 @@ public class Vario extends Sensor {
 	public void removeSensor() {
 
 		if (this.getName().equals("vario")) {  // TODO z better vSpeed choice
-			TabVario.getvSpeed1Ddl().removeItem("       Vario 1");
-			TabVario.getvSpeed2Ddl().removeItem("       Vario 1");
-
-			TabVario.getvSpeed1Ddl().removeItem(" V1 + A.Speed");
-			TabVario.getvSpeed2Ddl().removeItem(" V1 + A.Speed");
+			TabVario.removeFromVspeedDdls("       Vario 1");
+			TabVario.removeFromVspeedDdls(" V1 + A.Speed");
 			TabVario.resetVspeedDdls();
 
 			OXSdata.removeFromList("varAspeed");
 			System.out.println("remove varAspeed");
 			//TabData.resetSentDataFields("varAspeed");
 		} else {
-			TabVario.getvSpeed1Ddl().removeItem("       Vario 2");
-			TabVario.getvSpeed1Ddl().removeItem("       Average");
-			TabVario.getvSpeed2Ddl().removeItem("       Vario 2");
-			TabVario.getvSpeed2Ddl().removeItem("       Average");
+			TabVario.removeFromVspeedDdls("       Vario 2");
+			TabVario.removeFromVspeedDdls("       Average");
 			TabVario.resetVspeedDdls();
 		}
 

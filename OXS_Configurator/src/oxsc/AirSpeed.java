@@ -21,8 +21,7 @@ public class AirSpeed extends Sensor {
 	}
 
 	public void removeSensor() { // TODO z better vSpeed choice
-		TabVario.getvSpeed1Ddl().removeItem(" V1 + A.Speed"); 
-		TabVario.getvSpeed2Ddl().removeItem(" V1 + A.Speed");
+		TabVario.removeFromVspeedDdls(" V1 + A.Speed"); 
 		TabVario.resetVspeedDdls();
 
 		OXSdata.removeFromList(this);
