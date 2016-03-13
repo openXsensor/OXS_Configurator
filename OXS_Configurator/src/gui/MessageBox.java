@@ -151,22 +151,6 @@ public class MessageBox {
 		infos(message);
 	}
 
-	public static void presetLoad(String presetFileVersion) {  // TODO preset messBox: right place ?
-
-		mBabout = true;
-
-		StringBuilder message = new StringBuilder();
-
-		message.append("                            OXS Configurator " + Validation.getOxsCversion() + " for OXS " + Validation.getOxsVersion() + "\n");
-		message.append("                                                       ---\n");
-		message.append("                         -- OpenXsensor configuration file GUI --\n");
-		message.append("\n");
-		message.append("                           This preset file is not compatible with\n");
-		message.append("                                      OXS Configurator " + Validation.getOxsCversion() + "\n");
-
-		infos(message);
-	}
-
 	public static Group getGroup() {
 		return messageBox;
 	}

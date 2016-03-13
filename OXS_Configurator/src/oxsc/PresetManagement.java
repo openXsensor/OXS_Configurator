@@ -61,7 +61,7 @@ public class PresetManagement {
 				if (DEBUG) {
 					System.out.println("Valid preset file");
 				}
-				while ((line = buff.readLine()) != null) {  // TODO preset: line redifined ??
+				while ((line = buff.readLine()) != null) {  // TODO preset: line redefined ??
 					if (line.length() > 0 && line.charAt(0) != '@') {
 						String[] temp = line.split(SPLIT_CHAR);
 						if (DEBUG) {
@@ -88,9 +88,10 @@ public class PresetManagement {
 						} else if (cp5.getController(temp[0]) instanceof controlP5.Slider) {
 							controlP5.Slider slider = (controlP5.Slider) cp5.getController(temp[0]);
 							slider.setValue(Float.parseFloat(temp[1]));
-						} else if (cp5.getController(temp[0]) instanceof controlP5.Textfield && temp.length > 1) {
+						} else if (cp5.getController(temp[0]) instanceof controlP5.Textfield) {
 							controlP5.Textfield textField = (controlP5.Textfield) cp5.getController(temp[0]);
-							textField.setText(temp[1]);
+							String oxsDir = (temp.length > 1) ? temp[1] : "";
+							textField.setText(oxsDir);
 						}  else {
 							if (DEBUG) {
 								// TODO preset: parse unknown controller string
@@ -100,16 +101,26 @@ public class PresetManagement {
 					}
 				}
 			} else {
-				MessageBox.presetLoad("");
+				StringBuilder message = new StringBuilder();
+
+				message.append("                            OXS Configurator " + Validation.getOxsCversion() + " for OXS " + Validation.getOxsVersion() + "\n");
+				message.append("                                                       ---\n");
+				message.append("                         -- OpenXsensor configuration file GUI --\n");
+				message.append("\n");
+				message.append("                           This preset file is not compatible with\n");
+				message.append("                                      OXS Configurator " + Validation.getOxsCversion() + "\n");
+
+				MessageBox.error(message);
 				if (DEBUG) {
 					System.out.println("Invalid preset file");
 				}
 			}
 			TabGeneralSettings.getGenTab().bringToFront();
+		} catch (FileNotFoundException f) {
+			System.out.println("File not found"); // TODO preset: bring message box
 		} catch (IOException e) {
-			// TODO 2 catch file not found
-			System.out.println("File not found");
-			e.printStackTrace();
+			// TODO 2 catch other exception		
+			e.printStackTrace();			
 		}
 	}
 
