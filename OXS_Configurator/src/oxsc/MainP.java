@@ -61,7 +61,7 @@ public class MainP extends PApplet {
 	public static String month = (month() < 10) ? "0" + month() : "" + month();
 	public static String date = day + "/" + month + "/" + year();
 
-	private static final String PRESET_DEFAULT_DIR = "/Preset/";
+	private static final String PRESET_DEFAULT_DIR = System.getProperty("file.separator") + "Preset" + System.getProperty("file.separator");
 
 	public static final int tabGray = 0xFFC8C8C8; // gray 200
 	public static final int backDdlGray = 0xFFFFFFFF; // gray 190
