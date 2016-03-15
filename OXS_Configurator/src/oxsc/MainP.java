@@ -653,14 +653,8 @@ public class MainP extends PApplet {
 
 		// Protocol selection - Showing right Telemetry data list in fields
 		if (theEvent.isFrom(TabGeneralSettings.getProtocolDdl())) {
-			switch (theEvent.getGroup().getCaptionLabel().getText()) {
-			case "FrSky":
-					protocol = Protocol.createProtocol("FrSky");
-				break;
-			case "Multiplex":
-					protocol = Protocol.createProtocol("Multiplex");
-				break;
-			}
+			protocol = Protocol.createProtocol(theEvent.getGroup().getCaptionLabel().getText());
+			
 			// TODO z better: updating OXSdata according to the protocol
 			for (Sensor sensor : Sensor.getSensorList()) {
 				OXSdata.removeFromList(sensor);

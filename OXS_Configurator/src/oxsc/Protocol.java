@@ -31,7 +31,7 @@ public class Protocol {
 			{ "----------", "----------" },
 			{ "DEFAULTFIELD", "DEFAULT" },          // 1
 			{ "Alt", "Altitude" },                  // 2  ALT_FIRST_ID
-			{ "Vspd", "Vertical Speed" },           // 3  VARIO_FIRST_ID
+			{ "VSpd", "Vertical Speed" },           // 3  VARIO_FIRST_ID
 			{ "Curr", "Current" },                  // 4  CURR_FIRST_ID
 			{ "Vfas", "Vfas" },                     // 5  VFAS_FIRST_ID
 			{ "T1", "Temperature 1" },              // 6  T1_FIRST_ID
