@@ -256,31 +256,35 @@ public class Validation {
 							|| sentDataFieldName.equals("PPM value")) && targetDataFieldName.equals("DEFAULT")) {
 						sentDataValid = false;
 						message.append("- " + sentDataFieldName + " can't be set to DEFAULT !\n");
-					// Only one Altitude DEFAULT TODO remove
+					// Only one Altitude: DEFAULT or "Altitude"
 					} else if ((sentDataFieldName.equals("Altitude") || sentDataFieldName.equals("Altitude 2"))
-							&& targetDataFieldName.equals("DEFAULT")) {
+							&& (targetDataFieldName.equals("DEFAULT") || targetDataFieldName.equals("Altitude"))) {
 						for (int j = i + 1; j <= TabData.getFieldNbr(); j++) {
 							if ((TabData.getSentDataField(j).getCaptionLabel().getText().equals("Altitude") 
 									|| TabData.getSentDataField(j).getCaptionLabel().getText().equals("Altitude 2"))
-									&& TabData.getTargetDataField(j).getCaptionLabel().getText().equals("DEFAULT")) {
+									&& (TabData.getTargetDataField(j).getCaptionLabel().getText().equals("DEFAULT"))
+									|| TabData.getTargetDataField(j).getCaptionLabel().getText().equals("Altitude")){
 								sentDataValid = false;
-								message.append("- " + TabData.getSentDataField(j).getCaptionLabel().getText() + " Telemetry data field can't be set to DEFAULT as it's\n");
+								message.append("- " + TabData.getSentDataField(j).getCaptionLabel().getText() + " Telemetry data field can't be set to " 
+										+ TabData.getTargetDataField(j).getCaptionLabel().getText() + " as it's\n");
 								message.append("  already used by " + sentDataFieldName + " measurement !\n");
 							}
 						}
-					// Only one V.Speed DEFAULT TODO remove
+					// Only one V.Speed: DEFAULT or "Vertical Speed"
 					} else if ((sentDataFieldName.equals("Vertical Speed") || sentDataFieldName.equals("Vertical Speed 2")
 							|| sentDataFieldName.equals("Prandtl dTE") || sentDataFieldName.equals("PPM_VSPEED"))
-							&& targetDataFieldName.equals("DEFAULT")) {
+							&& (targetDataFieldName.equals("DEFAULT") || targetDataFieldName.equals("Vertical Speed"))) {
 						for (int j = i + 1; j <= TabData.getFieldNbr(); j++) {
 							if ((TabData.getSentDataField(j).getCaptionLabel().getText().equals("Vertical Speed")
 									|| TabData.getSentDataField(j).getCaptionLabel().getText().equals("Vertical Speed 2")
 									|| TabData.getSentDataField(j).getCaptionLabel().getText().equals("Prandtl dTE")
 									|| TabData.getSentDataField(j).getCaptionLabel().getText().equals("PPM_VSPEED"))
-									&& TabData.getTargetDataField(j).getCaptionLabel().getText().equals("DEFAULT")) {
+									&& (TabData.getTargetDataField(j).getCaptionLabel().getText().equals("DEFAULT")
+									|| TabData.getTargetDataField(j).getCaptionLabel().getText().equals("Vertical Speed"))) {
 								sentDataValid = false;
-								message.append("- " + TabData.getSentDataField(j).getCaptionLabel().getText() + " Telemetry data field can't be set to DEFAULT as it's\n");
-								message.append("  already used by " + sentDataFieldName + " measurement !\n");
+								message.append("- " + TabData.getSentDataField(j).getCaptionLabel().getText() + " Telemetry data field can't be set to " 
+										+ TabData.getTargetDataField(j).getCaptionLabel().getText() + "\n");
+								message.append("  as it's already used by " + sentDataFieldName + " measurement !\n");
 							}
 						}
 					}
@@ -299,7 +303,13 @@ public class Validation {
 				tempStr.add(oXsTabDataFields[i][1]);
 				tempStr.add(oXsTabDataFields[i][0]);
 				for (int j = i + 1; j <= TabData.getFieldNbr(); j++) {
-					if (!oXsTabDataFields[j][0].equals("----------") && oXsTabDataFields[i][1].equals(oXsTabDataFields[j][1])) {
+					if (!oXsTabDataFields[j][0].equals("----------")
+							&& oXsTabDataFields[i][1].equals(oXsTabDataFields[j][1])) {
+						// Don't report as duplicates if OXS data are different but both set to "DEFAULT"
+						if (!oXsTabDataFields[i][0].equals(oXsTabDataFields[j][0])
+								&& oXsTabDataFields[i][1].equals("DEFAULT")) // TODO 1 test better
+							continue;
+
 						duplicate = true;
 						sentDataValid = false;
 						tempStr.add(oXsTabDataFields[j][0]);
@@ -309,11 +319,11 @@ public class Validation {
 				if (duplicate) {
 					message.append("- " + tempStr.get(0) + " can't be used at the same time by:\n");
 					for (int j = 1; j < tempStr.size() - 1; j++) {
-							if (j < tempStr.size() - 2) {
-								messageString += tempStr.get(j) + ", ";
-							} else {
-								messageString += tempStr.get(j) + " and " + tempStr.get(j + 1);
-							}
+						if (j < tempStr.size() - 2) {
+							messageString += tempStr.get(j) + ", ";
+						} else {
+							messageString += tempStr.get(j) + " and " + tempStr.get(j + 1);
+						}
 					}
 					message.append("  " + messageString + " !\n");
 					duplicate = false;
