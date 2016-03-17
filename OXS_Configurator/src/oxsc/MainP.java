@@ -813,7 +813,11 @@ public class MainP extends PApplet {
 
 	// Load preset button  // TODO better with FileDialog
 	public void loadButton(int theValue) {
-		File presetDir = new File(System.getProperty("user.dir") + PRESET_DEFAULT_DIR + "...");
+		File presetDir = new File(PRESET_DEFAULT_DIR + "...");
+		StringBuilder message = new StringBuilder();		
+		message.append(MainP.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+		MessageBox.infos(message);
+		
 		selectInput("Select a preset file to load:", "presetLoad", presetDir);
 	}
 
