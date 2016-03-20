@@ -38,6 +38,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -62,6 +67,7 @@ public class MainP extends PApplet {
 	public static String month = (month() < 10) ? "0" + month() : "" + month();
 	public static String date = day + "/" + month + "/" + year();
 
+	public static Path execPath = null;
 	private static final String PRESET_DEFAULT_DIR = System.getProperty("file.separator") + "Preset" + System.getProperty("file.separator");
 
 	public static final int tabGray = 0xFFC8C8C8; // gray 200
@@ -140,7 +146,14 @@ public class MainP extends PApplet {
 		size(450, 460) ;
 		noStroke() ;
 
-		cp5 = new ControlP5(this) ;
+		cp5 = new ControlP5(this);
+		
+		// Retrieve the application execution path
+		try {
+			execPath = Paths.get(MainP.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		} 
 
 		//Alt+mouseDragged to move controllers on the screen
 		//Alt+Shift+h to show/hide controllers
@@ -843,23 +856,18 @@ public class MainP extends PApplet {
 
 	// Load preset button  // TODO better with FileDialog
 	public void loadButton(int theValue) {
-		File presetDir = new File(PRESET_DEFAULT_DIR + "...");
-		StringBuilder message = new StringBuilder();		
-		message.append(MainP.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-		MessageBox.infos(message);
-		
+		File presetDir = new File(execPath.getParent() + PRESET_DEFAULT_DIR + "...");
 		selectInput("Select a preset file to load:", "presetLoad", presetDir);
 	}
 
 	// Save preset button
 	public void saveButton(int theValue) {
-		MessageBox.mbClose();
 		Validation.validationProcess("preset");
 		if (Validation.getAllValid() == 2) {
 			MessageBox.close();
 		}
 		if (Validation.getAllValid() != 0) {
-			File presetDir = new File(System.getProperty("user.dir") + PRESET_DEFAULT_DIR + "type name");
+			File presetDir = new File(execPath.getParent() + PRESET_DEFAULT_DIR + "type name");
 			selectOutput("Type preset name to save:", "presetSave", presetDir);
 		}
 	}

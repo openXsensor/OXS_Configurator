@@ -116,9 +116,18 @@ public class PresetManagement {
 			}
 			TabGeneralSettings.getGenTab().bringToFront();
 		} catch (FileNotFoundException f) {
-			System.out.println("File not found"); // TODO preset: bring message box
+			StringBuilder message = new StringBuilder();
+			message.append("                            OXS Configurator " + Validation.getOxsCversion() + " for OXS " + Validation.getOxsVersion() + "\n");
+			message.append("                                                       ---\n");
+			message.append("                         -- OpenXsensor configuration file GUI --\n");
+			message.append("\n");
+			message.append("\n    Preset file: \"" + selection.getName()  + "\" not found !\n");
+			MessageBox.error(message);
+
+			if (DEBUG) {
+				System.out.println("File not found");
+			}
 		} catch (IOException e) {
-			// TODO 2 catch other exception		
 			e.printStackTrace();			
 		}
 	}
