@@ -666,13 +666,13 @@ public class MainP extends PApplet {
 		}
 
 		// Selecting DEFAULT automatically in Telemetry data fields
-		// TODO group controllers ?
 		for (int i = 1; i <= TabData.getFieldNbr(); i++) {
 
 			if (theEvent.isFrom(TabData.getSentDataField(i))) {
 				String dataFieldDisplayName = TabData.getSentDataField(i).getCaptionLabel().getText();
 				String defaultValue = OXSdata.getOXSdata(dataFieldDisplayName).getDefaultValue();
 				if (defaultValue != null) {
+					// Test if default value exists in the current protocol
 					for (String[] stringArray : TabData.getTargetDataField(i).getListBoxItems()) {
 						if (stringArray[1].equals(defaultValue)) {
 							 TabData.getTargetDataField(i).setValue(Float.parseFloat(stringArray[2]));
@@ -885,7 +885,7 @@ public class MainP extends PApplet {
 		Validation.validationProcess("Config");
 	}
 
-	public void folderSelected(File selection) {
+	public void folderSelected(File selection) {  // TODO remove ???
 		if (selection == null) {
 			// System.out.println("Window was closed or the user hit cancel.");
 		} else {

@@ -102,15 +102,14 @@ public class PresetManagement {
 				}
 			} else {
 				StringBuilder message = new StringBuilder();
-
 				message.append("                            OXS Configurator " + Validation.getOxsCversion() + " for OXS " + Validation.getOxsVersion() + "\n");
 				message.append("                                                       ---\n");
 				message.append("                         -- OpenXsensor configuration file GUI --\n");
 				message.append("\n");
 				message.append("                           This preset file is not compatible with\n");
 				message.append("                                      OXS Configurator " + Validation.getOxsCversion() + "\n");
-
 				MessageBox.error(message);
+
 				if (DEBUG) {
 					System.out.println("Invalid preset file");
 				}

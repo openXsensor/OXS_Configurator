@@ -26,7 +26,6 @@ public class Validation {
 	private static boolean numPinsValid;
 	private static boolean analogPinsValid;
 	private static int vSpeedValid; // 0 -> not valid, 1 -> warning, 2 -> valid
-	private static boolean cellsValid;
 	private static boolean sentDataValid;
 	private static int versionValid; // 0 -> not valid, 1 -> warning, 2 -> valid	
 	private static int allValid; // 0 -> not valid, 1 -> warning, 2 -> valid
@@ -64,7 +63,6 @@ public class Validation {
 		numPinsValid = true;
 		analogPinsValid = true;
 		vSpeedValid = 2;        // 0 -> not valid, 1 -> warning, 2 -> valid
-		cellsValid = true;
 		sentDataValid = true;
 		versionValid = 2;       // 0 -> not valid, 1 -> warning, 2 -> valid
 
@@ -74,11 +72,11 @@ public class Validation {
 
 		if (option.equals("Config")) {
 			validateSentData();
-			if (numPinsValid && analogPinsValid && vSpeedValid != 0 && cellsValid && sentDataValid)
+			if (numPinsValid && analogPinsValid && vSpeedValid != 0 && sentDataValid)
 				validateVersion();
 		}
 
-		if (!numPinsValid || !analogPinsValid || vSpeedValid == 0 || !cellsValid || !sentDataValid || versionValid == 0) {
+		if (!numPinsValid || !analogPinsValid || vSpeedValid == 0 || !sentDataValid || versionValid == 0) {
 
 			message.insert(0, "                                              --- ERROR ---\n");
 			message.append("\n");
@@ -307,7 +305,7 @@ public class Validation {
 							&& oXsTabDataFields[i][1].equals(oXsTabDataFields[j][1])) {
 						// Don't report as duplicates if OXS data are different but both set to "DEFAULT"
 						if (!oXsTabDataFields[i][0].equals(oXsTabDataFields[j][0])
-								&& oXsTabDataFields[i][1].equals("DEFAULT")) // TODO 1 test better
+								&& oXsTabDataFields[i][1].equals("DEFAULT"))
 							continue;
 
 						duplicate = true;
@@ -338,7 +336,7 @@ public class Validation {
 
 	}
 
-	public static void validateVersion() {  // TODO 1 better validate version
+	public static void validateVersion() {  // TODO 2 better validate version
 
 		File versionFile = new File(oxsDirectory + "/version.oxs");
 		String version = null;

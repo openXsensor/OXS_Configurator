@@ -519,15 +519,4 @@ public class TabVario {
 		}
 	}
 	  
-	  /*public void populateVspeedFields() {  // TODO z
-	    cp5.get(DropdownList.class, "vSpeed1").clear() ;
-	    cp5.get(DropdownList.class, "vSpeed2").clear() ;
-	    for ( int i = 1; i <= dataSentFieldNbr; i++ ) {
-	      TabData.getSentDataField(i).clear() ;
-	      TabData.getSentDataField(i).addItem("----------", 0) ;
-	      for ( int j = 0 ; j < OXSdata.getList().size() ; j++ )
-	        TabData.getSentDataField(i).addItem(OXSdata.getList().get(j).getDisplayName(), j+1) ;
-	    }
-	  }*/
-
 }

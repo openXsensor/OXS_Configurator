@@ -77,7 +77,7 @@ public class OXSdata {
 		return false;
 	}
 
-	public static void removeFromList(Sensor sensor) { // TODO needed ?
+	public static void removeFromList(Sensor sensor) {
 		for (int i = OXSdataList.size() - 1; i >= 0; i--) {
 			if (OXSdataList.get(i).sensorType.equals(sensor.getName()))
 				OXSdataList.remove(OXSdataList.get(i));

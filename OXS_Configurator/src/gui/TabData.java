@@ -24,7 +24,7 @@ public class TabData {
 	private static Numberbox[] dataOffsetNBox = new Numberbox[FIELD_NBR + 1];
 
 	@SuppressWarnings("unused")
-	private DropdownList oXSdataField; // TODO later
+	private DropdownList oXsDataField; // TODO later
 	@SuppressWarnings("unused")
 	private String[] dataDestFieldDisplayList = new String[FIELD_NBR + 1]; // TODO later
 	
