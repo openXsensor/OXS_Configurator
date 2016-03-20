@@ -1012,10 +1012,11 @@ public class MainP extends PApplet {
 		rng.getCaptionLabel().toUpperCase(false);
 	}
 
-	public void buttonOK(int theValue) {        // TODO 1 improving MessageBox
+	public void buttonOK(int theValue) {        // TODO button "ok" should not writeConf directly
 		MessageBox.close();
-		if (Validation.getAllValid() != 0 && !MessageBox.ismBabout()) {
+		if (Validation.getAllValid() != 0 && Validation.isValidationMbox()) {
 			WriteConf.writeConf();
+			Validation.setValidationMbox(false);
 		}
 	}
 

@@ -29,6 +29,7 @@ public class Validation {
 	private static boolean sentDataValid;
 	private static int versionValid; // 0 -> not valid, 1 -> warning, 2 -> valid	
 	private static int allValid; // 0 -> not valid, 1 -> warning, 2 -> valid
+	private static boolean validationMbox;
 
 	public Validation() {	}
 
@@ -51,11 +52,12 @@ public class Validation {
 	public static void validationProcess(String option) {
 		message.setLength(0);
 		message.append("\n");
+		setValidationMbox(true);
 		
 		// Config. file writing destination
 		oxsDirectory = getOxsDir().getText().trim();
 		if (oxsDirectory.equals("")) {
-			outputConfigDir = System.getProperty("user.dir") + OXS_CONFIG_FILE_NAME;
+			outputConfigDir = MainP.execPath.getParent() + OXS_CONFIG_FILE_NAME;
 		} else {
 			outputConfigDir = oxsDirectory + OXS_CONFIG_FILE_NAME;
 		}
@@ -270,13 +272,13 @@ public class Validation {
 						}
 					// Only one V.Speed: DEFAULT or "Vertical Speed"
 					} else if ((sentDataFieldName.equals("Vertical Speed") || sentDataFieldName.equals("Vertical Speed 2")
-							|| sentDataFieldName.equals("Prandtl dTE") || sentDataFieldName.equals("PPM_VSPEED"))
+							|| sentDataFieldName.equals("Prandtl dTE") || sentDataFieldName.equals("PPM V.Speed"))
 							&& (targetDataFieldName.equals("DEFAULT") || targetDataFieldName.equals("Vertical Speed"))) {
 						for (int j = i + 1; j <= TabData.getFieldNbr(); j++) {
 							if ((TabData.getSentDataField(j).getCaptionLabel().getText().equals("Vertical Speed")
 									|| TabData.getSentDataField(j).getCaptionLabel().getText().equals("Vertical Speed 2")
 									|| TabData.getSentDataField(j).getCaptionLabel().getText().equals("Prandtl dTE")
-									|| TabData.getSentDataField(j).getCaptionLabel().getText().equals("PPM_VSPEED"))
+									|| TabData.getSentDataField(j).getCaptionLabel().getText().equals("PPM V.Speed"))
 									&& (TabData.getTargetDataField(j).getCaptionLabel().getText().equals("DEFAULT")
 									|| TabData.getTargetDataField(j).getCaptionLabel().getText().equals("Vertical Speed"))) {
 								sentDataValid = false;
@@ -383,6 +385,14 @@ public class Validation {
 			message.append("         You may go to \"https://code.google.com/p/openxsensor/\" and\n");  // TODO 1 change URL
 			message.append("       download the latest version of both OXS and OXS Configurator.\n");
 		}
+	}
+
+	public static boolean isValidationMbox() {
+		return validationMbox;
+	}
+
+	public static void setValidationMbox(boolean validationMbox) {
+		Validation.validationMbox = validationMbox;
 	}
 	
 }
