@@ -5,7 +5,6 @@ import controlP5.ControlP5;
 import controlP5.Group;
 import controlP5.Textarea;
 import oxsc.MainP;
-import oxsc.Validation;
 
 public class MessageBox {
 
@@ -15,7 +14,6 @@ public class MessageBox {
 	private static Button cancelBtn;
 	private static int mBoxWidth = 400;
 	private static int mBoxHeight = 320;
-	private static boolean mBabout = false;
 
 	public MessageBox(ControlP5 cp5, MainP mainP) {
 
@@ -42,23 +40,25 @@ public class MessageBox {
 		              ;
 	
 		// OK button to the messageBox.
-		okBtn = cp5.addButton(mainP, "btnOK", "buttonOK", 0, mainP.width / 2 - 60, 218, 80, 30)
-		                 .setColorBackground(MainP.lightBackGray)
-		                 .moveTo(messageBox)
-		                 ;
+		okBtn = cp5.addButton(mainP, "btnOK", "buttonOK", 0, mBoxWidth / 2 - 80 - 5, mBoxHeight - 37, 80, 30)
+				   .setCaptionLabel("Ok")
+				   .setColorForeground(MainP.blueAct)
+	               .setColorBackground(MainP.lightBackGray)
+	               .setColorActive(MainP.orangeAct)
+		           .moveTo(messageBox)
+		           .hide()
+		           ;
 		okBtn.getCaptionLabel().setFont(MainP.font20);
 		okBtn.getCaptionLabel().toUpperCase(false);
 		okBtn.getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER).setPaddingX(10);
 	
-		// Cancel button to the messageBox.
+		// Cancel / Close button to the messageBox.
 		cancelBtn = cp5.addButton(mainP, "btnCancel", "buttonCancel", 0, mBoxWidth / 2 + 5, mBoxHeight - 37, 80, 30)
-		                  .setCaptionLabel("Cancel")
-		                  .setColorForeground(MainP.blueAct)
-		                  .setColorBackground(MainP.lightBackGray)
-		                  .setColorActive(MainP.orangeAct)
-		                  .moveTo(messageBox)
-		                  .hide()
-		                  ;
+		               .setColorForeground(MainP.blueAct)
+		               .setColorBackground(MainP.lightBackGray)
+		               .setColorActive(MainP.orangeAct)
+		               .moveTo(messageBox)
+		               ;
 		cancelBtn.getCaptionLabel().setFont(MainP.font20) ;
 		cancelBtn.getCaptionLabel().toUpperCase(false) ;
 		cancelBtn.getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER).setPaddingX(10) ;
@@ -66,19 +66,17 @@ public class MessageBox {
 	}
 
 	public static void mbOkCancel() {
-		okBtn.setPosition(mBoxWidth / 2 - 80 - 5, mBoxHeight - 37)
-		           .setSize(80, 30)
-		           .setCaptionLabel("OK");
+		okBtn.show();
 
-		cancelBtn.show();
+		cancelBtn.setPosition(mBoxWidth / 2 + 5, mBoxHeight - 37)
+                 .setCaptionLabel("Cancel");
 	}
 
 	public static void mbClose() {
-		okBtn.setPosition(mBoxWidth / 2 - 40 , mBoxHeight - 37)
-		           .setSize(80, 30)
-		           .setCaptionLabel("CLOSE");
+		cancelBtn.setPosition(mBoxWidth / 2 - 40 , mBoxHeight - 37)
+		         .setCaptionLabel("Close");
 
-		cancelBtn.hide();
+		okBtn.hide();
 	}
 	
 	public static void infos(StringBuilder message) {
@@ -87,8 +85,8 @@ public class MessageBox {
 		
 		mbClose();
 		
-		okBtn.setColorForeground(MainP.orangeAct);
-		okBtn.setColorActive(MainP.blueAct);
+		cancelBtn.setColorForeground(MainP.orangeAct);
+		cancelBtn.setColorActive(MainP.blueAct);
 		messageBox.setBackgroundColor(MainP.blueAct);
 		messageBox.show();
 	}
@@ -99,8 +97,8 @@ public class MessageBox {
 		
 		mbOkCancel();
 		
-		okBtn.setColorForeground(MainP.blueAct);
-		okBtn.setColorActive(MainP.orangeAct);
+		cancelBtn.setColorForeground(MainP.blueAct);
+		cancelBtn.setColorActive(MainP.orangeAct);
 		messageBox.setBackgroundColor(MainP.warnColor);
 		messageBox.show();
 	}
@@ -111,8 +109,8 @@ public class MessageBox {
 		
 		mbClose();
 		
-		okBtn.setColorForeground(MainP.blueAct);
-		okBtn.setColorActive(MainP.orangeAct);
+		cancelBtn.setColorForeground(MainP.blueAct);
+		cancelBtn.setColorActive(MainP.orangeAct);
 		messageBox.setBackgroundColor(MainP.errorColor);
 		messageBox.show();
 	}
@@ -123,44 +121,14 @@ public class MessageBox {
 		
 		mbOkCancel();
 		
-		okBtn.setColorForeground(MainP.blueAct);
-		okBtn.setColorActive(MainP.orangeAct);
+		cancelBtn.setColorForeground(MainP.blueAct);
+		cancelBtn.setColorActive(MainP.orangeAct);
 		messageBox.setBackgroundColor(MainP.okColor);
 		messageBox.show();
 	}
 	
-	public static void about() {
-		
-		mBabout = true;
-	
-		StringBuilder message = new StringBuilder();
-	
-		message.append("                            OXS Configurator " + Validation.getOxsCversion() + " for OXS " + Validation.getOxsVersion() + "\n");
-		message.append("                                                       ---\n");
-		message.append("                         -- OpenXsensor configuration file GUI --\n");
-		message.append("\n");
-		message.append("Contributors:\n");
-		message.append("\n");
-		message.append("- Rainer Schloßhan\n");
-		message.append("- Bertrand Songis\n");
-		message.append("- André Bernet\n");
-		message.append("- Michael Blandford\n");
-		message.append("- Michel Strens\n");
-		message.append("- David Laburthe\n");
-
-		infos(message);
+	public static void close() {
+		messageBox.hide();
 	}
 
-	public static Group getGroup() {
-		return messageBox;
-	}
-
-	public static boolean ismBabout() {
-		return mBabout;
-	}
-
-	public static void setmBabout(boolean mBabout) {
-		MessageBox.mBabout = mBabout;
-	}
-	
 }

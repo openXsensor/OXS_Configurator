@@ -34,6 +34,7 @@ import gui.TabPPM;
 import gui.TabVario;
 import gui.TabVoltage;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -707,7 +708,36 @@ public class MainP extends PApplet {
 	}
 
 	public void about(boolean theFlag) {
-		MessageBox.about();
+		StringBuilder message = new StringBuilder();
+		
+		message.append("                            OXS Configurator " + Validation.getOxsCversion() + " for OXS " + Validation.getOxsVersion() + "\n");
+		message.append("                                                       ---\n");
+		message.append("                         -- OpenXsensor configuration file GUI --\n");
+		message.append("\n");
+		message.append("Contributors:\n");
+		message.append("- Rainer Schloßhan\n");
+		message.append("- Bertrand Songis\n");
+		message.append("- André Bernet\n");
+		message.append("- Michael Blandford\n");
+		message.append("- Michel Strens\n");
+		message.append("- David Laburthe\n                                     -----------------------------\n");
+
+		Charset charset = Charset.forName("UTF-8");
+		Path readmePath = execPath.getParent().resolve("oXs-C_Readme.txt");
+		try (BufferedReader reader = Files.newBufferedReader(readmePath, charset)) {
+			String line = null;
+			boolean changeLog = false;
+			while ((line = reader.readLine()) != null) {
+				if (line.equals("Change log:"))
+					changeLog = true;
+				if (changeLog)
+					message.append(line.trim() + "\n");
+			}
+		} catch (IOException x) {
+			System.err.format("IOException: %s%n", x);
+		}
+		
+		MessageBox.infos(message);
 	}
 	
 	public void varioTgl(boolean theFlag) {
@@ -826,7 +856,7 @@ public class MainP extends PApplet {
 		MessageBox.mbClose();
 		Validation.validationProcess("preset");
 		if (Validation.getAllValid() == 2) {
-			MessageBox.getGroup().hide();
+			MessageBox.close();
 		}
 		if (Validation.getAllValid() != 0) {
 			File presetDir = new File(System.getProperty("user.dir") + PRESET_DEFAULT_DIR + "type name");
@@ -975,15 +1005,14 @@ public class MainP extends PApplet {
 	}
 
 	public void buttonOK(int theValue) {        // TODO 1 improving MessageBox
+		MessageBox.close();
 		if (Validation.getAllValid() != 0 && !MessageBox.ismBabout()) {
 			WriteConf.writeConf();
 		}
-		MessageBox.getGroup().hide();
-		MessageBox.setmBabout(false);
 	}
 
 	public void buttonCancel(int theValue) {
-		MessageBox.getGroup().hide();
+		MessageBox.close();
 	}
 		
 	public static void main(String[] _args) {
