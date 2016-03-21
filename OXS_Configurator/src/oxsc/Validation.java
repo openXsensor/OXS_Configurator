@@ -382,7 +382,7 @@ public class Validation {
 			
 			message.append("            ** The Configurator "	+ oxsCversion + " isn't compatible with OXS " + version	+ " **\n");
 			message.append("\n");
-			message.append("         You may go to \"https://code.google.com/p/openxsensor/\" and\n");  // TODO 1 change URL
+			message.append("         You may go to \"" + MainP.oXsURL + "\" and\n");
 			message.append("       download the latest version of both OXS and OXS Configurator.\n");
 		}
 	}
