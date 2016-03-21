@@ -1,6 +1,7 @@
 package oxsc;
 
 import gui.TabData;
+import gui.TabVoltage;
 
 public class Protocol {
 	
@@ -81,6 +82,7 @@ public class Protocol {
 			targetDataList = frSkyDataList.clone();
 		} else if (this.name.equals("Multiplex")) {
 			targetDataList = multiplexDataList.clone();
+			TabVoltage.getCellsTgl().setValue(0);
 		}
 
 		if (DEBUG) {
