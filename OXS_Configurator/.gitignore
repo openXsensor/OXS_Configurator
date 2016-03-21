@@ -1,2 +1,10 @@
+/.settings/
+/.project
+/.classpath
+/preferences.txt
 /bin/
 /lib/
+/Preset/
+/application.linux/
+/application.macosx/
+/application.windows/
