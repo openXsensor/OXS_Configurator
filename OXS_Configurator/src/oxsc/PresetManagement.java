@@ -132,7 +132,7 @@ public class PresetManagement {
 		}
 	}
 
-	public static void presetSave(File selection) throws FileNotFoundException {
+	public static void presetSave(File selection) throws FileNotFoundException {  // TODO 1 preset .ocp extension
 		// System.out.println("User selected " + selection.getAbsolutePath());
 		try (PrintWriter output = new PrintWriter(selection)){
 			output.println("@ OXS Configurator " + Validation.getOxsCversion() + " preset file created the " + MainP.date);
