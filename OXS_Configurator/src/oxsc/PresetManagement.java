@@ -21,7 +21,7 @@ import gui.TabData;
 
 public class PresetManagement {
 	
-	private static final String SPLIT_CHAR = " <> ";
+	private static final String SPLIT_CHAR = " <--> ";
 
 	private static final boolean DEBUG = false;
 	
@@ -74,7 +74,6 @@ public class PresetManagement {
 									dropDownList.setValue(Float.parseFloat(stringArray[2]));
 								}
 							}
-							//dropDownList.setCaptionLabel(temp[1]);
 						} else if (cp5.getController(temp[0]) instanceof controlP5.Toggle) {
 							controlP5.Toggle toggle = (controlP5.Toggle) cp5.getController(temp[0]);
 							toggle.setState(Boolean.parseBoolean(temp[1]));
@@ -93,10 +92,18 @@ public class PresetManagement {
 							String oxsDir = (temp.length > 1) ? temp[1] : "";
 							textField.setText(oxsDir);
 						}  else {
+							StringBuilder message = new StringBuilder();
+							message.append("                            OXS Configurator " + Validation.getOxsCversion() + " for OXS " + Validation.getOxsVersion() + "\n");
+							message.append("                                                       ---\n");
+							message.append("                         -- OpenXsensor configuration file GUI --\n");
+							message.append("\n");
+							message.append("  - The \"" + selection.getName() + "\" preset file is corrupted !!\n");
+							MessageBox.error(message);
 							if (DEBUG) {
 								// TODO preset: parse unknown controller string
 								System.out.println("Unknown controller");
 							}
+							break;
 						}
 					}
 				}
@@ -106,8 +113,8 @@ public class PresetManagement {
 				message.append("                                                       ---\n");
 				message.append("                         -- OpenXsensor configuration file GUI --\n");
 				message.append("\n");
-				message.append("                           This preset file is not compatible with\n");
-				message.append("                                      OXS Configurator " + Validation.getOxsCversion() + "\n");
+				message.append("  - The \"" + selection.getName() + "\" preset file is not compatible with\n");
+				message.append("     OXS Configurator " + Validation.getOxsCversion() + "\n");
 				MessageBox.error(message);
 
 				if (DEBUG) {
