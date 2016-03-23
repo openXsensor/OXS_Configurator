@@ -1,14 +1,23 @@
 package oxsc;
 
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import java.util.regex.Pattern;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import gui.MessageBox;
 import gui.TabCurrent;
 import gui.TabData;
-import static gui.TabGeneralSettings.*;
+import gui.TabGeneralSettings;
 import gui.TabPPM;
 import gui.TabVario;
 import gui.TabVoltage;
@@ -16,9 +25,10 @@ import gui.TabVoltage;
 public class Validation {
 
 	private static final boolean DEBUG = false;
-	private static final String OXS_CONFIG_FILE_NAME = System.getProperty("file.separator") + "oXs_config.h";
+	private static final String OXS_CONFIG_FILE_NAME = System.getProperty("file.separator") + "oXs_config.h";  // TODO 1 suppress file.separator
 	private static final String oxsVersion = "v3.0";
 	private static final String oxsCversion = "v3.0";
+	private static final String OXS_VERSION_FILE = "version.oxs";  // TODO 1 use path
 	private static String oxsDirectory = "";
 	private static String outputConfigDir = "";
 	
@@ -48,14 +58,54 @@ public class Validation {
 	public static int getAllValid() {
 		return allValid;
 	}
-
+	
+	public static void checkUpdate() {
+		message.setLength(0);
+		message.append("                            OXS Configurator " + Validation.getOxsCversion() + " for OXS "
+				+ Validation.getOxsVersion() + "\n");
+		message.append("                                                       ---\n");
+		message.append("                         -- OpenXsensor configuration file GUI --\n");
+		message.append("\n");
+		(new Thread(new Runnable() {
+			public void run() {
+				String line = null;
+				try {
+					URL url = new URL("https://github.com/davxlw/testda/raw/testEclipse/HelloWorld/oXs-C_Readme.txt");
+					// https://github.com/openXsensor/OXS_Configurator/raw/master/OXS_Configurator/oXs-C_Readme.txt
+					HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+					try (BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
+						// boolean changeLog = false;
+						while ((line = reader.readLine()) != null) {
+							if (Pattern.matches("v\\d\\.\\d", line)) {
+								System.out.println(line);
+								break;
+							}
+						}
+					} catch (IOException x) {
+						System.err.format("IOException: %s%n", x);
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if (Float.parseFloat(line.substring(1)) > Float.parseFloat(oxsCversion.substring(1))) {
+					System.out.println("A new version is available...");
+					message.append("- A new version is available: " + line + "\n");
+				} else {
+					System.out.println("You're up to date !");
+				}
+				MessageBox.infos(message);
+			}
+		})).start();
+	}
+	
 	public static void validationProcess(String option) {
 		message.setLength(0);
 		message.append("\n");
 		setValidationMbox(true);
 		
 		// Config. file writing destination
-		oxsDirectory = getOxsDir().getText().trim();
+		oxsDirectory = TabGeneralSettings.getOxsDir().getText().trim();
 		if (oxsDirectory.equals("")) {
 			outputConfigDir = MainP.execPath.getParent() + OXS_CONFIG_FILE_NAME;
 		} else {
@@ -130,21 +180,21 @@ public class Validation {
 
 		int ppmInputIsActive = 0;
 		if (TabPPM.getPpmTgl().getValue() == 1.0
-				&& (getVarioTgl().getValue() == 1.0 || getAirSpeedTgl().getValue() == 1.0)) {
+				&& (TabGeneralSettings.getVarioTgl().getValue() == 1.0 || TabGeneralSettings.getAirSpeedTgl().getValue() == 1.0)) {
 			ppmInputIsActive = 1;
 		}
 
 		int analogClimbOutputIsActive = 0;
-		if (TabVario.getAnalogClimbTgl().getValue() == 1.0 && getVarioTgl().getValue() == 1.0) {
+		if (TabVario.getAnalogClimbTgl().getValue() == 1.0 && TabGeneralSettings.getVarioTgl().getValue() == 1.0) {
 			analogClimbOutputIsActive = 1;
 		}
 		
 		String numPinsValidation[][] = new String[][] {        // array { pin name, pin value, isActive }
-				{ "Serial output", "" + (int)getSerialPinDdl().getValue(), "1" },
-				{ "Reset button", "" + (int)getResetBtnPinDdl().getValue(), "" + (int) getSaveEpromTgl().getValue() },
+				{ "Serial output", "" + (int)TabGeneralSettings.getSerialPinDdl().getValue(), "1" },
+				{ "Reset button", "" + (int)TabGeneralSettings.getResetBtnPinDdl().getValue(), "" + (int) TabGeneralSettings.getSaveEpromTgl().getValue() },
 				{ "PPM input", "" + (int)TabPPM.getPpmPinDdl().getValue(), "" + ppmInputIsActive },
 				{ "Analog climb output", "" + (int)TabVario.getClimbPinDdl().getValue(), "" + analogClimbOutputIsActive },
-				{ "RPM input", "" + 8, "" + (int) getRpmTgl().getValue() }
+				{ "RPM input", "" + 8, "" + (int) TabGeneralSettings.getRpmTgl().getValue() }
 		} ;
 
 		for ( int i = 0; i < numPinsValidation.length; i++ ) {
@@ -169,7 +219,7 @@ public class Validation {
 		int voltActiveCount = 0;
 
 		for (int i = 1; i <= TabVoltage.getVoltnbr(); i++) {
-			if (getVoltageTgl().getValue() == 1.0 && TabVoltage.getVoltTgl()[i].getValue() == 1.0) {
+			if (TabGeneralSettings.getVoltageTgl().getValue() == 1.0 && TabVoltage.getVoltTgl()[i].getValue() == 1.0) {
 				voltActive[i] = "1";
 				voltActiveCount++;
 			} else {
@@ -177,7 +227,7 @@ public class Validation {
 			}
 		}
 
-		if (getVoltageTgl().getValue() == 1.0 && voltActiveCount == 0) {
+		if (TabGeneralSettings.getVoltageTgl().getValue() == 1.0 && voltActiveCount == 0) {
 			analogPinsValid = false;
 			message.append("- Voltage sensor is active but there is no voltage to measure !\n");
 		}
@@ -189,10 +239,10 @@ public class Validation {
 				{ "Voltage n°4", TabVoltage.getDdlVolt()[4].getCaptionLabel().getText(), "" + voltActive[4] },
 				{ "Voltage n°5", TabVoltage.getDdlVolt()[5].getCaptionLabel().getText(), "" + voltActive[5] },
 				{ "Voltage n°6", TabVoltage.getDdlVolt()[6].getCaptionLabel().getText(), "" + voltActive[6] },
-				{ "Current Sensor", TabCurrent.getCurrentPinDdl().getCaptionLabel().getText(), "" + (int)getCurrentTgl().getValue() },
+				{ "Current Sensor", TabCurrent.getCurrentPinDdl().getCaptionLabel().getText(), "" + (int)TabGeneralSettings.getCurrentTgl().getValue() },
 				//{ "Temperature Sensor", "" + (int)cp5.getGroup("tempPin").getValue(), "" + (int)cp5.getController("temperature").getValue() },
-				{ "Vario/Air Speed (A4-A5)", "A4", "" + (int) (getVarioTgl().getValue() + getAirSpeedTgl().getValue()) },
-				{ "Vario/Air Speed (A4-A5)", "A5", "" + (int) (getVarioTgl().getValue() + getAirSpeedTgl().getValue()) }
+				{ "Vario/Air Speed (A4-A5)", "A4", "" + (int) (TabGeneralSettings.getVarioTgl().getValue() + TabGeneralSettings.getAirSpeedTgl().getValue()) },
+				{ "Vario/Air Speed (A4-A5)", "A5", "" + (int) (TabGeneralSettings.getVarioTgl().getValue() + TabGeneralSettings.getAirSpeedTgl().getValue()) }
 		};
 
 		for (int i = 0; i < analogPinsValidation.length; i++) {
@@ -214,8 +264,8 @@ public class Validation {
 
 	public static void validateVspeed() {  // TODO validate vspeed better
 
-		if (getVarioTgl().getValue() == 1) {                                                     // test V.Speed types with sensors
-				if ( TabPPM.getPpmTgl().getValue() == 1 && ( getVario2Tgl().getValue() == 1 || getAirSpeedTgl().getValue() == 1 ) ) {
+		if (TabGeneralSettings.getVarioTgl().getValue() == 1) {                                                     // test V.Speed types with sensors
+				if ( TabPPM.getPpmTgl().getValue() == 1 && ( TabGeneralSettings.getVario2Tgl().getValue() == 1 || TabGeneralSettings.getAirSpeedTgl().getValue() == 1 ) ) {
 					if ((int)TabVario.getvSpeed1Ddl().getValue() == (int)TabVario.getvSpeed2Ddl().getValue()) {
 						vSpeedValid = (vSpeedValid == 0) ? 0 : 1;
 						message.append("- You have set the same V.Speed types for switching in Vario TAB !\n\n");
@@ -340,21 +390,19 @@ public class Validation {
 
 	public static void validateVersion() {  // TODO 2 better validate version
 
-		File versionFile = new File(oxsDirectory + "/version.oxs");
+		Charset charset = Charset.forName("UTF-8");
+		Path versionFile = Paths.get(oxsDirectory, OXS_VERSION_FILE);
 		String version = null;
 		
-		try { // with resources
-			Scanner scanner = new Scanner(versionFile);
-
-			while (scanner.hasNextLine()) {
-				version = scanner.nextLine();
+		try (BufferedReader reader = Files.newBufferedReader(versionFile, charset)) {
+			while (reader.ready()) {
+				version = reader.readLine();
 				if (DEBUG) {
 					System.out.println(version);
 				}
 			}
-			scanner.close();
 		} catch (Exception e) {
-			System.out.println("File version.oxs not found...");
+			System.out.println("File " + OXS_VERSION_FILE + " not found...");
 			// e.printStackTrace();
 			version = null;
 		}

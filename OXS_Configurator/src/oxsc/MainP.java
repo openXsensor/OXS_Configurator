@@ -922,8 +922,8 @@ public class MainP extends PApplet {
 		} else if (key == 'c') {
 			System.out.println("mAmp / step " + mAmpStep());
 			System.out.println("Current offset " + offsetCurrent());
-		} else if (key == 'p') {
-			// message.showOk("gxb");
+		} else if (key == 'u') {
+			Validation.checkUpdate();
 		} else if (key == 'g') {
 			cp5.getGroup("serialPinDdl").setValue(4);
 //			TabGeneralSettings.getSerialPinDdl().setValue(4);
