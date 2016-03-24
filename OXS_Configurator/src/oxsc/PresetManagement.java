@@ -52,7 +52,7 @@ public class PresetManagement {
 		return uiUnits;
 	}
 
-	public static void presetLoad(File selection) {
+	public static void presetLoad(File selection) {  // TODO 1 use path
 		//presetDir = new File(mainP.sketchPath("src/Preset/..."));
 		try (BufferedReader buff = new BufferedReader(new FileReader(selection))) {
 			String line;

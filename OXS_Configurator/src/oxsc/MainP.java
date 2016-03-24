@@ -39,7 +39,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -63,14 +63,14 @@ public class MainP extends PApplet {
 
 	public static boolean tempActive = false; // Defines temperature sensor availability
 	
-	public static String oXsURL = "http://openxsensor.github.io";
+	public static final String OXS_URL = "http://openxsensor.github.io";
 
 	public static String day = (day() < 10) ? "0" + day() : "" + day();
 	public static String month = (month() < 10) ? "0" + month() : "" + month();
 	public static String date = day + "/" + month + "/" + year();
 
 	public static Path execPath = null;
-	private static final String PRESET_DEFAULT_DIR = System.getProperty("file.separator") + "Preset" + System.getProperty("file.separator");
+	private static final Path PRESET_DEFAULT_DIR = Paths.get("Preset");
 
 	public static final int tabGray = 0xFFC8C8C8; // gray 200
 	public static final int backDdlGray = 0xFFFFFFFF; // gray 190
@@ -737,9 +737,8 @@ public class MainP extends PApplet {
 		message.append("- Michel Strens\n");
 		message.append("- David Laburthe\n                                     -----------------------------\n");
 
-		Charset charset = Charset.forName("UTF-8");
 		Path readmePath = execPath.getParent().resolve("oXs-C_Readme.txt");
-		try (BufferedReader reader = Files.newBufferedReader(readmePath, charset)) {
+		try (BufferedReader reader = Files.newBufferedReader(readmePath, StandardCharsets.UTF_8)) {
 			String line = null;
 			boolean changeLog = false;
 			while ((line = reader.readLine()) != null) {
@@ -858,7 +857,7 @@ public class MainP extends PApplet {
 
 	// Load preset button  // TODO better with FileDialog
 	public void loadButton(int theValue) {
-		File presetDir = new File(execPath.getParent() + PRESET_DEFAULT_DIR + "...");
+		File presetDir = execPath.getParent().resolve(PRESET_DEFAULT_DIR).resolve("...").toFile();
 		selectInput("Select a preset file to load:", "presetLoad", presetDir);
 	}
 
@@ -869,7 +868,7 @@ public class MainP extends PApplet {
 			MessageBox.close();
 		}
 		if (Validation.getAllValid() != 0) {
-			File presetDir = new File(execPath.getParent() + PRESET_DEFAULT_DIR + "type name");
+			File presetDir = execPath.getParent().resolve(PRESET_DEFAULT_DIR).resolve("type name").toFile();
 			selectOutput("Type preset name to save:", "presetSave", presetDir);
 		}
 	}

@@ -1,10 +1,13 @@
 package oxsc;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,12 +28,13 @@ import gui.TabVoltage;
 public class Validation {
 
 	private static final boolean DEBUG = false;
-	private static final String OXS_CONFIG_FILE_NAME = System.getProperty("file.separator") + "oXs_config.h";  // TODO 1 suppress file.separator
 	private static final String oxsVersion = "v3.0";
 	private static final String oxsCversion = "v3.0";
-	private static final String OXS_VERSION_FILE = "version.oxs";  // TODO 1 use path
-	private static String oxsDirectory = "";
-	private static String outputConfigDir = "";
+	private static final Path OXS_CONFIG_FILE_NAME = Paths.get("oXs_config.h");
+	private static final Path OXS_VERSION_FILE = Paths.get("version.oxs");
+
+	private static Path oxsDirectory;
+	private static Path outputConfigDir;
 	
 	private static StringBuilder message = new StringBuilder();
 	private static boolean numPinsValid;
@@ -52,7 +56,7 @@ public class Validation {
 	}
 
 	public static String getOutputConfigDir() {
-		return outputConfigDir;
+		return outputConfigDir.toString();
 	}
 
 	public static int getAllValid() {
@@ -105,11 +109,11 @@ public class Validation {
 		setValidationMbox(true);
 		
 		// Config. file writing destination
-		oxsDirectory = TabGeneralSettings.getOxsDir().getText().trim();
-		if (oxsDirectory.equals("")) {
-			outputConfigDir = MainP.execPath.getParent() + OXS_CONFIG_FILE_NAME;
+		oxsDirectory = Paths.get(TabGeneralSettings.getOxsDir().getText().trim());
+		if (oxsDirectory.toString().equals("")) {
+			outputConfigDir = MainP.execPath.getParent().resolve(OXS_CONFIG_FILE_NAME);
 		} else {
-			outputConfigDir = oxsDirectory + OXS_CONFIG_FILE_NAME;
+			outputConfigDir = oxsDirectory.resolve(OXS_CONFIG_FILE_NAME);
 		}
 
 		numPinsValid = true;
@@ -390,11 +394,10 @@ public class Validation {
 
 	public static void validateVersion() {  // TODO 2 better validate version
 
-		Charset charset = Charset.forName("UTF-8");
-		Path versionFile = Paths.get(oxsDirectory, OXS_VERSION_FILE);
+		Path versionFile = oxsDirectory.resolve(OXS_VERSION_FILE);
 		String version = null;
 		
-		try (BufferedReader reader = Files.newBufferedReader(versionFile, charset)) {
+		try (BufferedReader reader = Files.newBufferedReader(versionFile, StandardCharsets.UTF_8)) {
 			while (reader.ready()) {
 				version = reader.readLine();
 				if (DEBUG) {
@@ -430,7 +433,7 @@ public class Validation {
 			
 			message.append("            ** The Configurator "	+ oxsCversion + " isn't compatible with OXS " + version	+ " **\n");
 			message.append("\n");
-			message.append("         You may go to \"" + MainP.oXsURL + "\" and\n");
+			message.append("         You may go to \"" + MainP.OXS_URL + "\" and\n");
 			message.append("       download the latest version of both OXS and OXS Configurator.\n");
 		}
 	}
