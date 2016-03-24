@@ -101,6 +101,18 @@ public class Validation {
 				MessageBox.infos(message);
 			}
 		})).start();
+		if(Desktop.isDesktopSupported())
+		{
+		  try {
+			Desktop.getDesktop().browse(new URI("https://github.com/openXsensor/openXsensor/wiki/OXS_Downloads"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
 	}
 	
 	public static void validationProcess(String option) {
