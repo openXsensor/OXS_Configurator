@@ -163,28 +163,27 @@ public class MainP extends PApplet {
 		//Alt+Shift+l to load properties
 		//cp5.enableShortcuts() ;
 
-		oxsI = loadShape("OXSc_Icon.svg") ;
-		oxsL = loadShape("OXSc_Logo.svg") ;
+		oxsI = loadShape("OXSc_Icon.svg");
+		oxsL = loadShape("OXSc_Logo.svg");
 
-		PGraphics icon = createGraphics(64, 64, JAVA2D) ;
-		icon.beginDraw() ;
-		icon.shape(oxsI, 0, 0, 64, 64) ;
-		icon.endDraw() ;
-		frame.setIconImage(icon.image) ;
+		PGraphics icon = createGraphics(64, 64, JAVA2D);
+		icon.beginDraw();
+		icon.shape(oxsI, 0, 0, 64, 64);
+		icon.endDraw();
+		frame.setIconImage(icon.image);
 		frame.setTitle("oXs Configurator");
 
-		fontLabel = createFont("arial.ttf", 12, false) ;
-		fontItalic = createFont("ariali.ttf", 12, false) ;
-		fontCells = createFont("arialbd.ttf", 12, false) ;
-		font16 = createFont("arial.ttf", 16, false) ;
-		font20 = createFont("arial.ttf", 20, false) ;
+		fontLabel = createFont("LiberationSans-Regular.ttf", 14, false);
+		fontItalic = createFont("LiberationSans-Italic.ttf", 16, false);
+		fontCells = createFont("LiberationSans-Bold.ttf", 12, false);
+		font16 = createFont("LiberationSans-Regular.ttf", 16, false);
+		font20 = createFont("LiberationSans-Regular.ttf", 20, false);
 
-		for ( int i = 0; i < analogPins.length; i++ ) {
-			analogPins[i] = ("A" + i ) ;
+		for (int i = 0; i < analogPins.length; i++) {
+			analogPins[i] = ("A" + i);
 		}
 
-		cp5.setFont(fontLabel, 12) ;
-
+		cp5.setFont(fontLabel, 12);
 
 		// ------------------------ TABS definition ------------------------
 		// By default all controllers are stored inside Tab 'default'
@@ -201,7 +200,7 @@ public class MainP extends PApplet {
 		   .setColorActive(orangeAct)
 		   .setTab("global")
 		   ;
-		cp5.getController("about").getCaptionLabel().toUpperCase(false) ;
+		cp5.getController("about").getCaptionLabel().toUpperCase(false);
 
 		// ----------------------- Tab 0 : GENERAL SETTINGS ----------------------
 		tabGenSet = new TabGeneralSettings(cp5) ;
@@ -249,15 +248,15 @@ public class MainP extends PApplet {
 		messageBox = new MessageBox(cp5, this);
 		
 		// dropdownlist overlap
-		//cp5.getGroup("tempPin").bringToFront() ;
+		//cp5.getGroup("tempPin").bringToFront();
 
 		// Tooltips general settings
-		cp5.getTooltip().setDelay(1000) ;
-		cp5.getTooltip().getLabel().toUpperCase(false) ;
+		cp5.getTooltip().setDelay(1000);
+		cp5.getTooltip().getLabel().toUpperCase(false);
 
 		
 		TabGeneralSettings.getProtocolDdl().setValue(1); // Set the protocol ddl value after telemetry fields creation
-		new OXSdata("----------", "----------", "noSensor") ;
+		new OXSdata("----------", "----------", "noSensor");
 
 	}
 
@@ -722,6 +721,16 @@ public class MainP extends PApplet {
 		selectFolder("Select OXS source folder:", "folderSelected");
 	}
 
+	public void folderSelected(File selection) {
+		if (selection == null) {
+			// System.out.println("Window was closed or the user hit cancel.");
+		} else {
+			// System.out.println("User selected " + selection.getAbsolutePath());
+			TabGeneralSettings.getOxsDir().setText(selection.getAbsolutePath());
+		}
+	}
+
+	// "About" button
 	public void about(boolean theFlag) {
 		StringBuilder message = new StringBuilder();
 		
@@ -892,15 +901,6 @@ public class MainP extends PApplet {
 
 	public void writeConfButton(int theValue) {
 		Validation.validationProcess("Config");
-	}
-
-	public void folderSelected(File selection) {  // TODO remove ???
-		if (selection == null) {
-			// System.out.println("Window was closed or the user hit cancel.");
-		} else {
-			// System.out.println("User selected " + selection.getAbsolutePath());
-			TabGeneralSettings.getOxsDir().setText(selection.getAbsolutePath());
-		}
 	}
 
 	// =========================================== Shortcuts ===========================================

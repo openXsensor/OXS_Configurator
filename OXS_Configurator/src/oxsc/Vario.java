@@ -66,7 +66,6 @@ public class Vario extends Sensor {
 			TabVario.resetVspeedDdls();
 
 			OXSdata.removeFromList("varAspeed");
-			System.out.println("remove varAspeed");
 			//TabData.resetSentDataFields("varAspeed");
 		} else {
 			TabVario.removeFromVspeedDdls("       Vario 2");
@@ -75,8 +74,6 @@ public class Vario extends Sensor {
 		}
 
 		OXSdata.removeFromList(this);
-		System.out.println(OXSdata.getList());
-		System.out.println("remove " + this.getName());
 		TabData.resetSentDataFields();
 		//updateUIoXSdataList();
 		Sensor.getSensorList().remove(this);

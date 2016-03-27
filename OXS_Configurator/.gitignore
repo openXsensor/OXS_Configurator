@@ -5,6 +5,4 @@
 /bin/
 /lib/
 /Preset/
-/application.linux/
-/application.macosx/
-/application.windows/
+/build.xml

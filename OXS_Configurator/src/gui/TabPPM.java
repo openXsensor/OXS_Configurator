@@ -132,7 +132,7 @@ public class TabPPM {
 	public static void drawPPMzone(MainP mainP) {
 		// PPM zone
 		mainP.fill(MainP.darkBackGray);
-		mainP.rect(mainP.width / 2 - 14, 102, 30, 13);
+		mainP.rect(mainP.width / 2 - 16, 102, 34, 13);
 
 		mainP.stroke(MainP.blueAct);
 		mainP.strokeWeight(3);
@@ -142,10 +142,10 @@ public class TabPPM {
 		mainP.noStroke();
 
 		mainP.fill(MainP.blueAct);
-		mainP.rect(mainP.width / 2 - 15, 101, 30, 13);
+		mainP.rect(mainP.width / 2 - 17, 101, 34, 13);
 		mainP.fill(255);
 		mainP.textFont(MainP.fontLabel);
-		mainP.text("PPM", 212, 112);
+		mainP.text("PPM", 210, 112);
 	
 		if ( ppmTgl.getValue() == 0 ) {         // RC remote
 			ppmPinDdl.hide() ;

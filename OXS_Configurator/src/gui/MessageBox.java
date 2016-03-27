@@ -126,7 +126,7 @@ public class MessageBox {
 		messageBox.setBackgroundColor(MainP.okColor);
 		messageBox.show();
 	}
-	
+
 	public static void close() {
 		messageBox.hide();
 	}

@@ -35,13 +35,13 @@ public class Validation {
 
 	private static Path oxsDirectory;
 	private static Path outputConfigDir;
-	
+
 	private static StringBuilder message = new StringBuilder();
 	private static boolean numPinsValid;
 	private static boolean analogPinsValid;
 	private static int vSpeedValid; // 0 -> not valid, 1 -> warning, 2 -> valid
 	private static boolean sentDataValid;
-	private static int versionValid; // 0 -> not valid, 1 -> warning, 2 -> valid	
+	private static int versionValid; // 0 -> not valid, 1 -> warning, 2 -> valid
 	private static int allValid; // 0 -> not valid, 1 -> warning, 2 -> valid
 	private static boolean validationMbox;
 
@@ -114,7 +114,7 @@ public class Validation {
 		}
 		}
 	}
-	
+
 	public static void validationProcess(String option) {
 		message.setLength(0);
 		message.append("\n");
@@ -408,7 +408,7 @@ public class Validation {
 
 		Path versionFile = oxsDirectory.resolve(OXS_VERSION_FILE);
 		String version = null;
-		
+
 		try (BufferedReader reader = Files.newBufferedReader(versionFile, StandardCharsets.UTF_8)) {
 			while (reader.ready()) {
 				version = reader.readLine();
@@ -436,13 +436,13 @@ public class Validation {
 
 		} else if (version.charAt(1) > oxsCversion.charAt(1)) {
 			versionValid = 1;
-			
+
 			message.append("        **  The Configurator " + oxsCversion + " can't set OXS " + version + " new features,  **\n");
 			message.append("        **    if you need them, you can edit the config file by hand    **\n");
 			message.append("\n");
 		} else {
 			versionValid = 0;
-			
+
 			message.append("            ** The Configurator "	+ oxsCversion + " isn't compatible with OXS " + version	+ " **\n");
 			message.append("\n");
 			message.append("         You may go to \"" + MainP.OXS_URL + "\" and\n");
@@ -457,5 +457,5 @@ public class Validation {
 	public static void setValidationMbox(boolean validationMbox) {
 		Validation.validationMbox = validationMbox;
 	}
-	
+
 }

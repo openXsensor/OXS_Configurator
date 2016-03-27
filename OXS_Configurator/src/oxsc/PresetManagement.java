@@ -20,11 +20,11 @@ import gui.TabCurrent;
 import gui.TabData;
 
 public class PresetManagement {
-	
+
 	private static final String SPLIT_CHAR = " <--> ";
 
 	private static final boolean DEBUG = false;
-	
+
 	private static ControlP5 cp5;
 
 	@SuppressWarnings("unused")
@@ -36,8 +36,8 @@ public class PresetManagement {
 		PresetManagement.cp5 = cp5;
 		addControllersList();		
 	}
-	
-	public static void addControllersList(){
+
+	public static void addControllersList() {
 		uiUnits.add(TabGeneralSettings.getControllers());
 		uiUnits.add(TabPPM.getControllers());
 		uiUnits.add(TabVario.getControllers());
