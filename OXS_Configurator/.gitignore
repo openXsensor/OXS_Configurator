@@ -4,5 +4,7 @@
 /preferences.txt
 /bin/
 /lib/
+/dest/
+/deploy/
 /Preset/
 /build.xml

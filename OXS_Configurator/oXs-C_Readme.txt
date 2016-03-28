@@ -26,15 +26,20 @@ You'll find .ico and .svg icons to make a nice shortcut if you want :)
 
 Change log:
 
-V3.0
+v3.0
 - Supports OpenXsensor v3.0
-- ...
+- Compatible with oXs v3.1 to v4.0 (some new features missing)
+- Multiplex protocol
+- OXS measurements dynamic list
+- Change log in "About" message box
+- New "Updates ?" button (up-left part of the window)
+- New preset file format
 
-V2.1
+v2.1
 - Supports the new features of OpenXsensor v2.x
 - Small graphics changes
 
-V2.0
+v2.0
 - Supports OpenXsensor v2.x without the new features
 
 v1.1
