@@ -28,8 +28,15 @@ import gui.TabVoltage;
 public class Validation {
 
 	private static final boolean DEBUG = false;
-	private static final String oxsVersion = "v3.0";
-	private static final String oxsCversion = "v3.0";
+	private static final double OXS_VERSION_COMP_START = 3.0;
+	private static final double OXS_VERSION_COMP_END = 4.0;
+	private static final double OXSC_VERSION = 3.0;
+	private static final Path OXSC_README_FILE_PATH = Paths.get("oXs-C_Readme.txt");
+	// "https://github.com/davxlw/testda/raw/testEclipse/HelloWorld/"
+	// "https://github.com/openXsensor/OXS_Configurator/raw/master/OXS_Configurator/"
+	private static final String OXSC_README_URL = "https://github.com/openXsensor/OXS_Configurator/raw/master/OXS_Configurator/"
+			+ OXSC_README_FILE_PATH;
+	private static final String OXS_DOWNLOAD_URI = "https://github.com/openXsensor/openXsensor/wiki/OXS_Downloads";
 	private static final Path OXS_CONFIG_FILE_NAME = Paths.get("oXs_config.h");
 	private static final Path OXS_VERSION_FILE = Paths.get("version.oxs");
 
@@ -45,14 +52,20 @@ public class Validation {
 	private static int allValid; // 0 -> not valid, 1 -> warning, 2 -> valid
 	private static boolean validationMbox;
 
-	public Validation() {	}
-
-	public static String getOxsVersion() {
-		return oxsVersion;
+	public static double getOxsVersionCompStart() {
+		return OXS_VERSION_COMP_START;
 	}
 
-	public static String getOxsCversion() {
-		return oxsCversion;
+	public static double getOxsVersionCompEnd() {
+		return OXS_VERSION_COMP_END;
+	}
+
+	public static Path getOxscReadmePath() {
+		return OXSC_README_FILE_PATH;
+	}
+
+	public static double getOxsCversion() {
+		return OXSC_VERSION;
 	}
 
 	public static String getOutputConfigDir() {
@@ -63,56 +76,57 @@ public class Validation {
 		return allValid;
 	}
 	
-	public static void checkUpdate() {
+	public static void checkUpdate(boolean startMBox) {
 		message.setLength(0);
-		message.append("                            OXS Configurator " + Validation.getOxsCversion() + " for OXS "
-				+ Validation.getOxsVersion() + "\n");
+		message.append("                            OXS Configurator v" + Validation.getOxsCversion() + " for OXS v"
+				+ Validation.getOxsVersionCompStart() + "\n");
 		message.append("                                                       ---\n");
 		message.append("                         -- OpenXsensor configuration file GUI --\n");
 		message.append("\n");
-		(new Thread(new Runnable() {
-			public void run() {
-				String line = null;
-				try {
-					URL url = new URL("https://github.com/davxlw/testda/raw/testEclipse/HelloWorld/oXs-C_Readme.txt");
-					// https://github.com/openXsensor/OXS_Configurator/raw/master/OXS_Configurator/oXs-C_Readme.txt
-					HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
-					try (BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
-						// boolean changeLog = false;
-						while ((line = reader.readLine()) != null) {
-							if (Pattern.matches("v\\d\\.\\d", line)) {
-								System.out.println(line);
-								break;
-							}
+		if (startMBox) {
+			message.append("- Checking website...\n");
+			MessageBox.infos(message);
+		}
+		(new Thread(() -> {
+			String line = null;
+			try {
+				URL url = new URL(OXSC_README_URL);
+				HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+				try (BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
+					while ((line = reader.readLine()) != null) {
+						if (Pattern.matches("v\\d\\.\\d", line)) {
+							System.out.println(line);
+							break;
 						}
-					} catch (IOException x) {
-						System.err.format("IOException: %s%n", x);
 					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (IOException x) {
+					System.err.format("IOException: %s%n", x);
 				}
-				if (Float.parseFloat(line.substring(1)) > Float.parseFloat(oxsCversion.substring(1))) {
-					System.out.println("A new version is available...");
-					message.append("- A new version is available: " + line + "\n");
-				} else {
-					System.out.println("You're up to date !");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			if (Double.parseDouble(line.substring(1)) > OXSC_VERSION) {
+				System.out.println("A new version is available...");
+				message.setLength(message.lastIndexOf("\n"));
+				message.append("\n\n- A new version is available: " + line + "\n");
+				MessageBox.infosWithBtn(message, "Download from OXS website", () -> {
+					if (Desktop.isDesktopSupported()) {
+						try {
+							Desktop.getDesktop().browse(new URI(OXS_DOWNLOAD_URI));
+						} catch (IOException | URISyntaxException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			} else {
+				System.out.println("You're up to date !");
+				if (startMBox) {
+					message.setLength(message.lastIndexOf("\n"));
+					message.append("\n\n- You're up to date !\n");
+					MessageBox.infos(message);
 				}
-				MessageBox.infos(message);
 			}
 		})).start();
-		if(Desktop.isDesktopSupported())
-		{
-		  try {
-			Desktop.getDesktop().browse(new URI("https://github.com/openXsensor/openXsensor/wiki/OXS_Downloads"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		}
 	}
 
 	public static void validationProcess(String option) {
@@ -128,7 +142,7 @@ public class Validation {
 			outputConfigDir = oxsDirectory.resolve(OXS_CONFIG_FILE_NAME);
 		}
 
-		numPinsValid = true;
+		numPinsValid = true;  // TODO move in validateNumPins method
 		analogPinsValid = true;
 		vSpeedValid = 2;        // 0 -> not valid, 1 -> warning, 2 -> valid
 		sentDataValid = true;
@@ -151,9 +165,9 @@ public class Validation {
 			message.append("                                             ----------------------\n");
 			message.append("\n") ;
 			if (option.equals("preset")) {
-				message.append("Preset file can't be saved !\n");
+				message.append("- Preset file can't be saved !\n");
 			} else {
-				message.append("Config file can't be written !\n");
+				message.append("- Configuration file can't be written !\n");
 			}
 
 			allValid = 0 ;
@@ -167,8 +181,8 @@ public class Validation {
 			message.append("                                             ----------------------\n");
 			message.append("\n");
 			if (option.equals("Config")) {
-				message.append("Configuration file will be written to:\n");
-				message.append(outputConfigDir + "\n");
+				message.append("- Configuration file will be written to:\n");
+				message.append("   " + outputConfigDir + "\n");
 				message.append("\n");
 				message.append("                       ! If the file already exists, it will be replaced !\n");
 			}
@@ -181,7 +195,7 @@ public class Validation {
 
 			message.insert(0, "                                         --- ALL IS GOOD ! ---\n");
 			if (option.equals("preset")) {
-				message.append("Preset file can be saved !\n");
+				message.append("- Preset file can be saved !\n");
 			}
 			message.append("\n");
 			message.append("                                             ----------------------\n");
@@ -407,11 +421,12 @@ public class Validation {
 	public static void validateVersion() {  // TODO 2 better validate version
 
 		Path versionFile = oxsDirectory.resolve(OXS_VERSION_FILE);
-		String version = null;
+		Double version = 0.0;
+		String versionText;
 
 		try (BufferedReader reader = Files.newBufferedReader(versionFile, StandardCharsets.UTF_8)) {
-			while (reader.ready()) {
-				version = reader.readLine();
+			while ((versionText = reader.readLine()) != null) {
+				version = Double.parseDouble(versionText.substring(1));
 				if (DEBUG) {
 					System.out.println(version);
 				}
@@ -419,33 +434,32 @@ public class Validation {
 		} catch (Exception e) {
 			System.out.println("File " + OXS_VERSION_FILE + " not found...");
 			// e.printStackTrace();
-			version = null;
 		}
 
-		if (version == null) {
+		if (version == 0.0) {  // TODO 1 validation: better oxs version test
 			versionValid = 1;
 
 			message.append("                **   The Configurator can't find OXS version number   **\n");
 			message.append("                **         Configuration file may not be compatible...      **\n");
 
-		} else if (version.charAt(1) == oxsCversion.charAt(1)) {
-			message.append("Configuration file will be written to:\n");
-			message.append(outputConfigDir + "\n");
+		} else if (version == OXSC_VERSION) {
+			message.append("- Configuration file will be written to:\n");
+			message.append("   " + outputConfigDir + "\n");
 			message.append("\n");
 			message.append("                       ! If the file already exists, it will be replaced !\n");
 
-		} else if (version.charAt(1) > oxsCversion.charAt(1)) {
+		} else if (version > OXS_VERSION_COMP_START && version <= OXS_VERSION_COMP_END) {
 			versionValid = 1;
 
-			message.append("        **  The Configurator " + oxsCversion + " can't set OXS " + version + " new features,  **\n");
-			message.append("        **    if you need them, you can edit the config file by hand    **\n");
+			message.append("        **  The Configurator v" + OXSC_VERSION + " can't set OXS " + version + " new features,  **\n");
+			message.append("        **   if you need them, you can edit the config file by hand   **\n");
 			message.append("\n");
 		} else {
 			versionValid = 0;
 
-			message.append("            ** The Configurator "	+ oxsCversion + " isn't compatible with OXS " + version	+ " **\n");
+			message.append("            ** The Configurator v" + OXSC_VERSION + " isn't compatible with OXS " + version	+ " **\n");
 			message.append("\n");
-			message.append("         You may go to \"" + MainP.OXS_URL + "\" and\n");
+			message.append("                  You may go to \"" + MainP.OXS_URL + "\" and\n");
 			message.append("       download the latest version of both OXS and OXS Configurator.\n");
 		}
 	}

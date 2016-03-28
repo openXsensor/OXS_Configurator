@@ -187,6 +187,19 @@ public class MainP extends PApplet {
 		// By default all controllers are stored inside Tab 'default'
 		cp5.getWindow().setPositionOfTabs(0, 80) ;
 
+		// Check for updates
+		cp5.addButton("checkUpdate")
+		   .setCaptionLabel("Updates ?")
+		   .setPosition(10, 14)
+		   .setSize(60, 15)
+		   .setColorCaptionLabel(0x000000)
+		   .setColorBackground(topBottomGray)
+		   .setColorForeground(blueAct)
+		   .setColorActive(orangeAct)
+		   .setTab("global")
+		   ;
+		cp5.getController("checkUpdate").getCaptionLabel().toUpperCase(false);
+
 		// About
 		cp5.addButton("about")
 		   .setCaptionLabel("About")
@@ -253,6 +266,10 @@ public class MainP extends PApplet {
 		TabGeneralSettings.getProtocolDdl().setValue(1); // Set the protocol ddl value after telemetry fields creation
 		new OXSdata("----------", "----------", "noSensor");
 
+		// Checks for updates at startup
+		boolean startMBox = false;
+		Validation.checkUpdate(startMBox);
+
 	}
 
 	public void draw() {
@@ -267,11 +284,11 @@ public class MainP extends PApplet {
 		// Compatibility subtitle
 		fill(0) ;
 		textFont(fontLabel) ;
-		text("For OXS " + Validation.getOxsVersion(), 75, 65) ;
+		text("For OXS v" + Validation.getOxsVersionCompStart(), 75, 65) ;
 
 		// OXS Configurator version display
 		textFont(fontItalic) ;
-		text(Validation.getOxsCversion(), 377, 68) ;
+		text("v" + Validation.getOxsCversion(), 377, 68) ;
 
 		// Logo display
 		shapeMode(CENTER) ;
@@ -729,19 +746,16 @@ public class MainP extends PApplet {
 	public void about(boolean theFlag) {
 		StringBuilder message = new StringBuilder();
 		
-		message.append("                            OXS Configurator " + Validation.getOxsCversion() + " for OXS " + Validation.getOxsVersion() + "\n");
+		message.append("                            OXS Configurator v" + Validation.getOxsCversion() + " for OXS v" + Validation.getOxsVersionCompStart() + "\n");
 		message.append("                                                       ---\n");
 		message.append("                         -- OpenXsensor configuration file GUI --\n");
 		message.append("\n");
 		message.append("Contributors:\n");
-		message.append("- Rainer Schloßhan\n");
-		message.append("- Bertrand Songis\n");
-		message.append("- André Bernet\n");
-		message.append("- Michael Blandford\n");
-		message.append("- Michel Strens\n");
-		message.append("- David Laburthe\n                                     -----------------------------\n");
+		message.append("- Rainer Schloßhan         - Bertrand Songis          - André Bernet\n");
+		message.append("- Michael Blandford         - Michel Strens              - David Laburthe\n");
+		message.append("\n                                     -----------------------------\n\n");
 
-		Path readmePath = execPath.getParent().resolve("oXs-C_Readme.txt");
+		Path readmePath = execPath.getParent().resolve(Validation.getOxscReadmePath());
 		try (BufferedReader reader = Files.newBufferedReader(readmePath, StandardCharsets.UTF_8)) {
 			String line = null;
 			boolean changeLog = false;
@@ -757,7 +771,13 @@ public class MainP extends PApplet {
 		
 		MessageBox.infos(message);
 	}
-	
+
+	//  "Updates ?" button
+	public void checkUpdate() {
+		boolean startMBox = true;
+		Validation.checkUpdate(startMBox);
+	}
+
 	public void varioTgl(boolean theFlag) {
 		if (theFlag == true && vario == null) {
 			vario = new Vario("vario");
@@ -917,7 +937,8 @@ public class MainP extends PApplet {
 			System.out.println("mAmp / step " + mAmpStep());
 			System.out.println("Current offset " + offsetCurrent());
 		} else if (key == 'u') {
-			Validation.checkUpdate();
+			boolean startMBox = false;
+			Validation.checkUpdate(startMBox);
 		} else if (key == 'g') {
 			cp5.getGroup("serialPinDdl").setValue(4);
 //			TabGeneralSettings.getSerialPinDdl().setValue(4);

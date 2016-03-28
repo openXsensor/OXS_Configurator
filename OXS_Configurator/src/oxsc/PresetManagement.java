@@ -32,7 +32,7 @@ public class PresetManagement {
 
 	private static StringBuilder message = new StringBuilder();
 	static {  // Message Box common Header
-		message.append("                            OXS Configurator " + Validation.getOxsCversion() + " for OXS v"
+		message.append("                            OXS Configurator v" + Validation.getOxsCversion() + " for OXS v"
 				+ Validation.getOxsVersionCompStart() + "\n");
 		message.append("                                                       ---\n");
 		message.append("                         -- OpenXsensor configuration file GUI --\n\n");
@@ -64,7 +64,7 @@ public class PresetManagement {
 		try (BufferedReader buff = new BufferedReader(new FileReader(selection))) {
 			String line;
 			line = buff.readLine();
-			if (line.length() > 0 && line.contains("OXS Configurator " + Validation.getOxsCversion())) {
+			if (line.length() > 0 && line.contains("OXS Configurator v" + Validation.getOxsCversion())) {  // TODO preset: better load version test
 				if (DEBUG) {
 					System.out.println("Valid preset file");
 				}
@@ -113,7 +113,7 @@ public class PresetManagement {
 			} else {
 				message.setLength(MESSAGE_HEADER_LENGTH);
 				message.append("  - The \"" + selection.getName() + "\" preset file is not compatible with\n");
-				message.append("     OXS Configurator " + Validation.getOxsCversion() + "\n");
+				message.append("     OXS Configurator v" + Validation.getOxsCversion() + "\n");
 				MessageBox.error(message);
 
 				if (DEBUG) {
@@ -138,7 +138,7 @@ public class PresetManagement {
 	public static void presetSave(File selection) throws FileNotFoundException {  // TODO 1 preset .ocp extension
 		// System.out.println("User selected " + selection.getAbsolutePath());
 		try (PrintWriter output = new PrintWriter(selection)){
-			output.println("@ OXS Configurator " + Validation.getOxsCversion() + " preset file created the " + MainP.date);
+			output.println("@ OXS Configurator v" + Validation.getOxsCversion() + " preset file created the " + MainP.date);
 			uiUnits.stream().forEach(uiU -> {
 				output.println();
 				uiU.stream().forEach(c -> {
