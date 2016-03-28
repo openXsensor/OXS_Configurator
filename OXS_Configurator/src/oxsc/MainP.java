@@ -1040,7 +1040,11 @@ public class MainP extends PApplet {
 	public void buttonCancel(int theValue) {
 		MessageBox.close();
 	}
-		
+
+	public void funcButton(int theValue) {
+		MessageBox.funcBtnAction();
+	}
+
 	public static void main(String[] _args) {
 		PApplet.main(new String[] { oxsc.MainP.class.getName() });
 	}
