@@ -139,8 +139,6 @@ public class MainP extends PApplet {
 	public static Sensor rpm;
 	public static Sensor ppm;
 
-	public static PresetManagement presetMan;
-
 	public static MessageBox messageBox;
 	
 	public void setup() {
@@ -241,9 +239,6 @@ public class MainP extends PApplet {
 		// ------------------------------ File dialog ------------------------------
 		fileManagement = new FileManagement(cp5);
 
-		// --------------------------- Preset Management ---------------------------
-		presetMan = new PresetManagement(cp5);
-		
 		// ------------------------------ Message Box ------------------------------
 		messageBox = new MessageBox(cp5, this);
 		

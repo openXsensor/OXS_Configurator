@@ -21,20 +21,27 @@ import gui.TabData;
 
 public class PresetManagement {
 
+	private static final boolean DEBUG = false;
 	private static final String SPLIT_CHAR = " <--> ";
 
-	private static final boolean DEBUG = false;
-
+	private static List<List<Object>> uiUnits = new ArrayList<>();
 	private static ControlP5 cp5;
 
 	@SuppressWarnings("unused")
 	private static File presetDir;
-	
-	private static List<List<Object>> uiUnits = new ArrayList<>();
 
-	public PresetManagement(ControlP5 cp5) {
-		PresetManagement.cp5 = cp5;
-		addControllersList();		
+	private static StringBuilder message = new StringBuilder();
+	static {  // Message Box common Header
+		message.append("                            OXS Configurator " + Validation.getOxsCversion() + " for OXS v"
+				+ Validation.getOxsVersionCompStart() + "\n");
+		message.append("                                                       ---\n");
+		message.append("                         -- OpenXsensor configuration file GUI --\n\n");
+	}
+	private static final int MESSAGE_HEADER_LENGTH = message.length();
+
+	static {
+		PresetManagement.cp5 = MainP.cp5;
+		addControllersList();
 	}
 
 	public static void addControllersList() {
@@ -61,7 +68,7 @@ public class PresetManagement {
 				if (DEBUG) {
 					System.out.println("Valid preset file");
 				}
-				while ((line = buff.readLine()) != null) {  // TODO preset: line redefined ??
+				while ((line = buff.readLine()) != null) {
 					if (line.length() > 0 && line.charAt(0) != '@') {
 						String[] temp = line.split(SPLIT_CHAR);
 						if (DEBUG) {
@@ -92,12 +99,8 @@ public class PresetManagement {
 							String oxsDir = (temp.length > 1) ? temp[1] : "";
 							textField.setText(oxsDir);
 						}  else {
-							StringBuilder message = new StringBuilder();
-							message.append("                            OXS Configurator " + Validation.getOxsCversion() + " for OXS " + Validation.getOxsVersion() + "\n");
-							message.append("                                                       ---\n");
-							message.append("                         -- OpenXsensor configuration file GUI --\n");
-							message.append("\n");
-							message.append("  - The \"" + selection.getName() + "\" preset file is corrupted !!\n");
+							message.setLength(MESSAGE_HEADER_LENGTH);
+							message.append("  - The \"" + selection.getName() + "\" preset file is invalid !!\n");
 							MessageBox.error(message);
 							if (DEBUG) {
 								// TODO preset: parse unknown controller string
@@ -108,11 +111,7 @@ public class PresetManagement {
 					}
 				}
 			} else {
-				StringBuilder message = new StringBuilder();
-				message.append("                            OXS Configurator " + Validation.getOxsCversion() + " for OXS " + Validation.getOxsVersion() + "\n");
-				message.append("                                                       ---\n");
-				message.append("                         -- OpenXsensor configuration file GUI --\n");
-				message.append("\n");
+				message.setLength(MESSAGE_HEADER_LENGTH);
 				message.append("  - The \"" + selection.getName() + "\" preset file is not compatible with\n");
 				message.append("     OXS Configurator " + Validation.getOxsCversion() + "\n");
 				MessageBox.error(message);
@@ -121,14 +120,11 @@ public class PresetManagement {
 					System.out.println("Invalid preset file");
 				}
 			}
+			// Go to General Setting Tab after loading preset
 			TabGeneralSettings.getGenTab().bringToFront();
 		} catch (FileNotFoundException f) {
-			StringBuilder message = new StringBuilder();
-			message.append("                            OXS Configurator " + Validation.getOxsCversion() + " for OXS " + Validation.getOxsVersion() + "\n");
-			message.append("                                                       ---\n");
-			message.append("                         -- OpenXsensor configuration file GUI --\n");
-			message.append("\n");
-			message.append("\n    Preset file: \"" + selection.getName()  + "\" not found !\n");
+			message.setLength(MESSAGE_HEADER_LENGTH);
+			message.append("    Preset file: \"" + selection.getName()  + "\" not found !\n");
 			MessageBox.error(message);
 
 			if (DEBUG) {
