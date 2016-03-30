@@ -157,7 +157,7 @@ public class TabData {
 	}
 	
 	public static void setTargetDataFieldItem(int i, String displayName) {
-		for (int j = 1; j < Protocol.getDataList().length; j++ ) {
+		for (int j = 1; j < Protocol.getTargetDataList().length; j++ ) {
 			// TODO second remove ??
 		}
 	}
@@ -213,8 +213,8 @@ public class TabData {
 	public static void populateTargetDataFields() {
 		for (int i = 1; i <= FIELD_NBR; i++) {
 			targetDataField[i].clear();
-			for (int j = 0; j < Protocol.getDataList().length; j++)
-				targetDataField[i].addItem(Protocol.getDataList()[j][1], j); 
+			for (int j = 0; j < Protocol.getTargetDataList().length; j++)
+				targetDataField[i].addItem(Protocol.getTargetDataList()[j][1], j); 
 		}
 	}
 

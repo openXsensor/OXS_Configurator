@@ -3,11 +3,12 @@ package oxsc;
 import gui.TabData;
 import gui.TabVoltage;
 
-public class Protocol {
+public abstract class Protocol {
 	
 	private static final boolean DEBUG = false;
 
 	private String name;
+	private String[][] dataList;
 	
 	private static String[][] targetDataList;
 	
@@ -66,15 +67,15 @@ public class Protocol {
 			{ "15", "15" }
 	};
 
-	public static Protocol createProtocol(String name) {
-		if (MainP.protocol == null || !MainP.protocol.getName().equals(name)) {
-			Protocol tempProt = new Protocol(name);
-			return tempProt;
-		}
-		return MainP.protocol;
-	}
+//	public static Protocol createProtocol(String name) {
+//		if (MainP.protocol == null || !MainP.protocol.getName().equals(name)) {
+//			Protocol tempProt = new Protocol(name);
+//			return tempProt;
+//		}
+//		return MainP.protocol;
+//	}
 
-	private Protocol(String name) {
+	public Protocol(String name) {
 
 		this.name = name;
 
@@ -99,7 +100,15 @@ public class Protocol {
 
 	// public int getTargetDataListLength() { return targetDataList.length ; }
 	
-	public static String[][] getDataList() {
+	public String[][] getDataList() {
+		return dataList;
+	}
+
+	public void setDataList(String[][] dataList) {
+		this.dataList = dataList;
+	}
+
+	public static String[][] getTargetDataList() {
 		return targetDataList;
 	}
 
