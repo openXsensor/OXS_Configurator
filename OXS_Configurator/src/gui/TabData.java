@@ -2,7 +2,6 @@ package gui;
 
 import oxsc.MainP;
 import oxsc.OXSdata;
-import oxsc.Protocol;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -157,7 +156,7 @@ public class TabData {
 	}
 	
 	public static void setTargetDataFieldItem(int i, String displayName) {
-		for (int j = 1; j < Protocol.getTargetDataList().length; j++ ) {
+		for (int j = 1; j < MainP.protocol.getDataList().length; j++ ) {
 			// TODO second remove ??
 		}
 	}
@@ -213,9 +212,14 @@ public class TabData {
 	public static void populateTargetDataFields() {
 		for (int i = 1; i <= FIELD_NBR; i++) {
 			targetDataField[i].clear();
-			for (int j = 0; j < Protocol.getTargetDataList().length; j++)
-				targetDataField[i].addItem(Protocol.getTargetDataList()[j][1], j); 
+			for (int j = 0; j < MainP.protocol.getDataList().length; j++)
+				targetDataField[i].addItem(MainP.protocol.getDataList()[j][1], j); 
 		}
+		
+//		for (DropdownList ddl : targetDataField) {
+//			ddl.clear();
+//			ddl.addItems(MainP.protocol.getDataList()[1]);
+//		}
 	}
 
 	public static void resetTargetDataFields() {

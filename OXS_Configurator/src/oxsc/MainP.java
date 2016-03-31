@@ -134,7 +134,7 @@ public class MainP extends PApplet {
 	public static Sensor vario;
 	public static Sensor vario2;
 	public static Sensor airSpeed;
-	public static Sensor[] aVolt = new Sensor[TabVoltage.getVoltnbr() + 1];
+	public static Sensor[] aVolt = new Volt[TabVoltage.getVoltnbr() + 1];
 	public static Sensor current;
 	public static Sensor rpm;
 	public static Sensor ppm;
@@ -263,7 +263,10 @@ public class MainP extends PApplet {
 		cp5.getTooltip().getLabel().toUpperCase(false);
 
 		
-		TabGeneralSettings.getProtocolDdl().setValue(1); // Set the protocol ddl value after telemetry fields creation
+		Protocol.createProtocols();
+		// Set the protocol ddl value after telemetry fields creation
+		TabGeneralSettings.getProtocolDdl().setValue(0);
+		
 		new OXSdata("----------", "----------", "noSensor");
 
 		// Checks for updates at startup
@@ -475,7 +478,7 @@ public class MainP extends PApplet {
 
 		// Protocol selection - Showing right Telemetry data list in fields
 		if (theEvent.isFrom(TabGeneralSettings.getProtocolDdl())) {
-			protocol = Protocol.createProtocol(theEvent.getGroup().getCaptionLabel().getText());
+			protocol = Protocol.getProtocol(theEvent.getGroup().getCaptionLabel().getText());
 
 			// TODO z better: updating OXSdata according to the protocol
 			for (Sensor sensor : Sensor.getSensorList()) {
@@ -484,6 +487,8 @@ public class MainP extends PApplet {
 			}
 			TabData.resetSentDataFields();
 			TabData.populateSentDataFields();
+			TabData.populateTargetDataFields();
+			TabData.resetTargetDataFields();
 		}
 
 		// Selecting DEFAULT automatically in Telemetry data fields

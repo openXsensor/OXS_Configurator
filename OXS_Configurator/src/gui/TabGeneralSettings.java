@@ -94,14 +94,12 @@ public class TabGeneralSettings {
 		cp5.addTextlabel("protocol")
 		   .setText("Protocol                                   ")
 		   .setPosition(10, 172)
-		   .setColorValueLabel(0).setTab("default");
-		// protocol.captionLabel().toUpperCase(false) ;
+		   .setColorValueLabel(0)
+		   .setTab("default");
 		cp5.getTooltip().register("protocol", "Choose protocol");
 
 		protocolDdl = cp5.addDropdownList("protocolDdl").setPosition(100, 191).setSize(105, 300);
 		protocolDdl.getCaptionLabel().set("Choose");
-		protocolDdl.addItem("FrSky", 1);
-		protocolDdl.addItem("Multiplex", 2);
 		customizeDdl(protocolDdl);
 
 		// Sensor ID choice
@@ -359,6 +357,10 @@ public class TabGeneralSettings {
 		}
 	}
 
+	public static void populateProtocolDdl(String[] protocolsNameList) {
+		protocolDdl.addItems(protocolsNameList);		
+	}
+
 	public static String writeRefVolt() {
 		StringBuilder conf = new StringBuilder();
 		if (voltRefChoiceDdl.getCaptionLabel().getText().equals("  Arduino VCC")) {
@@ -459,4 +461,5 @@ public class TabGeneralSettings {
 	public static List<Object> getControllers() {
 		return controllers;
 	}
+
 }

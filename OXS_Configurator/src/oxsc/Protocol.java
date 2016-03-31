@@ -1,17 +1,20 @@
 package oxsc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gui.TabData;
-import gui.TabVoltage;
+import gui.TabGeneralSettings;
 
 public abstract class Protocol {
-	
-	private static final boolean DEBUG = false;
+
+	private static final boolean DEBUG = true;
+
+	private static List<Protocol> protocolList = new ArrayList<>();
 
 	private String name;
 	private String[][] dataList;
-	
-	private static String[][] targetDataList;
-	
+
 	// ------------------------- HUB protocol data list array --------------------------
 		/*private static String hubDataList[][] = new String[][] {
 			{ "----------", "----------" },
@@ -28,78 +31,39 @@ public abstract class Protocol {
 			{ "AccZ", "Acceleration Z" }             // FRSKY_USERDATA_ACC_Z
 		} ;*/
 
-	// -------------------- SMART PORT protocol data list array --------------------
-	private static String[][] frSkyDataList = new String[][] {
-			{ "----------", "----------" },
-			{ "DEFAULTFIELD", "DEFAULT" },          // 1
-			{ "Alt", "Altitude" },                  // 2  ALT_FIRST_ID
-			{ "VSpd", "Vertical Speed" },           // 3  VARIO_FIRST_ID
-			{ "Curr", "Current" },                  // 4  CURR_FIRST_ID
-			{ "Vfas", "Vfas" },                     // 5  VFAS_FIRST_ID
-			{ "T1", "Temperature 1" },              // 6  T1_FIRST_ID
-			{ "T2", "Temperature 2" },              // 7  T2_FIRST_ID
-			{ "Rpm", "RPM" },                       // 8  RPM_FIRST_ID
-			{ "Fuel", "Fuel" },                     // 9  FUEL_FIRST_ID
-			{ "AccX", "Acceleration X" },           // 10 ACCX_FIRST_ID
-			{ "AccY", "Acceleration Y" },           // 11 ACCY_FIRST_ID
-			{ "AccZ", "Acceleration Z" },           // 12 ACCZ_FIRST_ID
-			{ "A3", "A3 (S.Port only)" },           // 13 A3_FIRST_ID
-			{ "A4", "A4 (S.Port only)" },           // 14 A4_FIRST_ID
-			{ "ASpd", "Air Speed (S.Port only)" }   // 15 AIR_SPEED_FIRST_ID
-	};
-
-	// -------------------- Multiplex protocol data list array --------------------
-	private static String[][] multiplexDataList = new String[][] {
-			{ "----------", "----------" },
-			{ "2", "2" },
-			{ "3", "3" },
-			{ "4", "4" },
-			{ "5", "5" },
-			{ "6", "6" },
-			{ "7", "7" },
-			{ "8", "8" },
-			{ "9", "9" },
-			{ "10", "10" },
-			{ "11", "11" },
-			{ "12", "12" },
-			{ "13", "13" },
-			{ "14", "14" },
-			{ "15", "15" }
-	};
-
-//	public static Protocol createProtocol(String name) {
-//		if (MainP.protocol == null || !MainP.protocol.getName().equals(name)) {
-//			Protocol tempProt = new Protocol(name);
-//			return tempProt;
-//		}
-//		return MainP.protocol;
-//	}
-
 	public Protocol(String name) {
 
 		this.name = name;
-
-		if (this.name.equals("FrSky")) {
-			targetDataList = frSkyDataList.clone();
-			TabVoltage.getCellsTgl().setValue(0);  // TODO protocol cells: convert between protocol
-		} else if (this.name.equals("Multiplex")) {
-			targetDataList = multiplexDataList.clone();
-			TabVoltage.getCellsTgl().setValue(0);
-		}
 
 		if (DEBUG) {
 			System.out.println();
 			System.out.println("Création d'un protocole " + this.getName() + ":");
 		}
-		updateUItargetDataList();
 	}
-	  
+
+	public static void createProtocols() {
+		protocolList.add(new ProtFrSky("FrSky"));
+		protocolList.add(new ProtMultiplex("Multiplex"));
+
+		TabGeneralSettings.populateProtocolDdl(protocolList.stream().map(Protocol::getName).toArray(String[]::new));
+	}
+
+	public static Protocol getProtocol(String name) {
+		for (Protocol p : protocolList) {
+			if (name.equals(p.getName())) {
+				p.doExtraThings();
+				return p;
+			}
+		}
+		return null;
+	}
+
+	abstract void doExtraThings();
+
 	public String getName() {
 		return name;
 	}
 
-	// public int getTargetDataListLength() { return targetDataList.length ; }
-	
 	public String[][] getDataList() {
 		return dataList;
 	}
@@ -108,25 +72,21 @@ public abstract class Protocol {
 		this.dataList = dataList;
 	}
 
-	public static String[][] getTargetDataList() {
-		return targetDataList;
-	}
-
-	public static String getDataCode(String dataName) {
-		for (int i = 0; i < targetDataList.length; i++) {
-			if (targetDataList[i][1].equals(dataName)) {
-				return targetDataList[i][0];
+	public String getDataCode(String dataName) {
+		for (String[] s : dataList) {
+			if (s[1].equals(dataName)) {
+				return s[0];
 			}
 		}
 		return null;
 	}
 
 	public static void updateUItargetDataList() { // TODO later
-		for (int i = 0; i < targetDataList.length; i++) {
-			if (DEBUG) {
-				System.out.print(targetDataList[i][0] + " - ");
-			}
-		}
+//		for (int i = 0; i < targetDataList.length; i++) {
+//			if (DEBUG) {
+//				System.out.print(targetDataList[i][0] + " - ");
+//			}
+//		}
 
 		if (DEBUG) {
 			System.out.println();

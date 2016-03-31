@@ -291,7 +291,7 @@ public class WriteConf {
 					}
 				} else {
 					output.print("                        "	
-							+ Protocol.getDataCode(TabData.getTargetDataField(i).getCaptionLabel().getText()) + " , "
+							+ MainP.protocol.getDataCode(TabData.getTargetDataField(i).getCaptionLabel().getText()) + " , "
 							+ OXSdata.getName(TabData.getSentDataField(i).getCaptionLabel().getText()) + " , "
 							+ TabData.getDataMultiplierNBox()[i].getValueLabel().getText() + " , "
 							+ TabData.getDataDividerNBox()[i].getValueLabel().getText()	+ " , "
