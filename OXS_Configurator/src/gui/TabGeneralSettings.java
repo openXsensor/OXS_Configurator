@@ -259,6 +259,16 @@ public class TabGeneralSettings {
 		    serialPinDdl.bringToFront() ;
 	}
 
+	public static String writeRefVolt() {
+		StringBuilder conf = new StringBuilder();
+		if (voltRefChoiceDdl.getCaptionLabel().getText().equals("  Arduino VCC")) {
+			conf.append("#define REFERENCE_VOLTAGE " + (int) (arduinoVccNBox.getValue() * 100) + "0\n");
+		} else {
+			conf.append("#define USE_INTERNAL_REFERENCE\n");
+		}
+		return conf.toString();
+	}
+
 	public static Tab getGenTab() {
 		return genTab;
 	}

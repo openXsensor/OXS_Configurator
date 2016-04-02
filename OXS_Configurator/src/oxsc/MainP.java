@@ -962,7 +962,7 @@ public class MainP extends PApplet {
 		float voltageDiv = TabVoltage.getDividerVoltNBox()[NbrVolt].getValue();
 		float arduinoVcc = TabGeneralSettings.getArduinoVccNBox().getValue();
 
-		if (TabGeneralSettings.getVoltRefChoiceDdl().getValue() == 1) {
+		if (TabGeneralSettings.getVoltRefChoiceDdl().getCaptionLabel().getText().equals("  Arduino VCC")) {
 			mVoltStep = (arduinoVcc * 1000.0f / 1024.0f) * voltageDiv;
 		} else {
 			mVoltStep = (1.1f * 1000.0f / 1024.0f) * voltageDiv;
@@ -980,7 +980,7 @@ public class MainP extends PApplet {
 		float currentOutSens = TabCurrent.getCurrentOutSensNBox().getValue();
 
 		mAmpPmV = (currentOutSens == 0) ? 0 : 1000.0f / currentOutSens;
-		if (TabGeneralSettings.getVoltRefChoiceDdl().getValue() == 1) {
+		if (TabGeneralSettings.getVoltRefChoiceDdl().getCaptionLabel().getText().equals("  Arduino VCC")) {
 			mAmpStep = (arduinoVcc * 1000.0f / 1024.0f) * mAmpPmV * currentDiv;
 		} else {
 			mAmpStep = (1.1f * 1000.0f / 1024.0f) * mAmpPmV;

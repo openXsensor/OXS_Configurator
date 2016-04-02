@@ -143,11 +143,8 @@ public class WriteConf {
 			output.println("// --------- 6 - Voltages & Current sensor settings ---------");
 			output.println("");
 			output.println("// ***** 6.1 - Voltage Reference selection (VCC or 1.1V internal) *****");
-			if (TabGeneralSettings.getVoltRefChoiceDdl().getValue() == 1) {  // TODO z test string instead ?
-				output.print("//");
-			}
-			output.println("#define USE_INTERNAL_REFERENCE    // Select the voltage reference, comment the line to activate the VCC voltage reference");
-			output.println("");
+			output.println(TabGeneralSettings.writeRefVolt());
+
 			output.println("// ***** 6.2 - Voltages analog pins *****");
 			for (int i = 1; i <= TabVoltage.getVoltnbr(); i++) {
 				if (TabGeneralSettings.getVoltageTgl().getValue() == 1 && TabVoltage.getVoltTgl()[i].getValue() == 1 && (int)TabVoltage.getDdlVolt()[i].getValue() >= 0) {
