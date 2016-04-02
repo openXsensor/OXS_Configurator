@@ -399,23 +399,23 @@ public class TabVario {
 	}
 
 	public static void draw(MainP mainP) {
-		mainP.stroke(MainP.blueAct) ;     // blue border
-		mainP.strokeWeight(3) ;
-		mainP.noFill() ;
-		mainP.rect(4, 106, 442, 162) ;
-		mainP.line(4, 142, 446, 142) ;
-		mainP.strokeWeight(1) ;
-		mainP.noStroke() ;
-	
-		TabPPM.drawPPMzone(mainP) ;
-	
+		mainP.stroke(MainP.blueAct); // blue border
+		mainP.strokeWeight(3);
+		mainP.noFill();
+		mainP.rect(4, 106, 442, 162);
+		mainP.line(4, 142, 446, 142);
+		mainP.strokeWeight(1);
+		mainP.noStroke();
+
+		TabPPM.drawPPMzone(mainP);
+
 		// separation lines
-		mainP.stroke(MainP.darkBackGray) ;
-		mainP.line(10, 205, 440, 205) ;
-		mainP.line(10, 331, 440, 331) ;
-		mainP.line(10, 363, 440, 363) ;
-		mainP.noStroke() ;
-	
+		mainP.stroke(MainP.darkBackGray);
+		mainP.line(10, 205, 440, 205);
+		mainP.line(10, 331, 440, 331);
+		mainP.line(10, 363, 440, 363);
+		mainP.noStroke();
+
 		if ( TabPPM.getPpmTgl().getValue() == 0.0 ) {
 			cp5.getController("ppmRngSensL").setColorValueLabel(MainP.grayedColor) ;
 			ppmRngSensMinMaxRng.lock()

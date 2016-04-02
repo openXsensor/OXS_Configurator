@@ -768,7 +768,7 @@ public class MainP extends PApplet {
 		} catch (IOException x) {
 			System.err.format("IOException: %s%n", x);
 		}
-		
+
 		MessageBox.infos(message);
 	}
 
