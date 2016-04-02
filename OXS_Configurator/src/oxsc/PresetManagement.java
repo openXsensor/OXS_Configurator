@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import controlP5.ControlP5;
 import gui.TabGeneralSettings;
@@ -21,7 +22,7 @@ import gui.TabData;
 
 public class PresetManagement {
 
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 	private static final String SPLIT_CHAR = " <--> ";
 
 	private static List<List<Object>> uiUnits = new ArrayList<>();
@@ -77,8 +78,18 @@ public class PresetManagement {
 						if (cp5.getGroup(temp[0]) instanceof controlP5.DropdownList) {
 							controlP5.DropdownList dropDownList = (controlP5.DropdownList) cp5.getGroup(temp[0]);
 							for (String[] stringArray : dropDownList.getListBoxItems()) {
-								if (stringArray[1].equals(temp[1])) {
+								if (DEBUG) {
+									System.out.println("Ddl items: " + Stream.of(stringArray).reduce("", (acc, item) -> acc + " - " + item));
+								}
+								if (stringArray[1].equals(temp[1])) {                                 // TODO 1 preset: if ddl item not found ???
 									dropDownList.setValue(Float.parseFloat(stringArray[2]));
+									if (DEBUG) {
+										System.out.println("Item found!");
+									}
+									break;
+								}
+								if (DEBUG) {
+									System.out.println("Item not found!");
 								}
 							}
 						} else if (cp5.getController(temp[0]) instanceof controlP5.Toggle) {

@@ -451,13 +451,13 @@ public class Validation {
 		} else if (version > OXS_VERSION_COMP_START && version <= OXS_VERSION_COMP_END) {
 			versionValid = 1;
 
-			message.append("        **  The Configurator v" + OXSC_VERSION + " can't set OXS " + version + " new features,  **\n");
+			message.append("        **  The Configurator v" + OXSC_VERSION + " can't set OXS v" + version + " new features,  **\n");
 			message.append("        **   if you need them, you can edit the config file by hand   **\n");
 			message.append("\n");
 		} else {
 			versionValid = 0;
 
-			message.append("            ** The Configurator v" + OXSC_VERSION + " isn't compatible with OXS " + version	+ " **\n");
+			message.append("            ** The Configurator v" + OXSC_VERSION + " isn't compatible with OXS v" + version	+ " **\n");
 			message.append("\n");
 			message.append("                  You may go to \"" + MainP.OXS_URL + "\" and\n");
 			message.append("       download the latest version of both OXS and OXS Configurator.\n");

@@ -60,9 +60,10 @@ public class MainP extends PApplet {
 	 * ??
 	 */
 	private static final long serialVersionUID = 1L;
+	private static final boolean DEBUG = true;
 
 	public static final boolean TEMP_ACTIVE = false; // Defines temperature sensor availability
-	
+
 	public static final String OXS_URL = "http://openxsensor.github.io";
 
 	public static String day = (day() < 10) ? "0" + day() : "" + day();
@@ -269,9 +270,11 @@ public class MainP extends PApplet {
 		
 		new OXSdata("----------", "----------", "noSensor");
 
-		// Checks for updates at startup
-		boolean startMBox = false;
-		Validation.checkUpdate(startMBox);
+		if (!DEBUG) {
+			// Checks for updates at startup
+			boolean startMBox = false;
+			Validation.checkUpdate(startMBox);
+		}
 
 	}
 
