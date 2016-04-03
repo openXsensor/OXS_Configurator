@@ -1,11 +1,13 @@
 package oxsc;
 
-public class ProtFrSky extends Protocol {
+import gui.TabGeneralSettings;
 
-	public ProtFrSky(String name) {
+public class ProtFrSkyAuto extends Protocol {
+
+	public ProtFrSkyAuto(String name) {
 		super(name);
 
-		// ----------- SMART PORT protocol data list array -----------
+		// ----------- AUTO (SMART PORT) protocol data list array -----------
 		setDataList(new String[][] {
 			{ "----------", "----------" },
 			{ "DEFAULTFIELD", "DEFAULT" },        // 1
@@ -27,7 +29,23 @@ public class ProtFrSky extends Protocol {
 	}
 
 	@Override
-	void doExtraThings() {
-		// Nothing now		
+	public	void doExtraThings() {
+		// Nothing now
+	}
+
+	@Override
+	public String writeType() {
+		StringBuilder conf = new StringBuilder();
+		conf.append("// ***** 1.2 - FrSky device ID (required when Sport protocol is used)  *****\n");
+		conf.append("#define SENSOR_ID    " + TabGeneralSettings.getSensorIDDdl().getCaptionLabel().getText() + "\n");
+		return conf.toString();
+	}
+
+	@Override
+	public String writeData() {
+		StringBuilder conf = new StringBuilder();
+		conf.append("// ***** 9.1 - FrSky data *****\n");
+		conf.append("#define SETUP_FRSKY_DATA_TO_SEND    \\");
+		return conf.toString();
 	}
 }

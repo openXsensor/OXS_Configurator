@@ -45,16 +45,7 @@ public class WriteConf {
 	        // ---------------------------------- Protocol --------------------------------------
 	        
 	        output.println("// --------- 1 - General protocol ---------");
-	        output.println("// ***** 1.1 - Multiplex protocol (if line commented oXs assumes it is Frsky protocol) *****");
-	        if (MainP.protocol.getName().equals("Multiplex")) {
-	        	output.println("#define MULTIPLEX");
-	        } else {
-	        	output.println("//#define MULTIPLEX");
-	        }
-	        output.println("");
-	        output.println("// ***** 1.2 - FrSky device ID (required when Sport protocol is used)  *****");
-			output.println("#define SENSOR_ID    " + TabGeneralSettings.getSensorIDDdl().getCaptionLabel().getText());
-			output.println("");
+	        output.println(MainP.protocol.writeType());
 
 			// ---------------------------------- Serial pin --------------------------------------
 
@@ -104,7 +95,7 @@ public class WriteConf {
 			output.println("#define SENSITIVITY_MIN_AT_PPM    " + (int)TabVario.getPpmRngSensMinMaxRng().getArrayValue(0) + "   // sensitivity will be changed by OXS only when PPM signal is between the specified range enlarged by -5/+5");
 			output.println("#define SENSITIVITY_MAX_AT_PPM    " + (int)TabVario.getPpmRngSensMinMaxRng().getArrayValue(1));
 			output.println("#define SENSITIVITY_PPM_MIN       " + (int)TabVario.getSensMinMaxRng().getArrayValue(0) + "   // common value for vario is 20");
-			output.println("#define SENSITIVITY_PPM_MAX       " + (int)TabVario.getSensMinMaxRng().getArrayValue(1) + "  // common value for vario is 100");
+			output.println("#define SENSITIVITY_PPM_MAX       " + (int)TabVario.getSensMinMaxRng().getArrayValue(1) + "   // common value for vario is 100");
 			output.println("");
 			output.println("// ***** 4.4 - Hysteresis parameter *****");
 			output.println("#define VARIOHYSTERESIS    " + (int)TabVario.getVarioHysteresisSld().getValue());
@@ -263,15 +254,9 @@ public class WriteConf {
 
 	}
 
-	private static void writeDataToSend() {  // TODO z oxs data protocol check
+	private static void writeDataToSend() {  // TODO WriteConf oxs data protocol check
 		boolean dataFirst = true;
-		if (MainP.protocol.getName().equals("Multiplex")) {
-			output.println("// ***** 9.2 - Multiplex data *****");
-			output.println("#define SETUP_MULTIPLEX_DATA_TO_SEND    \\");
-		} else {
-			output.println("// ***** 9.1 - FrSky data *****");
-			output.println("#define SETUP_FRSKY_DATA_TO_SEND    \\");
-		}
+		output.println(MainP.protocol.writeData());
 		for (int i = 1; i <= TabData.getFieldNbr(); i++) {
 			String sentDataFieldName;
 			sentDataFieldName = TabData.getSentDataField(i).getCaptionLabel().getText();
@@ -296,7 +281,7 @@ public class WriteConf {
 							+ TabData.getDataMultiplierNBox()[i].getValueLabel().getText() + " , "
 							+ TabData.getDataDividerNBox()[i].getValueLabel().getText()	+ " , "
 							+ TabData.getDataOffsetNBox()[i].getValueLabel().getText());
-					if (MainP.protocol.getName().equals("Multiplex")) {
+					if (MainP.protocol instanceof ProtMultiplex) {
 						output.print(", -16384 , 16383");
 					}
 					dataFirst = false;

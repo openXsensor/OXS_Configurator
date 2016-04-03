@@ -28,7 +28,23 @@ public class ProtMultiplex extends Protocol {
 	}
 
 	@Override
-	void doExtraThings() {
+	public	void doExtraThings() {
 		TabVoltage.getCellsTgl().setValue(0);
+	}
+
+	@Override
+	public String writeType() {
+		StringBuilder conf = new StringBuilder();
+		conf.append("// ***** 1.1 - Multiplex protocol (if line commented oXs assumes it is Frsky protocol) *****\n");
+		conf.append("#define MULTIPLEX\n");
+		return conf.toString();
+	}
+
+	@Override
+	public String writeData() {
+		StringBuilder conf = new StringBuilder();
+		conf.append("// ***** 9.2 - Multiplex data *****\n");
+		conf.append("#define SETUP_MULTIPLEX_DATA_TO_SEND    \\");
+		return conf.toString();
 	}
 }

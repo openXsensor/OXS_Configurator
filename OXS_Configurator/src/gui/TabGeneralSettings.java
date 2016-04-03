@@ -1,6 +1,8 @@
 package gui;
 
 import oxsc.MainP;
+import oxsc.ProtFrSkyHub;
+import oxsc.ProtMultiplex;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -214,7 +216,7 @@ public class TabGeneralSettings {
 		mainP.smooth();
 
 		// Sensor ID graying
-		if (protocolDdl.getCaptionLabel().getText().equals("Multiplex")) {
+		if (MainP.protocol instanceof ProtMultiplex || MainP.protocol instanceof ProtFrSkyHub) {
 			sensorIDTextlabel.setColorValueLabel(MainP.grayedColor);
 			sensorIDDdl.hide();
 			mainP.fill(MainP.grayedColor);

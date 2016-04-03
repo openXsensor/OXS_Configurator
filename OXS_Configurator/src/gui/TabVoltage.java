@@ -1,6 +1,7 @@
 package gui;
 
 import oxsc.MainP;
+import oxsc.ProtMultiplex;
 import processing.core.PConstants;
 
 import java.util.ArrayList;
@@ -256,7 +257,7 @@ public class TabVoltage {
 		}
 
 		// Battery cells monitoring grayed
-		if (!voltTgl[1].getState() /*|| MainP.protocol.getName().equals("Multiplex")*/) {
+		if (!voltTgl[1].getState() || MainP.protocol instanceof ProtMultiplex) {
 			mainP.stroke(MainP.grayedColor) ;                    // toggle border gray
 			mainP.noFill() ;
 			mainP.rect(10, 293, 155, 20) ;

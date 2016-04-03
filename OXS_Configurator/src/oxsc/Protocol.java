@@ -15,34 +15,19 @@ public abstract class Protocol {
 	private String name;
 	private String[][] dataList;
 
-	// ------------------------- HUB protocol data list array --------------------------
-		/*private static String hubDataList[][] = new String[][] {
-			{ "----------", "----------" },
-			{ "DEFAULTFIELD", "DEFAULT" },
-			{ "Vspd", "Vertical Speed" },            // FRSKY_USERDATA_VERT_SPEED
-			{ "Curr", "Current" },                   // FRSKY_USERDATA_CURRENT
-			{ "Vfas", "Vfas" },                      // FRSKY_USERDATA_VFAS_NEW
-			{ "T1", "Temperature 1" },               // FRSKY_USERDATA_TEMP1
-			{ "T2", "Temperature 2" },               // FRSKY_USERDATA_TEMP2
-			{ "Rpm", "RPM" },                        // FRSKY_USERDATA_RPM
-			{ "Fuel", "Fuel" },                      // FRSKY_USERDATA_FUEL
-			{ "AccX", "Acceleration X" },            // FRSKY_USERDATA_ACC_X
-			{ "AccY", "Acceleration Y" },            // FRSKY_USERDATA_ACC_Y
-			{ "AccZ", "Acceleration Z" }             // FRSKY_USERDATA_ACC_Z
-		} ;*/
-
 	public Protocol(String name) {
 
 		this.name = name;
 
 		if (DEBUG) {
-			System.out.println();
 			System.out.println("Création d'un protocole " + this.getName() + ":");
 		}
 	}
 
 	public static void createProtocols() {
-		protocolList.add(new ProtFrSky("FrSky"));
+		protocolList.add(new ProtFrSkyAuto("FrSky Auto"));
+		protocolList.add(new ProtFrSkySPort("FrSky S.Port"));
+		protocolList.add(new ProtFrSkyHub("FrSky Hub"));
 		protocolList.add(new ProtMultiplex("Multiplex"));
 
 		TabGeneralSettings.populateProtocolDdl(protocolList.stream().map(Protocol::getName).toArray(String[]::new));
@@ -58,7 +43,11 @@ public abstract class Protocol {
 		return null;
 	}
 
-	abstract void doExtraThings();
+	public abstract void doExtraThings();
+
+	public abstract String writeType();
+
+	public abstract String writeData();
 
 	public String getName() {
 		return name;

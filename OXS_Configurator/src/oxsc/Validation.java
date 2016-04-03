@@ -321,7 +321,7 @@ public class Validation {
 					sentDataValid = false;
 					message.append("- The " + sentDataFieldName + " measure is not sent !\n");
 				// if FrSky protocol
-				} else if (MainP.protocol.getName().equals("FrSky")) {
+				} else if (MainP.protocol.getName().equals("FrSky")) {  // TODO 1 1 frsky protocol
 				// OXS measurement must be default
                 if ((sentDataFieldName.equals("Cells monitoring") || sentDataFieldName.equals("RPM"))
 							&& !targetDataFieldName.equals("DEFAULT")) {

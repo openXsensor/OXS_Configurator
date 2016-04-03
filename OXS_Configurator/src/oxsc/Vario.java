@@ -26,7 +26,7 @@ public class Vario extends Sensor {
 			new OXSdata("SENSITIVITY", "Vario sensitivity", varioName);
 			new OXSdata("PPM_VSPEED", "PPM V.Speed", varioName, "Vertical Speed");
 			
-			if (MainP.protocol.getName().equals("Multiplex")) {
+			if (MainP.protocol instanceof ProtMultiplex) {
 				new OXSdata("REL_ALTIMETER", "Relative Altitude", varioName);
 				new OXSdata("ALTIMETER_MAX", "Max Relative Altitude", varioName);
 			}
@@ -46,7 +46,7 @@ public class Vario extends Sensor {
 			new OXSdata("ALT_OVER_10_SEC_" + varioName.substring(5),
 					"Alt. over 10 seconds " + varioName.substring(5), varioName);
 
-			if (MainP.protocol.getName().equals("Multiplex")) {
+			if (MainP.protocol instanceof ProtMultiplex) {
 				new OXSdata("REL_ALTIMETER_" + varioName.substring(5),
 						"Relative Altitude " + varioName.substring(5), varioName);
 			}
