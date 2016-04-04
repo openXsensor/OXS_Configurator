@@ -143,7 +143,7 @@ public class MainP extends PApplet {
 	
 	public void setup() {
 		
-		size(450, 460) ;
+		size(450, 500) ;
 		noStroke() ;
 
 		cp5 = new ControlP5(this);
@@ -277,7 +277,7 @@ public class MainP extends PApplet {
 		background(topBottomGray) ;
 		// Main screen background
 		fill(tabGray) ;
-		rect(0, 100, width, 300) ;
+		rect(0, 100, width, 340) ;
 		fill(darkBackGray) ;
 		rect(0, 97, width, 3) ;
 
@@ -347,12 +347,12 @@ public class MainP extends PApplet {
 		// Load and Save preset buttons deco
 		if ( FileManagement.getLoadPresetBtn().isVisible() ) {
 			fill(blueAct) ;
-			rect(19, 418, 102, 27) ;
+			rect(19, 458, 102, 27) ;
 		}
 
 		if ( FileManagement.getSavePresetBtn().isVisible() ) {
 			fill(orangeAct) ;
-			rect(139, 418, 102, 27) ;
+			rect(139, 458, 102, 27) ;
 		}
 
 		// ----------------- Texfield and Numberbox mouse-over -----------------
@@ -969,7 +969,7 @@ public class MainP extends PApplet {
 		}
 		return mVoltStep;
 	}
-	
+
 	// Current sensor milliAmp per ADC step calculation
 	public static float mAmpStep() {
 
@@ -1005,7 +1005,7 @@ public class MainP extends PApplet {
 
 		return offsetCurrent;
 	}
-		
+
 	// Customize functions
 	public static void customizeToggle(Controller<Toggle> tgl) {
 		tgl.setColorForeground(orangeAct)

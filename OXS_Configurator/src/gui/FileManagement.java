@@ -16,7 +16,7 @@ public class FileManagement {
 		loadPresetBtn = cp5.addButton("loadButton")
 		                   .setColorForeground(MainP.blueAct)
 		                   .setCaptionLabel("Load Preset")
-		                   .setPosition(20, 419)
+		                   .setPosition(20, 459)
 		                   .setSize(100, 25)
 		                   .setTab("global")
 		                   ;
@@ -29,7 +29,7 @@ public class FileManagement {
 		                   .setColorForeground(MainP.orangeAct)
 		                   .setColorActive(MainP.blueAct)
 		                   .setCaptionLabel("Save Preset")
-		                   .setPosition(140, 419)
+		                   .setPosition(140, 459)
 		                   .setSize(100, 25)
 		                   .setTab("global")
 		                   ;
@@ -43,7 +43,7 @@ public class FileManagement {
 		                  .setColorForeground(MainP.orangeAct)
 		                  .setColorActive(MainP.blueAct)
 		                  .setCaptionLabel("Write Config")
-		                  .setPosition(300, 416)
+		                  .setPosition(300, 456)
 		                  .setSize(120, 30)
 		                  .setTab("data")
 		                  ;

@@ -81,6 +81,9 @@ public class WriteConf {
 			output.println("// ***** 4.1 - Connecting 1 or 2 MS5611 barometric sensor *****");
 			if ( TabGeneralSettings.getVarioTgl().getValue() == 1 ) {
 				output.println("#define VARIO                   // set as comment if there is no vario");
+				if (TabVario.getVarioType().equals("BMP180 / 085")) {
+					output.println("#define SENSOR_IS_BMP180");
+				}
 				if ( TabGeneralSettings.getVario2Tgl().getValue() == 1 ) {
 					output.println("#define VARIO2                  // set as comment if there is no second vario");
 				} else {

@@ -15,7 +15,7 @@ public class TabData {
 
 	//private static ControlP5 cp5;
 
-	private static final int FIELD_NBR = 10;
+	private static final int FIELD_NBR = 12;
 	private static final boolean DEBUG = false;
 	private static DropdownList[] sentDataField = new DropdownList[FIELD_NBR + 1];
 	private static DropdownList[] targetDataField = new DropdownList[FIELD_NBR + 1];
@@ -67,7 +67,7 @@ public class TabData {
 					              .setBackgroundColor(190) // can't use standard color
 					              .setColorActive(MainP.blueAct)
 					              .setPosition(10, 146 - 25 + i * 25)
-					              .setSize(135, 336 - 25 * i).setItemHeight(20)
+					              .setSize(135, 376 - 25 * i).setItemHeight(20)
 					              .setBarHeight(20).setTab("data");
 			sentDataField[i].getCaptionLabel().getStyle().marginTop = 2;
 			sentDataField[i].getCaptionLabel().set("----------");
@@ -80,7 +80,7 @@ public class TabData {
 					                .setBackgroundColor(190) // can't use standard color
 					                .setColorActive(MainP.blueAct)
 					                .setPosition(150, 146 - 25 + i * 25)
-					                .setSize(135, 336 - 25 * i)
+					                .setSize(135, 376 - 25 * i)
 					                .setItemHeight(20)
 					                .setBarHeight(20)
 					                .setTab("data");
@@ -238,7 +238,7 @@ public class TabData {
 	
 	public static void draw(MainP mainP) {
 		mainP.fill(10);
-		mainP.rect(298, 414, 124, 34);
+		mainP.rect(298, 454, 124, 34);
 		// Load and Save preset buttons hide
 		for (int i = 1; i <= FIELD_NBR; i++) {
 			if (sentDataField[i].isOpen() || targetDataField[i].isOpen()) {
