@@ -16,9 +16,9 @@ public abstract class Sensor implements OXSdataController {
 	protected Sensor(String name) {
 
 		this.name = name;
+		sensorList.add(this);
 		addOXSdata();
 		updateUIoXSdataList();
-		sensorList.add(this);
 		if (DEBUG) {
 			System.out.println("Creation d'un objet " + this.getName());
 			System.out.println(sensorList);
