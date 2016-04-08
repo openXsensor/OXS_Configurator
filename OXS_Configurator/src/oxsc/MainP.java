@@ -31,6 +31,7 @@ import gui.TabCurrent;
 import gui.TabData;
 import gui.TabGeneralSettings;
 import gui.TabPPM;
+import gui.TabSequencer;
 import gui.TabVario;
 import gui.TabVoltage;
 
@@ -107,6 +108,7 @@ public class MainP extends PApplet {
 	public static TabCurrent tabCurrent;
 //	TabTemperature tab5;
 	public static TabData tabData;
+	public static TabSequencer tabSequencer;
 	public static FileManagement fileManagement;
 
 	public static String[] analogPins = new String[8]; // Analog pins array
@@ -248,6 +250,9 @@ public class MainP extends PApplet {
 
 		// ------------------------------ Tab 7 : DATA to send ------------------------------
 		tabData = new TabData(cp5);
+
+		// ------------------------------ Tab 8 : Sequencer ------------------------------
+		tabSequencer = new TabSequencer(cp5) ;
 
 		// ------------------------------ File dialog ------------------------------
 		fileManagement = new FileManagement(cp5);
