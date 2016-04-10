@@ -107,8 +107,8 @@ public class MainP extends PApplet {
 	public static TabVoltage tabVoltage;
 	public static TabCurrent tabCurrent;
 //	TabTemperature tab5;
-	public static TabData tabData;
 	public static TabSequencer tabSequencer;
+	public static TabData tabData;
 	public static FileManagement fileManagement;
 
 	public static String[] analogPins = new String[8]; // Analog pins array
@@ -123,13 +123,16 @@ public class MainP extends PApplet {
 	int vSpeedMaxNBox;
 	int varioHysteresisSld;
 	int outClimbRateMinMaxRng;
-	
+
 	int ppmRngMinNBox;
 	int ppmRngMaxNBox;
-	
+
 	int aSpeedResetNBox;
 	int ppmRngCompMinMaxRng;
 	int ppmCompMinMaxRng;
+
+	int minVolt6Nbox;
+	int minCellNbox;
 
 	public static Protocol protocol;
 
@@ -142,7 +145,7 @@ public class MainP extends PApplet {
 	public static Sensor ppm;
 
 	public static MessageBox messageBox;
-	
+
 	public void setup() {
 		
 		size(450, 500) ;
@@ -248,11 +251,12 @@ public class MainP extends PApplet {
 		   ;
 		cp5.getTab("rpm").getCaptionLabel().toUpperCase(false);
 
-		// ------------------------------ Tab 7 : DATA to send ------------------------------
-		tabData = new TabData(cp5);
+		// ------------------------------ Tab 7 : Sequencer ------------------------------
+		tabSequencer = new TabSequencer(cp5);
+		Sequence.createSequences(cp5);
 
-		// ------------------------------ Tab 8 : Sequencer ------------------------------
-		tabSequencer = new TabSequencer(cp5) ;
+		// ------------------------------ Tab 8 : DATA to send ------------------------------
+		tabData = new TabData(cp5);
 
 		// ------------------------------ File dialog ------------------------------
 		fileManagement = new FileManagement(cp5);
@@ -341,6 +345,11 @@ public class MainP extends PApplet {
 		      cp5.getController("currentDir").setColorCaptionLabel(grayedColor) ;
 		    }*/
 			break;
+
+		case "sequencer" :                                      // TAB Sequencer
+			TabSequencer.draw(this, cp5);
+			Sequence.drawPreview(this, cp5);
+			break ;
 
 		case "data":                                       // TAB DATA sent  dataSentDdlOpen
 			TabData.draw(this, cp5);
