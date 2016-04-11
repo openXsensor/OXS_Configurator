@@ -2,7 +2,6 @@ package oxsc;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import controlP5.ControlP5;
 import gui.TabSequencer;
 
@@ -32,18 +31,40 @@ public class Sequence {
 		TabSequencer.populateSequChoiceDdl(SEQUENCE_NAMES);
 	}
 
+	public static Sequence getSelectedSequ(String name) {
+		sequenceList.stream().filter(s -> !s.name.equals(name)).forEach(s -> s.stepList.stream().forEach(st -> st.hideTgl()));
+		sequenceList.stream().filter(s -> s.name.equals(name)).forEach(s -> s.stepList.stream().forEach(st -> st.showTgl()));
+		return sequenceList.stream().filter(s -> s.name.equals(name)).findFirst().get();
+	}
+
 	public void addStep() {
 		if (stepList.size() < TabSequencer.getSequenceStepMaxNumber()) {
-			stepList.add(new SequenceStep());
+			stepList.add(new SequenceStep(stepList.size() + 1, this.name));
+			if (DEBUG) {
+				System.out.println("Adding step n°" + stepList.size() + " in sequence " + this.name);
+			}
+		} else {
+			if (DEBUG) {
+				System.out.println("Can't add more step in sequence " + this.name);
+			}
 		}
 	}
 
 	public void removeStep() {
-		stepList.remove(stepList.size() - 1);
+		if (stepList.size() > 0) {
+			stepList.get(stepList.size() - 1).removeTgl();
+			stepList.remove(stepList.size() - 1);
+			if (DEBUG) {
+				System.out.println("Removing step n°" + (stepList.size() + 1) + " in sequence " + this.name);
+			}
+		} else {
+			if (DEBUG) {
+				System.out.println("No more step to remove in sequence " + this.name);
+			}
+		}
 	}
-	// TODO 1 create steps
 
-	public static void drawPreview(MainP mainP, ControlP5 cp5) {
+	public static void drawPreview(MainP mainP) {
 		mainP.textFont(MainP.fontLabel, 12);
 		mainP.textAlign(MainP.CENTER);
 
@@ -96,6 +117,25 @@ public class Sequence {
 			mainP.text("" + (8 + i), 298 + i * 20, 237, 15, 15);
 		}
 		mainP.textAlign(MainP.LEFT, MainP.BASELINE);
+
+		// number of step in current sequence
+		mainP.fill(0);
+		mainP.text(MainP.sequence.getStepNbr(), 20, 300);
+		mainP.noFill();
+	}
+
+	public void drawSteps(MainP mainP) {
+		for (SequenceStep step : stepList) {
+			step.drawStep(mainP);
+		}
+	}
+
+	private int getStepNbr() {
+		return stepList.size();
+	}
+
+	public String getName() {
+		return name;
 	}
 
 }

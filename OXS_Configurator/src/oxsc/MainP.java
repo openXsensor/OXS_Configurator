@@ -144,6 +144,8 @@ public class MainP extends PApplet {
 	public static Sensor rpm;
 	public static Sensor ppm;
 
+	public static Sequence sequence;
+
 	public static MessageBox messageBox;
 
 	public void setup() {
@@ -348,7 +350,8 @@ public class MainP extends PApplet {
 
 		case "sequencer" :                                      // TAB Sequencer
 			TabSequencer.draw(this, cp5);
-			Sequence.drawPreview(this, cp5);
+			Sequence.drawPreview(this);
+			sequence.drawSteps(this);
 			break ;
 
 		case "data":                                       // TAB DATA sent  dataSentDdlOpen
@@ -498,6 +501,12 @@ public class MainP extends PApplet {
 			}
 			TabData.resetSentDataFields();
 			TabData.populateSentDataFields();
+		}
+
+		// Sequence selection
+		if (theEvent.isFrom(TabSequencer.getSequChoiceDdl())) {
+			sequence = Sequence.getSelectedSequ(theEvent.getGroup().getCaptionLabel().getText());
+			//System.out.println("Current sequence: " + sequence.getName());
 		}
 
 		// Selecting DEFAULT automatically in Telemetry data fields
@@ -693,6 +702,14 @@ public class MainP extends PApplet {
 			ppm.removeSensor();
 			ppm = null;
 		}
+	}
+
+	public void addStepBtn(int theValue) {
+		sequence.addStep();
+	}
+
+	public void removeStepBtn(int theValue) {
+		sequence.removeStep();
 	}
 
 	// Load preset button  // TODO better with FileDialog

@@ -282,8 +282,16 @@ public class TabSequencer {
 		sequChoiceDdl.setValue(0);
 	}
 
+	public static int getPinNumber() {
+		return PIN_NUMBER;
+	}
+
 	public static int getSequenceStepMaxNumber() {
 		return SEQUENCE_STEP_MAX_NUMBER;
+	}
+
+	public static DropdownList getSequChoiceDdl() {
+		return sequChoiceDdl;
 	}
 
 	private void customizeToggle(Toggle pTgl) {
