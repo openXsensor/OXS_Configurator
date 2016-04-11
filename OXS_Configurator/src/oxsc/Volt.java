@@ -30,7 +30,7 @@ public class Volt extends Sensor {
 	}
 
 	public void removeSensor() {
-		Sensor.getSensorList().remove(this);
+		Sensor.removeFromList(this);
 		OXSdata.removeFromList(this);
 		if (Sensor.getSensorList().stream().map(Sensor::getName)
 				.filter(str -> str.startsWith("volt")).count() < 2) {

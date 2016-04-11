@@ -20,7 +20,7 @@ public class VarAspeed extends Sensor {
 	public void removeSensor() {
 		OXSdata.removeFromList(this);
 		TabData.resetSentDataFields();
-		Sensor.getSensorList().remove(this);
+		Sensor.removeFromList(this);
 	}
 	
 	public static void createSensor() {
@@ -32,7 +32,7 @@ public class VarAspeed extends Sensor {
 	public static void deleteSensor() {
 		if (varAspeed != null && (MainP.vario == null || MainP.vario2 == null || MainP.airSpeed == null)) {
 			varAspeed.removeSensor();
-			varAspeed = null;			
+			varAspeed = null;
 		}
 	}
 }

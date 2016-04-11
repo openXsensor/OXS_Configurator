@@ -33,6 +33,10 @@ public abstract class Sensor implements OXSdataController {
 		return sensorList;
 	}
 
+	public static void removeFromList(Sensor sensor) {
+		sensorList.remove(sensor);
+	}
+
 	public void updateUIoXSdataList() {
 		TabData.populateSentDataFields();
 	}

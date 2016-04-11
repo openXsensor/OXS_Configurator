@@ -18,7 +18,7 @@ public class Rpm extends Sensor {
 		OXSdata.removeFromList(this);
 		TabData.resetSentDataFields();
 		// updateUIoXSdataList() ;
-		Sensor.getSensorList().remove(this);
+		Sensor.removeFromList(this);
 	}
 
 }
