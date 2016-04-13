@@ -206,7 +206,7 @@ public class TabGeneralSettings {
 		serialPinDdl.bringToFront();
 	}
 
-	public static void draw(MainP mainP) {
+	public static void draw(MainP mainP, ControlP5 cp5) {
 		// separation lines
 		mainP.stroke(MainP.darkBackGray);
 		mainP.noSmooth();
@@ -313,6 +313,50 @@ public class TabGeneralSettings {
 		mainP.rect(165, 356, 120, 25);
 		mainP.rect(285, 356, 120, 25);
 		mainP.noStroke();
+
+		// ----------------- Texfield and Numberbox mouse-over -----------------
+		if (cp5.isMouseOver(oxsDir)) {
+			oxsDir.setColorForeground(MainP.blueAct);
+		} else {
+			oxsDir.setColorForeground(MainP.tabGray);
+		}
+
+		if (cp5.isMouseOver(arduinoVccNBox)) {
+			arduinoVccNBox.setColorForeground(MainP.blueAct);
+		} else {
+			arduinoVccNBox.setColorForeground(MainP.grayedColor);
+		}
+
+		// ----------------- Dropdownlist: mouse pressed elsewhere closes list -----------------
+		if (!cp5.isMouseOver(protocolDdl)) {
+			if (mainP.mousePressed == true) {
+				protocolDdl.close();
+			}
+		}
+
+		if (!cp5.isMouseOver(serialPinDdl)) {
+			if (mainP.mousePressed == true) {
+				serialPinDdl.close();
+			}
+		}
+
+		if (!cp5.isMouseOver(sensorIDDdl)) {
+			if (mainP.mousePressed == true) {
+				sensorIDDdl.close();
+			}
+		}
+
+		if (!cp5.isMouseOver(voltRefChoiceDdl)) {
+			if (mainP.mousePressed == true) {
+				voltRefChoiceDdl.close();
+			}
+		}
+
+		if (!cp5.isMouseOver(resetBtnPinDdl)) {
+			if (mainP.mousePressed == true) {
+				resetBtnPinDdl.close();
+			}
+		}
 	}
 
 	public static String writeRefVolt() {

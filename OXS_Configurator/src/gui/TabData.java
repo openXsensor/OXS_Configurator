@@ -235,8 +235,8 @@ public class TabData {
 			targetDataField[i].setValue(0);
 		}
 	}
-	
-	public static void draw(MainP mainP) {
+
+	public static void draw(MainP mainP, ControlP5 cp5) {
 		mainP.fill(10);
 		mainP.rect(298, 454, 124, 34);
 		// Load and Save preset buttons hide
@@ -248,6 +248,39 @@ public class TabData {
 			} else {
 				FileManagement.getLoadPresetBtn().show();
 				FileManagement.getSavePresetBtn().show();
+			}
+		}
+
+		// ----------------- Texfield and Numberbox mouse-over -----------------
+		for (int i = 1; i <= FIELD_NBR; i++) {
+			if (cp5.isMouseOver(dataMultiplierNBox[i])) {
+				dataMultiplierNBox[i].setColorForeground(MainP.orangeAct);
+			} else {
+				dataMultiplierNBox[i].setColorForeground(MainP.grayedColor);
+			}
+			if (cp5.isMouseOver(dataDividerNBox[i])) {
+				dataDividerNBox[i].setColorForeground(MainP.orangeAct);
+			} else {
+				dataDividerNBox[i].setColorForeground(MainP.grayedColor);
+			}
+			if (cp5.isMouseOver(dataOffsetNBox[i])) {
+				dataOffsetNBox[i].setColorForeground(MainP.orangeAct);
+			} else {
+				dataOffsetNBox[i].setColorForeground(MainP.grayedColor);
+			}
+		}
+
+		// ------- Dropdownlist: mouse pressed elsewhere closes list -------
+		for (int i = 1; i <= FIELD_NBR; i++) {
+			if (!cp5.isMouseOver(sentDataField[i])) {
+				if (mainP.mousePressed == true) {
+					sentDataField[i].close();
+				}
+			}
+			if (!cp5.isMouseOver(targetDataField[i])) {
+				if (mainP.mousePressed == true) {
+					targetDataField[i].close();
+				}
 			}
 		}
 	}

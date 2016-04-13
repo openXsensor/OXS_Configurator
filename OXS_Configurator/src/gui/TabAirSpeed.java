@@ -122,7 +122,7 @@ public class TabAirSpeed {
 		mainP.strokeWeight(1) ;
 		mainP.noStroke() ;
 
-		TabPPM.drawPPMzone(mainP) ;
+		TabPPM.drawPPMzone(mainP, cp5);
 
 		// separation lines
 		mainP.stroke(MainP.darkBackGray) ;
@@ -169,6 +169,13 @@ public class TabAirSpeed {
 			                .setColorBackground(MainP.darkBackGray)
 			                .setColorValueLabel(MainP.white)
 			                .setColorCaptionLabel(mainP.color(0));
+		}
+
+		// ----------------- Texfield and Numberbox mouse-over -----------------
+		if (cp5.isMouseOver(aSpeedResetNBox)) {
+			aSpeedResetNBox.setColorForeground(MainP.orangeAct);
+		} else {
+			aSpeedResetNBox.setColorForeground(MainP.grayedColor);
 		}
 	}
 

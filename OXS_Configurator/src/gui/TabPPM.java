@@ -129,7 +129,7 @@ public class TabPPM {
 		return controllers;
 	}
 
-	public static void drawPPMzone(MainP mainP) {
+	public static void drawPPMzone(MainP mainP, ControlP5 cp5) {
 		// PPM zone
 		mainP.fill(MainP.darkBackGray);
 		mainP.rect(mainP.width / 2 - 16, 102, 34, 13);
@@ -146,14 +146,14 @@ public class TabPPM {
 		mainP.fill(255);
 		mainP.textFont(MainP.fontLabel);
 		mainP.text("PPM", 210, 112);
+
+		if (ppmTgl.getValue() == 0) { // RC remote
+			ppmPinDdl.hide();
+			mainP.fill(MainP.grayedColor);
+			mainP.rect(118, 115, 30, 20);
+			ppmPinL.setColorValueLabel(MainP.grayedColor);
 	
-		if ( ppmTgl.getValue() == 0 ) {         // RC remote
-			ppmPinDdl.hide() ;
-			mainP.fill(MainP.grayedColor) ;
-			mainP.rect(118, 115, 30, 20) ;
-			ppmPinL.setColorValueLabel(MainP.grayedColor) ;
-	
-			ppmRngL.setColorValueLabel(MainP.grayedColor) ;
+			ppmRngL.setColorValueLabel(MainP.grayedColor);
 			ppmRngMinNBox.lock()
 			             .setColorBackground(MainP.grayedColor)
 			             .setColorValueLabel(MainP.grayedColor)
@@ -163,12 +163,12 @@ public class TabPPM {
 			             .setColorValueLabel(MainP.grayedColor)
 			             .setColorCaptionLabel(MainP.grayedColor);
 		} else {
-			mainP.fill(MainP.lightBlue) ;                                    // toggle border filled
-			mainP.rect(12, 114, 58, 20) ;
-			ppmPinDdl.show() ;
-			ppmPinL.setColorValueLabel(0) ;
-	
-			ppmRngL.setColorValueLabel(mainP.color(0)) ;
+			mainP.fill(MainP.lightBlue); // toggle border filled
+			mainP.rect(12, 114, 58, 20);
+			ppmPinDdl.show();
+			ppmPinL.setColorValueLabel(0);
+
+			ppmRngL.setColorValueLabel(mainP.color(0));
 			ppmRngMinNBox.unlock()
 			             .setColorBackground(MainP.darkBackGray)
 			             .setColorValueLabel(MainP.white)
@@ -178,10 +178,30 @@ public class TabPPM {
 			             .setColorValueLabel(MainP.white)
 			             .setColorCaptionLabel(mainP.color(0));
 		}
-	
-		mainP.stroke(MainP.darkBackGray) ;                               // toggle border
-		mainP.noFill() ;
-		mainP.rect(12, 114, 58, 20) ;
-		mainP.noStroke() ;
+
+		mainP.stroke(MainP.darkBackGray); // toggle border
+		mainP.noFill();
+		mainP.rect(12, 114, 58, 20);
+		mainP.noStroke();
+
+		// ----------------- Texfield and Numberbox mouse-over -----------------
+		if (cp5.isMouseOver(ppmRngMinNBox)) {
+			ppmRngMinNBox.setColorForeground(MainP.orangeAct);
+		} else {
+			ppmRngMinNBox.setColorForeground(MainP.grayedColor);
+		}
+
+		if (cp5.isMouseOver(ppmRngMaxNBox)) {
+			ppmRngMaxNBox.setColorForeground(MainP.orangeAct);
+		} else {
+			ppmRngMaxNBox.setColorForeground(MainP.grayedColor);
+		}
+
+		// ----------------- Dropdownlist: mouse pressed elsewhere closes list -----------------
+		if (!cp5.isMouseOver(ppmPinDdl)) {
+			if (mainP.mousePressed == true) {
+				ppmPinDdl.close();
+			}
+		}
 	}
 }

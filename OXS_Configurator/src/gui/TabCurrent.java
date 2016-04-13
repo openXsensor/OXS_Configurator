@@ -214,4 +214,38 @@ public class TabCurrent {
 		return controllers;
 	}
 
+	public static void draw(MainP mainP) {
+		// ----------------- Texfield and Numberbox mouse-over -----------------
+		if (cp5.isMouseOver(currentOutSensNBox)) {
+			currentOutSensNBox.setColorForeground(MainP.orangeAct);
+		} else {
+			currentOutSensNBox.setColorForeground(mainP.color(170));
+		}
+
+		if (cp5.isMouseOver(currentOutOffsetNBox)) {
+			currentOutOffsetNBox.setColorForeground(MainP.orangeAct);
+		} else {
+			currentOutOffsetNBox.setColorForeground(mainP.color(170));
+		}
+
+		if (cp5.isMouseOver(currentOutOffsetMaNBox)) {
+			currentOutOffsetMaNBox.setColorForeground(MainP.orangeAct);
+		} else {
+			currentOutOffsetMaNBox.setColorForeground(mainP.color(170));
+		}
+
+		if (cp5.isMouseOver(currentDivNBox)) {
+			currentDivNBox.setColorForeground(MainP.orangeAct);
+		} else {
+			currentDivNBox.setColorForeground(mainP.color(170));
+		}
+
+		// ------- Dropdownlist: mouse pressed elsewhere closes list -------
+		if (!cp5.isMouseOver(currentPinDdl)) {
+			if (mainP.mousePressed == true) {
+				currentPinDdl.close();
+			}
+		}
+	}
+
 }

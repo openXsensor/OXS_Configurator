@@ -185,7 +185,7 @@ public class MainP extends PApplet {
 
 		// ------------------------ TABS definition ------------------------
 		// By default all controllers are stored inside Tab 'default'
-		cp5.getWindow().setPositionOfTabs(0, 80) ;
+		cp5.getWindow().setPositionOfTabs(0, 80);
 
 		// Check for updates
 		cp5.addButton("checkUpdate")
@@ -214,25 +214,25 @@ public class MainP extends PApplet {
 		cp5.getController("about").getCaptionLabel().toUpperCase(false);
 
 		// ----------------------- Tab 0 : GENERAL SETTINGS ----------------------
-		tabGenSet = new TabGeneralSettings(cp5) ;
+		tabGenSet = new TabGeneralSettings(cp5);
 
 		// ---------------- PPM settings : Tabs Vario + Air Speed ----------------
-		tabPPM = new TabPPM(cp5) ;
+		tabPPM = new TabPPM(cp5);
 
 		// ---------------------------- Tab 1 : Vario settings ------------------------------
-		tabVario = new TabVario(cp5) ;
+		tabVario = new TabVario(cp5);
 
 		// ---------------------------- Tab 2 : Air Speed settings ------------------------------
-		tabAirSpeed = new TabAirSpeed(cp5) ;
+		tabAirSpeed = new TabAirSpeed(cp5);
 
 		// ------------------------------ Tab 3 : Voltage settings ------------------------------
-		tabVoltage = new TabVoltage(cp5) ;
+		tabVoltage = new TabVoltage(cp5);
 
 		// ------------------------------ Tab 4 : Current settings ------------------------------
-		tabCurrent = new TabCurrent(cp5) ;
+		tabCurrent = new TabCurrent(cp5);
 
 		// ------------------------------ Tab 5 : Temperature settings ------------------------------
-		//tab5 = new TabTemperature(cp5) ;
+		//tab5 = new TabTemperature(cp5);
 
 		// ------------------------------ Tab 6 : RPM settings ------------------------------   needed ?
 		cp5.getTab("rpm")
@@ -244,10 +244,10 @@ public class MainP extends PApplet {
 		   .setId(6)
 		   .hide()
 		   ;
-		cp5.getTab("rpm").getCaptionLabel().toUpperCase(false) ;
+		cp5.getTab("rpm").getCaptionLabel().toUpperCase(false);
 
 		// ------------------------------ Tab 7 : DATA to send ------------------------------
-		tabData = new TabData(cp5) ;
+		tabData = new TabData(cp5);
 
 		// ------------------------------ File dialog ------------------------------
 		fileManagement = new FileManagement(cp5);
@@ -305,291 +305,74 @@ public class MainP extends PApplet {
 		FileManagement.getSavePresetBtn().show() ;
 
 		// ------------ Tabs specific display ------------
-		String currentTabName = cp5.getWindow(this).getCurrentTab().getName() ;
+		String currentTabName = cp5.getWindow(this).getCurrentTab().getName();
 		
 		switch (currentTabName) {
 
-		case "default" :                                      // TAB GENERAL Settings
-			TabGeneralSettings.draw(this);
-			break ;
+		case "default":                                     // TAB GENERAL Settings
+			TabGeneralSettings.draw(this, cp5);
+			break;
 
-		case "vario" :                                        // TAB Vario
+		case "vario":                                      // TAB Vario
 			TabVario.draw(this);
-			break ;
+			break;
 
-		case "airSpeed" :                                     // TAB Air Speed sensor
+		case "airSpeed":                                   // TAB Air Speed sensor
 			TabAirSpeed.draw(this);
-			break ;
+			break;
 
-		case "voltage" :                                      // TAB Voltage / Other
+		case "voltage":                                 // TAB Voltage / Other
 			TabVoltage.draw(this);
-			break ;
+			break;
 
-			/*
-		case "current" :                                      // TAB Current sensor
-		    if ( cp5.getController("currentDir").value() == 0 ) {             // Current grayed switch
+			
+		case "current":                                  // TAB Current sensor
+			TabCurrent.draw(this);
+			/* if ( cp5.getController("currentDir").value() == 0 ) {             // Current grayed switch
 		      cp5.getController("currentDirL").setColorValue(grayedColor) ;
 		      cp5.getController("currentDir").setColorCaptionLabel(color(0)) ;
 		    } else {
 		      cp5.getController("currentDirL").setColorValue(color(0)) ;
 		      cp5.getController("currentDir").setColorCaptionLabel(grayedColor) ;
-		    }
-			break ;
-			 */
+		    }*/
+			break;
 
-		case "data" :                                         // TAB DATA sent  dataSentDdlOpen
-			TabData.draw(this);
-			break ;
+		case "data":                                       // TAB DATA sent  dataSentDdlOpen
+			TabData.draw(this, cp5);
+			break;
 		}
 
 		// ---------------- End TAB specific display ---------------
 
 		// Load and Save preset buttons deco
-		if ( FileManagement.getLoadPresetBtn().isVisible() ) {
-			fill(blueAct) ;
-			rect(19, 458, 102, 27) ;
+		if (FileManagement.getLoadPresetBtn().isVisible()) {
+			fill(blueAct);
+			rect(19, 458, 102, 27);
 		}
 
-		if ( FileManagement.getSavePresetBtn().isVisible() ) {
-			fill(orangeAct) ;
-			rect(139, 458, 102, 27) ;
+		if (FileManagement.getSavePresetBtn().isVisible()) {
+			fill(orangeAct);
+			rect(139, 458, 102, 27);
 		}
 
 		// ----------------- Texfield and Numberbox mouse-over -----------------
 
-		if (cp5.isMouseOver(TabGeneralSettings.getOxsDir())) {
-			TabGeneralSettings.getOxsDir().setColorForeground(blueAct);
-		} else {
-			TabGeneralSettings.getOxsDir().setColorForeground(tabGray);
-		}
-
-		if (cp5.isMouseOver(TabGeneralSettings.getArduinoVccNBox())) {
-			TabGeneralSettings.getArduinoVccNBox().setColorForeground(blueAct);
-		} else {
-			TabGeneralSettings.getArduinoVccNBox().setColorForeground(grayedColor);
-		}
-
-		if ( cp5.isMouseOver ( TabPPM.getPpmRngMinNBox()) ) {
-			TabPPM.getPpmRngMinNBox().setColorForeground(orangeAct) ;
-		} else {
-			TabPPM.getPpmRngMinNBox().setColorForeground(grayedColor) ;
-		}
-
-		if ( cp5.isMouseOver ( TabPPM.getPpmRngMaxNBox() ) ) {
-			TabPPM.getPpmRngMaxNBox().setColorForeground(orangeAct) ;
-		} else {
-			TabPPM.getPpmRngMaxNBox().setColorForeground(grayedColor) ;
-		}
-
-		if ( cp5.isMouseOver ( TabVario.getvSpeedMinNBox()) ) {
-			TabVario.getvSpeedMinNBox().setColorForeground(orangeAct) ;
-		} else {
-			TabVario.getvSpeedMinNBox().setColorForeground(grayedColor) ;
-		}
-
-		if ( cp5.isMouseOver ( TabVario.getvSpeedMaxNBox() ) ) {
-			TabVario.getvSpeedMaxNBox().setColorForeground(orangeAct) ;
-		} else {
-			TabVario.getvSpeedMaxNBox().setColorForeground(grayedColor) ;
-		}
-
-		if ( cp5.isMouseOver ( TabVario.getPpmVspeedSwMinNBox()) ) {
-			TabVario.getPpmVspeedSwMinNBox().setColorForeground(orangeAct) ;
-		} else {
-			TabVario.getPpmVspeedSwMinNBox().setColorForeground(grayedColor) ;
-		}
-
-		if ( cp5.isMouseOver ( TabVario.getPpmVspeedSwMaxNBox() ) ) {
-			TabVario.getPpmVspeedSwMaxNBox().setColorForeground(orangeAct) ;
-		} else {
-			TabVario.getPpmVspeedSwMaxNBox().setColorForeground(grayedColor) ;
-		}
-
-		if ( cp5.isMouseOver ( TabAirSpeed.getaSpeedResetNBox() ) ) {
-			TabAirSpeed.getaSpeedResetNBox().setColorForeground(orangeAct) ;
-		} else {
-			TabAirSpeed.getaSpeedResetNBox().setColorForeground(grayedColor) ;
-		}
-
-		for ( int i = 1; i <= TabVoltage.getVoltnbr(); i++ ) {
-			if ( cp5.isMouseOver ( TabVoltage.getDividerVoltNBox()[i] ) ) {
-				TabVoltage.getDividerVoltNBox()[i].setColorForeground(orangeAct) ;
-			} else {
-				TabVoltage.getDividerVoltNBox()[i].setColorForeground(color(170)) ;
-			}
-		}
-
-		for ( int i = 1; i <= TabVoltage.getVoltnbr(); i++ ) {
-			if ( cp5.isMouseOver ( TabVoltage.getOffsetVoltNBox()[i] ) ) {
-				TabVoltage.getOffsetVoltNBox()[i].setColorForeground(orangeAct) ;
-			} else {
-				TabVoltage.getOffsetVoltNBox()[i].setColorForeground(color(170)) ;
-			}
-		}
-		/*
-		  if ( cp5.isMouseOver ( cp5.getController( "currentVccNb" ) ) ) {
-		    cp5.getController( "currentVccNb" ).setColorForeground(orangeAct) ;
-		  } else {
-		    cp5.getController( "currentVccNb" ).setColorForeground(color(170)) ;
-		  }
-		 */
-
-		if ( cp5.isMouseOver ( TabCurrent.getCurrentOutSensNBox() ) ) {
-			TabCurrent.getCurrentOutSensNBox().setColorForeground(orangeAct) ;
-		} else {
-			TabCurrent.getCurrentOutSensNBox().setColorForeground(color(170)) ;
-		}
-
-		if ( cp5.isMouseOver ( TabCurrent.getCurrentOutOffsetNBox() ) ) {
-			TabCurrent.getCurrentOutOffsetNBox().setColorForeground(orangeAct) ;
-		} else {
-			TabCurrent.getCurrentOutOffsetNBox().setColorForeground(color(170)) ;
-		}
-
-		if ( cp5.isMouseOver ( TabCurrent.getCurrentOutOffsetMaNBox() ) ) {
-			TabCurrent.getCurrentOutOffsetMaNBox().setColorForeground(orangeAct) ;
-		} else {
-			TabCurrent.getCurrentOutOffsetMaNBox().setColorForeground(color(170)) ;
-		}
-
-		if ( cp5.isMouseOver ( TabCurrent.getCurrentDivNBox() ) ) {
-			TabCurrent.getCurrentDivNBox().setColorForeground(orangeAct) ;
-		} else {
-			TabCurrent.getCurrentDivNBox().setColorForeground(color(170)) ;
-		}
 		/*
 		  if ( cp5.isMouseOver ( cp5.getController( "tempOffset" ) ) ) {
-		    cp5.getController( "tempOffset" ).setColorForeground(orangeAct) ;
+		    cp5.getController( "tempOffset" ).setColorForeground(orangeAct);
 		  } else {
-		    cp5.getController( "tempOffset" ).setColorForeground(OXSConfigurator.tabGray) ;
+		    cp5.getController( "tempOffset" ).setColorForeground(OXSConfigurator.tabGray);
 		  }
 		 */
 
-		for ( int i = 1; i <= TabData.getFieldNbr(); i++ ) {
-			if ( cp5.isMouseOver ( TabData.getDataMultiplierNBox()[i] ) ) {
-				TabData.getDataMultiplierNBox()[i].setColorForeground(orangeAct) ;
-			} else {
-				TabData.getDataMultiplierNBox()[i].setColorForeground(grayedColor) ;
-			}
-			if ( cp5.isMouseOver ( TabData.getDataDividerNBox()[i] ) ) {
-				TabData.getDataDividerNBox()[i].setColorForeground(orangeAct) ;
-			} else {
-				TabData.getDataDividerNBox()[i].setColorForeground(grayedColor) ;
-			}
-			if ( cp5.isMouseOver ( TabData.getDataOffsetNBox()[i] ) ) {
-				TabData.getDataOffsetNBox()[i].setColorForeground(orangeAct) ;
-			} else {
-				TabData.getDataOffsetNBox()[i].setColorForeground(grayedColor) ;
-			}
-		}
-
     	// ----------------- Dropdownlist: mouse pressed elsewhere closes list -----------------
-
-		if ( !cp5.isMouseOver ( TabGeneralSettings.getProtocolDdl() ) ) {
-			if (mousePressed == true) {
-				TabGeneralSettings.getProtocolDdl().close() ;
-			}
-		}
-
-		if ( !cp5.isMouseOver ( TabGeneralSettings.getSerialPinDdl() ) ) {
-			if (mousePressed == true) {
-				TabGeneralSettings.getSerialPinDdl().close() ;
-			}
-		}
-
-		if ( !cp5.isMouseOver ( TabGeneralSettings.getSensorIDDdl() ) ) {
-			if (mousePressed == true) {
-				TabGeneralSettings.getSensorIDDdl().close() ;
-			}
-		}
-
-		if ( !cp5.isMouseOver ( TabGeneralSettings.getVoltRefChoiceDdl() ) ) {
-			if (mousePressed == true) {
-				TabGeneralSettings.getVoltRefChoiceDdl().close() ;
-			}
-		}
-
-		if ( !cp5.isMouseOver ( TabGeneralSettings.getResetBtnPinDdl() ) ) {
-			if (mousePressed == true) {
-				TabGeneralSettings.getResetBtnPinDdl().close() ;
-			}
-		}
-
-		if ( !cp5.isMouseOver ( TabPPM.getPpmPinDdl() ) ) {
-			if (mousePressed == true) {
-				TabPPM.getPpmPinDdl().close() ;
-			}
-		}
-
-		if ( !cp5.isMouseOver ( TabVario.getvSpeed1Ddl() ) ) {
-			if (mousePressed == true) {
-				TabVario.getvSpeed1Ddl().close() ;
-			}
-		}
-
-		if ( !cp5.isMouseOver ( TabVario.getvSpeed2Ddl() ) ) {
-			if (mousePressed == true) {
-				TabVario.getvSpeed2Ddl().close() ;
-			}
-		}
-
-		if ( !cp5.isMouseOver ( TabVario.getClimbPinDdl() ) ) {
-			if (mousePressed == true) {
-				TabVario.getClimbPinDdl().close() ;
-			}
-		}
-
-		for ( int i = 1; i <= TabVoltage.getVoltnbr(); i++ ) {
-			if ( !cp5.isMouseOver ( TabVoltage.getDdlVolt()[i] ) ) {
-				if (mousePressed == true) {
-				TabVoltage.getDdlVolt()[i].close() ;
-				}
-			}
-		}
-
-		if (!cp5.isMouseOver(TabVoltage.getDdlNbrCells())) {
-			if (mousePressed == true) {
-				TabVoltage.getDdlNbrCells().close();
-			}
-		}
-
-		if ( !cp5.isMouseOver ( TabCurrent.getCurrentPinDdl() ) ) {
-			if (mousePressed == true) {
-				TabCurrent.getCurrentPinDdl().close() ;
-			}
-		}
 		/*
 		  if ( !cp5.isMouseOver ( cp5.getGroup( "tempPin") ) ) {
 		    if (mousePressed == true) {
-		      cp5.getGroup( "tempPin" ).close() ;
+		      cp5.getGroup( "tempPin" ).close();
 		    }
 		  }
 		 */
-		for ( int i = 1; i <= TabData.getFieldNbr(); i++ ) {
-			if ( !cp5.isMouseOver ( TabData.getSentDataField(i) ) ) {
-				if (mousePressed == true) {
-					TabData.getSentDataField(i).close() ;
-				}
-			}
-		}
-
-		/*
-		  for ( int i = 1; i <= dataSentFieldNbr; i++ ) {
-		    if ( !cp5.isMouseOver ( cp5.getGroup( "hubDataField" + i ) ) ) {
-		      if (mousePressed == true) {
-		        cp5.getGroup( "hubDataField" + i ).close() ;
-		      }
-		    }
-		  }
-		 */
-
-		for ( int i = 1; i <= TabData.getFieldNbr(); i++ ) {
-			if ( !cp5.isMouseOver ( TabData.getTargetDataField(i) ) ) {
-				if (mousePressed == true) {
-					TabData.getTargetDataField(i).close() ;
-				}
-			}
-		}
 
 		// ----------------- TAB DATA sent display -----------------
 

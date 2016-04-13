@@ -16,11 +16,11 @@ public class TabVoltage {
 
 	private static ControlP5 cp5;
 	
-	private static final int voltNbr = 6;
-	private static Toggle[] voltTgl = new Toggle[voltNbr + 1];
-	private static DropdownList[] ddlVolt = new DropdownList[voltNbr + 1];
-	private static Numberbox[] dividerVoltNBox = new Numberbox[voltNbr + 1];
-	private static Numberbox[] offsetVoltNBox = new Numberbox[voltNbr + 1];
+	private static final int VOLT_NUMBER = 6;
+	private static Toggle[] voltTgl = new Toggle[VOLT_NUMBER + 1];
+	private static DropdownList[] ddlVolt = new DropdownList[VOLT_NUMBER + 1];
+	private static Numberbox[] dividerVoltNBox = new Numberbox[VOLT_NUMBER + 1];
+	private static Numberbox[] offsetVoltNBox = new Numberbox[VOLT_NUMBER + 1];
 	private static Toggle cellsTgl;
 	private static DropdownList ddlNbrCells;
 
@@ -37,7 +37,7 @@ public class TabVoltage {
 		   .setColorActive(MainP.blueAct)
 		   .setLabel("Voltage...")
 		   .setId(3)
-		   .hide();		
+		   .hide();
 		cp5.getTab("voltage").getCaptionLabel().toUpperCase(false);
 
 		// Voltage 1-6 toggle
@@ -47,7 +47,7 @@ public class TabVoltage {
 		   .setColorValueLabel(0)
 		   .setTab("voltage");
 
-		for (int i = 1; i <= voltNbr; i++) {
+		for (int i = 1; i <= VOLT_NUMBER; i++) {
 			voltTgl[i] = cp5.addToggle("voltTgl" + i)
 					        .setCaptionLabel("" + i)
 					        .setPosition(128 + 55 * (i - 1), 147)
@@ -62,7 +62,7 @@ public class TabVoltage {
 	   	   .setColorValueLabel(0)
 	   	   .setTab("voltage");
 
-		for (int i = 1; i <= voltNbr; i++) {
+		for (int i = 1; i <= VOLT_NUMBER; i++) {
 			ddlVolt[i] = cp5.addDropdownList("ddlVolt" + i)
 			                .setPosition(113 + 55 * (i - 1), 192)
 			                .setTab("voltage");
@@ -78,7 +78,7 @@ public class TabVoltage {
 		   .setTab("voltage");
 		cp5.getTooltip().register("voltDivider", "- Default: 1 -");
 
-		for (int i = 1; i <= voltNbr; i++) {
+		for (int i = 1; i <= VOLT_NUMBER; i++) {
 			dividerVoltNBox[i] = cp5.addNumberbox("dividerVoltNBox" + i)
 			                        .setPosition(113 + 55 * (i - 1), 202)
 			                        .setSize(45, 20)
@@ -104,7 +104,7 @@ public class TabVoltage {
 		   .setTab("voltage");
 		cp5.getTooltip().register("voltOffset", "- Default: 0 -");
 
-		for (int i = 1; i <= voltNbr; i++) {
+		for (int i = 1; i <= VOLT_NUMBER; i++) {
 			offsetVoltNBox[i] = cp5.addNumberbox("offsetVoltNBox" + i)
 			                       .setPosition(113 + 55 * (i - 1), 231)
 			                       .setSize(45, 20)
@@ -163,14 +163,14 @@ public class TabVoltage {
 		
 		// dropdownlist overlap
 		ddlNbrCells.bringToFront() ;
-		for ( int i = 1; i <= voltNbr; i++ ) {
+		for ( int i = 1; i <= VOLT_NUMBER; i++ ) {
 			ddlVolt[i].bringToFront() ;
 		}
 
 	}
 
 	public static int getVoltnbr() {
-		return voltNbr;
+		return VOLT_NUMBER;
 	}
 
 	public static Toggle[] getVoltTgl() {
@@ -203,7 +203,7 @@ public class TabVoltage {
 
 	public static void populateNbrCells() {
 		ddlNbrCells.clear();
-		for (int i = 1; i <= voltNbr; i++) {
+		for (int i = 1; i <= VOLT_NUMBER; i++) {
 			if (MainP.aVolt[i] != null) {
 				ddlNbrCells.addItem("" + i, i);
 			} else {
@@ -304,6 +304,38 @@ public class TabVoltage {
 			mainP.strokeWeight(1) ;
 			mainP.noStroke() ;
 			mainP.smooth() ;
+		}
+
+		// ----------------- Texfield and Numberbox mouse-over -----------------
+		for (int i = 1; i <= VOLT_NUMBER; i++) {
+			if (cp5.isMouseOver(dividerVoltNBox[i])) {
+				dividerVoltNBox[i].setColorForeground(MainP.orangeAct);
+			} else {
+				dividerVoltNBox[i].setColorForeground(mainP.color(170));
+			}
+		}
+
+		for (int i = 1; i <= VOLT_NUMBER; i++) {
+			if (cp5.isMouseOver(offsetVoltNBox[i])) {
+				offsetVoltNBox[i].setColorForeground(MainP.orangeAct);
+			} else {
+				offsetVoltNBox[i].setColorForeground(mainP.color(170));
+			}
+		}
+
+		// ----------------- Dropdownlist: mouse pressed elsewhere closes list -----------------
+		for (int i = 1; i <= VOLT_NUMBER; i++) {
+			if (!cp5.isMouseOver(ddlVolt[i])) {
+				if (mainP.mousePressed) {
+					ddlVolt[i].close();
+				}
+			}
+		}
+
+		if (!cp5.isMouseOver(ddlNbrCells)) {
+			if (mainP.mousePressed) {
+				ddlNbrCells.close();
+			}
 		}
 	}
 

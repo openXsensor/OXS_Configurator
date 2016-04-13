@@ -430,7 +430,7 @@ public class TabVario {
 		mainP.strokeWeight(1);
 		mainP.noStroke();
 
-		TabPPM.drawPPMzone(mainP);
+		TabPPM.drawPPMzone(mainP, cp5);
 
 		// separation lines
 		mainP.stroke(MainP.darkBackGray);
@@ -540,6 +540,50 @@ public class TabVario {
 			FileManagement.getSavePresetBtn().hide() ;
 		} else {
 			FileManagement.getSavePresetBtn().show() ;
+		}
+
+		// ----------------- Texfield and Numberbox mouse-over -----------------
+		if (cp5.isMouseOver(vSpeedMinNBox)) {
+			vSpeedMinNBox.setColorForeground(MainP.orangeAct);
+		} else {
+			vSpeedMinNBox.setColorForeground(MainP.grayedColor);
+		}
+
+		if (cp5.isMouseOver(vSpeedMaxNBox)) {
+			vSpeedMaxNBox.setColorForeground(MainP.orangeAct);
+		} else {
+			vSpeedMaxNBox.setColorForeground(MainP.grayedColor);
+		}
+
+		if (cp5.isMouseOver(ppmVspeedSwMinNBox)) {
+			ppmVspeedSwMinNBox.setColorForeground(MainP.orangeAct);
+		} else {
+			ppmVspeedSwMinNBox.setColorForeground(MainP.grayedColor);
+		}
+
+		if (cp5.isMouseOver(ppmVspeedSwMaxNBox)) {
+			ppmVspeedSwMaxNBox.setColorForeground(MainP.orangeAct);
+		} else {
+			ppmVspeedSwMaxNBox.setColorForeground(MainP.grayedColor);
+		}
+
+		// ----------------- Dropdownlist: mouse pressed elsewhere closes list -----------------
+		if (!cp5.isMouseOver(vSpeed1Ddl)) {
+			if (mainP.mousePressed == true) {
+				vSpeed1Ddl.close();
+			}
+		}
+
+		if (!cp5.isMouseOver(vSpeed2Ddl)) {
+			if (mainP.mousePressed == true) {
+				vSpeed2Ddl.close();
+			}
+		}
+
+		if (!cp5.isMouseOver(climbPinDdl)) {
+			if (mainP.mousePressed == true) {
+				climbPinDdl.close();
+			}
 		}
 	}
 
