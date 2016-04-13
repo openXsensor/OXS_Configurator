@@ -74,7 +74,7 @@ public class MainP extends PApplet {
 	private static final Path PRESET_DEFAULT_DIR = Paths.get("Preset");
 
 	public static final int tabGray = 0xFFC8C8C8; // gray 200
-	public static final int backDdlGray = 0xFFFFFFFF; // gray 190
+	public static final int backDdlGray = 0xFFBEBEBE; // gray 190
 	public static final int grayedColor = 0xFF9B9B9B; // gray 155
 	public static final int topBottomGray = 0xFF969696; // gray 150
 	public static final int lightBackGray = 0xFF646464; // gray 100
@@ -350,8 +350,6 @@ public class MainP extends PApplet {
 
 		case "sequencer" :                                      // TAB Sequencer
 			TabSequencer.draw(this, cp5);
-			Sequence.drawPreview(this);
-			sequence.drawSteps(this);
 			break ;
 
 		case "data":                                       // TAB DATA sent  dataSentDdlOpen

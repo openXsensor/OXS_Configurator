@@ -32,8 +32,10 @@ public class Sequence {
 	}
 
 	public static Sequence getSelectedSequ(String name) {
-		sequenceList.stream().filter(s -> !s.name.equals(name)).forEach(s -> s.stepList.stream().forEach(st -> st.hideTgl()));
-		sequenceList.stream().filter(s -> s.name.equals(name)).forEach(s -> s.stepList.stream().forEach(st -> st.showTgl()));
+		sequenceList.stream().filter(s -> !s.name.equals(name))
+				.forEach(s -> s.stepList.stream().forEach(st -> st.hideControllers()));
+		sequenceList.stream().filter(s -> s.name.equals(name))
+				.forEach(s -> s.stepList.stream().forEach(st -> st.showControllers()));
 		return sequenceList.stream().filter(s -> s.name.equals(name)).findFirst().get();
 	}
 
@@ -52,7 +54,7 @@ public class Sequence {
 
 	public void removeStep() {
 		if (stepList.size() > 0) {
-			stepList.get(stepList.size() - 1).removeTgl();
+			stepList.get(stepList.size() - 1).removeControllers();
 			stepList.remove(stepList.size() - 1);
 			if (DEBUG) {
 				System.out.println("Removing step n°" + (stepList.size() + 1) + " in sequence " + this.name);
@@ -77,13 +79,9 @@ public class Sequence {
 			mainP.fill(MainP.darkBackGray);
 		}
 		mainP.rect(205, 234, 21, 21);
-		mainP.fill(MainP.white);
+		mainP.fill(MainP.tabGray);
 		mainP.rect(211, 238, 2, 13);
-		mainP.beginShape();
-		mainP.vertex(213, 245);
-		mainP.vertex(220, 238);
-		mainP.vertex(220, 251);
-		mainP.endShape(MainP.CLOSE);
+		mainP.triangle(213, 245, 220, 238, 220, 251);
 
 		// preview num sequence
 		mainP.stroke(MainP.darkBackGray);
@@ -120,18 +118,22 @@ public class Sequence {
 
 		// number of step in current sequence
 		mainP.fill(0);
-		mainP.text(MainP.sequence.getStepNbr(), 20, 300);
+		mainP.text(MainP.sequence.getStepNbr(), 20, 250);
 		mainP.noFill();
-	}
 
-	public void drawSteps(MainP mainP) {
-		for (SequenceStep step : stepList) {
+		// Draw steps
+		for (SequenceStep step : MainP.sequence.stepList) {
 			step.drawStep(mainP);
+			step.drawStepBorderPreview(mainP); // TODO if stepPlaying
 		}
 	}
 
 	private int getStepNbr() {
 		return stepList.size();
+	}
+
+	public List<SequenceStep> getStepList() {
+		return stepList;
 	}
 
 	public String getName() {

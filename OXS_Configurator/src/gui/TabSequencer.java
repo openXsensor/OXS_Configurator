@@ -9,6 +9,7 @@ import controlP5.DropdownList;
 import controlP5.Numberbox;
 import controlP5.Toggle;
 import oxsc.MainP;
+import oxsc.Sequence;
 
 public class TabSequencer {
 
@@ -183,11 +184,7 @@ public class TabSequencer {
 		mainP.rect(213, 136, 231, 2);
 		mainP.rect(442, 132, 2, 6);
 		mainP.rect(403, 136, 2, 17);
-		mainP.beginShape();
-		mainP.vertex(399, 153);
-		mainP.vertex(409, 153);
-		mainP.vertex(404, 166);
-		mainP.endShape(MainP.CLOSE);
+		mainP.triangle(399, 153, 409, 153, 404, 166);
 		mainP.noFill();
 	
 		// ------------- PPM decorations -------------
@@ -254,7 +251,18 @@ public class TabSequencer {
 		mainP.textFont(MainP.fontLabel, 12);
 		mainP.text("Preview", 292, 231);
 		mainP.noFill();
+
+		// ------------- Temporary step borders -------------
+		mainP.stroke(MainP.backDdlGray);
+		for (int i = 1; i <= 5; i++) {
+			mainP.rect(52, 276 + 33 * (i - 1), 165, 20);
+			mainP.rect(52 + 181, 276 + 33 * (i - 1), 165, 20);
+		}
+		mainP.noStroke();
 	
+		// ------------- Draw Preview -------------
+		Sequence.drawPreview(mainP);
+
 		// ------------- Numberbox mouse-over -------------
 		if (cp5.isMouseOver(minVolt6Nbox)) {
 			minVolt6Nbox.setColorForeground(MainP.blueAct);
@@ -274,7 +282,6 @@ public class TabSequencer {
 				sequChoiceDdl.close();
 			}
 		}
-	
 	}
 
 	public static void populateSequChoiceDdl(String[] itemList) {
@@ -288,6 +295,10 @@ public class TabSequencer {
 
 	public static int getSequenceStepMaxNumber() {
 		return SEQUENCE_STEP_MAX_NUMBER;
+	}
+
+	public static Toggle[] getPinsTgl() {
+		return pinsTgl;
 	}
 
 	public static DropdownList getSequChoiceDdl() {
