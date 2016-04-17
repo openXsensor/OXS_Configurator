@@ -504,6 +504,7 @@ public class MainP extends PApplet {
 		// Sequence selection
 		if (theEvent.isFrom(TabSequencer.getSequChoiceDdl())) {
 			sequence = Sequence.getSelectedSequ(theEvent.getGroup().getCaptionLabel().getText());
+			Sequence.resetStepId();
 			//System.out.println("Current sequence: " + sequence.getName());
 		}
 

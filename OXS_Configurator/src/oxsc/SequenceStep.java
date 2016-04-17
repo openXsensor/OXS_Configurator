@@ -1,7 +1,5 @@
 package oxsc;
 
-import java.time.Duration;
-
 import controlP5.ControlP5;
 import controlP5.Controller;
 import controlP5.Numberbox;
@@ -16,7 +14,6 @@ public class SequenceStep {
 	private static final int Y_GAP = 33;
 
 	private int id;
-	private Duration duration;
 	private Toggle[] pinsTgl = new Toggle[TabSequencer.getPinNumber()];
 	private Numberbox stepDuration;
 	private int xTranslate;
@@ -59,6 +56,7 @@ public class SequenceStep {
 
 	public void drawStep(MainP mainP) {
 		// Step ID Border
+		mainP.noFill();
 		mainP.stroke(MainP.darkBackGray);
 		mainP.rect(X + xTranslate, Y + yTranslate, 20, 20);
 
@@ -160,5 +158,9 @@ public class SequenceStep {
 
 	public long getDuration() {
 		return (long) (stepDuration.getValue() * 1000);
+	}
+
+	public boolean getTglState(int i) {
+		return pinsTgl[i].getState();
 	}
 }

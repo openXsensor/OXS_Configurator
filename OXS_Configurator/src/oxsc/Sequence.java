@@ -1,17 +1,31 @@
 package oxsc;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+
 import controlP5.ControlP5;
 import gui.TabSequencer;
 
 public class Sequence {
 
 	private static final boolean DEBUG = true;
-	private static List<Sequence> sequenceList = new ArrayList<>();
 	private static final String[] SEQUENCE_NAMES = new String[] { "-100", "-75", "-50", "-25", "0", "25", "50", "75",
 			"100", "low" };
 	private static final int PIN_NUMBER = 6;
+
+	private static List<Sequence> sequenceList = new ArrayList<>();
+	private static int stepId = 1;
+	private static double stepTime;
+	private static long timer = System.currentTimeMillis();
+	private static DecimalFormatSymbols fs = new DecimalFormatSymbols();
+	private static DecimalFormat df;
+	
+	static {
+		fs.setDecimalSeparator('.');
+		df = new DecimalFormat("#0.0", fs);
+	}
 
 	private String name;
 	private List<SequenceStep> stepList = new ArrayList<>();
@@ -40,6 +54,8 @@ public class Sequence {
 	}
 
 	public void addStep() {
+		if (stepId == 0)
+			resetStepId();
 		if (stepList.size() < TabSequencer.getSequenceStepMaxNumber()) {
 			stepList.add(new SequenceStep(stepList.size() + 1, this.name));
 			if (DEBUG) {
@@ -54,6 +70,7 @@ public class Sequence {
 
 	public void removeStep() {
 		if (stepList.size() > 0) {
+			resetStepId();
 			stepList.get(stepList.size() - 1).removeControllers();
 			stepList.remove(stepList.size() - 1);
 			if (DEBUG) {
@@ -73,8 +90,10 @@ public class Sequence {
 		// preview return button
 		if (mainP.mouseX >= 205 && mainP.mouseX <= 226 && mainP.mouseY >= 234 && mainP.mouseY <= 255) {
 			mainP.fill(MainP.blueAct);
-			if (mainP.mousePressed)
+			if (mainP.mousePressed) {
 				mainP.fill(MainP.orangeAct);
+				resetStepId();
+			}
 		} else {
 			mainP.fill(MainP.darkBackGray);
 		}
@@ -88,48 +107,76 @@ public class Sequence {
 		mainP.fill(MainP.tabGray);
 		mainP.rect(229, 234, 30, 20);
 		mainP.fill(0);
-		mainP.text("sX", 229, 237, 30, 20); // TODO 1 replace with field
+		mainP.text("s" + stepId, 229, 237, 30, 20);
 
 		// preview sequence timer
 		mainP.fill(MainP.darkBackGray);
 		mainP.rect(260, 234, 35, 20);
 		mainP.fill(MainP.white);
-		mainP.text("99.9s", 260, 237, 35, 20); // TODO 1 replace with field
+		mainP.text(df.format(stepTime) + "s", 260, 237, 35, 20);
 
 		// preview pin border
 		mainP.fill(MainP.tabGray);
 		for (int i = 0; i < PIN_NUMBER; i++) {
+			if (MainP.sequence.stepList.size() > 0)
+				if (MainP.sequence.stepList.get(stepId - 1).getTglState(i))
+					mainP.fill(MainP.lightOrange);
 			mainP.rect(295 + i * 20, 234, 20, 20);
+			mainP.fill(MainP.tabGray);
 		}
 		mainP.noStroke();
 
 		// preview pin rectangle
 		mainP.fill(MainP.grayedColor);
 		for (int i = 0; i < PIN_NUMBER; i++) {
+			if (MainP.sequence.stepList.size() > 0)
+				if (MainP.sequence.stepList.get(stepId - 1).getTglState(i))
+					mainP.fill(MainP.orangeAct);
 			mainP.rect(298 + i * 20, 237, 15, 15);
+			mainP.fill(MainP.grayedColor);
 		}
 
 		// preview pin text
 		mainP.fill(MainP.lightBackGray);
 		for (int i = 0; i < PIN_NUMBER; i++) {
+			if (MainP.sequence.stepList.size() > 0)
+				if (MainP.sequence.stepList.get(stepId - 1).getTglState(i))
+					mainP.fill(0);
 			mainP.text("" + (8 + i), 298 + i * 20, 237, 15, 15);
+			mainP.fill(MainP.lightBackGray);
 		}
 		mainP.textAlign(MainP.LEFT, MainP.BASELINE);
 
 		// number of step in current sequence
-		mainP.fill(0);
-		mainP.text(MainP.sequence.getStepNbr(), 20, 250);
-		mainP.noFill();
+//		mainP.fill(0);
+//		mainP.text(MainP.sequence.getStepNbr(), 20, 250);
+//		mainP.noFill();
 
 		// Draw steps
 		for (SequenceStep step : MainP.sequence.stepList) {
 			step.drawStep(mainP);
-			step.drawStepBorderPreview(mainP); // TODO if stepPlaying
+			if (step.getId() == stepId) {
+			step.drawStepBorderPreview(mainP);
+			}
 		}
+		MainP.sequence.playPreview(mainP);
 	}
 
-	private int getStepNbr() {
-		return stepList.size();
+	public void playPreview(MainP mainP) {
+		if (stepList.size() > 0) {
+			if (System.currentTimeMillis() - timer > stepList.get(stepId - 1).getDuration()) {
+				timer = System.currentTimeMillis();
+				if (stepList.get(stepId - 1).getDuration() > 0) {
+					stepId++;
+				}
+				if (stepId > stepList.size())
+					resetStepId();
+			}
+			stepTime = (double) (System.currentTimeMillis() - timer) / 1000;
+		} else {
+			stepTime = 0;
+			stepId = 0;
+		}
 	}
 
 	public List<SequenceStep> getStepList() {
@@ -140,4 +187,7 @@ public class Sequence {
 		return name;
 	}
 
+	public static void resetStepId() {
+		stepId = 1;
+	}
 }
