@@ -115,7 +115,6 @@ public class TabSequencer {
 				           .toUpperCase(false);
 		sequChoiceDdl.getCaptionLabel().getStyle().marginTop = 0;
 		sequChoiceDdl.getCaptionLabel().align(ControlP5.LEFT, ControlP5.CENTER).setPaddingX(8);
-		controllers.add(sequChoiceDdl);
 
 		// Add/Remove step
 		cp5.addTextlabel("addRemoveStepLabel")
@@ -328,5 +327,9 @@ public class TabSequencer {
 		nBox.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(3).toUpperCase(false);
 		controllers.add(nBox);
 
+	}
+
+	public static List<Object> getControllers() {
+		return controllers;
 	}
 }

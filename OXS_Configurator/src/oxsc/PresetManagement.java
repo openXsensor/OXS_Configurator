@@ -12,6 +12,7 @@ import java.util.List;
 import controlP5.ControlP5;
 import gui.TabGeneralSettings;
 import gui.TabPPM;
+import gui.TabSequencer;
 import gui.TabVario;
 import gui.TabVoltage;
 import gui.MessageBox;
@@ -21,7 +22,7 @@ import gui.TabData;
 
 public class PresetManagement {
 
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 	private static final String SPLIT_CHAR = " <--> ";
 
 	private static List<List<Object>> uiUnits = new ArrayList<>();
@@ -51,6 +52,7 @@ public class PresetManagement {
 		uiUnits.add(TabAirSpeed.getControllers());
 		uiUnits.add(TabVoltage.getControllers());
 		uiUnits.add(TabCurrent.getControllers());
+		uiUnits.add(TabSequencer.getControllers());
 
 		uiUnits.add(TabData.getControllers());
 	}
@@ -137,34 +139,45 @@ public class PresetManagement {
 
 	public static void presetSave(File selection) throws FileNotFoundException {  // TODO 1 preset .ocp extension
 		// System.out.println("User selected " + selection.getAbsolutePath());
-		try (PrintWriter output = new PrintWriter(selection)){
+		try (PrintWriter output = new PrintWriter(selection)) {
 			output.println("@ OXS Configurator v" + Validation.getOxsCversion() + " preset file created the " + MainP.date);
 			uiUnits.stream().forEach(uiU -> {
 				output.println();
-				uiU.stream().forEach(c -> {
-					if (c instanceof controlP5.DropdownList) {
-						controlP5.DropdownList dropDownList = (controlP5.DropdownList) c;
-						output.println(dropDownList.getName() + SPLIT_CHAR + dropDownList.getCaptionLabel().getText()
-								+ SPLIT_CHAR + (int)dropDownList.getValue());
-					} else if (c instanceof controlP5.Toggle) {
-						controlP5.Toggle toggle = (controlP5.Toggle) c;
-						output.println(toggle.getName() + SPLIT_CHAR + toggle.getState());
-					} else if (c instanceof controlP5.Numberbox) {
-						controlP5.Numberbox numberBox = (controlP5.Numberbox) c;
-						output.println(numberBox.getName() + SPLIT_CHAR + Math.floor(numberBox.getValue()*100.0)/100);
-					} else if (c instanceof controlP5.Range) {
-						controlP5.Range range = (controlP5.Range) c;
-						output.println(range.getName() + SPLIT_CHAR + range.getLowValue() + SPLIT_CHAR + range.getHighValue());
-					} else if (c instanceof controlP5.Slider) {
-						controlP5.Slider slider = (controlP5.Slider) c;
-						output.println(slider.getName() + SPLIT_CHAR + (int)slider.getValue());
-					} else if (c instanceof controlP5.Textfield) {
-						controlP5.Textfield textField = (controlP5.Textfield) c;
-						output.println(textField.getName() + SPLIT_CHAR + textField.getText());
-					}
-				});
+				uiU.stream().forEach(c -> printController(c, output));
 			});
+			Sequence.saveSequencesPreset(output);
 		}
+	}
+
+	private static void printController(Object c, PrintWriter output) {
+		if (c instanceof controlP5.DropdownList) {
+			controlP5.DropdownList dropDownList = (controlP5.DropdownList) c;
+			output.println(dropDownList.getName() + SPLIT_CHAR + dropDownList.getCaptionLabel().getText()
+					+ SPLIT_CHAR + (int)dropDownList.getValue());
+		} else if (c instanceof controlP5.Toggle) {
+			controlP5.Toggle toggle = (controlP5.Toggle) c;
+			output.println(toggle.getName() + SPLIT_CHAR + toggle.getState());
+		} else if (c instanceof controlP5.Numberbox) {
+			controlP5.Numberbox numberBox = (controlP5.Numberbox) c;
+			output.println(numberBox.getName() + SPLIT_CHAR + Math.floor(numberBox.getValue()*100.0)/100);
+		} else if (c instanceof controlP5.Range) {
+			controlP5.Range range = (controlP5.Range) c;
+			output.println(range.getName() + SPLIT_CHAR + range.getLowValue() + SPLIT_CHAR + range.getHighValue());
+		} else if (c instanceof controlP5.Slider) {
+			controlP5.Slider slider = (controlP5.Slider) c;
+			output.println(slider.getName() + SPLIT_CHAR + (int)slider.getValue());
+		} else if (c instanceof controlP5.Textfield) {
+			controlP5.Textfield textField = (controlP5.Textfield) c;
+			output.println(textField.getName() + SPLIT_CHAR + textField.getText());
+		}
+	}
+
+	private static void loadObjects(Object controller) {
+
+	}
+
+	public static String getSplitChar() {
+		return SPLIT_CHAR;
 	}
 
 }

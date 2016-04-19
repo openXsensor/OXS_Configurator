@@ -1,5 +1,8 @@
 package oxsc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import controlP5.ControlP5;
 import controlP5.Controller;
 import controlP5.Numberbox;
@@ -19,6 +22,7 @@ public class SequenceStep {
 	private int xTranslate;
 	private int yTranslate;
 	private int yTranslate2;
+	private List<Object> controllers = new ArrayList<>();
 
 	public SequenceStep(int id, String seqName) {
 		this.id = id;
@@ -27,7 +31,7 @@ public class SequenceStep {
 		yTranslate = Y_GAP * ((id + 1) / 2 - 1);
 		yTranslate2 = Y_GAP * ((id + 1) / 2 - 2);
 
-		stepDuration = MainP.cp5.addNumberbox("stepDuration" + seqName + id)
+		stepDuration = MainP.cp5.addNumberbox(seqName + "stepDuration" + id)
 				                .setPosition(X + 21 + xTranslate, Y + yTranslate)
 				                .setSize(37, 21)
 				                .setRange(0, 99.9f)
@@ -36,6 +40,7 @@ public class SequenceStep {
 				                .setDirection(Controller.HORIZONTAL)
 				                .setCaptionLabel("")
 				                .setTab("sequencer");
+		controllers.add(stepDuration);
 
 		for (int i = 0; i < pinsTgl.length; i++) {
 			pinsTgl[i] = MainP.cp5.addToggle(seqName + "Tgl" + id + i)
@@ -136,6 +141,7 @@ public class SequenceStep {
 			.setTab("sequencer");
 		// reposition the Labels
 		pTgl.getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER).toUpperCase(false);
+		controllers.add(pTgl);
 	}
 
 	public void hideControllers() {
@@ -162,5 +168,9 @@ public class SequenceStep {
 
 	public boolean getTglState(int i) {
 		return pinsTgl[i].getState();
+	}
+
+	public List<Object> getControllers() {
+		return controllers;
 	}
 }

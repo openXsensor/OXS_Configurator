@@ -1,5 +1,6 @@
 package oxsc;
 
+import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -189,5 +190,27 @@ public class Sequence {
 
 	public static void resetStepId() {
 		stepId = 1;
+	}
+
+	public static void saveSequencesPreset(PrintWriter output) {
+		for (Sequence seq : sequenceList) {
+			for (SequenceStep step : seq.stepList) {
+				output.println("");
+				step.getControllers().stream().forEach(c -> {
+					if (c instanceof controlP5.Numberbox) {
+						controlP5.Numberbox numberBox = (controlP5.Numberbox) c;
+						output.println(numberBox.getName() + PresetManagement.getSplitChar()
+								+ Math.floor(numberBox.getValue() * 100.0) / 100);
+					} else if (c instanceof controlP5.Toggle) {
+						controlP5.Toggle toggle = (controlP5.Toggle) c;
+						output.println(toggle.getName() + PresetManagement.getSplitChar() + toggle.getState());
+					}
+				});
+			}
+		}
+	}
+	public static void loadSequencesPreset() {
+		// TODO 1 load preset
+		//stepList.add(new SequenceStep(stepList.size() + 1, this.name));
 	}
 }
