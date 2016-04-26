@@ -445,6 +445,18 @@ public class MainP extends PApplet {
 			}
 		}
 
+		// Cells monitoring dropdownlist  TODO z better
+		if (theEvent.isFrom(TabVoltage.getDdlNbrCells())) {
+			if (protocol.getName().equals("Multiplex")) {
+				OXSdata.removeFromList("cells");
+				for (int i = 1; i <= TabVoltage.getDdlNbrCellsID(); i++) {
+					if (!OXSdata.isInList("Cell " + i))
+						new OXSdata("CELL_" + i, "Cell " + i, "cells");
+				}
+				TabData.populateSentDataFields();
+			}
+		}
+
 		//  Current sensor output offset interaction // TODO current - if output sens = 0
 		if (theEvent.isFrom(TabCurrent.getCurrentOutOffsetNBox()) /*|| theEvent.isFrom(cp5.getController("currentOutSensNb"))*/ ) {
 			TabCurrent.getCurrentOutOffsetMaNBox().setBroadcast(false);
@@ -464,11 +476,11 @@ public class MainP extends PApplet {
 		// Protocol selection - Showing right Telemetry data list in fields
 		if (theEvent.isFrom(TabGeneralSettings.getProtocolDdl())) {
 			protocol = Protocol.createProtocol(theEvent.getGroup().getCaptionLabel().getText());
-			
+
 			// TODO z better: updating OXSdata according to the protocol
 			for (Sensor sensor : Sensor.getSensorList()) {
 				OXSdata.removeFromList(sensor);
-				sensor.addOXSdata();				
+				sensor.addOXSdata();
 			}
 			TabData.resetSentDataFields();
 			TabData.populateSentDataFields();
@@ -604,19 +616,26 @@ public class MainP extends PApplet {
 			cp5.getTab("voltage").show();
 		} else {
 			for (int i = 1; i <= TabVoltage.getVoltnbr(); i++) {
-				TabVoltage.getVoltTgl()[i].setValue(0.0f);
+				TabVoltage.getVoltTgl()[i].setState(false);
 			}
 			cp5.getTab("voltage").hide();
 		}
 	}
 
 	public void cellsTgl(boolean theFlag) {
-		if (theFlag == true && aVolt[1] != null) {
-			new OXSdata("CELLS", "Cells monitoring", "voltCells", "DEFAULT");
+		if (theFlag == true /* && aVolt[1] != null */) {
+			if (protocol.getName().equals("FrSky")) {
+				new OXSdata("CELLS", "Cells monitoring", "voltCells", "DEFAULT");
+			} else if (protocol.getName().equals("Multiplex")) {
+				new OXSdata("CELL_MIN", "Cell min.", "volts");
+				new OXSdata("CELL_TOT", "Cells total", "volts");
+			}
 			TabData.populateSentDataFields();
 			TabVoltage.getDdlNbrCells().setValue(1);
 		} else {
 			OXSdata.removeFromList("voltCells");
+			OXSdata.removeFromList("volts");
+			OXSdata.removeFromList("cells");
 			TabData.resetSentDataFields();
 			// TabData.populateSentDataFields();
 		}

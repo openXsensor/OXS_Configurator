@@ -80,6 +80,7 @@ public class Protocol {
 
 		if (this.name.equals("FrSky")) {
 			targetDataList = frSkyDataList.clone();
+			TabVoltage.getCellsTgl().setValue(0);  // TODO protocol cells: convert between protocol
 		} else if (this.name.equals("Multiplex")) {
 			targetDataList = multiplexDataList.clone();
 			TabVoltage.getCellsTgl().setValue(0);

@@ -197,6 +197,10 @@ public class TabVoltage {
 		return ddlNbrCells;
 	}
 
+	public static int getDdlNbrCellsID() {
+		return (int) ddlNbrCells.getValue();
+	}
+
 	public static List<Object> getControllers() {
 		return controllers;
 	}
@@ -252,12 +256,13 @@ public class TabVoltage {
 		}
 
 		// Battery cells monitoring grayed
-		if (voltTgl[1].getValue() == 0 || MainP.protocol.getName().equals("Multiplex")) {
+		if (!voltTgl[1].getState() /*|| MainP.protocol.getName().equals("Multiplex")*/) {
 			mainP.stroke(MainP.grayedColor) ;                    // toggle border gray
 			mainP.noFill() ;
 			mainP.rect(10, 293, 155, 20) ;
 			mainP.noStroke() ;
 			cellsTgl.lock()
+			        .setState(false)
 			        .setColorBackground(MainP.grayedColor)
 			        .setColorCaptionLabel(MainP.grayedColor)
 			        ;
