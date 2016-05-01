@@ -88,7 +88,7 @@ public class Sequence {
 		mainP.textFont(MainP.fontLabel, 12);
 		mainP.textAlign(MainP.CENTER);
 
-		// preview return button
+		// preview rewind button
 		if (mainP.mouseX >= 205 && mainP.mouseX <= 226 && mainP.mouseY >= 234 && mainP.mouseY <= 255) {
 			mainP.fill(MainP.blueAct);
 			if (mainP.mousePressed) {
@@ -209,8 +209,33 @@ public class Sequence {
 			}
 		}
 	}
-	public static void loadSequencesPreset() {
-		// TODO 1 load preset
-		//stepList.add(new SequenceStep(stepList.size() + 1, this.name));
+	public static void loadSequencesPreset(String[] temp) {
+		long timer;
+		//for (String[] ctrl : temp) {
+			// TODO 1 load preset
+			//stepList.add(new SequenceStep(stepList.size() + 1, this.name));
+			//		-100stepDuration1 <--> 0.0
+			//		-100Tgl10 <--> false
+			//		-100Tgl11 <--> false
+			//		-100Tgl12 <--> false
+			//		-100Tgl13 <--> false
+			//		-100Tgl14 <--> false
+			//		-100Tgl15 <--> false
+			//String seqName = sequenceData[0];
+			for (int i = 0; i < SEQUENCE_NAMES.length; i++) {
+				if (temp[0].startsWith(SEQUENCE_NAMES[i])) {
+					//SequenceStep seqStep = new SequenceStep(sequenceList.get(i).stepList.size() + 1, SEQUENCE_NAMES[i]);
+					sequenceList.get(i).addStep();
+					timer = System.currentTimeMillis();
+					while (System.currentTimeMillis() - timer < 500) {						
+					}
+					if (DEBUG) {
+						//System.out.println("Adding step n°" + sequenceList.get(i).stepList.size() + " in sequence " + SEQUENCE_NAMES[i]);
+					}
+					break;
+				}
+			} 
+		//}
+				
 	}
 }

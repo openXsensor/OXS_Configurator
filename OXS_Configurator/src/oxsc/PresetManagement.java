@@ -63,6 +63,7 @@ public class PresetManagement {
 
 	public static void presetLoad(File selection) {  // TODO 1 use path
 		//presetDir = new File(mainP.sketchPath("src/Preset/..."));
+		List<String[]> unknowControllers = new ArrayList<>();
 		try (BufferedReader buff = new BufferedReader(new FileReader(selection))) {
 			String line;
 			line = buff.readLine();
@@ -73,45 +74,29 @@ public class PresetManagement {
 				while ((line = buff.readLine()) != null) {
 					if (line.length() > 0 && line.charAt(0) != '@') {
 						String[] temp = line.split(SPLIT_CHAR);
-						if (DEBUG) {
-							System.out.println("Loading " + temp[0] + " settings...");
-						}
-						if (cp5.getGroup(temp[0]) instanceof controlP5.DropdownList) {
-							controlP5.DropdownList dropDownList = (controlP5.DropdownList) cp5.getGroup(temp[0]);
-							for (String[] stringArray : dropDownList.getListBoxItems()) {
-								if (stringArray[1].equals(temp[1])) {
-									dropDownList.setValue(Float.parseFloat(stringArray[2]));
-								}
-							}
-						} else if (cp5.getController(temp[0]) instanceof controlP5.Toggle) {
-							controlP5.Toggle toggle = (controlP5.Toggle) cp5.getController(temp[0]);
-							toggle.setState(Boolean.parseBoolean(temp[1]));
-						} else if (cp5.getController(temp[0]) instanceof controlP5.Numberbox) {
-							controlP5.Numberbox numberbox = (controlP5.Numberbox) cp5.getController(temp[0]);
-							numberbox.setValue(Float.parseFloat(temp[1]));
-						} else if (cp5.getController(temp[0]) instanceof controlP5.Range) {
-							controlP5.Range range = (controlP5.Range) cp5.getController(temp[0]);
-							range.setLowValue(Float.parseFloat(temp[1]));
-							range.setHighValue(Float.parseFloat(temp[2]));
-						} else if (cp5.getController(temp[0]) instanceof controlP5.Slider) {
-							controlP5.Slider slider = (controlP5.Slider) cp5.getController(temp[0]);
-							slider.setValue(Float.parseFloat(temp[1]));
-						} else if (cp5.getController(temp[0]) instanceof controlP5.Textfield) {
-							controlP5.Textfield textField = (controlP5.Textfield) cp5.getController(temp[0]);
-							String oxsDir = (temp.length > 1) ? temp[1] : "";
-							textField.setText(oxsDir);
-						}  else {
-							message.setLength(MESSAGE_HEADER_LENGTH);
-							message.append("  - The \"" + selection.getName() + "\" preset file is invalid !!\n");
-							MessageBox.error(message);
-							if (DEBUG) {
-								// TODO preset: parse unknown controller string
-								System.out.println("Unknown controller");
-							}
-							break;
+						if (cp5.get(temp[0]) != null) {
+							loadControllerSettings(temp);
+						} else {
+							System.out.println(temp[0] + " does not exist !");
+							//unknowControllers.add(temp);
+							Sequence.loadSequencesPreset(temp);
+							//loadControllerSettings(temp);
+
+//							message.setLength(MESSAGE_HEADER_LENGTH);
+//							message.append("  - The \"" + selection.getName() + "\" preset file is invalid !!\n");
+//							MessageBox.error(message);
+//							if (DEBUG) {
+//								// TODO preset: parse unknown controller string
+//								System.out.println("Unknown controller");
+//							}
+//							break;
+
 						}
 					}
 				}
+//				if (unknowControllers.size() > 0) {
+//					Sequence.loadSequencesPreset(unknowControllers);
+//				}
 			} else {
 				message.setLength(MESSAGE_HEADER_LENGTH);
 				message.append("  - The \"" + selection.getName() + "\" preset file is not compatible with\n");
@@ -137,19 +122,50 @@ public class PresetManagement {
 		}
 	}
 
+	private static void loadControllerSettings(String[] controllerData) {
+		if (cp5.getGroup(controllerData[0]) instanceof controlP5.DropdownList) {
+			controlP5.DropdownList dropDownList = (controlP5.DropdownList) cp5.getGroup(controllerData[0]);
+			for (String[] stringArray : dropDownList.getListBoxItems()) {
+				if (stringArray[1].equals(controllerData[1])) {
+					dropDownList.setValue(Float.parseFloat(stringArray[2]));
+				}
+			}
+		} else if (cp5.getController(controllerData[0]) instanceof controlP5.Toggle) {
+			controlP5.Toggle toggle = (controlP5.Toggle) cp5.getController(controllerData[0]);
+			toggle.setState(Boolean.parseBoolean(controllerData[1]));
+		} else if (cp5.getController(controllerData[0]) instanceof controlP5.Numberbox) {
+			controlP5.Numberbox numberbox = (controlP5.Numberbox) cp5.getController(controllerData[0]);
+			numberbox.setValue(Float.parseFloat(controllerData[1]));
+		} else if (cp5.getController(controllerData[0]) instanceof controlP5.Range) {
+			controlP5.Range range = (controlP5.Range) cp5.getController(controllerData[0]);
+			range.setLowValue(Float.parseFloat(controllerData[1]));
+			range.setHighValue(Float.parseFloat(controllerData[2]));
+		} else if (cp5.getController(controllerData[0]) instanceof controlP5.Slider) {
+			controlP5.Slider slider = (controlP5.Slider) cp5.getController(controllerData[0]);
+			slider.setValue(Float.parseFloat(controllerData[1]));
+		} else if (cp5.getController(controllerData[0]) instanceof controlP5.Textfield) {
+			controlP5.Textfield textField = (controlP5.Textfield) cp5.getController(controllerData[0]);
+			String oxsDir = (controllerData.length > 1) ? controllerData[1] : "";
+			textField.setText(oxsDir);
+		}
+		if (DEBUG) {
+			System.out.println("Loading " + controllerData[0] + " settings...");
+		}
+	}
+
 	public static void presetSave(File selection) throws FileNotFoundException {  // TODO 1 preset .ocp extension
 		// System.out.println("User selected " + selection.getAbsolutePath());
 		try (PrintWriter output = new PrintWriter(selection)) {
 			output.println("@ OXS Configurator v" + Validation.getOxsCversion() + " preset file created the " + MainP.date);
 			uiUnits.stream().forEach(uiU -> {
 				output.println();
-				uiU.stream().forEach(c -> printController(c, output));
+				uiU.stream().forEach(c -> saveControllerSettings(c, output));
 			});
 			Sequence.saveSequencesPreset(output);
 		}
 	}
 
-	private static void printController(Object c, PrintWriter output) {
+	private static void saveControllerSettings(Object c, PrintWriter output) {
 		if (c instanceof controlP5.DropdownList) {
 			controlP5.DropdownList dropDownList = (controlP5.DropdownList) c;
 			output.println(dropDownList.getName() + SPLIT_CHAR + dropDownList.getCaptionLabel().getText()
