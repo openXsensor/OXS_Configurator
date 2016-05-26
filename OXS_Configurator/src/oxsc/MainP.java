@@ -61,7 +61,7 @@ public class MainP extends PApplet {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public static boolean tempActive = false; // Defines temperature sensor availability
+	public static final boolean TEMP_ACTIVE = false; // Defines temperature sensor availability
 	
 	public static final String OXS_URL = "http://openxsensor.github.io";
 

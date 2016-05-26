@@ -256,7 +256,7 @@ public class TabGeneralSettings {
 		mainP.rect(10, 258, 152, 20);
 		mainP.noStroke();
 
-		if (!MainP.tempActive) {
+		if (!MainP.TEMP_ACTIVE) {
 			temperatureTgl.setColorCaptionLabel(MainP.grayedColor).setColorBackground(MainP.grayedColor);
 		}
 

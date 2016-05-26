@@ -192,7 +192,7 @@ public class WriteConf {
 
 			// ---------------------------- Temperature sensor ----------------------------
 
-			if (MainP.tempActive) {
+			if (MainP.TEMP_ACTIVE) {
 				if (TabGeneralSettings.getTemperatureTgl().getValue() == 1 /*&& (int)cp5.getGroup("tempPin").getValue() >= 0*/) { // TODO temperature
 					output.println("// -------- Temperature sensor --------");
 					output.println("#define PIN_TemperatureSensor   " /*+ ( (int)cp5.getGroup("tempPin").getValue() )*/ + "  // The Analog pin the optional temperature sensor is connected to");
