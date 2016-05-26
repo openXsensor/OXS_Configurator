@@ -713,6 +713,8 @@ public class MainP extends PApplet {
 
 	// Load preset button  // TODO better with FileDialog
 	public void loadButton(int theValue) {
+		// Go to General Setting Tab before loading preset
+		TabGeneralSettings.getGenTab().bringToFront();
 		File presetDir = execPath.getParent().resolve(PRESET_DEFAULT_DIR).resolve("...").toFile();
 		selectInput("Select a preset file to load:", "presetLoad", presetDir);
 	}
@@ -734,7 +736,11 @@ public class MainP extends PApplet {
 			// System.out.println("Window was closed or the user hit cancel.") ;
 		} else {
 			// System.out.println("User selected " + selection.getAbsolutePath()) ;
+			noLoop();
+			//cp5.setAutoDraw(false);
 			PresetManagement.presetLoad(selection);
+			//cp5.setAutoDraw(true);
+			loop();
 		}
 	}
 	

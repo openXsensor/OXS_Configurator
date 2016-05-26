@@ -332,4 +332,8 @@ public class TabSequencer {
 	public static List<Object> getControllers() {
 		return controllers;
 	}
+
+	public static void seqSelect(int i) {
+		sequChoiceDdl.setValue(i);		
+	}
 }

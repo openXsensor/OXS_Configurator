@@ -173,4 +173,15 @@ public class SequenceStep {
 	public List<Object> getControllers() {
 		return controllers;
 	}
+
+	public void setValues(float nBox, boolean pinTgl1, boolean pinTgl2, boolean pinTgl3, boolean pinTgl4, boolean pinTgl5, boolean pinTgl6) {
+		stepDuration.setValue(nBox);
+		pinsTgl[0].setState(pinTgl1);
+		pinsTgl[1].setState(pinTgl2);
+		pinsTgl[2].setState(pinTgl3);
+		pinsTgl[3].setState(pinTgl4);
+		pinsTgl[4].setState(pinTgl5);
+		pinsTgl[5].setState(pinTgl6);
+	}
+
 }

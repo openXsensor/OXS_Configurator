@@ -63,7 +63,7 @@ public class PresetManagement {
 
 	public static void presetLoad(File selection) {  // TODO 1 use path
 		//presetDir = new File(mainP.sketchPath("src/Preset/..."));
-		List<String[]> unknowControllers = new ArrayList<>();
+		Sequence.clearAllStepList();
 		try (BufferedReader buff = new BufferedReader(new FileReader(selection))) {
 			String line;
 			line = buff.readLine();
@@ -77,26 +77,23 @@ public class PresetManagement {
 						if (cp5.get(temp[0]) != null) {
 							loadControllerSettings(temp);
 						} else {
-							System.out.println(temp[0] + " does not exist !");
-							//unknowControllers.add(temp);
-							Sequence.loadSequencesPreset(temp);
-							//loadControllerSettings(temp);
-
-//							message.setLength(MESSAGE_HEADER_LENGTH);
-//							message.append("  - The \"" + selection.getName() + "\" preset file is invalid !!\n");
-//							MessageBox.error(message);
-//							if (DEBUG) {
-//								// TODO preset: parse unknown controller string
-//								System.out.println("Unknown controller");
-//							}
-//							break;
+							if (!Sequence.loadSequencesPreset(temp)) {
+								message.setLength(MESSAGE_HEADER_LENGTH);
+								message.append("  - The \"" + selection.getName() + "\" preset file is invalid !!\n");
+								MessageBox.error(message);
+								if (DEBUG) {
+									// TODO preset: parse unknown controller
+									// string
+									System.out.println("Unknown controller");
+								}
+								break;
+							}
 
 						}
 					}
 				}
-//				if (unknowControllers.size() > 0) {
-//					Sequence.loadSequencesPreset(unknowControllers);
-//				}
+				// Refresh Sequence preview display
+				TabSequencer.seqSelect(0);
 			} else {
 				message.setLength(MESSAGE_HEADER_LENGTH);
 				message.append("  - The \"" + selection.getName() + "\" preset file is not compatible with\n");
@@ -107,8 +104,6 @@ public class PresetManagement {
 					System.out.println("Invalid preset file");
 				}
 			}
-			// Go to General Setting Tab after loading preset
-			TabGeneralSettings.getGenTab().bringToFront();
 		} catch (FileNotFoundException f) {
 			message.setLength(MESSAGE_HEADER_LENGTH);
 			message.append("    Preset file: \"" + selection.getName()  + "\" not found !\n");
@@ -186,10 +181,6 @@ public class PresetManagement {
 			controlP5.Textfield textField = (controlP5.Textfield) c;
 			output.println(textField.getName() + SPLIT_CHAR + textField.getText());
 		}
-	}
-
-	private static void loadObjects(Object controller) {
-
 	}
 
 	public static String getSplitChar() {

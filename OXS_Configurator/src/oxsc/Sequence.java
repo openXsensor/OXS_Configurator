@@ -22,7 +22,7 @@ public class Sequence {
 	private static long timer = System.currentTimeMillis();
 	private static DecimalFormatSymbols fs = new DecimalFormatSymbols();
 	private static DecimalFormat df;
-	
+
 	static {
 		fs.setDecimalSeparator('.');
 		df = new DecimalFormat("#0.0", fs);
@@ -153,11 +153,13 @@ public class Sequence {
 //		mainP.text(MainP.sequence.getStepNbr(), 20, 250);
 //		mainP.noFill();
 
-		// Draw steps
-		for (SequenceStep step : MainP.sequence.stepList) {
-			step.drawStep(mainP);
-			if (step.getId() == stepId) {
-			step.drawStepBorderPreview(mainP);
+		if (MainP.sequence.stepList.size() > 0) {
+			// Draw steps
+			for (SequenceStep step : MainP.sequence.stepList) {
+				step.drawStep(mainP);
+				if (step.getId() == stepId) {
+					step.drawStepBorderPreview(mainP);
+				}
 			}
 		}
 		MainP.sequence.playPreview(mainP);
@@ -194,48 +196,57 @@ public class Sequence {
 
 	public static void saveSequencesPreset(PrintWriter output) {
 		for (Sequence seq : sequenceList) {
+			output.println("");
 			for (SequenceStep step : seq.stepList) {
-				output.println("");
 				step.getControllers().stream().forEach(c -> {
 					if (c instanceof controlP5.Numberbox) {
 						controlP5.Numberbox numberBox = (controlP5.Numberbox) c;
-						output.println(numberBox.getName() + PresetManagement.getSplitChar()
-								+ Math.floor(numberBox.getValue() * 100.0) / 100);
+						output.print(seq.getName() + "stepID" + step.getId() + PresetManagement.getSplitChar()
+								+ numberBox.getValue());
 					} else if (c instanceof controlP5.Toggle) {
 						controlP5.Toggle toggle = (controlP5.Toggle) c;
-						output.println(toggle.getName() + PresetManagement.getSplitChar() + toggle.getState());
+						output.print(PresetManagement.getSplitChar() + (int)toggle.getValue());
 					}
 				});
+				output.println("");
 			}
 		}
 	}
-	public static void loadSequencesPreset(String[] temp) {
-		long timer;
-		//for (String[] ctrl : temp) {
-			// TODO 1 load preset
-			//stepList.add(new SequenceStep(stepList.size() + 1, this.name));
-			//		-100stepDuration1 <--> 0.0
-			//		-100Tgl10 <--> false
-			//		-100Tgl11 <--> false
-			//		-100Tgl12 <--> false
-			//		-100Tgl13 <--> false
-			//		-100Tgl14 <--> false
-			//		-100Tgl15 <--> false
-			//String seqName = sequenceData[0];
-			for (int i = 0; i < SEQUENCE_NAMES.length; i++) {
-				if (temp[0].startsWith(SEQUENCE_NAMES[i])) {
-					//SequenceStep seqStep = new SequenceStep(sequenceList.get(i).stepList.size() + 1, SEQUENCE_NAMES[i]);
-					sequenceList.get(i).addStep();
-					timer = System.currentTimeMillis();
-					while (System.currentTimeMillis() - timer < 500) {						
-					}
-					if (DEBUG) {
-						//System.out.println("Adding step n°" + sequenceList.get(i).stepList.size() + " in sequence " + SEQUENCE_NAMES[i]);
-					}
-					break;
+
+	public static boolean loadSequencesPreset(String[] temp) {
+		for (Sequence seq : sequenceList) {
+			boolean[] tglStates = new boolean[PIN_NUMBER];
+			if (temp[0].startsWith(seq.getName())
+					&& temp[0].contains("stepID")) {
+				int stepId = Integer.parseInt(
+						temp[0].substring((seq.getName() + "stepID").length()));
+				if (DEBUG) {
+					System.out.println("loadSequencesPreset setId:" + stepId);
 				}
-			} 
-		//}
-				
+				if (MainP.cp5
+						.get(seq.getName() + "stepDuration" + stepId) == null) {
+					seq.addStep();
+				}
+				for (int i = 0; i < tglStates.length; i++) {
+					tglStates[i] = (temp[i + 2].equals("1") || temp[i + 2].equals("true"));
+				}
+				seq.stepList.get(stepId - 1).setValues(
+						Float.parseFloat(temp[1]), tglStates[0], tglStates[1],
+						tglStates[2], tglStates[3], tglStates[4], tglStates[5]);
+				return true;
+			} else {
+				// TODO 1 preset: unknown/invalid sequence step error
+			}
+		}
+		System.out.println("Invalid sequence step ! :" + temp[0]);
+		return false;// TODO 1 preset: unknown controller error
+	}
+
+	public static void clearAllStepList() {
+		for (Sequence seq : sequenceList) {
+			for (int i = seq.stepList.size(); i > 0; i--) {
+				seq.removeStep();
+			}
+		}
 	}
 }
