@@ -60,14 +60,12 @@ public class TabSequencer {
 		// Low voltage thresholds
 		minVolt6Nbox = cp5.addNumberbox("minVolt6")
 				          .setPosition(287, 113)
-				          // .setValue(5)
 				          .setCaptionLabel("min. volt6 (v)");
 		cp5.getTooltip().register(minVolt6Nbox, "minimum volt6 voltage threshold");
 		customizeNboxThreshold(minVolt6Nbox);
 
 		minCellNbox = cp5.addNumberbox("minCell")
 				         .setPosition(403, 113)
-				         // .setValue(5)
 				         .setCaptionLabel("min. cell (v)");
 		cp5.getTooltip().register(minCellNbox, "minimum cell voltage threshold");
 		customizeNboxThreshold(minCellNbox);
@@ -300,6 +298,22 @@ public class TabSequencer {
 		return pinsTgl;
 	}
 
+	public static Numberbox getMinVolt6Nbox() {
+		return minVolt6Nbox;
+	}
+
+	public static int getMinVolt6NboxValue() {
+		return (int) (minVolt6Nbox.getValue() * 10) * 100;
+	}
+
+	public static Numberbox getMinCellNbox() {
+		return minCellNbox;
+	}
+
+	public static int getMinCellNboxValue() {
+		return (int) (minCellNbox.getValue() * 10) * 100;
+	}
+
 	public static DropdownList getSequChoiceDdl() {
 		return sequChoiceDdl;
 	}
@@ -322,8 +336,11 @@ public class TabSequencer {
 		    .setDecimalPrecision(1)
 		    .setDirection(Controller.HORIZONTAL)
 		    .setTab("sequencer")
-		    .setColorCaptionLabel(0)
-		    .setColorActive(MainP.orangeAct);
+		    .setColorActive(MainP.orangeAct)
+		    .lock()
+            .setColorBackground(MainP.grayedColor)
+            .setColorValueLabel(MainP.grayedColor)
+            .setColorCaptionLabel(MainP.grayedColor);
 		nBox.getCaptionLabel().align(ControlP5.LEFT_OUTSIDE, ControlP5.CENTER).setPaddingX(3).toUpperCase(false);
 		controllers.add(nBox);
 
@@ -336,4 +353,5 @@ public class TabSequencer {
 	public static void seqSelect(int i) {
 		sequChoiceDdl.setValue(i);		
 	}
+
 }

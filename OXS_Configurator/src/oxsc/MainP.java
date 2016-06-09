@@ -445,6 +445,12 @@ public class MainP extends PApplet {
 						aVolt[i] = new Volt("volt" + i);
 						TabVoltage.populateNbrCells();
 					}
+					if (i == 6) {
+						TabSequencer.getMinVolt6Nbox().unlock()
+			                                          .setColorBackground(MainP.darkBackGray)
+			                                          .setColorValueLabel(MainP.white)
+			                                          .setColorCaptionLabel(0);
+					}
 					break;
 				case 0:
 					if (aVolt[i] != null) {
@@ -454,6 +460,13 @@ public class MainP extends PApplet {
 						if (i == 1) {
 							TabVoltage.getCellsTgl().setValue(0);
 						}
+					}
+					if (i == 6) {
+						TabSequencer.getMinVolt6Nbox().setValue(0.0f)
+						                              .lock()
+						                              .setColorBackground(MainP.grayedColor)
+			                                          .setColorValueLabel(MainP.grayedColor)
+			                                          .setColorCaptionLabel(MainP.grayedColor);
 					}
 					break;
 				}
@@ -654,11 +667,20 @@ public class MainP extends PApplet {
 			}
 			TabData.populateSentDataFields();
 			TabVoltage.getDdlNbrCells().setValue(1);
+			TabSequencer.getMinCellNbox().unlock()
+                                         .setColorBackground(MainP.darkBackGray)
+                                         .setColorValueLabel(MainP.white)
+                                         .setColorCaptionLabel(0);
 		} else {
 			OXSdata.removeFromList("voltCells");
 			OXSdata.removeFromList("volts");
 			OXSdata.removeFromList("cells");
 			TabData.resetSentDataFields();
+			TabSequencer.getMinCellNbox().setValue(0.0f)
+                                         .lock()
+                                         .setColorBackground(MainP.grayedColor)
+                                         .setColorValueLabel(MainP.grayedColor)
+                                         .setColorCaptionLabel(MainP.grayedColor);
 			// TabData.populateSentDataFields();
 		}
 	}
