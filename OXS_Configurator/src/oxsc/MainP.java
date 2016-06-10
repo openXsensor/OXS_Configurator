@@ -716,6 +716,14 @@ public class MainP extends PApplet {
 		}
 	}
 
+	public void sequencerTgl(boolean theFlag) {
+		if (theFlag == true) {
+			cp5.getTab("sequencer").show();
+		} else {
+			cp5.getTab("sequencer").hide();
+		}
+	}
+
 	public void ppmTgl(boolean theFlag) {
 		if (theFlag == true && ppm == null) {
 			ppm = new PPM("ppm");

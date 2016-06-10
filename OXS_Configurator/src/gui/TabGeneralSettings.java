@@ -37,6 +37,7 @@ public class TabGeneralSettings {
 	private static Toggle currentTgl;
 	private static Toggle temperatureTgl;
 	private static Toggle rpmTgl;
+	private static Toggle sequencerTgl;
 
 	private static List<Object> controllers = new ArrayList<>();
 
@@ -170,7 +171,7 @@ public class TabGeneralSettings {
 		customizeDdl(resetBtnPinDdl);
 
 		// "SENSORS" title
-		cp5.addTextlabel("sensors").setText("SENSORS").setPosition(191, 295).setColorValueLabel(MainP.white);
+		cp5.addTextlabel("sensors").setText("SENSORS / FEATURES").setPosition(155, 295).setColorValueLabel(MainP.white);
 		cp5.getTooltip().register("sensors", "Sensors settings");
 
 		// Toggle buttons
@@ -197,6 +198,9 @@ public class TabGeneralSettings {
 
 		rpmTgl = cp5.addToggle("rpmTgl").setPosition(385, 361).setCaptionLabel("RPM          ");
 		customizeToggleSensor(rpmTgl);
+
+		sequencerTgl = cp5.addToggle("sequencerTgl").setPosition(145, 386).setCaptionLabel("Sequencer       ");
+		customizeToggleSensor(sequencerTgl);
 
 		// dropdownlist overlap
 		resetBtnPinDdl.bringToFront();
@@ -262,46 +266,51 @@ public class TabGeneralSettings {
 
 		// "SENSORS" graphic part
 		mainP.fill(255, 128, 0);
-		mainP.rect(mainP.width / 2 - 35, 295, 69, 18);
+		mainP.rect(mainP.width / 2 - 70, 295, 140, 18);
 		mainP.rect(0, 310, mainP.width, 3);
 		mainP.noFill();
 
 		// Vario 2 enabled if vario 1
-		if (varioTgl.getValue() == 1.0) {
+		if (varioTgl.getState()) {
 			vario2Tgl.unlock().setColorCaptionLabel(0).setColorBackground(MainP.darkBackGray);
 		} else {
 			vario2Tgl.lock().setColorCaptionLabel(MainP.grayedColor).setColorBackground(MainP.grayedColor);
 		}
 
-		// Sensors table
-		if (varioTgl.getValue() == 1.0) {
+		// Sensors/features table
+		if (varioTgl.getState()) {
 			mainP.fill(MainP.lightOrange);
 			mainP.rect(45, 331, 120, 25);
 			mainP.noFill();
 		}
-		if (vario2Tgl.getValue() == 1.0) {
+		if (vario2Tgl.getState()) {
 			mainP.fill(MainP.lightOrange);
 			mainP.rect(165, 331, 120, 25);
 			mainP.noFill();
 		}
-		if (airSpeedTgl.getValue() == 1.0) {
+		if (airSpeedTgl.getState()) {
 			mainP.fill(MainP.lightOrange);
 			mainP.rect(285, 331, 120, 25);
 			mainP.noFill();
 		}
-		if (voltageTgl.getValue() == 1.0) {
+		if (voltageTgl.getState()) {
 			mainP.fill(MainP.lightOrange);
 			mainP.rect(45, 356, 120, 25);
 			mainP.noFill();
 		}
-		if (currentTgl.getValue() == 1.0) {
+		if (currentTgl.getState()) {
 			mainP.fill(MainP.lightOrange);
 			mainP.rect(165, 356, 120, 25);
 			mainP.noFill();
 		}
-		if (rpmTgl.getValue() == 1.0) {
+		if (rpmTgl.getState()) {
 			mainP.fill(MainP.lightOrange);
 			mainP.rect(285, 356, 120, 25);
+			mainP.noFill();
+		}
+		if (sequencerTgl.getState()) {
+			mainP.fill(MainP.lightOrange);
+			mainP.rect(45, 381, 120, 25);
 			mainP.noFill();
 		}
 
@@ -312,6 +321,7 @@ public class TabGeneralSettings {
 		mainP.rect(45, 356, 120, 25);
 		mainP.rect(165, 356, 120, 25);
 		mainP.rect(285, 356, 120, 25);
+		mainP.rect(45, 381, 120, 25);
 		mainP.noStroke();
 
 		// ----------------- Texfield and Numberbox mouse-over -----------------
@@ -454,6 +464,10 @@ public class TabGeneralSettings {
 
 	public static Toggle getRpmTgl() {
 		return rpmTgl;
+	}
+
+	public static boolean getSequencerTglState() {
+		return sequencerTgl.getState();
 	}
 
 	public static List<Object> getControllers() {

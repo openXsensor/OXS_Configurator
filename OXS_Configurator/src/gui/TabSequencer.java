@@ -37,8 +37,8 @@ public class TabSequencer {
 		   .setColorActive(MainP.orangeAct)
 		   .setLabel("Sequencer")
 		   .setId(8)
-		// .hide();
-		;
+		   .hide();
+
 		cp5.getTab("sequencer").getCaptionLabel().toUpperCase(false);
 
 		// -------- SETUP --------
