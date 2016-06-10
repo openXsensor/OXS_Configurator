@@ -514,6 +514,16 @@ public class MainP extends PApplet {
 			TabData.populateSentDataFields();
 		}
 
+		// Sequence activation
+		for (int j = 0; j < TabSequencer.getPpmSequTgl().length; j++) {
+			if (theEvent.isFrom(TabSequencer.getPpmSequTgl()[j])) {
+				Sequence.getList().get(j).setActive((int) theEvent.getController().getValue() == 1.0 ? true : false);
+			}
+		}
+		if (theEvent.isFrom(TabSequencer.getSequLowTgl())) {
+			Sequence.getList().get(Sequence.getList().size() - 1).setActive((int) theEvent.getController().getValue() == 1.0 ? true : false);
+		}
+
 		// Sequence selection
 		if (theEvent.isFrom(TabSequencer.getSequChoiceDdl())) {
 			sequence = Sequence.getSelectedSequ(theEvent.getGroup().getCaptionLabel().getText());

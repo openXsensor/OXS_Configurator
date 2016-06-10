@@ -29,10 +29,12 @@ public class Sequence {
 	}
 
 	private String name;
+	private boolean active;
 	private List<SequenceStep> stepList = new ArrayList<>();
 
 	private Sequence(String name) {
 		this.name = name;
+		active = false;
 		sequenceList.add(this);
 		if (DEBUG) {
 			System.out.println("New sequence: " + this.name + " created !");
@@ -182,12 +184,24 @@ public class Sequence {
 		}
 	}
 
+	public static List<Sequence> getList() {
+		return sequenceList;
+	}
+
 	public List<SequenceStep> getStepList() {
 		return stepList;
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	public static void resetStepId() {
@@ -247,6 +261,50 @@ public class Sequence {
 			for (int i = seq.stepList.size(); i > 0; i--) {
 				seq.removeStep();
 			}
+		}
+	}
+
+	public static void writeConf(PrintWriter output) {
+		// sequence pins setup
+		output.print("#define SEQUENCE_OUTPUTS 0b");
+		for (int i = TabSequencer.getPinNumber() - 1; i >= 0; i--) {
+			output.print((int) TabSequencer.getPinsTgl()[i].getValue());
+		}
+		output.println();
+		// sequence step time unit = 10 * SEQUENCE_UNIT -> ms
+		output.println("#define SEQUENCE_UNIT " + SequenceStep.getTimeUnit());
+		output.println();
+		// sequence settings
+		for (Sequence seq : sequenceList) {
+			if (seq.isActive() && seq.stepList.size() > 0) {
+				String seqName;
+				try {
+					seqName = Integer.parseInt(seq.name) < 0
+							? "m" + seq.name.substring(1) : seq.name;
+				} catch (NumberFormatException e) {
+					seqName = seq.name.toUpperCase();
+				}
+				output.print("#define SEQUENCE_" + seqName + "   ");
+				for (int i = 0; i < seq.stepList.size(); i++) {
+					output.print(seq.stepList.get(i).getDuration() / SequenceStep.getTimeUnit() / 10 + " , 0b");
+					for (int j = TabSequencer.getPinNumber() - 1; j >= 0; j--) {
+						output.print(seq.stepList.get(i).getTglState(j) ? 1 : 0);
+					}
+					if (i < seq.stepList.size() - 1) {
+						output.print(" , ");
+					} 
+				}
+				output.println();
+			}
+		}
+		// sequence "low" voltage thresholds
+		if (TabSequencer.getMinVolt6NboxValue() > 0 && TabSequencer.getSequLowTgl().getState()) {
+			output.println();
+			output.println("#define SEQUENCE_MIN_VOLT_6 " + TabSequencer.getMinVolt6NboxValue());
+		}
+		if (TabSequencer.getMinCellNboxValue() > 0 && TabSequencer.getSequLowTgl().getState()) {
+			output.println();
+			output.println("#define SEQUENCE_MIN_CELL " + TabSequencer.getMinCellNboxValue());
 		}
 	}
 }

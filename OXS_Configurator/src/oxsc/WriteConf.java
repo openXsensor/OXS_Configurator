@@ -234,9 +234,17 @@ public class WriteConf {
 
 			writeDataToSend();
 
+			// ------------------------- Sequencer settings -------------------------
+
+			output.println("// --------- 10 - Sequencer settings ---------");
+			if (TabGeneralSettings.getSequencerTglState()) {
+				Sequence.writeConf(output);
+			}
+			output.println("");
+
 			// ---------------------------------- Debug --------------------------------------
 
-			output.println("// --------- 10 - Reserved for developer. DEBUG must be activated here when we want to debug one or several functions in some other files. ---------");
+			output.println("// --------- 11 - Reserved for developer. DEBUG must be activated here when we want to debug one or several functions in some other files. ---------");
 			output.println("//#define DEBUG");
 			output.println("");
 			output.println("#ifdef DEBUG");

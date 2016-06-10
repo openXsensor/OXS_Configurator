@@ -15,6 +15,7 @@ public class SequenceStep {
 	private static final int Y = 276;
 	private static final int X_GAP = 181;
 	private static final int Y_GAP = 33;
+	private static final int STEP_TIME_UNIT = 10;
 
 	private int id;
 	private Toggle[] pinsTgl = new Toggle[TabSequencer.getPinNumber()];
@@ -34,7 +35,7 @@ public class SequenceStep {
 		stepDuration = MainP.cp5.addNumberbox(seqName + "stepDuration" + id)
 				                .setPosition(X + 21 + xTranslate, Y + yTranslate)
 				                .setSize(37, 21)
-				                .setRange(0, 99.9f)
+				                .setRange(0, (255 * 10f * STEP_TIME_UNIT) / 1000)
 				                .setMultiplier(0.1f)
 				                .setDecimalPrecision(1)
 				                .setDirection(Controller.HORIZONTAL)
@@ -164,6 +165,10 @@ public class SequenceStep {
 
 	public long getDuration() {
 		return (long) (stepDuration.getValue() * 1000);
+	}
+
+	public static int getTimeUnit() {
+		return STEP_TIME_UNIT;
 	}
 
 	public boolean getTglState(int i) {

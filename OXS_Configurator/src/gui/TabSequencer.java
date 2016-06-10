@@ -314,6 +314,14 @@ public class TabSequencer {
 		return (int) (minCellNbox.getValue() * 10) * 100;
 	}
 
+	public static Toggle[] getPpmSequTgl() {
+		return ppmSequTgl;
+	}
+
+	public static Toggle getSequLowTgl() {
+		return sequLowTgl;
+	}
+
 	public static DropdownList getSequChoiceDdl() {
 		return sequChoiceDdl;
 	}
