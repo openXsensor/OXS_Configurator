@@ -414,6 +414,10 @@ public class TabGeneralSettings {
 		return serialPinDdl;
 	}
 
+	public static int getSerialPinDdlNum() {
+		return Integer.parseInt(serialPinDdl.getCaptionLabel().getText());
+	}
+
 	public static DropdownList getProtocolDdl() {
 		return protocolDdl;
 	}
@@ -434,8 +438,16 @@ public class TabGeneralSettings {
 		return saveEpromTgl;
 	}
 
+	public static boolean getSaveEpromTglState() {
+		return saveEpromTgl.getState();
+	}
+
 	public static DropdownList getResetBtnPinDdl() {
 		return resetBtnPinDdl;
+	}
+
+	public static int getResetBtnPinDdlNum() {
+		return Integer.parseInt(resetBtnPinDdl.getCaptionLabel().getText());
 	}
 
 	public static Toggle getVarioTgl() {
@@ -464,6 +476,10 @@ public class TabGeneralSettings {
 
 	public static Toggle getRpmTgl() {
 		return rpmTgl;
+	}
+
+	public static boolean getRpmTglState() {
+		return rpmTgl.getState();
 	}
 
 	public static boolean getSequencerTglState() {

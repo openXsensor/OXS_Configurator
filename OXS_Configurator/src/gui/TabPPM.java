@@ -113,6 +113,10 @@ public class TabPPM {
 		return ppmPinDdl;
 	}
 
+	public static int getPinDdlNum() {
+		return Integer.parseInt(ppmPinDdl.getCaptionLabel().getText().trim());
+	}
+
 	public static Textlabel getPpmRngL() {
 		return ppmRngL;
 	}

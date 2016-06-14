@@ -409,6 +409,10 @@ public class TabVario {
 		return climbPinDdl;
 	}
 
+	public static int getClimbPinDdlNum() {
+		return Integer.parseInt(climbPinDdl.getCaptionLabel().getText().trim());
+	}
+
 	public static Range getOutClimbRateMinMaxRng() {
 		return outClimbRateMinMaxRng;
 	}

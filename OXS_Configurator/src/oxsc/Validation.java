@@ -22,6 +22,7 @@ import gui.TabCurrent;
 import gui.TabData;
 import gui.TabGeneralSettings;
 import gui.TabPPM;
+import gui.TabSequencer;
 import gui.TabVario;
 import gui.TabVoltage;
 
@@ -206,33 +207,41 @@ public class Validation {
 		}
 	}
 	
-	public static void validateNumPins() {
+	public static void validateNumPins() { // TODO refactor validation
 
-		int ppmInputIsActive = 0;
-		if (TabPPM.getPpmTgl().getValue() == 1.0
-				&& (TabGeneralSettings.getVarioTgl().getValue() == 1.0 || TabGeneralSettings.getAirSpeedTgl().getValue() == 1.0)) {
-			ppmInputIsActive = 1;
+		boolean ppmInputIsActive = false;
+		if (TabPPM.getPpmTgl().getState()
+				&& (TabGeneralSettings.getVarioTgl().getState()
+						|| TabGeneralSettings.getAirSpeedTgl().getState())) {
+			ppmInputIsActive = true;
 		}
 
-		int analogClimbOutputIsActive = 0;
-		if (TabVario.getAnalogClimbTgl().getValue() == 1.0 && TabGeneralSettings.getVarioTgl().getValue() == 1.0) {
-			analogClimbOutputIsActive = 1;
+		boolean analogClimbOutputIsActive = false;
+		if (TabVario.getAnalogClimbTgl().getState()
+				&& TabGeneralSettings.getVarioTgl().getState()) {
+			analogClimbOutputIsActive = true;
 		}
-		
+
 		String numPinsValidation[][] = new String[][] {        // array { pin name, pin value, isActive }
-				{ "Serial output", "" + (int)TabGeneralSettings.getSerialPinDdl().getValue(), "1" },
-				{ "Reset button", "" + (int)TabGeneralSettings.getResetBtnPinDdl().getValue(), "" + (int) TabGeneralSettings.getSaveEpromTgl().getValue() },
-				{ "PPM input", "" + (int)TabPPM.getPpmPinDdl().getValue(), "" + ppmInputIsActive },
-				{ "Analog climb output", "" + (int)TabVario.getClimbPinDdl().getValue(), "" + analogClimbOutputIsActive },
-				{ "RPM input", "" + 8, "" + (int) TabGeneralSettings.getRpmTgl().getValue() }
-		} ;
+				{"Serial output", "" + TabGeneralSettings.getSerialPinDdlNum(), "true" },
+				{ "Reset button", "" + TabGeneralSettings.getResetBtnPinDdlNum(), String.valueOf(TabGeneralSettings.getSaveEpromTglState()) },
+				{ "PPM input", "" + TabPPM.getPinDdlNum(), String.valueOf(ppmInputIsActive) },
+				{ "Analog climb output", "" + TabVario.getClimbPinDdlNum(), String.valueOf(analogClimbOutputIsActive) },
+				{ "RPM input", "8", String.valueOf(TabGeneralSettings.getRpmTglState()) },
+				{ "Sequencer", "8", String.valueOf(TabSequencer.getPinsTgl()[0].getState()) },
+				{ "Sequencer", "9", String.valueOf(TabSequencer.getPinsTgl()[1].getState()) },
+				{ "Sequencer", "10", String.valueOf(TabSequencer.getPinsTgl()[2].getState()) },
+				{ "Sequencer", "11", String.valueOf(TabSequencer.getPinsTgl()[3].getState()) },
+				{ "Sequencer", "12", String.valueOf(TabSequencer.getPinsTgl()[4].getState()) },
+				{ "Sequencer", "13", String.valueOf(TabSequencer.getPinsTgl()[5].getState()) }
+		};
 
 		for ( int i = 0; i < numPinsValidation.length; i++ ) {
-			for ( int j = i+1; j < numPinsValidation.length; j++ ) {
+			for ( int j = i + 1; j < numPinsValidation.length; j++ ) {
 				if ( Integer.parseInt(numPinsValidation[i][1]) != -1 
 						&& Integer.parseInt(numPinsValidation[j][1]) != -1 
-						&& Integer.parseInt(numPinsValidation[i][2]) == 1 
-						&& Integer.parseInt(numPinsValidation[j][2]) == 1 ) {
+						&& Boolean.parseBoolean(numPinsValidation[i][2])
+						&& Boolean.parseBoolean(numPinsValidation[j][2]) ) {
 					if ( numPinsValidation[i][1].equals(numPinsValidation[j][1]) ) {
 						numPinsValid = false ;
 						message.append("- " + numPinsValidation[i][0] + " is using the same pin n°" + numPinsValidation[i][1] + " as " + numPinsValidation[j][0] + " !\n");
@@ -240,7 +249,6 @@ public class Validation {
 				}
 			}
 		}
-		
 	}
 
 	public static void validateAnalogPins() {
