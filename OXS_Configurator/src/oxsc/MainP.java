@@ -393,7 +393,8 @@ public class MainP extends PApplet {
 
 		if (vario != null || airSpeed != null
 				|| TabGeneralSettings.getVoltageTgl().getValue() == 1.0
-				|| current != null /* || temperature != null */|| rpm != null) {
+				|| current != null /* || temperature != null */ || rpm != null
+				|| TabGeneralSettings.getSequencerTglState()) {
 			cp5.getTab("data").show();
 		} else {
 			cp5.getTab("data").hide();

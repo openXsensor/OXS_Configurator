@@ -134,7 +134,7 @@ public class Validation {
 		message.setLength(0);
 		message.append("\n");
 		setValidationMbox(true);
-		
+
 		// Config. file writing destination
 		oxsDirectory = Paths.get(TabGeneralSettings.getOxsDir().getText().trim());
 		if (oxsDirectory.toString().equals("")) {
@@ -172,7 +172,7 @@ public class Validation {
 			}
 
 			allValid = 0 ;
-			
+
 			MessageBox.error(message);
 
 		} else if (vSpeedValid == 1 || versionValid == 1) {
@@ -187,9 +187,9 @@ public class Validation {
 				message.append("\n");
 				message.append("                       ! If the file already exists, it will be replaced !\n");
 			}
-			
+
 			allValid = 1 ;
-			
+
 			MessageBox.warning(message);
 
 		} else {
@@ -202,11 +202,11 @@ public class Validation {
 			message.append("                                             ----------------------\n");
 
 			allValid = 2 ;
-			
+
 			MessageBox.good(message);
 		}
 	}
-	
+
 	public static void validateNumPins() { // TODO refactor validation
 
 		boolean ppmInputIsActive = false;
@@ -419,9 +419,9 @@ public class Validation {
 			}
 		}
 
-		if (oxsMeasureCount == 0) {
+		if (oxsMeasureCount == 0 && !Sequence.isAvailable()) {
 			sentDataValid = false;
-			message.append("- You don't have any OXS measurement set !\n");
+			message.append("- You don't have any OXS measurement or sequence set !\n");
 		}
 
 	}

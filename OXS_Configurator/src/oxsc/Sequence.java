@@ -307,4 +307,13 @@ public class Sequence {
 			output.println("#define SEQUENCE_MIN_CELL " + TabSequencer.getMinCellNboxValue());
 		}
 	}
+
+	public static boolean isAvailable() {
+		for (Sequence seq : sequenceList) {
+			if (seq.isActive() && seq.stepList.size() > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
