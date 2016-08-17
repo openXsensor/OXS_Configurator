@@ -632,9 +632,9 @@ public class MainP extends PApplet {
 
 	public void cellsTgl(boolean theFlag) {
 		if (theFlag == true /* && aVolt[1] != null */) {
-			if (protocol.getName().equals("FrSky")) {
+			if (protocol instanceof ProtFrSkyAuto) {
 				new OXSdata("CELLS", "Cells monitoring", "voltCells", "DEFAULT");
-			} else if (protocol.getName().equals("Multiplex")) {
+			} else if (protocol instanceof ProtMultiplex) {
 				new OXSdata("CELL_MIN", "Cell min.", "volts");
 				new OXSdata("CELL_TOT", "Cells total", "volts");
 			}

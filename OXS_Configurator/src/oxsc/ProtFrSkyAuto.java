@@ -1,6 +1,7 @@
 package oxsc;
 
 import gui.TabGeneralSettings;
+import gui.TabVoltage;
 
 public class ProtFrSkyAuto extends Protocol {
 
@@ -30,7 +31,7 @@ public class ProtFrSkyAuto extends Protocol {
 
 	@Override
 	public	void doExtraThings() {
-		// Nothing now
+		TabVoltage.getCellsTgl().setValue(0);
 	}
 
 	@Override

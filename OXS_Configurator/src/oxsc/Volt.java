@@ -14,7 +14,7 @@ public class Volt extends Sensor {
 		String name = this.getName();
 		new OXSdata(name.toUpperCase(), name.toUpperCase().charAt(0)
 				+ name.substring(1, 4) + " " + name.substring(4), name);
-		if (MainP.protocol instanceof ProtMultiplex) {
+		/*if (MainP.protocol instanceof ProtMultiplex) {
 			new OXSdata("CELL_" + name.substring(4),
 					"Cell " + name.substring(4), name);
 
@@ -25,7 +25,7 @@ public class Volt extends Sensor {
 				if (!OXSdata.isInList("Cells total"))
 					new OXSdata("CELL_TOT", "Cells total", "volts");
 			}
-		}
+		}*/
 	}
 
 	public void removeSensor() {
