@@ -78,11 +78,7 @@ public class OXSdata {
 	}
 
 	public static void removeFromList(Sensor sensor) {
-		for (int i = OXSdataList.size() - 1; i >= 0; i--) {
-			if (OXSdataList.get(i).sensorType.equals(sensor.getName()))
-				OXSdataList.remove(OXSdataList.get(i));
-		}
-		TabData.populateSentDataFields();
+		removeFromList(sensor.getName());
 	}
 
 	public static void removeFromList(String sensorType) {

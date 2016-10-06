@@ -484,10 +484,9 @@ public class MainP extends PApplet {
 			protocol = Protocol.getProtocol(theEvent.getGroup().getCaptionLabel().getText());
 
 			// TODO z better: updating OXSdata according to the protocol
-			for (Sensor sensor : Sensor.getSensorList()) {
-				OXSdata.removeFromList(sensor);
-				sensor.addOXSdata();
-			}
+			Sensor.getSensorList().stream().forEach(OXSdata::removeFromList);
+			Sensor.getSensorList().stream().forEach(Sensor::addOXSdata);
+
 			TabData.resetSentDataFields();
 			TabData.populateSentDataFields();
 			TabData.populateTargetDataFields();
